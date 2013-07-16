@@ -1,6 +1,6 @@
 #Starts Simplecov
-#require 'simplecov'
-#SimpleCov.start
+require 'simplecov'
+SimpleCov.start
 
 require 'kalibro_entities'
 
