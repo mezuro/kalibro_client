@@ -14,20 +14,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'mocha/api'
+
 #Starts Simplecov
 require 'simplecov'
 SimpleCov.start
+
+#Savon tests
+#TODO: check if this require is not necessary only on the model spec
+#TODO: Savon outputs some debug messages. On its version 3 it will be possible to turn off them
+require "savon/mock/spec_helper"
+include Savon::SpecHelper
 
 require 'kalibro_entities'
 
 RSpec.configure do |config|
   # ## Mock Framework
-  #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
+  config.mock_with :mocha
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing

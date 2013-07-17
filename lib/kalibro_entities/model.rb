@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'savon'
+
 module KalibroEntities
   class Model
 
@@ -36,7 +38,7 @@ module KalibroEntities
     end
 
     def self.request(action, request_body = nil)
-      response = client(endpoint).request(:kalibro, action) { soap.body = request_body }
+      response = client(endpoint).call(action, message: request_body )
       response.to_hash["#{action}_response".to_sym] # response is a Savon::SOAP::Response, and to_hash is a Savon::SOAP::Response method
     end
 
@@ -132,8 +134,7 @@ module KalibroEntities
     end
 
     def self.client(endpoint)
-      service_address = YAML.load_file("#{RAILS_ROOT}/plugins/mezuro/service.yml")
-      Savon::Client.new("#{service_address}#{endpoint}Endpoint/?wsdl")
+      Savon.client(wsdl: "#{KalibroEntities.config[:address]}#{endpoint}Endpoint/?wsdl")
     end
 
     def self.is_valid?(field)
@@ -170,7 +171,7 @@ module KalibroEntities
     end
 
     def self.class_name
-      self.name.gsub(/Kalibro::/,"")
+      self.name.gsub(/KalibroEntities::/,"")
     end
 
     def self.exists_action

@@ -14,9 +14,47 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require "kalibro_entities/model"
+require 'yaml'
+require 'logger'
 require "kalibro_entities/version"
+require "kalibro_entities/model"
 
 module KalibroEntities
-  # Your code goes here...
+  @config = {
+              address: "http://localhost:8080/KalibroService/"
+            }
+
+  @valid_config_keys = @config.keys
+
+  @logger = Logger.new(STDOUT)
+
+  # Configure through hash
+  def KalibroEntities.configure(opts = {})
+    opts.each {|k,v| @config[k.to_sym] = v if @valid_config_keys.include? k.to_sym}
+  end
+
+  # Configure through yaml file
+  def KalibroEntities.configure_with(path_to_yaml_file)
+    begin
+      config = YAML::load(IO.read(path_to_yaml_file))
+    rescue Errno::ENOENT
+      logger.warn("YAML configuration file couldn't be found. Using defaults."); return
+    rescue Psych::SyntaxError
+      logger.warn("YAML configuration file contains invalid syntax. Using defaults."); return
+    end
+
+    configure(config)
+  end
+
+  def KalibroEntities.config
+    @config
+  end
+
+  def KalibroEntities.logger
+    @logger
+  end
+
+  def KalibroEntities.logger=(logger)
+    @logger = logger
+  end
 end
