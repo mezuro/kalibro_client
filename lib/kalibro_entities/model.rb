@@ -108,29 +108,16 @@ module KalibroEntities
 
     protected
 
+    def instance_variable_names
+      instance_variables.map { |var| var.to_s }
+    end
+
     def fields
       instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '').to_sym }
     end
 
     def variable_names
       instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '') }
-    end
-
-    def convert_to_hash(value)
-      return value if value.nil?
-      return value.collect { |element| convert_to_hash(element) } if value.is_a?(Array)
-      return value.to_hash if value.is_a?(Kalibro::Model)
-      return self.class.date_with_milliseconds(value) if value.is_a?(DateTime)
-      return 'INF' if value.is_a?(Float) and value.infinite? == 1
-      return '-INF' if value.is_a?(Float) and value.infinite? == -1
-      value.to_s
-    end
-
-    def xml_instance_class_name(object)
-      xml_name = object.class.name
-      xml_name["Kalibro::"] = ""
-      xml_name[0..0] = xml_name[0..0].downcase
-      xml_name + "Xml"
     end
 
     def self.client(endpoint)
@@ -141,25 +128,16 @@ module KalibroEntities
       field.to_s[0] != '@' and field != :attributes! and (field.to_s =~ /xsi/).nil?
     end
 
-    def self.date_with_milliseconds(date)
-      milliseconds = "." + (date.sec_fraction * 60 * 60 * 24 * 1000).to_s
-      date.to_s[0..18] + milliseconds + date.to_s[19..-1]
-    end
-
     def instance_class_name
       self.class.name.gsub(/Kalibro::/,"")
     end
 
-    def self.endpoint
-      class_name
+    def save_params
+      {instance_class_name.underscore.to_sym => self.to_hash}
     end
 
     def save_action
       "save_#{instance_class_name.underscore}".to_sym
-    end
-
-    def save_params
-      {instance_class_name.underscore.to_sym => self.to_hash}
     end
 
     def destroy_action
@@ -168,10 +146,6 @@ module KalibroEntities
 
     def destroy_params
       {"#{instance_class_name.underscore}_id".to_sym => self.id}
-    end
-
-    def self.class_name
-      self.name.gsub(/KalibroEntities::/,"")
     end
 
     def self.exists_action
@@ -190,16 +164,27 @@ module KalibroEntities
       @errors << exception
     end
 
-    def get_xml(field, field_value)
-    hash = Hash.new
-      if field_value.is_a?(Kalibro::Model)
-        hash = {:attributes! => {}}
-        hash[:attributes!][field.to_sym] = {
-          'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',
-          'xsi:type' => 'kalibro:' + xml_instance_class_name(field_value)
-      }
-      end
-      hash
+    def self.endpoint
+      class_name
+    end
+
+    def self.class_name
+      self.name.gsub(/KalibroEntities::/,"")
+    end
+
+    def self.date_with_milliseconds(date)
+      milliseconds = "." + (date.sec_fraction * 60 * 60 * 24 * 1000).to_s
+      date.to_s[0..18] + milliseconds + date.to_s[19..-1]
+    end
+
+    def convert_to_hash(value)
+      return value if value.nil?
+      return value.collect { |element| convert_to_hash(element) } if value.is_a?(Array)
+      return value.to_hash if value.is_a?(Kalibro::Model)
+      return self.class.date_with_milliseconds(value) if value.is_a?(DateTime)
+      return 'INF' if value.is_a?(Float) and value.infinite? == 1
+      return '-INF' if value.is_a?(Float) and value.infinite? == -1
+      value.to_s
     end
 
     def field_to_hash(field)
@@ -213,4 +198,5 @@ module KalibroEntities
     end
 
   end
+
 end
