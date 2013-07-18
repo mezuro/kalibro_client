@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -50,21 +50,17 @@ describe KalibroEntities::Model do
     it 'returns a Savon::Client' do
       KalibroEntities::Model.client('Model').should be_a(Savon::Client)
     end
-
-    it 'accepts an empty endpoint' do
-
-    end
   end
 
   describe 'request' do
-    before(:all) { savon.mock!   }
-    after(:all)  { savon.unmock! }
+    before :each do
+      @fixture = File.read("spec/savon/fixtures/project/does_not_exists.xml")
+      @client = mock('client')
+    end
 
-    it 'successfully get the Kalibro version' do
-      KalibroEntities::Model.expects(:endpoint).returns('Project')
-      fixture = File.read("spec/savon_fixtures/project/does_not_exists.xml")
-
-      savon.expects(:project_exists).with(message: {project_id: 1}).returns(fixture)
+    it 'should successfully get the Kalibro version' do
+      @client.expects(:call).with(:project_exists, message: {project_id: 1}).returns(mock_savon_response(@fixture))
+      KalibroEntities::Model.expects(:client).with(any_parameters).returns(@client)
 
       KalibroEntities::Model.request(:project_exists, {project_id: 1})[:exists].should eq(false)
     end

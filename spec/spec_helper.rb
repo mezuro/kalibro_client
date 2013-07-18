@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,15 +20,13 @@ require 'mocha/api'
 require 'simplecov'
 SimpleCov.start
 
-#Savon tests
-#TODO: check if this require is not necessary only on the model spec
-#TODO: Savon outputs some debug messages. On its version 3 it will be possible to turn off them
-require "savon/mock/spec_helper"
-include Savon::SpecHelper
+require 'savon/savon_test_helper'
 
 require 'kalibro_entities'
 
 RSpec.configure do |config|
+  config.include SavonTestHelper
+
   # ## Mock Framework
   config.mock_with :mocha
 

@@ -43,7 +43,7 @@ describe KalibroEntities do
         after(:all) {KalibroEntities.configure(config)}
 
         it 'should set the config' do
-          KalibroEntities.configure_with('spec/savon_fixtures/config.yml')
+          KalibroEntities.configure_with('spec/savon/fixtures/config.yml')
 
           KalibroEntities.config.should eq({address: 'http://test1.test1'})
         end
@@ -56,14 +56,14 @@ describe KalibroEntities do
         end
 
         it 'should keep the defaults' do
-          KalibroEntities.configure_with('spec/savon_fixtures/inexistent_file.yml')
+          KalibroEntities.configure_with('spec/savon/fixtures/inexistent_file.yml')
           KalibroEntities.config.should eq({address: "http://localhost:8080/KalibroService/"})
         end
 
         it 'should log an warning' do
           @logger.expects(:warn).with("YAML configuration file couldn't be found. Using defaults.")
 
-          KalibroEntities.configure_with('spec/savon_fixtures/inexistent_file.yml')
+          KalibroEntities.configure_with('spec/savon/fixtures/inexistent_file.yml')
         end
       end
 
@@ -74,14 +74,14 @@ describe KalibroEntities do
         end
 
         it 'should keep the defaults' do
-          KalibroEntities.configure_with('spec/savon_fixtures/invalid_config.yml')
+          KalibroEntities.configure_with('spec/savon/fixtures/invalid_config.yml')
           KalibroEntities.config.should eq({address: "http://localhost:8080/KalibroService/"})
         end
 
         it 'should log an warning' do
           @logger.expects(:warn).with("YAML configuration file contains invalid syntax. Using defaults.")
 
-          KalibroEntities.configure_with('spec/savon_fixtures/invalid_config.yml')
+          KalibroEntities.configure_with('spec/savon/fixtures/invalid_config.yml')
         end
       end
     end
