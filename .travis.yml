@@ -1,0 +1,10 @@
+language: ruby
+rvm:
+  - 2.0.0-p247
+
+notifications:
+  email:
+    recipients:
+      - mezuro-core@lists.ime.usp.br
+    on_success: change
+    on_failure: always
