@@ -17,10 +17,11 @@
 require 'spec_helper'
 
 describe KalibroEntities do
-  #FIXME: there should be a better way to keep the default values
-  let(:config) {{address: "http://localhost:8080/KalibroService/"}}
 
   context 'configuration' do
+    #FIXME: there should be a better way to keep the default values
+    let(:config) {{address: "http://localhost:8080/KalibroService/"}}
+
     describe 'config' do
       it 'should return the default configuration' do
         KalibroEntities.config.should eq({
@@ -83,6 +84,24 @@ describe KalibroEntities do
 
           KalibroEntities.configure_with('spec/savon/fixtures/invalid_config.yml')
         end
+      end
+    end
+  end
+
+  context 'Logger' do
+    describe 'logger' do
+      it 'should return the default logger' do
+        KalibroEntities.logger.should be_a(Logger)
+      end
+    end
+
+    describe 'logger=' do
+      it 'should set the logger' do
+        logger = Logger.new(STDOUT)
+
+        KalibroEntities.logger = logger
+
+        KalibroEntities.logger.should eq(logger)
       end
     end
   end
