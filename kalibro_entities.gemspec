@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.version       = KalibroEntities::VERSION
   spec.authors       = ["Daniel Paulino Alves", "Diego Araújo Martinez", "Guilherme Rojas V. de Lima", "Rafael Reggiani Manzo"]
   spec.email         = ["danpaulalves@gmail.com", "diegamc90@gmail.com", "guilhermehrojas@gmail.com", "rr.manzo@gmail.com"]
-  spec.description   = "KalibroEntites is a communication interface with the Kalibro service."
+  spec.description   = "KalibroEntities is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservice Kalibro (http://gitorious.org/kalibro/kalibro)."
   spec.summary       = "KalibroEntites is a communication interface with the Kalibro service."
   spec.homepage      = "https://github.com/mezuro/kalibro_entities"
   spec.license       = "LGPLv3"
