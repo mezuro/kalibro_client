@@ -15,16 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'savon'
-
-class String
-  def underscore(camel_cased_word = self)
-    self.gsub(/::/, '/').
-    gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-    gsub(/([a-z\d])([A-Z])/,'\1_\2').
-    tr("-", "_").
-    downcase
-  end
-end
+require 'kalibro_entities/helpers/string'
 
 module KalibroEntities
   class Model
