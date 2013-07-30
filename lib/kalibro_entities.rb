@@ -17,6 +17,7 @@
 require 'yaml'
 require 'logger'
 require "kalibro_entities/version"
+require "kalibro_entities/errors"
 require "kalibro_entities/model"
 
 module KalibroEntities

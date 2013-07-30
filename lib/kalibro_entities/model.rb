@@ -16,6 +16,16 @@
 
 require 'savon'
 
+class String
+  def underscore(camel_cased_word = self)
+    self.gsub(/::/, '/').
+    gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+    gsub(/([a-z\d])([A-Z])/,'\1_\2').
+    tr("-", "_").
+    downcase
+  end
+end
+
 module KalibroEntities
   class Model
 
@@ -54,7 +64,7 @@ module KalibroEntities
     def save
       begin
         self.id = self.class.request(save_action, save_params)["#{instance_class_name.underscore}_id".to_sym]
-      true
+        true
       rescue Exception => exception
         add_error exception
         false
@@ -88,7 +98,7 @@ module KalibroEntities
       if(exists?(id))
         new request(find_action, id_params(id))["#{class_name.underscore}".to_sym]
       else
-        raise Kalibro::Errors::RecordNotFound
+        raise KalibroEntities::Errors::RecordNotFound
       end
     end
 
@@ -129,7 +139,7 @@ module KalibroEntities
     end
 
     def instance_class_name
-      self.class.name.gsub(/Kalibro::/,"")
+      self.class.name.gsub(/KalibroEntities::/,"")
     end
 
     def save_params
@@ -196,7 +206,6 @@ module KalibroEntities
       end
       hash
     end
-
   end
 
 end
