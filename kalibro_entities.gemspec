@@ -40,5 +40,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "mocha", "~> 0.14.0"
   spec.add_development_dependency "simplecov"
 
-  spec.add_dependency "savon", "~> 2.2.0"
+  spec.add_dependency "savon", "~> 2.3.0"
 end
