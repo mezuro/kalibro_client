@@ -19,6 +19,7 @@ require 'logger'
 require "kalibro_entities/version"
 require "kalibro_entities/errors"
 require "kalibro_entities/model"
+require "kalibro_entities/entities"
 
 module KalibroEntities
   @config = {
