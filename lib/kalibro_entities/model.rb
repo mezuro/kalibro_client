@@ -180,7 +180,7 @@ module KalibroEntities
     def convert_to_hash(value)
       return value if value.nil?
       return value.collect { |element| convert_to_hash(element) } if value.is_a?(Array)
-      return value.to_hash if value.is_a?(Kalibro::Model)
+      return value.to_hash if value.is_a?(KalibroEntities::Model)
       return self.class.date_with_milliseconds(value) if value.is_a?(DateTime)
       return 'INF' if value.is_a?(Float) and value.infinite? == 1
       return '-INF' if value.is_a?(Float) and value.infinite? == -1
@@ -193,6 +193,18 @@ module KalibroEntities
       if !field_value.nil?
         hash[field] = convert_to_hash(field_value)
         hash = get_xml(field, field_value).merge(hash)
+      end
+      hash
+    end
+
+    def get_xml(field, field_value)
+      hash = Hash.new
+      if field_value.is_a?(KalibroEntities::Model)
+        hash = {:attributes! => {}}
+        hash[:attributes!][field.to_sym] = {
+          'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',
+          'xsi:type' => 'kalibro:' + xml_instance_class_name(field_value)
+        }
       end
       hash
     end
