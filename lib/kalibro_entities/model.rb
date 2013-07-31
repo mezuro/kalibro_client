@@ -19,19 +19,18 @@ require 'kalibro_entities/helpers/string'
 
 module KalibroEntities
   class Model
-
-    attr_accessor :errors
+    attr_accessor :kalibro_errors
 
     def initialize(attributes={})
       attributes.each { |field, value| send("#{field}=", value) if self.class.is_valid?(field) }
-      @errors = []
+      @kalibro_errors = []
     end
 
 
     def to_hash(options={})
       hash = Hash.new
       excepts = options[:except].nil? ? [] : options[:except]
-      excepts << :errors
+      excepts << :kalibro_errors
       fields.each do |field|
         hash = field_to_hash(field).merge(hash) if !excepts.include?(field)
       end
@@ -162,7 +161,7 @@ module KalibroEntities
     end
 
     def add_error(exception)
-      @errors << exception
+      @kalibro_errors << exception
     end
 
     def self.endpoint

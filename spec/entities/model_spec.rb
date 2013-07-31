@@ -21,7 +21,7 @@ describe KalibroEntities::Model do
     it 'should create a model from an empty hash' do
       model = KalibroEntities::Model.new {}
 
-      model.errors.should eq([])
+      model.kalibro_errors.should eq([])
     end
   end
 
@@ -101,7 +101,7 @@ describe KalibroEntities::Model do
     context "when it doesn't have the method id=" do
       it 'should make a request to save model with id returning false and an error' do
         subject.save.should be(false)
-        subject.errors[0].should be_a(NoMethodError)
+        subject.kalibro_errors[0].should be_a(NoMethodError)
       end
     end
 
@@ -112,7 +112,7 @@ describe KalibroEntities::Model do
 
       it 'should make a request to save model with id and return true without errors' do
         subject.save.should be(true)
-        subject.errors.should be_empty
+        subject.kalibro_errors.should be_empty
       end
     end
   end
@@ -211,7 +211,7 @@ describe KalibroEntities::Model do
 
       it 'should remain with the errors array empty' do
         subject.destroy
-        subject.errors.should be_empty
+        subject.kalibro_errors.should be_empty
       end
     end
 
@@ -224,7 +224,7 @@ describe KalibroEntities::Model do
       it "should have an exception inside it's errors" do
         subject.destroy
 
-        subject.errors[0].should be_an(Exception)
+        subject.kalibro_errors[0].should be_an(Exception)
       end
     end
   end
