@@ -17,6 +17,7 @@
 require 'savon'
 require 'kalibro_entities/helpers/string'
 require 'kalibro_entities/helpers/hash_converters'
+require 'kalibro_entities/helpers/xml_converters'
 require 'kalibro_entities/helpers/request_methods'
 
 module KalibroEntities
@@ -155,25 +156,7 @@ module KalibroEntities
       end
 
       include HashConverters
-
-      def xml_instance_class_name(object)
-        xml_name = object.class.name
-        xml_name["KalibroEntities::Entities::"] = ""
-        xml_name[0..0] = xml_name[0..0].downcase
-        xml_name + "Xml"
-      end
-
-      def get_xml(field, field_value)
-        hash = Hash.new
-        if field_value.is_a?(KalibroEntities::Entities::Model)
-          hash = {:attributes! => {}}
-          hash[:attributes!][field.to_sym] = {
-            'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',
-            'xsi:type' => 'kalibro:' + xml_instance_class_name(field_value)
-          }
-        end
-        hash
-      end
+      include XMLConverters
     end
   end
 end
