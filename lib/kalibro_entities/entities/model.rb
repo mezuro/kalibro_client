@@ -156,6 +156,13 @@ module KalibroEntities
 
       include HashConverters
 
+      def xml_instance_class_name(object)
+        xml_name = object.class.name
+        xml_name["KalibroEntities::Entities::"] = ""
+        xml_name[0..0] = xml_name[0..0].downcase
+        xml_name + "Xml"
+      end
+
       def get_xml(field, field_value)
         hash = Hash.new
         if field_value.is_a?(KalibroEntities::Entities::Model)
