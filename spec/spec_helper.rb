@@ -18,7 +18,14 @@ require 'mocha/api'
 
 #Starts Simplecov
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_group "Entities", "lib/kalibro_entities/entities"
+  add_group "Errors", "lib/kalibro_entities/errors"
+  add_group "Helpers", "lib/kalibro_entities/helpers"
+  add_group "Cucumber Helpers", "lib/kalibro_entities/kalibro_cucumber_helpers"
+
+  add_filter "/spec/"
+end
 
 require 'savon/savon_test_helper'
 
