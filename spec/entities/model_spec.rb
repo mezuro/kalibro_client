@@ -243,4 +243,12 @@ describe KalibroEntities::Entities::Model do
     end
   end
 
+  describe 'date_with_milliseconds' do
+    context 'with 21/12/1995 (first Ruby publication)' do
+      it 'should return 1995-12-21T00:00:00.0/1+00:00' do
+        KalibroEntities::Entities::Model.date_with_milliseconds(DateTime.parse("21/12/1995")).should eq("1995-12-21T00:00:00.0/1+00:00")
+      end
+    end
+  end
+
 end

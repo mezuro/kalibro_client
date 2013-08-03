@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'date'
 require 'savon'
 require 'kalibro_entities/helpers/string'
 require 'kalibro_entities/helpers/hash_converters'
@@ -150,6 +151,7 @@ module KalibroEntities
         self.name.gsub(/KalibroEntities::Entities::/,"")
       end
 
+      #FIXME: we can think about a better name. This method actually receives an DateTime and converts it to string
       def self.date_with_milliseconds(date)
         milliseconds = "." + (date.sec_fraction * 60 * 60 * 24 * 1000).to_s
         date.to_s[0..18] + milliseconds + date.to_s[19..-1]
