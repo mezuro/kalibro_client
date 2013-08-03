@@ -16,6 +16,8 @@
 
 require 'savon'
 require 'kalibro_entities/helpers/string'
+require 'kalibro_entities/helpers/hash_converters'
+require 'kalibro_entities/helpers/request_methods'
 
 module KalibroEntities
   module Entities
@@ -26,7 +28,6 @@ module KalibroEntities
         attributes.each { |field, value| send("#{field}=", value) if self.class.is_valid?(field) }
         @kalibro_errors = []
       end
-
 
       def to_hash(options={})
         hash = Hash.new
@@ -133,33 +134,8 @@ module KalibroEntities
         self.class.name.gsub(/KalibroEntities::Entities::/,"")
       end
 
-      def save_params
-        {instance_class_name.underscore.to_sym => self.to_hash}
-      end
-
-      def save_action
-        "save_#{instance_class_name.underscore}".to_sym
-      end
-
-      def destroy_action
-        "delete_#{instance_class_name.underscore}".to_sym
-      end
-
-      def destroy_params
-        {"#{instance_class_name.underscore}_id".to_sym => self.id}
-      end
-
-      def self.exists_action
-        "#{class_name.underscore}_exists".to_sym
-      end
-
-      def self.id_params(id)
-        {"#{class_name.underscore}_id".to_sym => id}
-      end
-
-      def self.find_action
-        "get_#{class_name.underscore}".to_sym
-      end
+      include RequestMethods
+      extend RequestMethods::ClassMethods
 
       def add_error(exception)
         @kalibro_errors << exception
@@ -178,25 +154,7 @@ module KalibroEntities
         date.to_s[0..18] + milliseconds + date.to_s[19..-1]
       end
 
-      def convert_to_hash(value)
-        return value if value.nil?
-        return value.collect { |element| convert_to_hash(element) } if value.is_a?(Array)
-        return value.to_hash if value.is_a?(KalibroEntities::Entities::Model)
-        return self.class.date_with_milliseconds(value) if value.is_a?(DateTime)
-        return 'INF' if value.is_a?(Float) and value.infinite? == 1
-        return '-INF' if value.is_a?(Float) and value.infinite? == -1
-        value.to_s
-      end
-
-      def field_to_hash(field)
-        hash = Hash.new
-        field_value = send(field)
-        if !field_value.nil?
-          hash[field] = convert_to_hash(field_value)
-          hash = get_xml(field, field_value).merge(hash)
-        end
-        hash
-      end
+      include HashConverters
 
       def get_xml(field, field_value)
         hash = Hash.new
