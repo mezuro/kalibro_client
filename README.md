@@ -21,7 +21,48 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+KalibroEntities is intended to be an easy interface that encapsulates the usage of all the Kalibro service's endpoints. So have a look at the available entities at `lib/kalibro_entities/entities`.
+
+All the entities are subclasses from `Model`, so have a good look at it. Specially notice that all the entities have methods:
+
+* `save`
+* `exists?`
+* `find`
+* `destroy`
+
+These four methods should be useful.
+
+We hope to make available soon a full documentation on RDoc that will make easier to understand all this.
+
+A good example on how to get everything from KalibroEntities should be Mezuro. So, have a look there for some examples.
+
+### Cucumber helpers
+
+Acceptance tests with the Kalibro webservice can be painful. But we've created cucumber hooks that make it easy.
+
+Just add to your `env.rb` the following:
+
+    require 'kalibro_entities/kalibro_cucumber_helpers/hooks.rb'
+
+The test configurations available are:
+
+* database
+* user
+* password
+* psql_file_path
+* query_file_path
+* kalibro_home
+* tomcat_user
+* tomcat_group
+* tomcat_restart_command
+
+An example on how to change them is:
+
+    KalibroEntities::KalibroCucumberHelpers.configure do |config|
+      config.database = "kalibro_test"
+    end
+
+We hope to make available soon an YAML parser for test configurations.
 
 ## Contributing
 
