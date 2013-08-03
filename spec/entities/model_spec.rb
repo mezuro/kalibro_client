@@ -16,17 +16,17 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Model do
+describe KalibroEntities::Entities::Model do
   describe 'new' do
     it 'should create a model from an empty hash' do
-      model = KalibroEntities::Model.new {}
+      model = KalibroEntities::Entities::Model.new {}
 
       model.kalibro_errors.should eq([])
     end
   end
 
   describe 'class_name' do
-    subject { KalibroEntities::Model.new {} }
+    subject { KalibroEntities::Entities::Model.new {} }
 
     it 'should be a String' do
       subject.class.class_name.should be_a(String)
@@ -40,15 +40,15 @@ describe KalibroEntities::Model do
   describe 'endpoint' do
     it 'should return the class_name' do
       endpoint = 'test'
-      KalibroEntities::Model.expects(:class_name).returns(endpoint)
+      KalibroEntities::Entities::Model.expects(:class_name).returns(endpoint)
 
-      KalibroEntities::Model.endpoint.should eq(endpoint)
+      KalibroEntities::Entities::Model.endpoint.should eq(endpoint)
     end
   end
 
   describe 'client' do
     it 'returns a Savon::Client' do
-      KalibroEntities::Model.client('Model').should be_a(Savon::Client)
+      KalibroEntities::Entities::Model.client('Model').should be_a(Savon::Client)
     end
   end
 
@@ -60,9 +60,9 @@ describe KalibroEntities::Model do
 
     it 'should successfully get the Kalibro version' do
       @client.expects(:call).with(:project_exists, message: {project_id: 1}).returns(mock_savon_response(@fixture))
-      KalibroEntities::Model.expects(:client).with(any_parameters).returns(@client)
+      KalibroEntities::Entities::Model.expects(:client).with(any_parameters).returns(@client)
 
-      KalibroEntities::Model.request(:project_exists, {project_id: 1})[:exists].should eq(false)
+      KalibroEntities::Entities::Model.request(:project_exists, {project_id: 1})[:exists].should eq(false)
     end
   end
 
@@ -74,28 +74,28 @@ describe KalibroEntities::Model do
 
   describe 'to_object' do
     it 'should return an Object with an empty hash' do
-      KalibroEntities::Model.to_object({}).should eq(KalibroEntities::Model.new)
+      KalibroEntities::Entities::Model.to_object({}).should eq(KalibroEntities::Entities::Model.new)
     end
 
     it "should remain an object if it isn't a Hash" do
-      KalibroEntities::Model.to_object(Object.new).should be_an(Object)
+      KalibroEntities::Entities::Model.to_object(Object.new).should be_an(Object)
     end
   end
 
   describe 'to_objects_array' do
     it 'should convert [{}] to [Model]' do
-      KalibroEntities::Model.to_objects_array({}).should eq([KalibroEntities::Model.new]) 
+      KalibroEntities::Entities::Model.to_objects_array({}).should eq([KalibroEntities::Entities::Model.new]) 
     end
 
     it 'should remain an array if it already is one' do
       object = Object.new
-      KalibroEntities::Model.to_objects_array([object]).should eq([object]) 
+      KalibroEntities::Entities::Model.to_objects_array([object]).should eq([object]) 
     end
   end
 
   describe 'save' do
     before :each do
-      KalibroEntities::Model.expects(:request).with(:save_model, {:model=>{}}).returns({:model_id => 42})
+      KalibroEntities::Entities::Model.expects(:request).with(:save_model, {:model=>{}}).returns({:model_id => 42})
     end
 
     context "when it doesn't have the method id=" do
@@ -107,7 +107,7 @@ describe KalibroEntities::Model do
 
     context 'when it has the method id=' do
       before :each do
-        KalibroEntities::Model.any_instance.expects(:id=).with(42).returns(42)
+        KalibroEntities::Entities::Model.any_instance.expects(:id=).with(42).returns(42)
       end
 
       it 'should make a request to save model with id and return true without errors' do
@@ -119,13 +119,13 @@ describe KalibroEntities::Model do
 
   describe 'create' do
     before :each do
-      @model = KalibroEntities::Model.new
+      @model = KalibroEntities::Entities::Model.new
       @model.expects(:save)
-      KalibroEntities::Model.expects(:new).with({}).returns(@model)
+      KalibroEntities::Entities::Model.expects(:new).with({}).returns(@model)
     end
 
     it 'should instantiate and save the model' do
-      (KalibroEntities::Model.create {}).should eq(@model)
+      (KalibroEntities::Entities::Model.create {}).should eq(@model)
     end
   end
 
@@ -141,7 +141,7 @@ describe KalibroEntities::Model do
         subject.expects(:variable_names).returns(["answer"])
         subject.expects(:send).with("answer").returns(42)
 
-        @another_model = KalibroEntities::Model.new
+        @another_model = KalibroEntities::Entities::Model.new
         @another_model.expects(:send).with("answer").returns(41)
       end 
 
@@ -152,7 +152,7 @@ describe KalibroEntities::Model do
 
     context 'with two empty models' do
       it 'should return true' do
-        subject.should eq(KalibroEntities::Model.new)
+        subject.should eq(KalibroEntities::Entities::Model.new)
       end
     end
   end
@@ -160,21 +160,21 @@ describe KalibroEntities::Model do
   describe 'exists?' do
     context 'with an inexistent id' do
       before :each do
-        KalibroEntities::Model.expects(:request).with(:model_exists,{:model_id=>0}).returns({:exists => false})
+        KalibroEntities::Entities::Model.expects(:request).with(:model_exists,{:model_id=>0}).returns({:exists => false})
       end
 
       it 'should return false' do
-        KalibroEntities::Model.exists?(0).should eq(false)
+        KalibroEntities::Entities::Model.exists?(0).should eq(false)
       end
     end
 
     context 'with an existent id' do
       before :each do
-        KalibroEntities::Model.expects(:request).with(:model_exists,{:model_id=>42}).returns({:exists => true})
+        KalibroEntities::Entities::Model.expects(:request).with(:model_exists,{:model_id=>42}).returns({:exists => true})
       end
 
       it 'should return false' do
-        KalibroEntities::Model.exists?(42).should eq(true)
+        KalibroEntities::Entities::Model.exists?(42).should eq(true)
       end
     end
   end
@@ -182,22 +182,22 @@ describe KalibroEntities::Model do
   describe 'find' do
     context 'with an inexistent id' do
       before :each do
-        KalibroEntities::Model.expects(:exists?).with(0).returns(false)
+        KalibroEntities::Entities::Model.expects(:exists?).with(0).returns(false)
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroEntities::Model.find(0)}.to raise_error(KalibroEntities::Errors::RecordNotFound)
+        expect { KalibroEntities::Entities::Model.find(0)}.to raise_error(KalibroEntities::Errors::RecordNotFound)
       end
     end
 
     context 'with an existent id' do
       before :each do
-        KalibroEntities::Model.expects(:exists?).with(42).returns(true)
-        KalibroEntities::Model.expects(:request).with(:get_model,{:model_id => 42}).returns({:model => {}})
+        KalibroEntities::Entities::Model.expects(:exists?).with(42).returns(true)
+        KalibroEntities::Entities::Model.expects(:request).with(:get_model,{:model_id => 42}).returns({:model => {}})
       end
 
       it 'should return an empty model' do
-        KalibroEntities::Model.find(42).should eq(subject)
+        KalibroEntities::Entities::Model.find(42).should eq(subject)
       end
     end
   end
@@ -206,7 +206,7 @@ describe KalibroEntities::Model do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroEntities::Model.expects(:request).with(:delete_model,{:model_id => subject.id})
+        KalibroEntities::Entities::Model.expects(:request).with(:delete_model,{:model_id => subject.id})
       end
 
       it 'should remain with the errors array empty' do
@@ -218,7 +218,7 @@ describe KalibroEntities::Model do
     context 'when the destruction fails' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroEntities::Model.expects(:request).with(:delete_model,{:model_id => subject.id}).raises(Exception.new)
+        KalibroEntities::Entities::Model.expects(:request).with(:delete_model,{:model_id => subject.id}).raises(Exception.new)
       end
 
       it "should have an exception inside it's errors" do
@@ -232,13 +232,13 @@ describe KalibroEntities::Model do
   describe 'create_objects_array_from_hash' do
     context 'with nil' do
       it 'should return an empty array' do
-        KalibroEntities::Model.create_objects_array_from_hash(nil).should eq([])
+        KalibroEntities::Entities::Model.create_objects_array_from_hash(nil).should eq([])
       end
     end
 
     context 'with a Hash' do
       it 'should return the correspondent object to the given hash inside of an Array' do
-        KalibroEntities::Model.create_objects_array_from_hash({}).should eq([subject])
+        KalibroEntities::Entities::Model.create_objects_array_from_hash({}).should eq([subject])
       end
     end
   end
