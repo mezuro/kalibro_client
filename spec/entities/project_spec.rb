@@ -17,6 +17,16 @@
 require 'spec_helper'
 
 describe KalibroEntities::Entities::Project do
+  describe 'initialize' do
+    before :each do
+      @project = KalibroEntities::Entities::Project.new({id: 42})
+    end
+
+    it 'should have the id set to 42' do
+      @project.id.should eq(42)
+    end
+  end
+
   describe 'id=' do
     it 'should set the value of the attribute id' do
       subject.id = 42
