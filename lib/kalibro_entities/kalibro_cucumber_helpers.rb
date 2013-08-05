@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'yaml'
 require 'kalibro_entities/kalibro_cucumber_helpers/configuration'
 
 module KalibroEntities
@@ -22,6 +23,14 @@ module KalibroEntities
 
     def KalibroCucumberHelpers.configure(&config_block)
       config_block.call(@configuration)
+    end
+
+    def KalibroCucumberHelpers.configure_from_yml(file_path)
+      configuration = YAML.load(File.open("features/support/kalibro_cucumber_helpers.yml"))
+
+      configuration["kalibro_cucumber_helpers"].each do |config, value|
+        @configuration.send("#{config}=", value)
+      end
     end
 
     def KalibroCucumberHelpers.configuration
