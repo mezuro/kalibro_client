@@ -22,11 +22,19 @@ When(/^I search a project with the same id of the given project$/) do
   @found_project = KalibroEntities::Entities::Project.find(@project.id)
 end
 
+When(/^I destroy the project with the same id of the given project$/) do
+  @project.destroy
+end
+
 Then(/^the project should exist$/) do
   KalibroEntities::Entities::Project.exists?(@project.id)
 end
 
 Then(/^it should return the same project as the given one$/) do
   @found_project == @project
+end
+
+Then(/^the project should not exist$/) do
+  !KalibroEntities::Entities::Project.exists?(@found_project)
 end
 
