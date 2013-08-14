@@ -7,6 +7,7 @@ before_script:
   - wget https://gist.github.com/rafamanzo/6179925/raw/172802a0db1ae88c3d5d3d3547833c45a5c9a7a2/install.sh
   - chmod +x install.sh
   - ./install.sh
+  - cp features/support/kalibro_cucumber_helpers.yml.sample features/support/kalibro_cucumber_helpers.yml
 
 script: 
   - bundle exec rspec spec
