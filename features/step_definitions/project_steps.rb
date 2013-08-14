@@ -23,7 +23,8 @@ When(/^I search a project with the same id of the given project$/) do
 end
 
 When(/^I destroy the project with the same id of the given project$/) do
-  @project.destroy
+  @found_project = KalibroEntities::Entities::Project.find(@project.id)
+  @found_project.destroy
 end
 
 Then(/^the project should exist$/) do
@@ -35,6 +36,5 @@ Then(/^it should return the same project as the given one$/) do
 end
 
 Then(/^the project should not exist$/) do
-  !KalibroEntities::Entities::Project.exists?(@found_project)
+  !KalibroEntities::Entities::Project.exists?(@found_project.id)
 end
-
