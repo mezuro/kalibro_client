@@ -27,6 +27,10 @@ When(/^I destroy the project with the same id of the given project$/) do
   @found_project.destroy
 end
 
+When(/^I get all the projects$/) do
+  @all_projects = KalibroEntities::Entities::Project.all
+end
+
 Then(/^the project should exist$/) do
   KalibroEntities::Entities::Project.exists?(@project.id)
 end
@@ -37,4 +41,9 @@ end
 
 Then(/^the project should not exist$/) do
   !KalibroEntities::Entities::Project.exists?(@found_project.id)
+end
+
+
+Then(/^it should return the created project inside of an array$/) do
+  @all_projects.include?(@project)
 end
