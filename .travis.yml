@@ -11,7 +11,7 @@ before_script:
 
 script: 
   - bundle exec rspec spec
-  - bundle exec cucumber
+  - bundle exec cucumber --tags ~@wip
 
 notifications:
   email:
