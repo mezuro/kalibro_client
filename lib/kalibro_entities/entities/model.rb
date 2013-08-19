@@ -62,6 +62,10 @@ module KalibroEntities
         end
       end
 
+      def save!
+        save
+      end
+
       def self.create(attributes={})
         new_model = new attributes
         new_model.save

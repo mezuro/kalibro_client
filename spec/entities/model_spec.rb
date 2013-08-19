@@ -117,6 +117,15 @@ describe KalibroEntities::Entities::Model do
     end
   end
 
+  describe 'save!' do
+    subject { FactoryGirl.build(:project) }
+
+    it 'should call save' do
+      subject.expects(:save)
+      subject.save!
+    end
+  end
+
   describe 'create' do
     before :each do
       @model = FactoryGirl.build(:model)

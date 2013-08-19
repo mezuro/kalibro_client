@@ -19,3 +19,6 @@ KalibroEntities::KalibroCucumberHelpers.configure_from_yml("#{__dir__}/kalibro_c
 
 # The gem itself
 require 'kalibro_entities'
+
+require 'factory_girl'
+FactoryGirl.find_definitions

@@ -1,5 +1,5 @@
 Given(/^I have a project$/) do
-  @project = KalibroEntities::Entities::Project.new
+  @project = FactoryGirl.build(:project)
 end
 
 Given(/^the project name is "(.*?)"$/) do |name|
@@ -7,7 +7,7 @@ Given(/^the project name is "(.*?)"$/) do |name|
 end
 
 Given(/^I have a project with name "(.*?)"$/) do |name|
-  @project = KalibroEntities::Entities::Project.create({name: name})
+  @project = FactoryGirl.create(:project, {name: name, id: nil})
 end
 
 When(/^I save the project$/) do
@@ -15,7 +15,7 @@ When(/^I save the project$/) do
 end
 
 When(/^I create the project with name "(.*?)"$/) do |name|
-  @project = KalibroEntities::Entities::Project.create({name: name})
+  @project = FactoryGirl.create(:project, {name: name, id: nil})
 end
 
 When(/^I search a project with the same id of the given project$/) do
@@ -42,7 +42,6 @@ end
 Then(/^the project should not exist$/) do
   !KalibroEntities::Entities::Project.exists?(@found_project.id)
 end
-
 
 Then(/^it should return the created project inside of an array$/) do
   @all_projects.include?(@project)
