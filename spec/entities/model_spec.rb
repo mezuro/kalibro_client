@@ -26,7 +26,7 @@ describe KalibroEntities::Entities::Model do
   end
 
   describe 'class_name' do
-    subject { KalibroEntities::Entities::Model.new {} }
+    subject { FactoryGirl.build(:model) }
 
     it 'should be a String' do
       subject.class.class_name.should be_a(String)
@@ -74,7 +74,7 @@ describe KalibroEntities::Entities::Model do
 
   describe 'to_object' do
     it 'should return an Object with an empty hash' do
-      KalibroEntities::Entities::Model.to_object({}).should eq(KalibroEntities::Entities::Model.new)
+      KalibroEntities::Entities::Model.to_object({}).should eq(FactoryGirl.build(:model))
     end
 
     it "should remain an object if it isn't a Hash" do
@@ -84,7 +84,7 @@ describe KalibroEntities::Entities::Model do
 
   describe 'to_objects_array' do
     it 'should convert [{}] to [Model]' do
-      KalibroEntities::Entities::Model.to_objects_array({}).should eq([KalibroEntities::Entities::Model.new]) 
+      KalibroEntities::Entities::Model.to_objects_array({}).should eq([FactoryGirl.build(:model)]) 
     end
 
     it 'should remain an array if it already is one' do
@@ -119,7 +119,7 @@ describe KalibroEntities::Entities::Model do
 
   describe 'create' do
     before :each do
-      @model = KalibroEntities::Entities::Model.new
+      @model = FactoryGirl.build(:model)
       @model.expects(:save)
       KalibroEntities::Entities::Model.expects(:new).with({}).returns(@model)
     end
@@ -141,7 +141,7 @@ describe KalibroEntities::Entities::Model do
         subject.expects(:variable_names).returns(["answer"])
         subject.expects(:send).with("answer").returns(42)
 
-        @another_model = KalibroEntities::Entities::Model.new
+        @another_model = FactoryGirl.build(:model)
         @another_model.expects(:send).with("answer").returns(41)
       end 
 
@@ -152,7 +152,7 @@ describe KalibroEntities::Entities::Model do
 
     context 'with two empty models' do
       it 'should return true' do
-        subject.should eq(KalibroEntities::Entities::Model.new)
+        subject.should eq(FactoryGirl.build(:model))
       end
     end
   end

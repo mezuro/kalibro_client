@@ -40,6 +40,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "cucumber", "~> 1.3.5"
   spec.add_development_dependency "mocha", "~> 0.14.0"
   spec.add_development_dependency "simplecov"
+  spec.add_development_dependency "factory_girl", "~> 4.2.0"
 
   spec.add_dependency "savon", "~> 2.3.0"
+  spec.add_dependency "activesupport", "~> 4.0.0"
 end

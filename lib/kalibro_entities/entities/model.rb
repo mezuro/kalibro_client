@@ -15,7 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'savon'
-require 'kalibro_entities/helpers/string'
 require 'kalibro_entities/helpers/hash_converters'
 require 'kalibro_entities/helpers/request_methods'
 

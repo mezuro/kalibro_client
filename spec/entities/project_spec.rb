@@ -19,7 +19,7 @@ require 'spec_helper'
 describe KalibroEntities::Entities::Project do
   describe 'initialize' do
     before :each do
-      @project = KalibroEntities::Entities::Project.new({id: 42})
+      @project = FactoryGirl.build(:project, {id: 42})
     end
 
     it 'should have the id set to 42' do
@@ -47,7 +47,7 @@ describe KalibroEntities::Entities::Project do
 
     context 'with many projects' do
       before :each do
-        @hash = KalibroEntities::Entities::Project.new.to_hash
+        @hash = FactoryGirl.build(:project).to_hash
         KalibroEntities::Entities::Project.expects(:request).with(:all_projects).returns({:project => [@hash, @hash]})
       end
 

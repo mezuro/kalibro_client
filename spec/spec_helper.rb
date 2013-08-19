@@ -33,6 +33,9 @@ require 'savon/savon_test_helper'
 
 require 'kalibro_entities'
 
+require 'factory_girl'
+FactoryGirl.find_definitions
+
 RSpec.configure do |config|
   config.include SavonTestHelper
 

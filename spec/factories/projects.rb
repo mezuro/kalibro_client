@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-#
+# 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -14,14 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'spec_helper'
-
-describe String do
-  describe 'underscore' do
-    context 'with a camel cased string' do
-      it 'should return an underscored string' do
-        "KalibroEntities".underscore.should eq("kalibro_entities")
-      end
-    end
-  end
+FactoryGirl.define do
+  factory :project, class: KalibroEntities::Entities::Project do
+    id 1
+    name "QtCalculator"
+    description "A simple calculator for us."
+  end  
 end
