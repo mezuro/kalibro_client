@@ -14,5 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/configuration'
+FactoryGirl.define do
+  factory :configuration, class: KalibroEntities::Entities::Configuration do
+    id 1
+    name "Java"
+    description "Code metrics for Java."
+  end  
+end

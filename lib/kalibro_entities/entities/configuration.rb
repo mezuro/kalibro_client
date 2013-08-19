@@ -14,5 +14,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/configuration'
+require "kalibro_entities/entities/model"
+
+module KalibroEntities
+  module Entities
+    class Configuration < Model
+      attr_accessor :id, :name, :description
+
+      def id=(value)
+        @id = value.to_i
+      end
+
+      def self.all
+        create_objects_array_from_hash request(:all_configurations)[:configuration]
+      end
+    end
+  end
+end
