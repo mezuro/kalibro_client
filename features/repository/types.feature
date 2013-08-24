@@ -3,6 +3,7 @@ Feature: Types listing
   As a developer
   I want to see all the repository types available
 
-  @wip @kalibro_restart
+  @kalibro_restart
   Scenario: listing the types
     When I list types
+    Then I should get an array of types
