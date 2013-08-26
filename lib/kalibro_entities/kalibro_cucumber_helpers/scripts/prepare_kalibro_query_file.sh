@@ -20,7 +20,7 @@ PSQLFILE=$1
 QUERYFILE=$2
 
 if ! [ -f $PSQLFILE ]
-  then wget http://gitorious.org/kalibro/kalibro/blobs/raw/master/KalibroCore/src/META-INF/PostgreSQL.sql -O $PSQLFILE
+  then wget https://raw.github.com/mezuro/kalibro/kalibro-dev/KalibroCore/src/META-INF/PostgreSQL.sql -O $PSQLFILE
 fi
 
 DROPLIMIT="END OF DROP TABLES"
