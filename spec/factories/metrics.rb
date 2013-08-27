@@ -14,7 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/metric'
+FactoryGirl.define do
+  factory :metric, class: KalibroEntities::Entities::Metric do
+    name "LoC"
+    compound false
+    scope "Class"
+    description "Lines of Code"
+    script ""
+    language ["Java"]
+  end  
+end

@@ -14,7 +14,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/metric'
+require 'spec_helper'
+
+describe KalibroEntities::Entities::Metric do
+  describe 'languages' do
+    subject {FactoryGirl.build(:metric)}
+
+    it 'should return the value of the language attribute' do
+      subject.languages.should eq(["Java"])
+    end
+  end
+
+  describe 'languages=' do
+    it 'should set the value of the attribute language' do
+      subject.languages = ["Java", "C"]
+      subject.languages.should eq(["Java", "C"])
+    end
+  end
+
+  describe 'language=' do
+    it 'should set convert the value to an array of objects' do
+      KalibroEntities::Entities::Metric.expects(:to_objects_array).returns(["Java"])
+      subject.language = "Java"
+    end
+  end
+end
