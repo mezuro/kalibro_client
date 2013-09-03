@@ -126,7 +126,7 @@ module KalibroEntities
       end
 
       def self.client(endpoint)
-        Savon.client(wsdl: "#{KalibroEntities.config[:address]}#{endpoint}Endpoint/?wsdl")
+        Savon.client({log: false, wsdl: "#{KalibroEntities.config[:address]}#{endpoint}Endpoint/?wsdl"})
       end
 
       def self.is_valid?(field)
