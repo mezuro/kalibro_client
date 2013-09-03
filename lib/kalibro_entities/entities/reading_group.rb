@@ -14,8 +14,34 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/metric'
-require 'kalibro_entities/entities/reading_group'
+module KalibroEntities
+  module Entities
+    class ReadingGroup < Model
+
+      attr_accessor :id, :name, :description
+
+      def id=(value)
+        @id = value.to_i
+      end
+
+      def self.all
+        create_objects_array_from_hash request(:all_reading_groups)[:reading_group]
+      end
+      
+      def self.reading_group_of( metric_configuration_id )
+        new request(:reading_group_of, {:metric_configuration_id => metric_configuration_id} )[:reading_group]
+      end
+
+      private
+
+      def self.id_params(id)
+        {:group_id => id}
+      end
+      
+      def destroy_params
+        {:group_id => self.id}
+      end
+
+    end
+  end
+end

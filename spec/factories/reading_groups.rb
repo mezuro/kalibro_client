@@ -14,8 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/metric'
-require 'kalibro_entities/entities/reading_group'
+FactoryGirl.define do
+  factory :reading_group, class: KalibroEntities::Entities::ReadingGroup do
+    id 1
+    name "Mussum"
+    description "Cacildis!"
+  end  
+end
