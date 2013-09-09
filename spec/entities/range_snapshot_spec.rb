@@ -22,12 +22,22 @@ describe KalibroEntities::Entities::RangeSnapshot do
       subject.beginning = 3
       subject.beginning.should eq(3)
     end
+
+    it 'should value -1.0/0 when value be set to -INF' do
+      subject.beginning = "-INF"
+      subject.beginning.should eq(-1.0/0)
+    end
   end
 
   describe 'end=' do
     it 'should set the value of the attribute end' do
       subject.end = 6
       subject.end.should eq(6)
+    end
+
+    it 'should value 1.0/0 when value be set to INF' do
+      subject.end = "INF"
+      subject.end.should eq(1.0/0)
     end
   end
 
