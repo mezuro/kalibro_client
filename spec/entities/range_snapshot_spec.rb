@@ -14,9 +14,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/metric'
-require 'kalibro_entities/entities/reading_group'
-require 'kalibro_entities/entities/range_snapshot'
+require 'spec_helper'
+
+describe KalibroEntities::Entities::RangeSnapshot do
+  describe 'beginning=' do
+    it 'should set the value of the attribute beginning' do
+      subject.beginning = 3
+      subject.beginning.should eq(3)
+    end
+  end
+
+  describe 'end=' do
+    it 'should set the value of the attribute end' do
+      subject.end = 6
+      subject.end.should eq(6)
+    end
+  end
+
+  describe 'grade=' do
+    it 'should set the value of the attribute grade' do
+      subject.grade = 18
+      subject.grade.should eq(18)
+    end
+  end
+end

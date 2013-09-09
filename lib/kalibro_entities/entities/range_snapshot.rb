@@ -14,9 +14,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/metric'
-require 'kalibro_entities/entities/reading_group'
-require 'kalibro_entities/entities/range_snapshot'
+require "kalibro_entities/entities/model"
+
+module KalibroEntities
+  module Entities
+    class RangeSnapshot < Model
+      attr_accessor :beginning, :end, :label, :grade, :color, :comments
+
+      def beginning=(value)
+        @beginning = ((value == "-INF") ? -1.0/0 : value.to_f)
+      end
+
+      def end=(value)
+        @end = ((value == "INF") ? 1.0/0 : value.to_f)
+      end
+
+      def grade=(value)
+        @grade = value.to_f
+      end
+    end
+  end
+end
