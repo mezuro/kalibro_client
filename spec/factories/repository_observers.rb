@@ -14,11 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/metric'
-require 'kalibro_entities/entities/reading_group'
-require 'kalibro_entities/entities/range_snapshot'
-require 'kalibro_entities/entities/range_snapshot'
-require 'kalibro_entities/entities/repository_observer'
+FactoryGirl.define do
+  factory :repository_observer, class: KalibroEntities::Entities::RepositoryObserver do
+    id 1
+    repository_id 1
+    name "Diego Araújo"
+    email "diegoamc@gmail.com"
+  end
+end

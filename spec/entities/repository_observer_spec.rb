@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::Configuration do
+describe KalibroEntities::Entities::RepositoryObserver do
   describe 'id=' do
     it 'should set the value of the attribute id' do
       subject.id = 42
@@ -25,28 +25,30 @@ describe KalibroEntities::Entities::Configuration do
   end
 
   describe 'all' do
-    context 'with no configurations' do
+    context 'with no repository observers' do
       before :each do
-        KalibroEntities::Entities::Configuration.expects(:request).with(:all_configurations).returns({:configuration => nil})
+        KalibroEntities::Entities::RepositoryObserver.expects(:request).with(:all_repository_observers).
+          returns({:repository_observer => nil})
       end
 
       it 'should return nil' do
-        KalibroEntities::Entities::Configuration.all.should be_empty
+        KalibroEntities::Entities::RepositoryObserver.all.should be_empty
       end
     end
 
-    context 'with many configurations' do
+    context 'with many repository observers' do
       before :each do
-        @hash = FactoryGirl.build(:configuration).to_hash
-        KalibroEntities::Entities::Configuration.expects(:request).with(:all_configurations).returns({:configuration => [@hash, @hash]})
+        @hash = FactoryGirl.build(:repository_observer).to_hash
+        KalibroEntities::Entities::RepositoryObserver.expects(:request).with(:all_repository_observers).
+          returns({:repository_observer => [@hash, @hash]})
       end
 
       it 'should return the two elements' do
-        configurations = KalibroEntities::Entities::Configuration.all
+        repository_observers = KalibroEntities::Entities::RepositoryObserver.all
 
-        configurations.size.should eq(2)
-        configurations.first.name.should eq(@hash[:name])
-        configurations.last.name.should eq(@hash[:name])
+        repository_observers.size.should eq(2)
+        repository_observers.first.name.should eq(@hash[:name])
+        repository_observers.last.name.should eq(@hash[:name])
       end
     end
   end
