@@ -14,12 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/base_tool'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/metric'
-require 'kalibro_entities/entities/metric_configuration_snapshot'
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/range_snapshot'
-require 'kalibro_entities/entities/reading_group'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/repository_observer'
+FactoryGirl.define do
+  factory :metric_configuration_snapshot, class: KalibroEntities::Entities::MetricConfigurationSnapshot do
+		code "code"
+		weight "1.0"
+		aggregation_form 'AVERAGE'
+		metric {FactoryGirl.build(:metric)}
+		base_tool_name "Analizo"
+		range {FactoryGirl.build(:range_snapshot)}
+  end  
+end
