@@ -37,7 +37,7 @@ module KalibroEntities
         @email = value
       end
 
-      # FIXME: the param name must be repository_id.
+      # FIXME: the index of the second parameter of the request must be repository_id. It can't be fixed here until Kalibro webservice remain with this name!
       def self.repository_observers_of(value)
         create_objects_array_from_hash request(:repository_observers_of, {:repository_observer_id => value})[:repository_observer]
       end

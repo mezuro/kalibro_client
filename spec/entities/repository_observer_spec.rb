@@ -52,4 +52,69 @@ describe KalibroEntities::Entities::RepositoryObserver do
       end
     end
   end
+
+  # FIXME: the index of the second parameter of the request of repository_observers of will be altered someday.
+  describe 'repository_observers_of' do
+    context 'with no repository observers' do
+      before :each do
+        @repository_without_observers = FactoryGirl.build(:repository).to_hash
+        KalibroEntities::Entities::RepositoryObserver.expects(:request).
+          with(:repository_observers_of, {:repository_observer_id => @repository_without_observers[:id]}).
+          returns({:repository_observer => []})
+      end
+
+      it 'should get an empty array' do
+        KalibroEntities::Entities::RepositoryObserver.
+          repository_observers_of(@repository_without_observers[:id]).should eq []
+      end
+    end
+
+    context 'with many repository observers' do
+      before :each do
+        @repository = FactoryGirl.build(:repository).to_hash
+        @repository_observer = FactoryGirl.build(:repository_observer).to_hash
+
+        KalibroEntities::Entities::RepositoryObserver.expects(:request).
+          with(:repository_observers_of, {:repository_observer_id => @repository[:id]}).
+          returns({:repository_observer => [@repository_observer, @repository_observer]})
+      end
+
+      it 'should return the two elements' do
+        repository_observers = KalibroEntities::Entities::RepositoryObserver.
+          repository_observers_of(@repository[:id])
+
+        repository_observers.size.should eq(2)
+        repository_observers.first.name.should eq(@repository_observer[:name])
+        repository_observers.last.name.should eq(@repository_observer[:name])
+      end
+    end
+  end
+
+  describe 'id=' do
+    it 'should set the value of the attribute id' do
+      subject.id = 65
+      subject.id.should eq(65)
+    end
+  end
+
+  describe 'repository_id=' do
+    it 'should set the value of the attribute repository_id' do
+      subject.repository_id = 91
+      subject.repository_id.should eq(91)
+    end
+  end
+
+  describe 'name=' do
+    it 'should set the value of the attribute name' do
+      subject.name = 'William'
+      subject.name.should eq('William')
+    end
+  end
+
+  describe 'email=' do
+    it 'should set the value of the attribute email' do
+      subject.email = 'william@email.com'
+      subject.email.should eq('william@email.com')
+    end
+  end
 end

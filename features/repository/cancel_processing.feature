@@ -4,7 +4,7 @@ Feature: Process
   I want to cancel the repository processing
 
   @kalibro_restart
-  Scenario: With one repositorie
+  Scenario: With one repository
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"
     And the given project has the following Repositories:

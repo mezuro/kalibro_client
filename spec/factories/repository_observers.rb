@@ -18,7 +18,7 @@ FactoryGirl.define do
   factory :repository_observer, class: KalibroEntities::Entities::RepositoryObserver do
     id 1
     repository_id 1
-    name "Diego Araújo"
-    email "diegoamc@gmail.com"
+    name "William Henry"
+    email "williamhenry@email.com"
   end
 end
