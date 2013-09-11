@@ -1,0 +1,10 @@
+Feature: Find
+  In order to be able to have configurations
+  As an developer
+  I want to find metric_configurations
+
+  @kalibro_restart
+  Scenario: find a valid metric configuration
+    Given I have a project with name "Kalibro"
+    When I search a project with the same id of the given project
+    Then it should return the same project as the given one

@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -14,14 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/base_tool'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/metric'
-require 'kalibro_entities/entities/metric_configuration_snapshot'
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/range_snapshot'
-require 'kalibro_entities/entities/reading_group'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/repository_observer'
-require 'kalibro_entities/entities/date_module_result'
-require 'kalibro_entities/entities/metric_configuration'
+require 'spec_helper'
+require 'kalibro_entities/helpers/aggregation_options'
+
+include AggregationOptions
+
+describe 'all_with_label' do
+  it 'should return the list of aggregation methods available' do
+    all_with_label.should eq(
+      [
+        ["Average","AVERAGE"], ["Median", "MEDIAN"], ["Maximum", "MAXIMUM"], ["Minimum", "MINIMUM"],
+        ["Count", "COUNT"], ["Standard Deviation", "STANDARD_DEVIATION"]
+      ]
+    )
+  end
+end

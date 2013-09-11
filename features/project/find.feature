@@ -3,8 +3,9 @@ Feature: Find
   As an developer
   I want to find projects
 
-  @kalibro_restart
+  @kalibro_restart @wip
   Scenario: find a valid project
-    Given I have a project with name "Kalibro"
-    When I search a project with the same id of the given project
-    Then it should return the same project as the given one
+    Given I have a configuration with name "Kalibro for Java"
+    And I have a metric configuration within the given configuration
+    When I search a metric configuration with the same id of the given metric configuration
+    Then it should return the same metric configuration as the given one
