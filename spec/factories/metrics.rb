@@ -16,11 +16,11 @@
 
 FactoryGirl.define do
   factory :metric, class: KalibroEntities::Entities::Metric do
-    name "LoC"
+    name "Lines of Code"
     compound false
-    scope "Class"
-    description "Lines of Code"
+    scope "SOFTWARE"
+    description nil
     script ""
-    language ["Java"]
+    language ["C", "CPP", "JAVA"]
   end  
 end

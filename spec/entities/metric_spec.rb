@@ -21,7 +21,7 @@ describe KalibroEntities::Entities::Metric do
     subject {FactoryGirl.build(:metric)}
 
     it 'should return the value of the language attribute' do
-      subject.languages.should eq(["Java"])
+      subject.languages.should eq(["C", "CPP", "JAVA"])
     end
   end
 
