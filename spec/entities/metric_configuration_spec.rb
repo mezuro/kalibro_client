@@ -95,19 +95,19 @@ describe KalibroEntities::Entities::MetricConfiguration do
       end
     end
 
-    pending "Instantiate a SOAPFault" do
     context 'with an inexistant MetricConfiguration' do
       before :each do
+        any_code = rand(Time.now.to_i)
+        any_error_message = ""
         KalibroEntities::Entities::MetricConfiguration.
           expects(:request).
           with(:get_metric_configuration, {:metric_configuration_id => @metric_configuration.id}).
-          raises(Savon::SOAPFault)
+          raises(Savon::SOAPFault.new(any_error_message, any_code))
       end
 
       it 'should raise the RecordNotFound error' do
         expect {KalibroEntities::Entities::MetricConfiguration.find(@metric_configuration.id)}.to raise_error(KalibroEntities::Errors::RecordNotFound)
       end
-    end
     end
   end
 
