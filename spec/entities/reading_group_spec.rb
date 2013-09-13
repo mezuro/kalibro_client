@@ -52,14 +52,6 @@ describe KalibroEntities::Entities::ReadingGroup do
     end
   end
 
-  describe 'reading_group_of' do
-    it 'should make the request to the webservice' do
-      KalibroEntities::Entities::ReadingGroup.expects(:request).with(:reading_group_of, {:metric_configuration_id => 1}).returns({reading_group: FactoryGirl.build(:reading_group).to_hash})
-      
-      KalibroEntities::Entities::ReadingGroup.reading_group_of(1)
-    end
-  end
-
   # The only purpose of this test is to cover the overrided destroy_params private method
   describe 'destroy' do
     context 'when it gets successfully destroyed' do

@@ -28,10 +28,6 @@ module KalibroEntities
         create_objects_array_from_hash request(:all_reading_groups)[:reading_group]
       end
       
-      def self.reading_group_of( metric_configuration_id )
-        new request(:reading_group_of, {:metric_configuration_id => metric_configuration_id} )[:reading_group]
-      end
-
       private
 
       def self.id_params(id)
