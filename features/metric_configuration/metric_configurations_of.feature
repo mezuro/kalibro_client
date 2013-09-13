@@ -5,7 +5,8 @@ Feature: MetricConfigurationsOf
 
   @kalibro_restart
   Scenario: get a list of all metric configurations of some configuration
-	Given I have a configuration with name "Kalibro for Java"
+	  Given I have a configuration with name "Kalibro for Java"
+    And I have a reading group with name "Group"
     And I have a metric configuration within the given configuration
     When I request all metric configurations of the given configuration
     Then I should get a list of its metric configurations

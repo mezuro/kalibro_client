@@ -1,7 +1,7 @@
 Given(/^I have a metric configuration within the given configuration$/) do
-  @metric_configuration = FactoryGirl.create(:metric_configuration, 
+  @metric_configuration = FactoryGirl.create(:metric_configuration,
                     {id: nil,
-                     reading_group_id: FactoryGirl.create(:reading_group).id,
+                     reading_group_id: @reading_group.id,
                      configuration_id: @configuration.id})
 end
 
@@ -12,10 +12,10 @@ end
 When(/^I search an inexistent metric configuration$/) do
   @is_error = false
   inexistent_id = rand(Time.now.to_i)
-  begin 
+  begin
   	KalibroEntities::Entities::MetricConfiguration.find(inexistent_id)
   rescue KalibroEntities::Errors::RecordNotFound
-  	@is_error = true 
+  	@is_error = true
   end
 end
 

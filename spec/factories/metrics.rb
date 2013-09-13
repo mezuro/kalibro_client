@@ -16,7 +16,7 @@
 
 FactoryGirl.define do
   factory :metric, class: KalibroEntities::Entities::Metric do
-    name "Lines of Code"
+    name "Total Abstract Classes"
     compound false
     scope "SOFTWARE"
     description nil

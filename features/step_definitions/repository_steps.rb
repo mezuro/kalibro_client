@@ -2,6 +2,7 @@ Given(/^the given project has the following Repositories:$/) do |table|
   hash = table.hashes.first
   hash[:project_id] = @project.id
   hash[:configuration_id] = @configuration.id
+  hash[:id] = nil
 
   @repository = FactoryGirl.create(:repository, hash)
 end
