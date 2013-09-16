@@ -14,15 +14,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/base_tool'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/date_metric_result'
-require 'kalibro_entities/entities/date_module_result'
-require 'kalibro_entities/entities/metric'
-require 'kalibro_entities/entities/metric_configuration'
-require 'kalibro_entities/entities/metric_configuration_snapshot'
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/range_snapshot'
-require 'kalibro_entities/entities/reading_group'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/repository_observer'
+require "kalibro_entities/entities/model"
+
+module KalibroEntities
+  module Entities
+    class DateMetricResult < Model
+      
+      attr_accessor :date, :metric_result
+
+      def date=(value)
+        @date = value.is_a?(String) ? DateTime.parse(value) : value
+      end
+
+      def metric_result=(value)
+        @metric_result = KalibroEntities::Entities::MetricResult.to_object value
+      end
+      
+      def result
+        @metric_result.value
+      end
+      
+    end
+  end
+end
