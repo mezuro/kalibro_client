@@ -14,17 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_entities/entities/base_tool'
-require 'kalibro_entities/entities/configuration'
-require 'kalibro_entities/entities/date_metric_result'
-require 'kalibro_entities/entities/date_module_result'
-require 'kalibro_entities/entities/metric'
-require 'kalibro_entities/entities/metric_configuration'
-require 'kalibro_entities/entities/metric_configuration_snapshot'
-require 'kalibro_entities/entities/module'
-require 'kalibro_entities/entities/module_result'
-require 'kalibro_entities/entities/project'
-require 'kalibro_entities/entities/range_snapshot'
-require 'kalibro_entities/entities/reading_group'
-require 'kalibro_entities/entities/repository'
-require 'kalibro_entities/entities/repository_observer'
+FactoryGirl.define do
+  factory :date_module_result, class: KalibroEntities::Entities::DateModuleResult do
+	date "2011-10-20T18:26:43.151+00:00"
+    module_result {FactoryGirl.build(:module_result)}
+  end
+end
