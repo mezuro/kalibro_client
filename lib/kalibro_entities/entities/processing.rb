@@ -14,14 +14,33 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FactoryGirl.define do
-	factory :process_time, class: KalibroEntities::Entities::ProcessTime do
-		state "Ready"
-		time  "3600"
-	end
+require "kalibro_entities/entities/model"
 
-      factory :analyzing_process_time, class: KalibroEntities::Entities::ProcessTime do
-          state "Analyzing"
-          time  "12345"
-      end      
+module KalibroEntities
+  module Entities
+    class Processing < Model
+      
+      attr_accessor :id, :date, :state, :error, :process_time, :results_root_id
+
+      def id=(value)
+        @id = value.to_i
+      end
+
+      def date=(value)
+        @date = value.is_a?(String) ? DateTime.parse(value) : value
+      end
+
+      def process_times=(value)
+        @process_time = value
+      end
+
+      def process_time=(value)
+        @process_time = KalibroEntities::Entities::ProcessTime.to_objects_array value
+      end
+
+      def process_times
+        @process_time
+      end
+    end
+  end
 end
