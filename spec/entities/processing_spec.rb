@@ -65,5 +65,293 @@ describe KalibroEntities::Entities::Processing do
     end
   end
 
+  describe 'error=' do
+    before do
+      @error = FactoryGirl.build(:throwable, message: 'Another Error!')
+    end
 
+    it 'should set the attribute error as an object' do 
+      subject.error = @error.to_hash
+      subject.error.should eq @error
+    end
+  end
+
+  describe 'results_root_id=' do
+    it 'should set the attribute results root id as an integer' do
+      subject.results_root_id = "36"
+      subject.results_root_id.should eq 36
+    end
+  end
+
+  context 'static methods' do
+    context 'using repository as parametter' do
+      before do
+        @repository = FactoryGirl.build(:repository)
+      end
+
+      describe 'has_processing' do
+        before :each do
+          KalibroEntities::Entities::Processing.
+            expects(:request).once.
+            with(:has_processing, {:repository_id => @repository.id}).
+            returns({exists: false})
+        end
+
+        it 'should convert the hash to a Boolean class' do
+          response = KalibroEntities::Entities::Processing.has_processing @repository.id
+          response.should be_a_kind_of(FalseClass)
+        end
+      end
+
+      describe 'has_ready_processing' do
+        before :each do
+          KalibroEntities::Entities::Processing.
+            expects(:request).once.
+            with(:has_ready_processing, {:repository_id => @repository.id}).
+            returns({exists: false})
+        end
+
+        it 'should convert the hash to a Boolean class' do
+          response = KalibroEntities::Entities::Processing.has_ready_processing @repository.id
+          response.should be_a_kind_of(FalseClass)
+        end
+      end
+
+      describe 'has_processing_after' do
+        before :each do
+          @date = DateTime.now
+          KalibroEntities::Entities::Processing.
+            expects(:request).once.
+            with(:has_processing_after, {:repository_id => @repository.id, :date => @date}).
+            returns({exists: false})
+        end
+
+        it 'should convert the hash to a Boolean class' do
+          response = KalibroEntities::Entities::Processing.has_processing_after(@repository.id, @date)
+          response.should be_a_kind_of(FalseClass)
+        end
+      end
+
+      describe 'has_processing_before' do
+        before :each do
+          @date = DateTime.now
+          KalibroEntities::Entities::Processing.
+            expects(:request).once.
+            with(:has_processing_before, {:repository_id => @repository.id, :date => @date}).
+            returns({exists: false})
+        end
+
+        it 'should convert the hash to a Boolean class' do
+          response = KalibroEntities::Entities::Processing.has_processing_before(@repository.id, @date)
+          response.should be_a_kind_of(FalseClass)
+        end
+      end
+
+      describe 'last_processing_state_of' do
+        before :each do
+          @any_state = "READY"
+          KalibroEntities::Entities::Processing.
+            expects(:request).once.
+            with(:last_processing_state, {:repository_id => @repository.id}).
+            returns({process_state: @any_state})
+        end
+
+        it 'should return the state as string' do
+          response = KalibroEntities::Entities::Processing.last_processing_state_of @repository.id
+          response.should eq(@any_state)
+        end
+      end
+
+      context 'getting processing entity from Kalibro web service' do
+        before do
+          @processing = FactoryGirl.build(:processing)
+        end
+
+        describe 'processing_of' do
+          context 'when the repository has a ready processing' do
+            before do
+              KalibroEntities::Entities::Processing.
+              expects(:request).once.
+              with(:has_ready_processing, {:repository_id => @repository.id}).
+              returns({exists: true})
+
+              KalibroEntities::Entities::Processing.
+              expects(:request).once.
+              with(:last_ready_processing, {:repository_id => @repository.id}).
+              returns({processing: @processing.to_hash})
+            end
+
+            it 'should return the last ready processing' do
+              response = KalibroEntities::Entities::Processing.processing_of @repository.id
+              response.state.should eq(@processing.state)
+            end
+          end
+
+          context 'when the repository has not a ready processing' do
+            before do
+              KalibroEntities::Entities::Processing.
+              expects(:request).once.
+              with(:has_ready_processing, {:repository_id => @repository.id}).
+              returns({exists: false})
+
+              KalibroEntities::Entities::Processing.
+              expects(:request).once.
+              with(:last_processing, {:repository_id => @repository.id}).
+              returns({processing: @processing.to_hash})
+            end
+
+            it 'should return the last processing' do
+              response = KalibroEntities::Entities::Processing.processing_of @repository.id
+              response.state.should eq(@processing.state)
+            end
+          end
+        end
+
+        describe 'processing_with_date_of' do
+          before do
+            @date = DateTime.now
+          end
+
+          context 'when the repository has a processing after the given date' do
+            before do
+              KalibroEntities::Entities::Processing.
+                expects(:request).once.
+                with(:has_processing_after, {:repository_id => @repository.id, :date => @date}).
+                returns({exists: true})
+
+              KalibroEntities::Entities::Processing.
+                expects(:request).once.
+                with(:first_processing_after, {:repository_id => @repository.id, :date => @date}).
+                returns({processing: @processing.to_hash})
+            end
+
+            it 'should return the first processing after the given date' do
+              response = KalibroEntities::Entities::Processing.processing_with_date_of(@repository.id, @date)
+              response.state.should eq(@processing.state)
+            end
+          end
+
+          context 'when the repository has a processing before the given date' do
+            before do
+              KalibroEntities::Entities::Processing.
+                expects(:request).once.
+                with(:has_processing_after, {:repository_id => @repository.id, :date => @date}).
+                returns({exists: false})
+
+              KalibroEntities::Entities::Processing.
+                expects(:request).once.
+                with(:has_processing_before, {:repository_id => @repository.id, :date => @date}).
+                returns({exists: true})
+
+              KalibroEntities::Entities::Processing.
+                expects(:request).once.
+                with(:last_processing_before, {:repository_id => @repository.id, :date => @date}).
+                returns({processing: @processing.to_hash})
+            end
+
+            it 'should return the last ready processing' do
+              response = KalibroEntities::Entities::Processing.processing_with_date_of(@repository.id, @date)
+              response.state.should eq(@processing.state)
+            end
+          end
+
+          context 'when the repository has not a processing after or before the given date' do
+            before do
+              KalibroEntities::Entities::Processing.
+                expects(:request).once.
+                with(:has_processing_after, {:repository_id => @repository.id, :date => @date}).
+                returns({exists: false})
+
+              KalibroEntities::Entities::Processing.
+                expects(:request).once.
+                with(:has_processing_before, {:repository_id => @repository.id, :date => @date}).
+                returns({exists: false})
+
+              KalibroEntities::Entities::Processing.
+                expects(:request).once.
+                with(:last_processing, {:repository_id => @repository.id}).
+                returns({processing: @processing.to_hash})
+            end
+
+            it 'should return the last ready processing' do
+              response = KalibroEntities::Entities::Processing.processing_with_date_of(@repository.id, @date)
+              response.state.should eq(@processing.state)
+            end
+          end
+        end
+
+        describe 'last_ready_processing_of' do
+          before :each do
+            KalibroEntities::Entities::Processing.
+              expects(:request).once.
+              with(:last_ready_processing, {:repository_id => @repository.id}).
+              returns({processing: @processing.to_hash})
+          end
+
+          it 'should return a processing object' do
+            response = KalibroEntities::Entities::Processing.last_ready_processing_of @repository.id
+            response.state.should eq(@processing.state)
+          end
+        end
+
+        describe 'first_processing_of' do
+          before :each do
+            KalibroEntities::Entities::Processing.
+              expects(:request).once.
+              with(:first_processing, {:repository_id => @repository.id}).
+              returns({processing: @processing.to_hash})
+          end
+
+          it 'should return a processing object' do
+            response = KalibroEntities::Entities::Processing.first_processing_of @repository.id
+            response.state.should eq(@processing.state)
+          end
+        end
+
+        describe 'last_processing_of' do
+          before :each do
+            KalibroEntities::Entities::Processing.
+              expects(:request).once.
+              with(:last_processing, {:repository_id => @repository.id}).
+              returns({processing: @processing.to_hash})
+          end
+
+          it 'should return a processing object' do
+            response = KalibroEntities::Entities::Processing.last_processing_of @repository.id
+            response.state.should eq(@processing.state)
+          end
+        end
+
+        describe 'first_processing_after' do
+          before :each do
+            @date = DateTime.now
+            KalibroEntities::Entities::Processing.
+              expects(:request).once.
+              with(:first_processing_after, {:repository_id => @repository.id, :date => @date}).
+              returns({processing: @processing.to_hash})
+          end
+
+          it 'should return a processing object' do
+            response = KalibroEntities::Entities::Processing.first_processing_after(@repository.id, @date)
+            response.state.should eq(@processing.state)
+          end
+        end
+
+        describe 'last_processing_before' do
+          before :each do
+            @date = DateTime.now
+            KalibroEntities::Entities::Processing.
+              expects(:request).once.
+              with(:last_processing_before, {:repository_id => @repository.id, :date => @date}).
+              returns({processing: @processing.to_hash})
+          end
+
+          it 'should return a processing object' do
+            response = KalibroEntities::Entities::Processing.last_processing_before(@repository.id, @date)
+            response.state.should eq(@processing.state)
+          end
+        end
+      end
+    end
+  end
 end
