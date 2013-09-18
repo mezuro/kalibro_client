@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +21,7 @@ describe KalibroEntities::Entities::DateModuleResult do
     context 'when the given value is a String' do
       it 'should set the date and convert it to DateTime' do
         subject.date = "21/12/1995" # Ruby's first publication
-        
+
         subject.date.should be_a(DateTime)
         subject.date.should eq(DateTime.parse("21/12/1995"))
       end
@@ -36,7 +36,6 @@ describe KalibroEntities::Entities::DateModuleResult do
     end
   end
 
-  pending 'there is no entity ModuleResult yet! :(' do
   describe 'module_result=' do
     before :each do
       @module_result = FactoryGirl.build(:module_result)
@@ -58,6 +57,5 @@ describe KalibroEntities::Entities::DateModuleResult do
     it 'should return the module_result grade' do
       subject.result.should eq(10)
     end
-  end
   end
 end
