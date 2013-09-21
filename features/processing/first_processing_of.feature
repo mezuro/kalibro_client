@@ -13,6 +13,6 @@ Feature: First processing of
       |   name    | type |              address                  |
       |  Kalibro  |  GIT | https://github.com/mezuro/kalibro.git |
     And I call the process method for the given repository
-    And I wait up to 5 seconds
+    And I wait up to 1 seconds
     When I call the first_processing_of method for the given repository
     Then I should get a Processing

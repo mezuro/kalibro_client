@@ -13,6 +13,6 @@ Feature: Has ready processing
       |   name    | type |              address                  |
       |  Kalibro  |  GIT | https://github.com/mezuro/kalibro.git |
     And I call the process method for the given repository
-    And I wait up to 5 seconds
+    And I wait up to 1 seconds
     When I call the has_ready_processing for the given repository
     Then I should get false
