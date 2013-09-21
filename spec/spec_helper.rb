@@ -25,6 +25,7 @@ SimpleCov.start do
   add_group "Cucumber Helpers", "lib/kalibro_entities/kalibro_cucumber_helpers"
 
   add_filter "/spec/"
+  add_filter "/features/"
 
   coverage_dir 'coverage/rspec'
 end

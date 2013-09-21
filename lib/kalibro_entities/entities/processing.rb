@@ -65,7 +65,7 @@ module KalibroEntities
         elsif has_processing_before(repository_id, date)
           last_processing_before(repository_id, date)
         else
-          last_processing_of(repository_id)
+          nil
         end
       end
 
@@ -105,7 +105,7 @@ module KalibroEntities
         new request(:first_processing_after, {:repository_id => repository_id, :date => date})[:processing]
       end
 
-       def self.last_processing_before(repository_id, date)
+      def self.last_processing_before(repository_id, date)
         new request(:last_processing_before, {:repository_id => repository_id, :date => date})[:processing]
       end
     end

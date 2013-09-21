@@ -266,16 +266,11 @@ describe KalibroEntities::Entities::Processing do
                 expects(:request).once.
                 with(:has_processing_before, {:repository_id => @repository.id, :date => @date}).
                 returns({exists: false})
-
-              KalibroEntities::Entities::Processing.
-                expects(:request).once.
-                with(:last_processing, {:repository_id => @repository.id}).
-                returns({processing: @processing.to_hash})
             end
 
             it 'should return the last ready processing' do
               response = KalibroEntities::Entities::Processing.processing_with_date_of(@repository.id, @date)
-              response.state.should eq(@processing.state)
+              response.should be_nil
             end
           end
         end
