@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mezuro/kalibro_entities.png?branch=master)](https://travis-ci.org/mezuro/kalibro_entities)
 [![Code Climate](https://codeclimate.com/github/mezuro/kalibro_entities.png)](https://codeclimate.com/github/mezuro/kalibro_entities)
+[![Coverage Status](https://coveralls.io/repos/mezuro/kalibro_entities/badge.png)](https://coveralls.io/r/mezuro/kalibro_entities)
 
 KalibroEntities is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservice Kalibro (http://gitorious.org/kalibro/kalibro).
 

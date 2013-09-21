@@ -16,9 +16,15 @@
 
 require 'mocha/api'
 
-#Starts Simplecov
+# Test coverage report
 require 'simplecov'
+require 'coveralls'
+
 SimpleCov.start do
+  formatter SimpleCov::Formatter::MultiFormatter[
+                Coveralls::SimpleCov::Formatter,
+                SimpleCov::Formatter::HTMLFormatter
+              ]
   add_group "Entities", "lib/kalibro_entities/entities"
   add_group "Errors", "lib/kalibro_entities/errors"
   add_group "Helpers", "lib/kalibro_entities/helpers"
