@@ -69,9 +69,6 @@ module KalibroEntities
         end
       end
 
-      #TODO: there is a private static function? It does nothing in ruby since It was tested like a public method.
-      private 
-
       def self.has_processing(repository_id)
         request(:has_processing, {:repository_id => repository_id})[:exists]
       end
