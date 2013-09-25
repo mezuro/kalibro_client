@@ -37,16 +37,35 @@ describe KalibroEntities::Entities::Reading do
     end
 
     describe 'find' do
-      before do
-        KalibroEntities::Entities::Reading.
-          expects(:request).
-          with(:get_reading, {:reading_id => @reading.id}).
-          returns({:reading => @reading.to_hash})
+      context 'when the reading exists' do
+        before :each do
+          KalibroEntities::Entities::Reading.
+            expects(:request).
+            with(:get_reading, {:reading_id => @reading.id}).
+            returns({:reading => @reading.to_hash})
+        end
+
+        it 'should return a reading object' do
+          response = KalibroEntities::Entities::Reading.find @reading.id
+          response.label.should eq(@reading.label)
+        end
       end
 
-      it 'should return a reading object' do
-        response = KalibroEntities::Entities::Reading.find @reading.id
-        response.label.should eq(@reading.label)
+      context "when the reading doesn't exists" do
+        before :each do
+          any_code = rand(Time.now.to_i)
+          any_error_message = ""
+
+          KalibroEntities::Entities::Reading.
+            expects(:request).
+            with(:get_reading, {:reading_id => @reading.id}).
+            raises(Savon::SOAPFault.new(any_error_message, any_code))
+        end
+
+        it 'should return a reading object' do
+          expect {KalibroEntities::Entities::Reading.find(@reading.id) }.
+            to raise_error(KalibroEntities::Errors::RecordNotFound)
+        end
       end
     end
 
@@ -90,7 +109,6 @@ describe KalibroEntities::Entities::Reading do
   describe 'save' do
     before :each do
       @reading = FactoryGirl.build(:reading, {id: nil, group_id: FactoryGirl.build(:reading_group).id})
-      puts @reading.inspect
       @reading_id = 73
 
       KalibroEntities::Entities::Reading.

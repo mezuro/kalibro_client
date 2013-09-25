@@ -29,7 +29,11 @@ module KalibroEntities
       end
 
       def self.find(id)
-        new request(:get_reading, {:reading_id => id})[:reading]
+        begin
+          new request(:get_reading, {:reading_id => id})[:reading]
+        rescue Savon::SOAPFault
+          raise KalibroEntities::Errors::RecordNotFound
+        end
       end
 
       def self.readings_of(group_id)
