@@ -39,7 +39,7 @@ describe KalibroEntities::Entities::Reading do
     describe 'find' do
       before do
         KalibroEntities::Entities::Reading.
-          expects(:request).once.
+          expects(:request).
           with(:get_reading, {:reading_id => @reading.id}).
           returns({:reading => @reading.to_hash})
       end
@@ -49,13 +49,13 @@ describe KalibroEntities::Entities::Reading do
         response.label.should eq(@reading.label)
       end
     end
-  
+
     describe 'readings_of' do
       before do
         @reading_group = FactoryGirl.build(:reading_group)
 
         KalibroEntities::Entities::Reading.
-          expects(:request).once.
+          expects(:request).
           with(:readings_of, {:group_id => @reading_group.id}).
           returns({:reading => [@reading.to_hash, @reading.to_hash]})
       end
@@ -73,7 +73,7 @@ describe KalibroEntities::Entities::Reading do
           @range = FactoryGirl.build(:range)
 
           KalibroEntities::Entities::Reading.
-            expects(:request).once.
+            expects(:request).
             with(:reading_of, {:range_id => @range.id}).
             returns({:reading => @reading.to_hash})
         end
@@ -88,25 +88,21 @@ describe KalibroEntities::Entities::Reading do
 
   # The only purpose of this test is to cover the overrided save_params method
   describe 'save' do
-    pending 'mock is not working here' do
-      before :each do
-        @reading = FactoryGirl.build(:reading, {id: nil})
-        @reading_id = 73
+    before :each do
+      @reading = FactoryGirl.build(:reading, {id: nil, group_id: FactoryGirl.build(:reading_group).id})
+      puts @reading.inspect
+      @reading_id = 73
 
-        KalibroEntities::Entities::Reading.
-          expects(:request).once.
-          with(:save_reading, {:reading => @reading.to_hash}).
-          returns({:reading_id => @reading_id})
-    
-        KalibroEntities::Entities::Reading.any_instance.expects(:id=).with(@reading_id).returns(@reading_id)
-        KalibroEntities::Entities::Reading.any_instance.expects(:id=).with(nil).returns(nil)
-      end
+      KalibroEntities::Entities::Reading.
+        expects(:request).
+        with(:save_reading, {reading: @reading.to_hash, group_id: @reading.group_id}).
+        returns({:reading_id => @reading_id})
+    end
 
-      it 'should make a request to save model with id and return true without errors' do
-        @reading.save.should be(true)
-        @reading.id.should eq(@reading_id)
-        @reading.kalibro_errors.should be_empty
-      end
+    it 'should make a request to save model with id and return true without errors' do
+      @reading.save.should be(true)
+      @reading.id.should eq(@reading_id)
+      @reading.kalibro_errors.should be_empty
     end
   end
 end
