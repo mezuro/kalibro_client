@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,11 +21,11 @@ module KalibroEntities
     class ModuleResult < Model
 
       attr_accessor :id, :module, :grade, :parent_id, :height
-      
+
       def self.find(id)
         begin
           new request(:get_module_result, { :module_result_id => id })[:module_result]
-        rescue
+        rescue Savon::SOAPFault
           raise KalibroEntities::Errors::RecordNotFound
         end
       end
@@ -36,7 +36,7 @@ module KalibroEntities
         response = [response] if response.is_a?(Hash)
         response.map {|module_result| KalibroEntities::Entities::ModuleResult.new module_result}
       end
-      
+
       def parents
         if parent_id == 0
           []

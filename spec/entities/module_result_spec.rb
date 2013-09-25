@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -22,7 +22,7 @@ describe KalibroEntities::Entities::ModuleResult do
   end
 
   describe 'find' do
-    context 'when there is not a module result for the given id' do
+    context 'when there is a module result for the given id' do
       before :each do
         KalibroEntities::Entities::ModuleResult.
           expects(:request).
@@ -35,12 +35,15 @@ describe KalibroEntities::Entities::ModuleResult do
       end
     end
 
-    context 'when there is a module result for the given id' do
+    context "when there isn't a module result for the given id" do
       before :each do
+        any_code = rand(Time.now.to_i)
+        any_error_message = ""
+
         KalibroEntities::Entities::ModuleResult.
           expects(:request).
           with(:get_module_result, { :module_result_id => @module_result.id }).
-          raises(KalibroEntities::Errors::RecordNotFound)
+          raises(Savon::SOAPFault.new(any_error_message, any_code))
       end
 
       it 'should raise an error' do
