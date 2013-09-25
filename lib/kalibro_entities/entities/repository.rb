@@ -61,6 +61,12 @@ module KalibroEntities
         return repositories
       end
 
+      def self.find(id)
+        all.each { |repository| return repository if repository.id == id }
+
+        raise KalibroEntities::Errors::RecordNotFound
+      end
+
       private
 
         def save_params

@@ -11,16 +11,8 @@ When(/^I call the cancel_process method for the given repository$/) do
   @response = @repository.cancel_processing_of_repository
 end
 
-Then(/^I should get success$/) do
-  @response == true
-end
-
 When(/^I ask for repositories from the given project$/) do
-  @repositories_of = KalibroEntities::Entities::Repository.repositories_of(@project.id)
-end
-
-Then(/^I should get the repository given$/) do
-  @repositories_of.include?(@repository)
+  @response = KalibroEntities::Entities::Repository.repositories_of(@project.id)
 end
 
 When(/^I call the process method for the given repository$/) do
@@ -32,14 +24,26 @@ When(/^I list types$/) do
 end
 
 When(/^I ask for all the repositories$/) do
-  @all_repositories = KalibroEntities::Entities::Repository.all
+  @response = KalibroEntities::Entities::Repository.all
+end
+
+When(/^I ask to find the given repository$/) do
+  @response = KalibroEntities::Entities::Repository.find(@repository.id)
+end
+
+Then(/^I should get success$/) do
+  @response == true
 end
 
 Then(/^the response should contain the given repository$/) do
-  @all_repositories.should include(@repository)
+  @response.should include(@repository)
 end
 
 Then(/^I should get an array of types$/) do
   @repository_types.is_a?(Array)
   @repository_types.count >= 1
+end
+
+Then(/^I should get the repository given$/) do
+  @response.should eq(@repository)
 end

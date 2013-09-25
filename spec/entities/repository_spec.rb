@@ -125,4 +125,31 @@ describe KalibroEntities::Entities::Repository do
       KalibroEntities::Entities::Repository.all.should include(repository)
     end
   end
+
+  describe 'find' do
+    let(:repository) { FactoryGirl.build(:repository) }
+
+    context 'when the repository exists' do
+      before :each do
+        KalibroEntities::Entities::Repository.expects(:all).returns([repository])
+      end
+
+      it 'should return the repository' do
+        KalibroEntities::Entities::Repository.find(repository.id).should eq(repository)
+      end
+    end
+
+    context "when the repository doesn't exists" do
+      before :each do
+        KalibroEntities::Entities::Repository.
+          expects(:all).
+          returns([FactoryGirl.build(:another_repository)])
+      end
+
+      it 'should raise a RecordNotFound error' do
+        expect { KalibroEntities::Entities::Repository.find(repository.id) }.
+          to raise_error(KalibroEntities::Errors::RecordNotFound)
+      end
+    end
+  end
 end

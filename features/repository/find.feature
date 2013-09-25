@@ -1,7 +1,7 @@
 Feature: Repositories listing
-  In order to be able to visualize repositories
+  In order to be able to visualize a specific repository
   As a developer
-  I want to see all the repository from a given project
+  I want to find that repository
 
   @kalibro_restart
   Scenario: With existing project repository
@@ -10,5 +10,5 @@ Feature: Repositories listing
     And the given project has the following Repositories:
       |   name    | type |              address                  |
       | "Kalibro" |  GIT | https://github.com/mezuro/kalibro.git |
-    When I ask for repositories from the given project
-    Then the response should contain the given repository
+    When I ask to find the given repository
+    Then I should get the repository given
