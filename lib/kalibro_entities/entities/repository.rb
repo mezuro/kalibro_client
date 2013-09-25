@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,13 +19,13 @@ require "kalibro_entities/entities/model"
 module KalibroEntities
   module Entities
     class Repository < Model
-      
+
       attr_accessor :id, :name, :description, :license, :process_period, :type, :address, :configuration_id, :project_id, :send_email
 
       def self.repository_types
         request(:supported_repository_types)[:supported_type].to_a
       end
-      
+
       def self.repositories_of(project_id)
         create_objects_array_from_hash request(:repositories_of, {:project_id => project_id})[:repository]
       end
@@ -45,9 +45,20 @@ module KalibroEntities
       def process
         self.class.request(:process_repository, {:repository_id => self.id})
       end
-      
+
       def cancel_processing_of_repository
         self.class.request(:cancel_processing_of_repository, {:repository_id => self.id})
+      end
+
+      def self.all
+        projects = Project.all
+        repositories = []
+
+        projects.each do |project|
+          repositories.concat(repositories_of(project.id))
+        end
+
+        return repositories
       end
 
       private

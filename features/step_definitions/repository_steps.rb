@@ -31,6 +31,14 @@ When(/^I list types$/) do
   @repository_types = KalibroEntities::Entities::Repository.repository_types
 end
 
+When(/^I ask for all the repositories$/) do
+  @all_repositories = KalibroEntities::Entities::Repository.all
+end
+
+Then(/^the response should contain the given repository$/) do
+  @all_repositories.should include(@repository)
+end
+
 Then(/^I should get an array of types$/) do
   @repository_types.is_a?(Array)
   @repository_types.count >= 1

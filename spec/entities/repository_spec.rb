@@ -101,7 +101,7 @@ describe KalibroEntities::Entities::Repository do
     before :each do
       KalibroEntities::Entities::Repository.
         expects(:request).with(:save_repository, {:repository => {:send_email => 'test@test.com', :project_id => '1', :configuration_id => '1', :address => 'svn://svn.code.sf.net/p/qt-calculator/code/trunk', :type => 'SVN', :process_period => '1', :license => 'GPLv3', :description => 'A simple calculator', :name => 'QtCalculator'}, :project_id => 1}).returns({:repository_id => 1})
-  
+
       KalibroEntities::Entities::Repository.any_instance.expects(:id=).with(1).returns(1)
       KalibroEntities::Entities::Repository.any_instance.expects(:id=).with(nil).returns(nil)
     end
@@ -109,6 +109,20 @@ describe KalibroEntities::Entities::Repository do
     it 'should make a request to save model with id and return true without errors' do
       subject.save.should be(true)
       subject.kalibro_errors.should be_empty
+    end
+  end
+
+  describe 'all' do
+    let(:project) { FactoryGirl.build(:project) }
+    let(:repository) { FactoryGirl.build(:repository)}
+
+    before :each do
+      KalibroEntities::Entities::Project.expects(:all).returns([project])
+      KalibroEntities::Entities::Repository.expects(:repositories_of).with(project.id).returns([repository])
+    end
+
+    it 'should list all the repositories' do
+      KalibroEntities::Entities::Repository.all.should include(repository)
     end
   end
 end
