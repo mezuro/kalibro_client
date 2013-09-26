@@ -20,5 +20,11 @@ FactoryGirl.define do
     self.end 5.1 
     reading_id 3
     comments "Comment"
-  end  
+
+    trait :another_comment do
+      comments "Another Comment"
+    end
+
+    factory :another_range, traits: [:another_comment]
+  end
 end

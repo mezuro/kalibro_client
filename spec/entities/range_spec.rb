@@ -17,6 +17,8 @@
 require 'spec_helper'
 
 describe KalibroEntities::Entities::Range do
+  subject { FactoryGirl.build(:range) }
+
   describe 'id=' do
     it 'should set the value of the attribute id as an integer' do
       subject.id = "4"
@@ -85,24 +87,8 @@ describe KalibroEntities::Entities::Range do
     end
   end
 
-  #TODO: verify how Kalibro returns the list of ranges.
   describe 'ranges_of' do
     let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
-    subject { FactoryGirl.build(:range) }
-
-    context 'when exists the asked range' do
-      before :each do
-        KalibroEntities::Entities::Range.
-          expects(:request).
-          with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
-          returns({range: subject.to_hash})
-      end
-
-      it 'should return a list with the ranges' do
-        KalibroEntities::Entities::Range.ranges_of(metric_configuration.id).
-          first.beginning.should eq(subject.beginning)
-      end
-    end
 
     context 'when does not exists the asked range' do
       before :each do
@@ -114,6 +100,81 @@ describe KalibroEntities::Entities::Range do
 
       it 'should return a list with the ranges' do
         KalibroEntities::Entities::Range.ranges_of(metric_configuration.id).should eq([])
+      end
+    end
+
+    context 'when exist only one range for the given metric configuration' do
+      before :each do
+        KalibroEntities::Entities::Range.
+          expects(:request).
+          with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
+          returns({range: subject.to_hash})
+      end
+
+      it 'should return a list with the range' do
+        KalibroEntities::Entities::Range.ranges_of(metric_configuration.id).
+          first.beginning.should eq(subject.beginning)
+      end
+    end
+
+    context 'when exists many ranges for the given metric configuration' do
+      let(:another_range) { FactoryGirl.build(:another_range) }
+      
+      before :each do
+        KalibroEntities::Entities::Range.
+          expects(:request).
+          with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
+          returns({range: [subject.to_hash, another_range.to_hash]})
+      end
+
+      it 'should return a list with the ranges' do
+        ranges = KalibroEntities::Entities::Range.ranges_of(metric_configuration.id)
+        ranges.first.comments.should eq(subject.comments)
+        ranges.last.comments.should eq(another_range.comments)
+      end
+    end
+  end
+
+  describe 'save' do
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
+    
+    context 'when kalibro does not save' do
+      before :each do
+        any_error_message = ""
+        any_code = rand(Time.now.to_i)
+
+        KalibroEntities::Entities::Range.
+          expects(:request)
+          .with(:save_range, {:range => subject.to_hash, :metric_configuration_id => metric_configuration.id})
+          .raises(Savon::SOAPFault.new(any_error_message, any_code))
+      end
+
+      it 'should returns false' do
+        subject.save(metric_configuration.id).should eq(false)
+      end
+
+      it 'should set the error on kalibro_errors attribute' do
+        subject.save(metric_configuration.id)
+        subject.kalibro_errors.should_not eq([])
+      end
+    end
+
+    context 'when kalibro saves the range' do
+      before :each do
+        @new_id = rand(Time.now.to_i)
+        KalibroEntities::Entities::Range.
+          expects(:request)
+          .with(:save_range, {:range => subject.to_hash, :metric_configuration_id => metric_configuration.id})
+          .returns({range_id: @new_id})
+      end
+
+      it 'should returns true' do
+        subject.save(metric_configuration.id).should eq(true)
+      end
+
+      it 'should set the id attribute' do
+        subject.save(metric_configuration.id)
+        subject.id.should eq(@new_id)
       end
     end
   end

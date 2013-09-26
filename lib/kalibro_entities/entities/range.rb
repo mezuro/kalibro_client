@@ -52,7 +52,22 @@ module KalibroEntities
 
       def self.ranges_of(metric_configuration_id)
         response = request(:ranges_of, {metric_configuration_id: metric_configuration_id} )[:range]
-        response.nil? ? [] : [response].map { |range| new range }
+        if response.nil? 
+          response = []
+        elsif response.is_a?(Hash)
+          response = [response]
+        end
+        response.map { |range| new range }
+      end
+
+      def save(metric_configuration_id)
+        begin
+          @id = self.class.request(:save_range, {:range => self.to_hash, :metric_configuration_id => metric_configuration_id})[:range_id]
+          true
+        rescue Exception => exception
+          add_error exception
+          false
+        end
       end
 
       private
