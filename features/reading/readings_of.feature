@@ -6,6 +6,6 @@ Feature: Find
   @kalibro_restart
   Scenario: readings of a valid reading group
     Given I have a reading group with name "Kalibro"
-    And I have a reading that belongs to the given reading group
+    And I have a reading within the given reading group
     When I ask for the readings of the given reading group
     Then it should return the a list with its readings

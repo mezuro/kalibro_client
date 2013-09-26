@@ -1,9 +1,4 @@
-Given(/^I have a reading$/) do
-  @reading_group = FactoryGirl.create(:reading_group)
-  @reading = FactoryGirl.create(:reading, {id: nil, group_id: @reading_group.id})
-end
-
-Given(/^I have a reading that belongs to the given reading group$/) do
+Given(/^I have a reading within the given reading group$/) do
   @reading = FactoryGirl.create(:reading, {id: nil, group_id: @reading_group.id})
 end
 
@@ -21,10 +16,6 @@ end
 
 Then(/^it should return the a list with its readings$/) do
   @found_readings.first == @reading
-end
-
-Given(/^I have a range that belongs to the given reading$/) do
-  pending # pending # There is no Range entity yet!
 end
 
 When(/^I ask for the reading of the given range$/) do
