@@ -87,20 +87,18 @@ describe KalibroEntities::Entities::Reading do
     end
 
     describe 'reading_of' do
-      pending 'There is no entity Range yet!' do
-        before do
-          @range = FactoryGirl.build(:range)
+      before do
+        @range = FactoryGirl.build(:range)
 
-          KalibroEntities::Entities::Reading.
-            expects(:request).
-            with(:reading_of, {:range_id => @range.id}).
-            returns({:reading => @reading.to_hash})
-        end
+        KalibroEntities::Entities::Reading.
+          expects(:request).
+          with(:reading_of, {:range_id => @range.id}).
+          returns({:reading => @reading.to_hash})
+      end
 
-        it 'should returns a list of readings that belongs to the given reading group' do
-          response = KalibroEntities::Entities::Reading.reading_of @range.id
-          response.label.should eq(@reading.label)
-        end
+      it 'should returns a list of readings that belongs to the given reading group' do
+        response = KalibroEntities::Entities::Reading.reading_of @range.id
+        response.label.should eq(@reading.label)
       end
     end
   end
