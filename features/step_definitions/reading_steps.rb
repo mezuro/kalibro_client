@@ -18,6 +18,3 @@ Then(/^it should return the a list with its readings$/) do
   @found_readings.first == @reading
 end
 
-When(/^I ask for the reading of the given range$/) do
-  pending # There is no Range entity yet!
-end

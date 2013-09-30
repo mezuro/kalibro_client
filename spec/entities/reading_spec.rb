@@ -85,22 +85,6 @@ describe KalibroEntities::Entities::Reading do
         response.last.label.should eq(@reading.label)
       end
     end
-
-    describe 'reading_of' do
-      before do
-        @range = FactoryGirl.build(:range)
-
-        KalibroEntities::Entities::Reading.
-          expects(:request).
-          with(:reading_of, {:range_id => @range.id}).
-          returns({:reading => @reading.to_hash})
-      end
-
-      it 'should returns a list of readings that belongs to the given reading group' do
-        response = KalibroEntities::Entities::Reading.reading_of @range.id
-        response.label.should eq(@reading.label)
-      end
-    end
   end
 
   # The only purpose of this test is to cover the overrided save_params method
