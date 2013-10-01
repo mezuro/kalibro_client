@@ -48,7 +48,7 @@ module KalibroEntities
         response = [response] if response.is_a?(String)
         response.map {|descendant_result| descendant_result.to_f}
       end
-      
+
       def self.metric_results_of(module_result_id)
         response = self.request(:metric_results_of, {:module_result_id => module_result_id})[:metric_result]
         response = [] if response.nil?

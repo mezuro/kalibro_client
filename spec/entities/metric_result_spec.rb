@@ -21,6 +21,49 @@ describe KalibroEntities::Entities::MetricResult do
     @metric_result = FactoryGirl.build(:metric_result)
   end
 
+  describe 'id=' do
+    it 'should set the value of the attribute id' do
+      subject.id = 42
+      subject.id.should eq(42)
+    end
+  end
+
+  describe 'configuration=' do
+    before :each do
+      @metric_configuration_snapshot = FactoryGirl.build(:metric_configuration_snapshot)
+    end
+
+    it 'should set the configuration' do
+      subject.configuration = @metric_configuration_snapshot.to_hash
+      subject.configuration.code.should eq(@metric_configuration_snapshot.code)
+    end
+  end
+
+  describe 'metric_configuration_snapshot' do
+    before :each do
+      @metric_configuration_snapshot = FactoryGirl.build(:metric_configuration_snapshot)
+    end
+
+    it 'should be an alias to configuration' do
+      subject.configuration = @metric_configuration_snapshot.to_hash
+      subject.metric_configuration_snapshot.code.should eq(@metric_configuration_snapshot.code)
+    end
+  end
+
+  describe 'value=' do
+    it 'should set the value of the attribute value' do
+      subject.value = 42
+      subject.value.should eq(42)
+    end
+  end
+
+  describe 'aggregated_value=' do
+    it 'should set the value of the attribute aggregated_value' do
+      subject.aggregated_value = 42
+      subject.aggregated_value.should eq(42)
+    end
+  end
+
   describe 'descendant_results_of' do
     context 'when there is one descendant result for the given metric_result' do
       before :each do
@@ -75,6 +118,7 @@ describe KalibroEntities::Entities::MetricResult do
         KalibroEntities::Entities::MetricResult.metric_results_of(123).first.value.should eq(@metric_result.value)
       end
     end
+
     context 'when there is no metric result for the given module_result' do
       before :each do
         KalibroEntities::Entities::MetricResult.
