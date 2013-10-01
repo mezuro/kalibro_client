@@ -5,6 +5,14 @@ Given(/^I have a metric configuration within the given configuration$/) do
                      configuration_id: @configuration.id})
 end
 
+Given(/^I have a metric configuration within the given configuration with the given metric$/) do
+  @metric_configuration = FactoryGirl.create(:metric_configuration,
+                    {id: nil,
+                     metric: @metric,
+                     reading_group_id: @reading_group.id,
+                     configuration_id: @configuration.id})
+end
+
 When(/^I search a metric configuration with the same id of the given metric configuration$/) do
   @found_metric_configuration = KalibroEntities::Entities::MetricConfiguration.find(@metric_configuration.id)
 end

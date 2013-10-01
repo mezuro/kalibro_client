@@ -147,4 +147,56 @@ describe KalibroEntities::Entities::MetricResult do
       end
     end
   end
+
+  describe 'history_of' do
+    let(:module_result) { FactoryGirl.build(:module_result) }
+    let(:metric) { FactoryGirl.build(:metric) }
+
+    context 'when there is not a date metric result' do
+      before :each do
+        KalibroEntities::Entities::MetricResult.
+          expects(:request).
+          with(:history_of_metric, {:metric_name => metric.name, :module_result_id => module_result.id}).
+          returns({date_metric_result: nil})
+      end
+
+      it 'should return an empty list' do
+        KalibroEntities::Entities::MetricResult.history_of(metric.name, module_result.id).should eq([])
+      end
+    end
+
+    context 'when there is only one date metric result' do
+      let(:date_metric_result) { FactoryGirl.build(:date_metric_result, {metric_result: subject}) }
+
+      before :each do
+        KalibroEntities::Entities::MetricResult.
+          expects(:request).
+          with(:history_of_metric, {:metric_name => metric.name, :module_result_id => module_result.id}).
+          returns({date_metric_result: date_metric_result.to_hash})
+      end
+
+      it 'should return the date metric result as an object into a list' do
+        KalibroEntities::Entities::MetricResult.history_of(metric.name, module_result.id).
+          first.metric_result.id.should eq(subject.id)
+      end
+    end
+
+    context 'when there is many date metric results' do
+      let(:date_metric_result) { FactoryGirl.build(:date_metric_result, {metric_result: subject}) }
+      let(:another_date_metric_result) { FactoryGirl.build(:another_date_metric_result, {metric_result: subject}) }
+
+      before :each do
+        KalibroEntities::Entities::MetricResult.
+          expects(:request).
+          with(:history_of_metric, {:metric_name => metric.name, :module_result_id => module_result.id}).
+          returns({date_metric_result: [date_metric_result.to_hash, another_date_metric_result.to_hash]})
+      end
+
+      it 'should return a list of date metric results as objects' do
+        response = KalibroEntities::Entities::MetricResult.history_of(metric.name, module_result.id)
+        response.first.metric_result.id.should eq(date_metric_result.metric_result.id)
+        response.last.metric_result.id.should eq(another_date_metric_result.metric_result.id)
+      end
+    end
+  end
 end
