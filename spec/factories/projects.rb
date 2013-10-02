@@ -19,5 +19,11 @@ FactoryGirl.define do
     id 1
     name "QtCalculator"
     description "A simple calculator for us."
-  end  
+  end
+  
+  factory :another_project, class: KalibroEntities::Entities::Project do
+    id 42
+    name "Kalibro"
+    description "A Kalibro description."
+  end      
 end

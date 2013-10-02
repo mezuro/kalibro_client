@@ -18,18 +18,16 @@ require 'spec_helper'
 
 describe KalibroEntities::Entities::Project do
   describe 'initialize' do
-    before :each do
-      @project = FactoryGirl.build(:project, {id: 42})
-    end
+    let(:project) { FactoryGirl.build(:project, {id: 42}) }
 
     it 'should have the id set to 42' do
-      @project.id.should eq(42)
+      project.id.should eq(42)
     end
   end
 
   describe 'id=' do
-    it 'should set the value of the attribute id' do
-      subject.id = 42
+    it 'should set the value of the attribute id as integer' do
+      subject.id = "42"
       subject.id.should eq(42)
     end
   end
@@ -37,7 +35,10 @@ describe KalibroEntities::Entities::Project do
   describe 'all' do
     context 'with no projects' do
       before :each do
-        KalibroEntities::Entities::Project.expects(:request).with(:all_projects).returns({:project => nil})
+        KalibroEntities::Entities::Project.
+          expects(:request).
+          with(:all_projects).
+          returns({:project => nil})
       end
 
       it 'should return nil' do
@@ -46,16 +47,21 @@ describe KalibroEntities::Entities::Project do
     end
 
     context 'with many projects' do
+      let(:project) { FactoryGirl.build(:project) }
+      let(:another_project) { FactoryGirl.build(:another_project) }
+
       before :each do
-        @hash = FactoryGirl.build(:project).to_hash
-        KalibroEntities::Entities::Project.expects(:request).with(:all_projects).returns({:project => [@hash, @hash]})
+        KalibroEntities::Entities::Project.
+            expects(:request).
+            with(:all_projects).
+            returns({:project => [project.to_hash, another_project.to_hash]})
       end
 
-      it 'should return nil' do
+      it 'should return a list with projects' do
         projects = KalibroEntities::Entities::Project.all
 
-        projects.first.name.should eq(@hash[:name])
-        projects.last.name.should eq(@hash[:name])
+        projects.first.name.should eq(project.name)
+        projects.last.name.should eq(another_project.name)
       end
     end
   end
