@@ -15,6 +15,5 @@ Feature: Descendant results
     And I call the process method for the given repository
     And I wait up for a ready processing
     And I call the first_processing_of method for the given repository
-    And I call the metric results of method with the results root id of the given processing
-    And I call the descendant results method from the given metric result
-    Then I should get a list of metric results
+    And I search a metric result with descendant results for the given metric result
+    Then I should get a Float list
