@@ -52,39 +52,34 @@ describe KalibroEntities::Entities::Repository do
   end
 
   describe "id=" do
-    subject { FactoryGirl.build(:repository) }
-
-    it 'should set the id attribute values' do
-      subject.id = 222
+    it 'should set the id attribute values as integer' do
+      subject.id = "222"
       subject.id.should eq(222)
     end
   end
 
   describe "process_period=" do
-    subject { FactoryGirl.build(:repository) }
-
-    it 'should set the process_period attribute values' do
-      subject.process_period = 222
+    it 'should set the process_period attribute values as integer' do
+      subject.process_period = "222"
       subject.process_period.should eq(222)
     end
   end
 
   describe "configuration_id=" do
-    subject { FactoryGirl.build(:repository) }
-
-    it 'should set the configuration_id attribute values' do
-      subject.configuration_id = 222
+    it 'should set the configuration_id attribute values as integer' do
+      subject.configuration_id = "222"
       subject.configuration_id.should eq(222)
     end
   end
 
   describe 'process' do
-    subject { FactoryGirl.build(:repository) }
-
-    it 'should call the request method' do
+    before :each do
       KalibroEntities::Entities::Repository.
         expects(:request).
         with(:process_repository, {:repository_id => subject.id})
+    end
+    
+    it 'should call the request method' do
       subject.process
     end
   end
