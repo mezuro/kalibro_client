@@ -87,10 +87,13 @@ describe KalibroEntities::Entities::Repository do
   describe 'cancel_processing_of_repository' do
     subject { FactoryGirl.build(:repository) }
 
-    it 'should call the request method' do
+    before :each do
       KalibroEntities::Entities::Repository.
         expects(:request).
         with(:cancel_processing_of_repository, {:repository_id => subject.id})
+    end
+
+    it 'should call the request method' do
       subject.cancel_processing_of_repository
     end
   end
@@ -101,10 +104,11 @@ describe KalibroEntities::Entities::Repository do
 
     before :each do
       KalibroEntities::Entities::Repository.
-        expects(:request).with(:save_repository, {:repository => {:send_email => 'test@test.com', :project_id => '1', :configuration_id => '1', :address => 'svn://svn.code.sf.net/p/qt-calculator/code/trunk', :type => 'SVN', :process_period => '1', :license => 'GPLv3', :description => 'A simple calculator', :name => 'QtCalculator'}, :project_id => 1}).returns({:repository_id => 1})
+        expects(:request).
+        with(:save_repository, {:repository => subject.to_hash, :project_id => 1}).
+        returns({:repository_id => 1})
 
       KalibroEntities::Entities::Repository.any_instance.expects(:id=).with(1).returns(1)
-      KalibroEntities::Entities::Repository.any_instance.expects(:id=).with(nil).returns(nil)
     end
 
     it 'should make a request to save model with id and return true without errors' do
@@ -114,29 +118,29 @@ describe KalibroEntities::Entities::Repository do
   end
 
   describe 'all' do
+    subject { FactoryGirl.build(:repository) }
     let(:project) { FactoryGirl.build(:project) }
-    let(:repository) { FactoryGirl.build(:repository)}
 
     before :each do
       KalibroEntities::Entities::Project.expects(:all).returns([project])
-      KalibroEntities::Entities::Repository.expects(:repositories_of).with(project.id).returns([repository])
+      KalibroEntities::Entities::Repository.expects(:repositories_of).with(project.id).returns([subject])
     end
 
     it 'should list all the repositories' do
-      KalibroEntities::Entities::Repository.all.should include(repository)
+      KalibroEntities::Entities::Repository.all.should include(subject)
     end
   end
 
   describe 'find' do
-    let(:repository) { FactoryGirl.build(:repository) }
+    subject { FactoryGirl.build(:repository) }
 
     context 'when the repository exists' do
       before :each do
-        KalibroEntities::Entities::Repository.expects(:all).returns([repository])
+        KalibroEntities::Entities::Repository.expects(:all).returns([subject])
       end
 
       it 'should return the repository' do
-        KalibroEntities::Entities::Repository.find(repository.id).should eq(repository)
+        KalibroEntities::Entities::Repository.find(subject.id).should eq(subject)
       end
     end
 
@@ -148,7 +152,7 @@ describe KalibroEntities::Entities::Repository do
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroEntities::Entities::Repository.find(repository.id) }.
+        expect { KalibroEntities::Entities::Repository.find(subject.id) }.
           to raise_error(KalibroEntities::Errors::RecordNotFound)
       end
     end

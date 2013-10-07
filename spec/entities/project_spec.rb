@@ -18,10 +18,10 @@ require 'spec_helper'
 
 describe KalibroEntities::Entities::Project do
   describe 'initialize' do
-    let(:project) { FactoryGirl.build(:project, {id: 42}) }
+    subject { FactoryGirl.build(:project, {id: 42}) }
 
     it 'should have the id set to 42' do
-      project.id.should eq(42)
+      subject.id.should eq(42)
     end
   end
 
