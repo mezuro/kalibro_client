@@ -10,8 +10,8 @@ Feature: Descendant results
     And I have a reading group with name "Group"
     And I have a loc configuration within the given configuration
     And the given project has the following Repositories:
-      |   name    | type |              address                  |
-      |  Kalibro  |  GIT | https://github.com/mezuro/kalibro.git |
+      |   name    | type |              address                        |
+      |  SBKing   |  GIT | https://git.gitorious.org/sbking/sbking.git |
     And I call the process method for the given repository
     And I wait up for a ready processing
     And I call the first_processing_of method for the given repository
