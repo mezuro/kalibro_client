@@ -43,6 +43,12 @@ describe KalibroEntities::Entities::Repository do
     it 'should return an array' do
       KalibroEntities::Entities::Repository.repositories_of(1).should be_an(Array)
     end
+
+    it 'should set the repository_id' do
+      KalibroEntities::Entities::Repository.repositories_of(1).each do |repository|
+        repository.project_id.should eq(1)
+      end
+    end
   end
 
   describe "id=" do

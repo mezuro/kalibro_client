@@ -27,7 +27,8 @@ module KalibroEntities
       end
 
       def self.repositories_of(project_id)
-        create_objects_array_from_hash request(:repositories_of, {:project_id => project_id})[:repository]
+        repositories = create_objects_array_from_hash request(:repositories_of, {:project_id => project_id})[:repository]
+        repositories.map { |repository| repository.project_id = project_id; repository }
       end
 
       def id=(value)
