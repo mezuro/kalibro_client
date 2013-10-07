@@ -36,28 +36,26 @@ describe KalibroEntities::Entities::DateMetricResult do
     end
   end
 
-  pending 'There is no entity MetricResult yet!' do
-    describe 'metric_result=' do
-      before :each do
-        @metric_result = FactoryGirl.build(:metric_result)
-        @metric_result_hash = @metric_result.to_hash
+  describe 'metric_result=' do
+    before :each do
+      @metric_result = FactoryGirl.build(:metric_result)
+      @metric_result_hash = @metric_result.to_hash
 
-        KalibroEntities::Entities::MetricResult.expects(:to_object).with(@metric_result_hash).returns(@metric_result)
-      end
-
-      it 'should set the metric_result with the given one' do
-        subject.metric_result = @metric_result_hash
-
-        subject.metric_result.should eq(@metric_result)
-      end
+      KalibroEntities::Entities::MetricResult.expects(:to_object).with(@metric_result_hash).returns(@metric_result)
     end
 
-    describe 'result' do
-      subject {FactoryGirl.build(:date_metric_result)}
+    it 'should set the metric_result with the given one' do
+      subject.metric_result = @metric_result_hash
 
-      it 'should return the metric result value' do
-        subject.result.should eq(10)
-      end
+      subject.metric_result.should eq(@metric_result)
+    end
+  end
+
+  describe 'result' do
+    subject {FactoryGirl.build(:date_metric_result)}
+
+    it 'should return the metric result value' do
+      subject.result.should eq(10)
     end
   end
 end
