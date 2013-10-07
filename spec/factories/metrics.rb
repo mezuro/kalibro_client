@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -22,5 +22,14 @@ FactoryGirl.define do
     description nil
     script ""
     language ["C", "CPP", "JAVA"]
-  end  
+  end
+
+  factory :loc, class: KalibroEntities::Entities::Metric do
+    name "Lines of Code"
+    compound false
+    scope "CLASS"
+    description nil
+    script ""
+    language ["C", "CPP", "JAVA"]
+  end
 end

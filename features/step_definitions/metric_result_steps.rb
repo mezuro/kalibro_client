@@ -5,15 +5,8 @@ end
 Given(/^I search a metric result with descendant results for the given metric result$/) do
   first_module_result = KalibroEntities::Entities::ModuleResult.find(@response.results_root_id)
 
-  first_module_result.children.each do |module_result|
-    metric_results = KalibroEntities::Entities::MetricResult.metric_results_of(module_result.id)
-
-    metric_results.each do |metric_result|
-      @response = metric_result.descendant_results
-      puts @response.inspect
-      return if !@response.first.nil?
-    end
-  end
+  metric_results = KalibroEntities::Entities::MetricResult.metric_results_of(first_module_result.id)
+  @response = metric_results.first.descendant_results
 end
 
 When(/^I call the history of method with the metric name and the results root id of the given processing$/) do
