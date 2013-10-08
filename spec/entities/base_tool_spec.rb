@@ -20,7 +20,9 @@ describe KalibroEntities::Entities::BaseTool do
   describe 'all_names' do
     context 'with no base tools' do
       before :each do
-        KalibroEntities::Entities::BaseTool.expects(:request).with(:all_base_tool_names).
+        KalibroEntities::Entities::BaseTool.
+          expects(:request).
+          with(:all_base_tool_names).
           returns({:base_tool_name => nil})
       end
 
@@ -32,7 +34,9 @@ describe KalibroEntities::Entities::BaseTool do
     context 'with many base tools' do
       before :each do
         @hash = FactoryGirl.build(:base_tool).to_hash
-        KalibroEntities::Entities::BaseTool.expects(:request).with(:all_base_tool_names).
+        KalibroEntities::Entities::BaseTool.
+          expects(:request).
+          with(:all_base_tool_names).
           returns({:base_tool_name => [@hash[:name], @hash[:name]]})
       end
 
@@ -49,7 +53,9 @@ describe KalibroEntities::Entities::BaseTool do
   describe 'all' do
     context 'with no base tools' do
       before :each do
-        KalibroEntities::Entities::BaseTool.expects(:request).with(:all_base_tool_names).
+        KalibroEntities::Entities::BaseTool.
+          expects(:request).
+          with(:all_base_tool_names).
           returns({:base_tool_name => nil})
       end
 
@@ -85,7 +91,9 @@ describe KalibroEntities::Entities::BaseTool do
 
     context 'with an inexistent name' do
       before :each do
-        KalibroEntities::Entities::BaseTool.expects(:request).with(:get_base_tool, {:base_tool_name => @hash[:name]}).
+        KalibroEntities::Entities::BaseTool.
+          expects(:request).
+          with(:get_base_tool, {:base_tool_name => @hash[:name]}).
           returns({:base_tool => nil})
       end
 
@@ -96,7 +104,9 @@ describe KalibroEntities::Entities::BaseTool do
 
     context 'with an existent name' do
       before :each do
-        KalibroEntities::Entities::BaseTool.expects(:request).with(:get_base_tool,{:base_tool_name => @hash[:name]}).
+        KalibroEntities::Entities::BaseTool.
+          expects(:request).
+          with(:get_base_tool,{:base_tool_name => @hash[:name]}).
           returns({:base_tool => @hash})
       end
 
@@ -110,7 +120,10 @@ describe KalibroEntities::Entities::BaseTool do
     before :each do
       @metric = FactoryGirl.build(:metric)
       @hash = @metric.to_hash
-      KalibroEntities::Entities::Metric.expects(:to_objects_array).with(@hash).returns([@metric])
+      KalibroEntities::Entities::Metric.
+        expects(:to_objects_array).
+        with(@hash).
+        returns([@metric])
     end
 
     describe 'supported_metric=' do
