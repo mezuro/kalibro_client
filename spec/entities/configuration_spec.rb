@@ -18,8 +18,8 @@ require 'spec_helper'
 
 describe KalibroEntities::Entities::Configuration do
   describe 'id=' do
-    it 'should set the value of the attribute id' do
-      subject.id = 42
+    it 'should set the value of the attribute id as an Integer' do
+      subject.id = "42"
       subject.id.should eq(42)
     end
   end
@@ -27,7 +27,10 @@ describe KalibroEntities::Entities::Configuration do
   describe 'all' do
     context 'with no configurations' do
       before :each do
-        KalibroEntities::Entities::Configuration.expects(:request).with(:all_configurations).returns({:configuration => nil})
+        KalibroEntities::Entities::Configuration.
+          expects(:request).
+          with(:all_configurations).
+          returns({:configuration => nil})
       end
 
       it 'should return nil' do
@@ -36,17 +39,22 @@ describe KalibroEntities::Entities::Configuration do
     end
 
     context 'with many configurations' do
+      let(:configuration) { FactoryGirl.build(:configuration) }
+      let(:another_configuration) { FactoryGirl.build(:another_configuration) }
+
       before :each do
-        @hash = FactoryGirl.build(:configuration).to_hash
-        KalibroEntities::Entities::Configuration.expects(:request).with(:all_configurations).returns({:configuration => [@hash, @hash]})
+        KalibroEntities::Entities::Configuration.
+          expects(:request).
+          with(:all_configurations).
+          returns({:configuration => [configuration.to_hash, another_configuration.to_hash]})
       end
 
       it 'should return the two elements' do
         configurations = KalibroEntities::Entities::Configuration.all
 
         configurations.size.should eq(2)
-        configurations.first.name.should eq(@hash[:name])
-        configurations.last.name.should eq(@hash[:name])
+        configurations.first.name.should eq(configuration.name)
+        configurations.last.name.should eq(another_configuration.name)
       end
     end
   end
