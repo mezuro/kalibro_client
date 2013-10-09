@@ -18,7 +18,7 @@ require 'spec_helper'
 
 describe KalibroEntities::Entities::Metric do
   describe 'languages' do
-    subject {FactoryGirl.build(:metric)}
+    subject { FactoryGirl.build(:metric) }
 
     it 'should return the value of the language attribute' do
       subject.languages.should eq(["C", "CPP", "JAVA"])
@@ -33,9 +33,15 @@ describe KalibroEntities::Entities::Metric do
   end
 
   describe 'language=' do
-    it 'should set convert the value to an array of objects' do
-      KalibroEntities::Entities::Metric.expects(:to_objects_array).returns(["Java"])
+    before :each do
+      KalibroEntities::Entities::Metric.
+        expects(:to_objects_array).
+        returns(["Java"])
+    end
+
+    it 'should convert the value to an array of objects' do
       subject.language = "Java"
+      subject.languages.should eq(["Java"])
     end
   end
 end
