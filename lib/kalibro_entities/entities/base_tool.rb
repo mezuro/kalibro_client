@@ -46,8 +46,8 @@ module KalibroEntities
       end
 
       def self.all
-        basetools = all_names
-        basetools.map{ |name| find_by_name(name) }
+        base_tools = all_names
+        base_tools.map{ |name| find_by_name(name) }
       end
     end
   end

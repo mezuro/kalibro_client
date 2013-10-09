@@ -32,20 +32,22 @@ describe KalibroEntities::Entities::BaseTool do
     end
 
     context 'with many base tools' do
+      let(:base_tool_hash) { FactoryGirl.build(:base_tool).to_hash }
+      let(:another_base_tool_hash) { FactoryGirl.build(:another_base_tool).to_hash }
+
       before :each do
-        @hash = FactoryGirl.build(:base_tool).to_hash
         KalibroEntities::Entities::BaseTool.
           expects(:request).
           with(:all_base_tool_names).
-          returns({:base_tool_name => [@hash[:name], @hash[:name]]})
+          returns({:base_tool_name => [base_tool_hash, another_base_tool_hash]})
       end
 
       it 'should return the two elements' do
         base_tool_names = KalibroEntities::Entities::BaseTool.all_names
 
         base_tool_names.size.should eq(2)
-        base_tool_names.first.should eq(@hash[:name])
-        base_tool_names.last.should eq(@hash[:name])
+        base_tool_names.first.should eq(base_tool_hash)
+        base_tool_names.last.should eq(another_base_tool_hash)
       end
     end
   end
@@ -65,40 +67,50 @@ describe KalibroEntities::Entities::BaseTool do
     end
 
     context 'with many base tools' do
+      let(:base_tool) { FactoryGirl.build(:base_tool) }
+      let(:another_base_tool) { FactoryGirl.build(:another_base_tool) }
+
       before :each do
-        @hash = FactoryGirl.build(:base_tool).to_hash
-        KalibroEntities::Entities::BaseTool.expects(:request).with(:all_base_tool_names).
-          returns({:base_tool_name => [@hash[:name], @hash[:name]]})
-        KalibroEntities::Entities::BaseTool.expects(:request).at_least_once.with(:get_base_tool, {:base_tool_name => @hash[:name]}).
-          returns({:base_tool => @hash})
+        KalibroEntities::Entities::BaseTool.
+          expects(:request).
+          with(:all_base_tool_names).
+          returns({:base_tool_name => [base_tool.name, another_base_tool.name]})
+        
+        KalibroEntities::Entities::BaseTool.
+          expects(:request).
+          with(:get_base_tool, {:base_tool_name => base_tool.name}).
+          returns({:base_tool => base_tool.to_hash})
+
+        KalibroEntities::Entities::BaseTool.
+          expects(:request).
+          with(:get_base_tool, {:base_tool_name => another_base_tool.name}).
+          returns({:base_tool => another_base_tool.to_hash})
       end
 
       it 'should return the two elements' do
         base_tools = KalibroEntities::Entities::BaseTool.all
 
         base_tools.size.should eq(2)
-        base_tools.first.name.should eq(@hash[:name])
-        base_tools.last.name.should eq(@hash[:name])
+        base_tools.first.name.should eq(base_tool.name)
+        base_tools.last.name.should eq(another_base_tool.name)
       end
     end
   end
 
   describe 'find_by_name' do
-    before :each do
-      @subject = FactoryGirl.build(:base_tool)
-      @hash = @subject.to_hash
-    end
+    subject { FactoryGirl.build(:base_tool) }
 
     context 'with an inexistent name' do
       before :each do
         KalibroEntities::Entities::BaseTool.
           expects(:request).
-          with(:get_base_tool, {:base_tool_name => @hash[:name]}).
+          with(:get_base_tool, {:base_tool_name => subject.name}).
           returns({:base_tool => nil})
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroEntities::Entities::BaseTool.find_by_name(@hash[:name])}.to raise_error(KalibroEntities::Errors::RecordNotFound)
+        expect { KalibroEntities::Entities::BaseTool.find_by_name(subject.name)}.
+          to raise_error(KalibroEntities::Errors::RecordNotFound)
       end
     end
 
@@ -106,53 +118,51 @@ describe KalibroEntities::Entities::BaseTool do
       before :each do
         KalibroEntities::Entities::BaseTool.
           expects(:request).
-          with(:get_base_tool,{:base_tool_name => @hash[:name]}).
-          returns({:base_tool => @hash})
+          with(:get_base_tool,{:base_tool_name => subject.name}).
+          returns({:base_tool => subject.to_hash})
       end
 
       it 'should return a base_tool' do
-        KalibroEntities::Entities::BaseTool.find_by_name(@hash[:name]).name.should eq(@subject.name)
+        KalibroEntities::Entities::BaseTool.find_by_name(subject.name).name.should eq(subject.name)
       end
     end
   end
 
-  context 'Supported Metric' do
+  describe 'Supported Metric' do
+    let(:metric) { FactoryGirl.build(:metric) }
+
     before :each do
-      @metric = FactoryGirl.build(:metric)
-      @hash = @metric.to_hash
       KalibroEntities::Entities::Metric.
-        expects(:to_objects_array).
-        with(@hash).
-        returns([@metric])
+        expects(:to_objects_array).at_least_once.
+        with(metric.to_hash).
+        returns([metric])
     end
 
-    describe 'supported_metric=' do
+    context 'supported_metric=' do
       it 'should set the value of the array of supported metrics' do
-        subject.supported_metric = @hash
-        subject.supported_metric.first.name.should eq(@hash[:name])
+        subject.supported_metric = metric.to_hash
+        subject.supported_metric.first.name.should eq(metric.name)
       end
     end
 
-    describe 'supported_metrics' do
+    context 'supported_metrics' do
       it 'should return the array of the supported metrics' do
-        subject.supported_metric = @hash
-        subject.supported_metrics.first.name.should eq(@hash[:name])
+        subject.supported_metric = metric.to_hash
+        subject.supported_metrics.first.name.should eq(metric.name)
       end
     end
   end
   
   describe 'metric' do
-    before :each do
-      @subject = FactoryGirl.build(:base_tool)
-      @metric = @subject.supported_metrics.first
-    end
-
+    subject { FactoryGirl.build(:base_tool) }
+    let(:metric) { subject.supported_metrics.first }
+    
     it 'should return nil with an inexistent name' do
-      @subject.metric("fake name").should be_nil
+      subject.metric("fake name").should be_nil
     end
 
     it 'should return a metric with an existent name' do
-      @subject.metric(@metric.name).name.should eq(@metric.name)
+      subject.metric(metric.name).name.should eq(metric.name)
     end
   end
 end

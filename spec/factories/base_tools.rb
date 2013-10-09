@@ -20,5 +20,12 @@ FactoryGirl.define do
     description "Analizo is a suite of source code analysis tools."
     collector_class_name "org.analizo.AnalizoMetricCollector"
     supported_metric { [FactoryGirl.build(:metric), FactoryGirl.build(:metric)] }
+  
+    trait :another_base_tool do
+      name "Avalio"
+      description "Avalio is another source code analyser that hasn't been developed yet."
+    end
+
+    factory  :another_base_tool, traits: [:another_base_tool]
   end  
 end
