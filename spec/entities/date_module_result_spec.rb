@@ -37,17 +37,17 @@ describe KalibroEntities::Entities::DateModuleResult do
   end
 
   describe 'module_result=' do
+    let(:module_result) { FactoryGirl.build(:module_result) }
     before :each do
-      @module_result = FactoryGirl.build(:module_result)
-      @module_result_hash = @module_result.to_hash
-
-      KalibroEntities::Entities::ModuleResult.expects(:to_object).with(@module_result_hash).returns(@module_result)
+      KalibroEntities::Entities::ModuleResult.
+        expects(:to_object).
+        with(module_result.to_hash).
+        returns(module_result)
     end
 
     it 'should set the module_result with the given one' do
-      subject.module_result = @module_result_hash
-
-      subject.module_result.should eq(@module_result)
+      subject.module_result = module_result.to_hash
+      subject.module_result.should eq(module_result)
     end
   end
 
