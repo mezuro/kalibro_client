@@ -106,9 +106,13 @@ module KalibroEntities
       end
 
       def self.create_objects_array_from_hash (response)
+        create_array_from_hash(response).map { |hash| new hash }
+      end
+
+      def self.create_array_from_hash (response)
         response = [] if response.nil?
         response = [response] if response.is_a?(Hash)
-        response.map { |hash| new hash }
+        response
       end
 
       protected
