@@ -65,7 +65,6 @@ module KalibroEntities
       def save_params
         {:metric_configuration => self.to_hash, :configuration_id => self.configuration_id}
       end
-      
     end
   end
 end
