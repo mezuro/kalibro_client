@@ -19,73 +19,75 @@ require 'spec_helper'
 describe KalibroEntities::Entities::MetricConfigurationSnapshot do
   describe 'weight=' do
     it 'should set the value of the attribute weight' do
-      subject.weight = 0.6
+      subject.weight = "0.6"
       subject.weight.should eq(0.6)
     end
   end
 
   describe 'metric=' do
-    before do
-      @metric = FactoryGirl.build(:metric);
-    end
+    let(:metric) { FactoryGirl.build(:metric) }
 
     context 'when it is not a hash' do
       it 'should set the value of the attribute metric' do
-        subject.metric = @metric
-        subject.metric.should eq(@metric)
+        subject.metric = metric
+        subject.metric.should eq(metric)
       end
     end
 
     context 'When it is a hash' do
       before :each do
-        @metric_hash = @metric.to_hash
-        KalibroEntities::Entities::Metric.expects(:to_object).with(@metric_hash).returns(@metric)
+        KalibroEntities::Entities::Metric.
+          expects(:to_object).
+          at_least_once.
+          with(metric.to_hash).
+          returns(metric)
       end
 
       it 'should set the value of the attribute metric as an object' do
-        subject.metric = @metric_hash
-        subject.metric.should eq(@metric)
+        subject.metric = metric.to_hash
+        subject.metric.should eq(metric)
       end
     end
   end
 
   describe 'range=' do
-    before do
-      @range = FactoryGirl.build(:range_snapshot)
-      @range_hash = @range.to_hash
-      
-    end
+    let(:range_snapshot) { FactoryGirl.build(:range_snapshot) }
+    let(:range_snapshot_hash) { range_snapshot.to_hash }
 
     context 'with a single range' do
       before :each do
-        KalibroEntities::Entities::RangeSnapshot.expects(:to_object).with(@range_hash).returns(@range)
+        KalibroEntities::Entities::RangeSnapshot.
+          expects(:to_object).
+          with(range_snapshot_hash).
+          returns(range_snapshot)
       end
 
       it 'should set the value of the attribute range' do
-        subject.range = @range_hash
-        subject.range.should eq([@range])
+        subject.range = range_snapshot_hash
+        subject.range.should eq([range_snapshot])
       end
     end
 
     context 'with a list of many ranges' do
       before :each do
-        KalibroEntities::Entities::RangeSnapshot.expects(:to_object).twice.with(@range_hash).returns(@range)
+        KalibroEntities::Entities::RangeSnapshot.
+        expects(:to_object).
+        twice.with(range_snapshot_hash).
+        returns(range_snapshot)
       end
 
       it 'should set the value of the attribute range' do
-        subject.range = [@range_hash, @range_hash]
+        subject.range = [range_snapshot_hash, range_snapshot_hash]
         ranges = subject.range
         ranges.size.should eq(2)
-        ranges.first.should eq (@range)
-        ranges.last.should eq (@range)
+        ranges.first.should eq (range_snapshot)
+        ranges.last.should eq (range_snapshot)
       end
     end
   end
 
   describe 'range_snapshot' do
-    before :each do
-      subject {FactoryGirl.build(:range_snapshot)}
-    end
+    subject { FactoryGirl.build(:metric_configuration_snapshot) }
 
     it 'should return the value of the range attribute' do
       subject.range_snapshot.should eq(subject.range)
@@ -96,9 +98,10 @@ describe KalibroEntities::Entities::MetricConfigurationSnapshot do
     subject {FactoryGirl.build(:metric_configuration_snapshot)}
 
     it 'should override the default to_hash method' do
-      @hash = subject.to_hash
-      @hash[:attributes!][:range].should eq({'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',
-        'xsi:type' => 'kalibro:rangeSnapshotXml' })
+      hash = subject.to_hash
+      hash[:attributes!][:range].
+        should eq({'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',
+                   'xsi:type' => 'kalibro:rangeSnapshotXml' })
     end
   end
 end
