@@ -20,8 +20,8 @@ describe KalibroEntities::Entities::ReadingGroup do
   describe "id=" do
     subject { FactoryGirl.build(:reading_group) }
 
-    it 'should set the id attribute values' do
-      subject.id = 222
+    it 'should set the id attribute values as an integer' do
+      subject.id = "222"
       subject.id.should eq(222)
     end
   end
@@ -38,16 +38,16 @@ describe KalibroEntities::Entities::ReadingGroup do
     end
 
     context 'with many reading_groups' do
+      let(:reading_group) { FactoryGirl.build(:reading_group) }
       before :each do
-        @hash = FactoryGirl.build(:reading_group).to_hash
-        KalibroEntities::Entities::ReadingGroup.expects(:request).with(:all_reading_groups).returns({:reading_group => [@hash, @hash]})
+        KalibroEntities::Entities::ReadingGroup.expects(:request).with(:all_reading_groups).returns({:reading_group => [reading_group.to_hash, reading_group.to_hash]})
       end
 
       it 'should return nil' do
         reading_groups = KalibroEntities::Entities::ReadingGroup.all
 
-        reading_groups.first.name.should eq(@hash[:name])
-        reading_groups.last.name.should eq(@hash[:name])
+        reading_groups.first.name.should eq(reading_group.name)
+        reading_groups.last.name.should eq(reading_group.name)
       end
     end
   end
