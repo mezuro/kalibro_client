@@ -55,9 +55,9 @@ describe KalibroEntities::Entities::ModuleResult do
   describe 'children' do
     before :each do
       KalibroEntities::Entities::ModuleResult.
-      expects(:request).
-      with(:children_of, {:module_result_id => subject.id}).
-      returns({module_result: subject.to_hash})
+        expects(:request).
+        with(:children_of, {:module_result_id => subject.id}).
+        returns({module_result: subject.to_hash})
     end
 
     it 'should return a list of a objects' do
@@ -122,9 +122,9 @@ describe KalibroEntities::Entities::ModuleResult do
     let(:date_module_result) { FactoryGirl.build(:date_module_result) } 
     before :each do
       KalibroEntities::Entities::ModuleResult.
-      expects(:request).
-      with(:history_of_module, {:module_result_id => subject.id}).
-      returns({date_module_result: date_module_result.to_hash})
+        expects(:request).
+        with(:history_of_module, {:module_result_id => subject.id}).
+        returns({date_module_result: date_module_result.to_hash})
     end
 
     it 'should return a list of date_module_results' do

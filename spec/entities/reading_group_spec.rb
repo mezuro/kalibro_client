@@ -29,7 +29,10 @@ describe KalibroEntities::Entities::ReadingGroup do
   describe 'all' do
     context 'with no reading_groups' do
       before :each do
-        KalibroEntities::Entities::ReadingGroup.expects(:request).with(:all_reading_groups).returns({:reading_group => nil})
+        KalibroEntities::Entities::ReadingGroup.
+          expects(:request).
+          with(:all_reading_groups).
+          returns({:reading_group => nil})
       end
 
       it 'should return nil' do
@@ -40,7 +43,10 @@ describe KalibroEntities::Entities::ReadingGroup do
     context 'with many reading_groups' do
       let(:reading_group) { FactoryGirl.build(:reading_group) }
       before :each do
-        KalibroEntities::Entities::ReadingGroup.expects(:request).with(:all_reading_groups).returns({:reading_group => [reading_group.to_hash, reading_group.to_hash]})
+        KalibroEntities::Entities::ReadingGroup.
+          expects(:request).
+          with(:all_reading_groups).
+          returns({:reading_group => [reading_group.to_hash, reading_group.to_hash]})
       end
 
       it 'should return nil' do
@@ -57,7 +63,9 @@ describe KalibroEntities::Entities::ReadingGroup do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroEntities::Entities::ReadingGroup.expects(:request).with(:delete_reading_group,{:group_id => subject.id})
+        KalibroEntities::Entities::ReadingGroup.
+          expects(:request).
+          with(:delete_reading_group,{:group_id => subject.id})
       end
 
       it 'should remain with the errors array empty' do
@@ -71,8 +79,10 @@ describe KalibroEntities::Entities::ReadingGroup do
   describe 'exists?' do
     context 'with an inexistent id' do
       it 'should return false' do
-        KalibroEntities::Entities::ReadingGroup.expects(:request).with(:reading_group_exists,{:group_id=>0}).returns({:exists => false})
-        
+        KalibroEntities::Entities::ReadingGroup.
+          expects(:request).
+          with(:reading_group_exists,{:group_id=>0}).
+          returns({:exists => false})
         KalibroEntities::Entities::ReadingGroup.exists?(0)
       end
     end

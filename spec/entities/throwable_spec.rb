@@ -17,39 +17,35 @@
 require 'spec_helper'
 
 describe KalibroEntities::Entities::Throwable do
-  before do
-    @stack_trace_element = FactoryGirl.build(:stack_trace_element)
-  end
+  let(:stack_trace_element) { FactoryGirl.build(:stack_trace_element) }
 
   describe 'stack_trace_element=' do
     it 'should set the stack trace element' do
-      subject.stack_trace_element = @stack_trace_element.to_hash
-      subject.stack_trace_element.should eq([@stack_trace_element])
+      subject.stack_trace_element = stack_trace_element.to_hash
+      subject.stack_trace_element.should eq([stack_trace_element])
     end
   end
 
   describe 'stack_trace' do
     it 'should return the stack trace element' do
-      subject.stack_trace_element = @stack_trace_element.to_hash
-      subject.stack_trace.should eq([@stack_trace_element])
+      subject.stack_trace_element = stack_trace_element.to_hash
+      subject.stack_trace.should eq([stack_trace_element])
     end
   end
 
   describe 'stack_trace=' do
     it 'should set the stack trace element' do
-      subject.stack_trace = [@stack_trace_element]
-      subject.stack_trace_element.should eq([@stack_trace_element])
+      subject.stack_trace = [stack_trace_element]
+      subject.stack_trace_element.should eq([stack_trace_element])
     end
   end
 
   describe 'cause=' do
-    before do
-      @another_throwable = FactoryGirl.build(:throwable)
-    end
+    let(:another_throwable) { FactoryGirl.build(:throwable) }
 
     it 'should set the cause' do
-      subject.cause = @another_throwable.to_hash
-      subject.cause.should eq(@another_throwable)
+      subject.cause = another_throwable.to_hash
+      subject.cause.should eq(another_throwable)
     end
   end
 end

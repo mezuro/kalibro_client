@@ -71,9 +71,9 @@ describe KalibroEntities::Entities::MetricConfigurationSnapshot do
     context 'with a list of many ranges' do
       before :each do
         KalibroEntities::Entities::RangeSnapshot.
-        expects(:to_object).
-        twice.with(range_snapshot_hash).
-        returns(range_snapshot)
+          expects(:to_object).
+          twice.with(range_snapshot_hash).
+          returns(range_snapshot)
       end
 
       it 'should set the value of the attribute range' do

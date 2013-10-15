@@ -17,17 +17,16 @@
 require 'spec_helper'
 
 describe KalibroEntities::Entities::Model do
+  subject { FactoryGirl.build(:model) }
+
   describe 'new' do
     it 'should create a model from an empty hash' do
-      model = KalibroEntities::Entities::Model.new {}
-
-      model.kalibro_errors.should eq([])
+      subject = KalibroEntities::Entities::Model.new {}
+      subject.kalibro_errors.should eq([])
     end
   end
 
   describe 'class_name' do
-    subject { FactoryGirl.build(:model) }
-
     it 'should be a String' do
       subject.class.class_name.should be_a(String)
     end
@@ -41,7 +40,6 @@ describe KalibroEntities::Entities::Model do
     it 'should return the class_name' do
       endpoint = 'test'
       KalibroEntities::Entities::Model.expects(:class_name).returns(endpoint)
-
       KalibroEntities::Entities::Model.endpoint.should eq(endpoint)
     end
   end
@@ -53,16 +51,19 @@ describe KalibroEntities::Entities::Model do
   end
 
   describe 'request' do
-    before :each do
-      @fixture = File.read("spec/savon/fixtures/project/does_not_exists.xml")
-      @client = mock('client')
-    end
+    let(:fixture) { File.read("spec/savon/fixtures/project/does_not_exists.xml") }
+    let(:client) { mock('client') }
 
     it 'should successfully get the Kalibro version' do
-      @client.expects(:call).with(:project_exists, message: {project_id: 1}).returns(mock_savon_response(@fixture))
-      KalibroEntities::Entities::Model.expects(:client).with(any_parameters).returns(@client)
-
-      KalibroEntities::Entities::Model.request(:project_exists, {project_id: 1})[:exists].should eq(false)
+      client.expects(:call).
+        with(:project_exists, message: {project_id: 1}).
+        returns(mock_savon_response(fixture))
+      KalibroEntities::Entities::Model.
+        expects(:client).
+        with(any_parameters).
+        returns(client)
+      KalibroEntities::Entities::Model.
+        request(:project_exists, {project_id: 1})[:exists].should eq(false)
     end
   end
 
@@ -95,7 +96,9 @@ describe KalibroEntities::Entities::Model do
 
   describe 'save' do
     before :each do
-      KalibroEntities::Entities::Model.expects(:request).with(:save_model, {:model=>{}}).returns({:model_id => 42})
+      KalibroEntities::Entities::Model.
+        expects(:request).
+        with(:save_model, {:model=>{}}).returns({:model_id => 42})
     end
 
     context "when it doesn't have the method id=" do
@@ -107,7 +110,10 @@ describe KalibroEntities::Entities::Model do
 
     context 'when it has the method id=' do
       before :each do
-        KalibroEntities::Entities::Model.any_instance.expects(:id=).with(42).returns(42)
+        KalibroEntities::Entities::Model.
+          any_instance.expects(:id=).
+          with(42).
+          returns(42)
       end
 
       it 'should make a request to save model with id and return true without errors' do
@@ -128,13 +134,15 @@ describe KalibroEntities::Entities::Model do
 
   describe 'create' do
     before :each do
-      @model = FactoryGirl.build(:model)
-      @model.expects(:save)
-      KalibroEntities::Entities::Model.expects(:new).with({}).returns(@model)
+      subject.expects(:save)
+      KalibroEntities::Entities::Model.
+        expects(:new).
+        with({}).
+        returns(subject)
     end
 
     it 'should instantiate and save the model' do
-      (KalibroEntities::Entities::Model.create {}).should eq(@model)
+      (KalibroEntities::Entities::Model.create {}).should eq(subject)
     end
   end
 
@@ -146,16 +154,15 @@ describe KalibroEntities::Entities::Model do
     end
 
     context 'with two models with different attribute values' do
+      let(:another_model) { FactoryGirl.build(:model) }
       before :each do
         subject.expects(:variable_names).returns(["answer"])
         subject.expects(:send).with("answer").returns(42)
-
-        @another_model = FactoryGirl.build(:model)
-        @another_model.expects(:send).with("answer").returns(41)
+        another_model.expects(:send).with("answer").returns(41)
       end 
 
       it 'should return false' do
-        subject.should_not eq(@another_model)
+        subject.should_not eq(another_model)
       end
     end
 
@@ -169,7 +176,10 @@ describe KalibroEntities::Entities::Model do
   describe 'exists?' do
     context 'with an inexistent id' do
       before :each do
-        KalibroEntities::Entities::Model.expects(:request).with(:model_exists,{:model_id=>0}).returns({:exists => false})
+        KalibroEntities::Entities::Model.
+          expects(:request).
+          with(:model_exists,{:model_id=>0}).
+          returns({:exists => false})
       end
 
       it 'should return false' do
@@ -179,7 +189,10 @@ describe KalibroEntities::Entities::Model do
 
     context 'with an existent id' do
       before :each do
-        KalibroEntities::Entities::Model.expects(:request).with(:model_exists,{:model_id=>42}).returns({:exists => true})
+        KalibroEntities::Entities::Model.
+          expects(:request).
+          with(:model_exists,{:model_id=>42}).
+          returns({:exists => true})
       end
 
       it 'should return false' do
@@ -201,8 +214,12 @@ describe KalibroEntities::Entities::Model do
 
     context 'with an existent id' do
       before :each do
-        KalibroEntities::Entities::Model.expects(:exists?).with(42).returns(true)
-        KalibroEntities::Entities::Model.expects(:request).with(:get_model,{:model_id => 42}).returns({:model => {}})
+        KalibroEntities::Entities::Model.
+          expects(:exists?).with(42).
+          returns(true)
+        KalibroEntities::Entities::Model.
+          expects(:request).
+          with(:get_model,{:model_id => 42}).returns({:model => {}})
       end
 
       it 'should return an empty model' do
@@ -215,7 +232,9 @@ describe KalibroEntities::Entities::Model do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroEntities::Entities::Model.expects(:request).with(:delete_model,{:model_id => subject.id})
+        KalibroEntities::Entities::Model.
+          expects(:request).
+          with(:delete_model,{:model_id => subject.id})
       end
 
       it 'should remain with the errors array empty' do
@@ -227,7 +246,9 @@ describe KalibroEntities::Entities::Model do
     context 'when the destruction fails' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroEntities::Entities::Model.expects(:request).with(:delete_model,{:model_id => subject.id}).raises(Exception.new)
+        KalibroEntities::Entities::Model.
+          expects(:request).
+          with(:delete_model,{:model_id => subject.id}).raises(Exception.new)
       end
 
       it "should have an exception inside it's errors" do

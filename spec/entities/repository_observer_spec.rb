@@ -27,7 +27,9 @@ describe KalibroEntities::Entities::RepositoryObserver do
   describe 'all' do
     context 'with no repository observers' do
       before :each do
-        KalibroEntities::Entities::RepositoryObserver.expects(:request).with(:all_repository_observers).
+        KalibroEntities::Entities::RepositoryObserver.
+          expects(:request).
+          with(:all_repository_observers).
           returns({:repository_observer => nil})
       end
 
@@ -37,18 +39,19 @@ describe KalibroEntities::Entities::RepositoryObserver do
     end
 
     context 'with many repository observers' do
+      let(:repository_observer) { FactoryGirl.build(:repository_observer) }
       before :each do
-        @hash = FactoryGirl.build(:repository_observer).to_hash
-        KalibroEntities::Entities::RepositoryObserver.expects(:request).with(:all_repository_observers).
-          returns({:repository_observer => [@hash, @hash]})
+        KalibroEntities::Entities::RepositoryObserver.
+          expects(:request).
+          with(:all_repository_observers).
+          returns({:repository_observer => [repository_observer.to_hash, repository_observer.to_hash]})
       end
 
       it 'should return the two elements' do
         repository_observers = KalibroEntities::Entities::RepositoryObserver.all
-
         repository_observers.size.should eq(2)
-        repository_observers.first.name.should eq(@hash[:name])
-        repository_observers.last.name.should eq(@hash[:name])
+        repository_observers.first.name.should eq(repository_observer.to_hash[:name])
+        repository_observers.last.name.should eq(repository_observer.to_hash[:name])
       end
     end
   end
@@ -56,36 +59,36 @@ describe KalibroEntities::Entities::RepositoryObserver do
   # FIXME: the index of the second parameter of the request of repository_observers of will be altered someday.
   describe 'repository_observers_of' do
     context 'with no repository observers' do
+      let(:repository_without_observers) { FactoryGirl.build(:repository).to_hash }
       before :each do
-        @repository_without_observers = FactoryGirl.build(:repository).to_hash
         KalibroEntities::Entities::RepositoryObserver.expects(:request).
-          with(:repository_observers_of, {:repository_observer_id => @repository_without_observers[:id]}).
+          with(:repository_observers_of, {:repository_observer_id => repository_without_observers[:id]}).
           returns({:repository_observer => []})
       end
 
       it 'should get an empty array' do
         KalibroEntities::Entities::RepositoryObserver.
-          repository_observers_of(@repository_without_observers[:id]).should eq []
+          repository_observers_of(repository_without_observers[:id]).should eq []
       end
     end
 
     context 'with many repository observers' do
+      let(:repository) { FactoryGirl.build(:repository) }
+      let(:repository_observer) { FactoryGirl.build(:repository_observer) }
+      
       before :each do
-        @repository = FactoryGirl.build(:repository).to_hash
-        @repository_observer = FactoryGirl.build(:repository_observer).to_hash
-
         KalibroEntities::Entities::RepositoryObserver.expects(:request).
-          with(:repository_observers_of, {:repository_observer_id => @repository[:id]}).
-          returns({:repository_observer => [@repository_observer, @repository_observer]})
+          with(:repository_observers_of, {:repository_observer_id => repository.id}).
+          returns({:repository_observer => [repository_observer.to_hash, repository_observer.to_hash]})
       end
 
       it 'should return the two elements' do
         repository_observers = KalibroEntities::Entities::RepositoryObserver.
-          repository_observers_of(@repository[:id])
+          repository_observers_of(repository.id)
 
         repository_observers.size.should eq(2)
-        repository_observers.first.name.should eq(@repository_observer[:name])
-        repository_observers.last.name.should eq(@repository_observer[:name])
+        repository_observers.first.name.should eq(repository_observer.name)
+        repository_observers.last.name.should eq(repository_observer.name)
       end
     end
   end

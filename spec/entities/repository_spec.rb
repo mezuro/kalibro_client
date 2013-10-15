@@ -17,6 +17,8 @@
 require 'spec_helper'
 
 describe KalibroEntities::Entities::Repository do
+  subject { FactoryGirl.build(:repository) }
+
   describe 'repository_types' do
     before :each do
       KalibroEntities::Entities::Repository.
@@ -85,8 +87,6 @@ describe KalibroEntities::Entities::Repository do
   end
 
   describe 'cancel_processing_of_repository' do
-    subject { FactoryGirl.build(:repository) }
-
     before :each do
       KalibroEntities::Entities::Repository.
         expects(:request).
@@ -98,32 +98,17 @@ describe KalibroEntities::Entities::Repository do
     end
   end
 
-  # The only purpose of this test is to cover the overrided save_params method
-  describe 'save' do
-    subject {FactoryGirl.build(:repository, {id: nil})}
-
-    before :each do
-      KalibroEntities::Entities::Repository.
-        expects(:request).
-        with(:save_repository, {:repository => subject.to_hash, :project_id => 1}).
-        returns({:repository_id => 1})
-
-      KalibroEntities::Entities::Repository.any_instance.expects(:id=).with(1).returns(1)
-    end
-
-    it 'should make a request to save model with id and return true without errors' do
-      subject.save.should be(true)
-      subject.kalibro_errors.should be_empty
-    end
-  end
-
   describe 'all' do
-    subject { FactoryGirl.build(:repository) }
     let(:project) { FactoryGirl.build(:project) }
 
     before :each do
-      KalibroEntities::Entities::Project.expects(:all).returns([project])
-      KalibroEntities::Entities::Repository.expects(:repositories_of).with(project.id).returns([subject])
+      KalibroEntities::Entities::Project.
+        expects(:all).
+        returns([project])
+      KalibroEntities::Entities::Repository.
+        expects(:repositories_of).
+        with(project.id).
+        returns([subject])
     end
 
     it 'should list all the repositories' do
@@ -132,11 +117,11 @@ describe KalibroEntities::Entities::Repository do
   end
 
   describe 'find' do
-    subject { FactoryGirl.build(:repository) }
-
     context 'when the repository exists' do
       before :each do
-        KalibroEntities::Entities::Repository.expects(:all).returns([subject])
+        KalibroEntities::Entities::Repository.
+          expects(:all).
+          returns([subject])
       end
 
       it 'should return the repository' do
@@ -155,6 +140,28 @@ describe KalibroEntities::Entities::Repository do
         expect { KalibroEntities::Entities::Repository.find(subject.id) }.
           to raise_error(KalibroEntities::Errors::RecordNotFound)
       end
+    end
+  end
+
+  # The only purpose of this test is to cover the overrided save_params method
+  describe 'save' do
+    subject {FactoryGirl.build(:repository, {id: nil})}
+
+    before :each do
+      KalibroEntities::Entities::Repository.
+        expects(:request).
+        with(:save_repository, {:repository => subject.to_hash, :project_id => 1}).
+        returns({:repository_id => 1})
+
+      KalibroEntities::Entities::Repository.any_instance.
+        expects(:id=).
+        with(1).
+        returns(1)
+    end
+
+    it 'should make a request to save model with id and return true without errors' do
+      subject.save.should be(true)
+      subject.kalibro_errors.should be_empty
     end
   end
 end

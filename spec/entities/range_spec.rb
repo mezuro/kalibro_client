@@ -144,9 +144,9 @@ describe KalibroEntities::Entities::Range do
         any_code = rand(Time.now.to_i)
 
         KalibroEntities::Entities::Range.
-          expects(:request)
-          .with(:save_range, {:range => subject.to_hash, :metric_configuration_id => metric_configuration.id})
-          .raises(Savon::SOAPFault.new(any_error_message, any_code))
+          expects(:request).
+          with(:save_range, {:range => subject.to_hash, :metric_configuration_id => metric_configuration.id}).
+          raises(Savon::SOAPFault.new(any_error_message, any_code))
       end
 
       it 'should returns false' do
@@ -160,12 +160,12 @@ describe KalibroEntities::Entities::Range do
     end
 
     context 'when kalibro saves the range' do
+      let(:new_id) { rand(Time.now.to_i) }
       before :each do
-        @new_id = rand(Time.now.to_i)
         KalibroEntities::Entities::Range.
-          expects(:request)
-          .with(:save_range, {:range => subject.to_hash, :metric_configuration_id => metric_configuration.id})
-          .returns({range_id: @new_id})
+          expects(:request).
+          with(:save_range, {:range => subject.to_hash, :metric_configuration_id => metric_configuration.id}).
+          returns({range_id: new_id})
       end
 
       it 'should returns true' do
@@ -174,7 +174,7 @@ describe KalibroEntities::Entities::Range do
 
       it 'should set the id attribute' do
         subject.save(metric_configuration.id)
-        subject.id.should eq(@new_id)
+        subject.id.should eq(new_id)
       end
     end
   end

@@ -17,9 +17,8 @@
 require 'spec_helper'
 
 describe KalibroEntities::Entities::MetricResult do
-  before :each do
-    @metric_result = FactoryGirl.build(:metric_result)
-  end
+  subject { FactoryGirl.build(:metric_result) }
+  let(:metric_configuration_snapshot) { FactoryGirl.build(:metric_configuration_snapshot) }
 
   describe 'id=' do
     it 'should set the value of the attribute id' do
@@ -29,24 +28,16 @@ describe KalibroEntities::Entities::MetricResult do
   end
 
   describe 'configuration=' do
-    before :each do
-      @metric_configuration_snapshot = FactoryGirl.build(:metric_configuration_snapshot)
-    end
-
     it 'should set the configuration' do
-      subject.configuration = @metric_configuration_snapshot.to_hash
-      subject.configuration.code.should eq(@metric_configuration_snapshot.code)
+      subject.configuration = metric_configuration_snapshot.to_hash
+      subject.configuration.code.should eq(metric_configuration_snapshot.code)
     end
   end
 
   describe 'metric_configuration_snapshot' do
-    before :each do
-      @metric_configuration_snapshot = FactoryGirl.build(:metric_configuration_snapshot)
-    end
-
     it 'should be an alias to configuration' do
-      subject.configuration = @metric_configuration_snapshot.to_hash
-      subject.metric_configuration_snapshot.code.should eq(@metric_configuration_snapshot.code)
+      subject.configuration = metric_configuration_snapshot.to_hash
+      subject.metric_configuration_snapshot.code.should eq(metric_configuration_snapshot.code)
     end
   end
 
@@ -69,12 +60,12 @@ describe KalibroEntities::Entities::MetricResult do
       before :each do
         KalibroEntities::Entities::MetricResult.
           expects(:request).
-          with(:descendant_results_of, { :metric_result_id => @metric_result.id }).
+          with(:descendant_results_of, { :metric_result_id => subject.id }).
           returns({descendant_result: "13.3"})
       end
 
       it 'should return an unitary list with the descendant result' do
-        @metric_result.descendant_results.should eq([13.3])
+        subject.descendant_results.should eq([13.3])
       end
     end
 
@@ -82,12 +73,12 @@ describe KalibroEntities::Entities::MetricResult do
       before :each do
         KalibroEntities::Entities::MetricResult.
           expects(:request).
-          with(:descendant_results_of, { :metric_result_id => @metric_result.id }).
+          with(:descendant_results_of, { :metric_result_id => subject.id }).
           returns({})
       end
 
       it 'should return an empty list' do
-        @metric_result.descendant_results.should eq([])
+        subject.descendant_results.should eq([])
       end
     end
 
@@ -95,12 +86,12 @@ describe KalibroEntities::Entities::MetricResult do
       before :each do
         KalibroEntities::Entities::MetricResult.
           expects(:request).
-          with(:descendant_results_of, { :metric_result_id => @metric_result.id }).
+          with(:descendant_results_of, { :metric_result_id => subject.id }).
           returns({descendant_result: ["-13.3", "42.42", "1"]})
       end
 
       it 'should return a list with the descendant results' do
-        @metric_result.descendant_results.should eq([-13.3, 42.42, 1])
+        subject.descendant_results.should eq([-13.3, 42.42, 1])
       end
     end
   end
@@ -111,11 +102,11 @@ describe KalibroEntities::Entities::MetricResult do
         KalibroEntities::Entities::MetricResult.
           expects(:request).
           with(:metric_results_of, { :module_result_id => 123 }).
-          returns({metric_result: @metric_result.to_hash})
+          returns({metric_result: subject.to_hash})
       end
 
       it 'should return an unitary list with the metric result' do
-        KalibroEntities::Entities::MetricResult.metric_results_of(123).first.value.should eq(@metric_result.value)
+        KalibroEntities::Entities::MetricResult.metric_results_of(123).first.value.should eq(subject.value)
       end
     end
 
@@ -133,17 +124,17 @@ describe KalibroEntities::Entities::MetricResult do
     end
 
     context 'when there are many metric results for the given module_result' do
+      let(:metric_results) { KalibroEntities::Entities::MetricResult.metric_results_of(28) }
       before :each do
         KalibroEntities::Entities::MetricResult.
           expects(:request).
           with(:metric_results_of, { :module_result_id => 28 }).
-          returns({metric_result: [@metric_result.to_hash, @metric_result.to_hash]})
-        @metric_results = KalibroEntities::Entities::MetricResult.metric_results_of(28)
+          returns({metric_result: [subject.to_hash, subject.to_hash]})
       end
 
       it 'should return a list with the descendant results' do
-        @metric_results.first.value.should eq(@metric_result.value)
-        @metric_results.last.aggregated_value.should eq(@metric_result.aggregated_value)
+        metric_results.first.value.should eq(subject.value)
+        metric_results.last.aggregated_value.should eq(subject.aggregated_value)
       end
     end
   end
