@@ -6,5 +6,5 @@ Feature: All
   @kalibro_restart
   Scenario: one reading group
     Given I have a reading group with name "Kalibro"
-    When I get all the reading groups
-    Then it should return the created reading group inside of an array
+    When I ask for all the reading groups
+    Then I should get a list with the given reading group

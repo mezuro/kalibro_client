@@ -2,7 +2,7 @@ Given(/^I have a reading group with name "(.*?)"$/) do |name|
   @reading_group = FactoryGirl.create(:reading_group, {id: nil, name: name})
 end
 
-When(/^I get all the reading groups$/) do
+When(/^I ask for all the reading groups$/) do
   @all_reading_groups = KalibroEntities::Entities::ReadingGroup.all
 end
 
@@ -10,7 +10,7 @@ When(/^I call the reading_group_of method for the given MetricConfiguration$/) d
   @metric_configuration_reading_group = KalibroEntities::Entities::ReadingGroup.reading_group_of(@metric_configuration.id)
 end
 
-Then(/^it should return the created reading group inside of an array$/) do
+Then(/^I should get a list with the given reading group$/) do
    @all_reading_groups.include?(@reading_group)
 end
 

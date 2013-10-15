@@ -7,4 +7,4 @@ Feature: All
   Scenario: one configuration
     Given I have a configuration with name "Java"
     When I get all the configurations
-    Then it should return the created configuration inside of an array
+    Then I should get a list with the given configuration

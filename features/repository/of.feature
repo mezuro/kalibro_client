@@ -11,5 +11,5 @@ Feature: Repositories listing
       |   name    | type |              address                  |
       | "Kalibro" |  GIT | https://github.com/mezuro/kalibro.git |
     When I ask for repositories from the given project
-    Then the response should contain the given repository
+    Then I should get a list with the given repository
     And the repositories should contain the project id

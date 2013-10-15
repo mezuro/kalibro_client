@@ -7,5 +7,5 @@ Feature: Find
   Scenario: find a valid reading
     Given I have a reading group with name "Kalibro"
     And I have a reading within the given reading group
-    When I search a reading with the same id of the given reading
-    Then it should return the same reading as the given one
+    When I ask for a reading with the same id of the given reading
+    Then I should get the given reading

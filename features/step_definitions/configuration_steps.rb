@@ -6,6 +6,6 @@ When(/^I get all the configurations$/) do
   @all_configurations = KalibroEntities::Entities::Configuration.all
 end
 
-Then(/^it should return the created configuration inside of an array$/) do
+Then(/^I should get a list with the given configuration$/) do
   @all_configurations.include?(@configuration)
 end

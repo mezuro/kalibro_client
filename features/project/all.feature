@@ -6,5 +6,5 @@ Feature: All
   @kalibro_restart
   Scenario: one project
     Given I have a project with name "Kalibro"
-    When I get all the projects
-    Then it should return the created project inside of an array
+    When I ask for all the projects
+    Then I should get a list with the given project

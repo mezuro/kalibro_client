@@ -11,4 +11,4 @@ Feature: Repositories listing
       |   name    | type |              address                  |
       | "Kalibro" |  GIT | https://github.com/mezuro/kalibro.git |
     When I ask to find the given repository
-    Then I should get the repository given
+    Then I should get the given repository

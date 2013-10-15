@@ -14,5 +14,5 @@ Feature: Children
       |  Kalibro  |  GIT | https://github.com/mezuro/kalibro.git |
     And I call the process method for the given repository
     And I wait up for a ready processing
-    When I search for the children of the processing root module result
-    Then it should return a list of the children module results
+    When I ask for the children of the processing root module result
+    Then I should get a list with the children module results

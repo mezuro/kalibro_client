@@ -35,7 +35,7 @@ Then(/^I should get success$/) do
   @response == true
 end
 
-Then(/^the response should contain the given repository$/) do
+Then(/^I should get a list with the given repository$/) do
   @response.should include(@repository)
 end
 
@@ -44,7 +44,7 @@ Then(/^I should get an array of types$/) do
   @repository_types.count >= 1
 end
 
-Then(/^I should get the repository given$/) do
+Then(/^I should get the given repository$/) do
   @response.should eq(@repository)
 end
 

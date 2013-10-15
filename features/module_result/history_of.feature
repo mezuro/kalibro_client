@@ -8,4 +8,4 @@ Feature: /history of
   Scenario: get the history of a module result
     Given I have a module result
     When I ask for the history of the given module result
-    Then it should return a list of date module results
+    Then I should get a list with date module results
