@@ -32,9 +32,7 @@ module KalibroEntities
 
       def children
         response = self.class.request(:children_of, {:module_result_id => id})[:module_result]
-        response = [] if response.nil?
-        response = [response] if response.is_a?(Hash)
-        response.map {|module_result| KalibroEntities::Entities::ModuleResult.new module_result}
+        self.class.create_objects_array_from_hash(response)
       end
 
       def parents
@@ -63,9 +61,7 @@ module KalibroEntities
       end
 
       def self.history_of(module_result_id)
-        response = self.request(:history_of_module, {:module_result_id => module_result_id})[:date_module_result]
-        response = [] if response.nil?
-        response = [response] if response.is_a?(Hash)
+        response = self.create_array_from_hash self.request(:history_of_module, {:module_result_id => module_result_id})[:date_module_result]
         response.map {|date_module_result| KalibroEntities::Entities::DateModuleResult.new date_module_result}
       end
     end

@@ -51,13 +51,7 @@ module KalibroEntities
       end
 
       def self.ranges_of(metric_configuration_id)
-        response = request(:ranges_of, {metric_configuration_id: metric_configuration_id} )[:range]
-        if response.nil? 
-          response = []
-        elsif response.is_a?(Hash)
-          response = [response]
-        end
-        response.map { |range| new range }
+        self.create_objects_array_from_hash request(:ranges_of, {metric_configuration_id: metric_configuration_id} )[:range]
       end
 
       def save(metric_configuration_id)
