@@ -43,6 +43,6 @@ Then(/^the project should not exist$/) do
   !KalibroEntities::Entities::Project.exists?(@found_project.id)
 end
 
-Then(/^Then I should get a list with the given project$/) do
+Then(/^I should get a list with the given project$/) do
   @all_projects.include?(@project)
 end

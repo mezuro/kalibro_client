@@ -48,6 +48,10 @@ Then(/^I should get the given repository$/) do
   @response.should eq(@repository)
 end
 
+Then(/^the response should contain the given repository$/) do
+  @response.first.project_id.should eq(@project.id)
+end
+
 Then(/^the repositories should contain the project id$/) do
   @response.first.project_id.should eq(@project.id)
 end
