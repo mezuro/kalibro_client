@@ -22,8 +22,8 @@ require 'kalibro_entities/version'
 Gem::Specification.new do |spec|
   spec.name          = "kalibro_entities"
   spec.version       = KalibroEntities::VERSION
-  spec.authors       = ["Daniel Paulino Alves", "Diego Araújo Martinez", "Guilherme Rojas V. de Lima", "Rafael Reggiani Manzo"]
-  spec.email         = ["danpaulalves@gmail.com", "diegamc90@gmail.com", "guilhermehrojas@gmail.com", "rr.manzo@gmail.com"]
+  spec.authors       = ["Carlos Morais", "Daniel Paulino Alves", "Diego Araújo Martinez", "Fellipe Souto", "Guilherme Rojas V. de Lima", "João M. M. da Silva", "Rafael Reggiani Manzo", "Renan Fichberg"]
+  spec.email         = ["carlos88morais@gmail.com", "danpaulalves@gmail.com", "diegamc90@gmail.com", "fllsouto@gmail.com","guilhermehrojas@gmail.com", "jaodsilv@linux.ime.usp.br", "rr.manzo@gmail.com", "rfichberg@gmail.com"]
   spec.description   = "KalibroEntities is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservice Kalibro (http://gitorious.org/kalibro/kalibro)."
   spec.summary       = "KalibroEntites is a communication interface with the Kalibro service."
   spec.homepage      = "https://github.com/mezuro/kalibro_entities"
