@@ -80,7 +80,7 @@ describe KalibroEntities::Entities::Repository do
         expects(:request).
         with(:process_repository, {:repository_id => subject.id})
     end
-    
+
     it 'should call the request method' do
       subject.process
     end
@@ -162,6 +162,30 @@ describe KalibroEntities::Entities::Repository do
     it 'should make a request to save model with id and return true without errors' do
       subject.save.should be(true)
       subject.kalibro_errors.should be_empty
+    end
+  end
+
+  describe 'exists?' do
+    subject {FactoryGirl.build(:repository)}
+
+    context 'when the repository exists' do
+      before :each do
+        KalibroEntities::Entities::Repository.expects(:find).with(subject.id).returns(subject)
+      end
+
+      it 'should return true' do
+        KalibroEntities::Entities::Repository.exists?(subject.id).should be_true
+      end
+    end
+
+    context 'when the repository does not exists' do
+      before :each do
+        KalibroEntities::Entities::Repository.expects(:find).with(subject.id).raises(KalibroEntities::Errors::RecordNotFound)
+      end
+
+      it 'should return false' do
+        KalibroEntities::Entities::Repository.exists?(subject.id).should be_false
+      end
     end
   end
 end

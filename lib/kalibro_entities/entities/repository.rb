@@ -68,6 +68,14 @@ module KalibroEntities
         raise KalibroEntities::Errors::RecordNotFound
       end
 
+      def self.exists?(id)
+        begin
+          return true unless find(id).nil?
+        rescue KalibroEntities::Errors::RecordNotFound
+          return false
+        end
+      end
+
       private
 
         def save_params

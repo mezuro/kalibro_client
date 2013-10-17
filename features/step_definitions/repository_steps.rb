@@ -31,6 +31,10 @@ When(/^I ask to find the given repository$/) do
   @response = KalibroEntities::Entities::Repository.find(@repository.id)
 end
 
+When(/^I ask to check if the given repository exists$/) do
+  @response = KalibroEntities::Entities::Repository.exists?(@repository.id)
+end
+
 Then(/^I should get success$/) do
   @response == true
 end
