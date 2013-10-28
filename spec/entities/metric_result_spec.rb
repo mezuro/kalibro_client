@@ -20,6 +20,15 @@ describe KalibroEntities::Entities::MetricResult do
   subject { FactoryGirl.build(:metric_result) }
   let(:metric_configuration_snapshot) { FactoryGirl.build(:metric_configuration_snapshot) }
 
+  describe 'new' do
+    context 'with value NaN' do
+      it 'should set the value with aggregated_value' do
+        metric_result = KalibroEntities::Entities::MetricResult.new( FactoryGirl.attributes_for(:metric_result, {value: "NaN", aggregated_value: 1.6}) )
+        metric_result.value.should eq(1.6)
+      end
+    end
+  end
+
   describe 'id=' do
     it 'should set the value of the attribute id' do
       subject.id = 42
@@ -134,7 +143,6 @@ describe KalibroEntities::Entities::MetricResult do
 
       it 'should return a list with the descendant results' do
         metric_results.first.value.should eq(subject.value)
-        metric_results.last.aggregated_value.should eq(subject.aggregated_value)
       end
     end
   end

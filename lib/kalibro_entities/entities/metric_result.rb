@@ -22,6 +22,17 @@ module KalibroEntities
 
       attr_accessor :id, :configuration, :value, :aggregated_value
 
+      def initialize(attributes={})
+        value = attributes[:value]
+        @value = (value == "NaN") ? attributes[:aggregated_value].to_f : value.to_f
+        attributes.each do |field, value|
+          if field!= :value and field!= :aggregated_value and self.class.is_valid?(field)
+            send("#{field}=", value)
+          end
+        end
+        @kalibro_errors = []
+      end
+
       def id=(value)
         @id = value.to_i
       end
