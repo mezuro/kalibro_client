@@ -60,6 +60,14 @@ module KalibroEntities
         @parent_id = value.to_i
       end
 
+      def folder?
+        self.children.count > 0
+      end
+
+      def file?
+        !self.folder?
+      end
+
       def self.history_of(module_result_id)
         response = self.create_array_from_hash self.request(:history_of_module, {:module_result_id => module_result_id})[:date_module_result]
         response.map {|date_module_result| KalibroEntities::Entities::DateModuleResult.new date_module_result}

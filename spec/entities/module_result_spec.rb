@@ -119,7 +119,7 @@ describe KalibroEntities::Entities::ModuleResult do
   end
 
   describe 'history_of' do
-    let(:date_module_result) { FactoryGirl.build(:date_module_result) } 
+    let(:date_module_result) { FactoryGirl.build(:date_module_result) }
     before :each do
       KalibroEntities::Entities::ModuleResult.
         expects(:request).
@@ -130,6 +130,34 @@ describe KalibroEntities::Entities::ModuleResult do
     it 'should return a list of date_module_results' do
       date_module_results = KalibroEntities::Entities::ModuleResult.history_of subject.id
       date_module_results.first.result.should eq date_module_result.result
+    end
+  end
+
+  describe 'folder? & file?' do
+    context 'when the module result has childrens' do
+      subject { FactoryGirl.build(:root_module_result) }
+
+      before :each do
+        subject.expects(:children).twice.returns([FactoryGirl.build(:module_result)])
+      end
+
+      it 'should return true for folder? and false for file?' do
+        subject.folder?.should be_true
+        subject.file?.should be_false
+      end
+    end
+
+    context 'when the module result has no childrens' do
+      subject { FactoryGirl.build(:module_result) }
+
+      before :each do
+        subject.expects(:children).twice.returns([])
+      end
+
+      it 'should return true for folder? and false for file?' do
+        subject.folder?.should be_false
+        subject.file?.should be_true
+      end
     end
   end
 end
