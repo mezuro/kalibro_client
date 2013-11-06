@@ -1,7 +1,7 @@
 module XMLConverters
   def xml_instance_class_name(object)
     xml_name = object.class.name
-    xml_name["KalibroEntities::Entities::"] = ""
+    xml_name["KalibroEntities::Entities::"] = "" if xml_name.start_with?("KalibroEntities::Entities::")
     xml_name[0..0] = xml_name[0..0].downcase
     xml_name + "Xml"
   end
