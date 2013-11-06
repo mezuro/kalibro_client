@@ -20,7 +20,7 @@ When(/^I ask to save the given range with an inexistent metric configuration$/) 
 end
 
 When(/^I ask ranges of the given metric configuration$/) do
-  @response = KalibroEntities::Entities::Range.ranges_of @metric_configuration.id
+  @response = KalibroGem::Entities::Range.ranges_of @metric_configuration.id
 end
 
 Then(/^I should get an empty list$/) do

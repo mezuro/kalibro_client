@@ -1,16 +1,16 @@
-# KalibroEntities
+# KalibroGem
 
-[![Build Status](https://travis-ci.org/mezuro/kalibro_entities.png?branch=master)](https://travis-ci.org/mezuro/kalibro_entities)
-[![Code Climate](https://codeclimate.com/github/mezuro/kalibro_entities.png)](https://codeclimate.com/github/mezuro/kalibro_entities)
-[![Coverage Status](https://coveralls.io/repos/mezuro/kalibro_entities/badge.png)](https://coveralls.io/r/mezuro/kalibro_entities)
+[![Build Status](https://travis-ci.org/mezuro/kalibro_gem.png?branch=master)](https://travis-ci.org/mezuro/kalibro_gem)
+[![Code Climate](https://codeclimate.com/github/mezuro/kalibro_gem.png)](https://codeclimate.com/github/mezuro/kalibro_gem)
+[![Coverage Status](https://coveralls.io/repos/mezuro/kalibro_gem/badge.png)](https://coveralls.io/r/mezuro/kalibro_gem)
 
-KalibroEntities is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservice Kalibro (http://gitorious.org/kalibro/kalibro).
+KalibroGem is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservice Kalibro (http://gitorious.org/kalibro/kalibro).
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'kalibro_entities'
+    gem 'kalibro_gem'
 
 And then execute:
 
@@ -18,11 +18,11 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install kalibro_entities
+    $ gem install kalibro_gem
 
 ## Usage
 
-KalibroEntities is intended to be an easy interface that encapsulates the usage of all the Kalibro service's endpoints. So have a look at the available entities at `lib/kalibro_entities/entities`.
+KalibroGem is intended to be an easy interface that encapsulates the usage of all the Kalibro service's endpoints. So have a look at the available entities at `lib/kalibro_gem/entities`.
 
 All the entities are subclasses from `Model`, so have a good look at it. Specially notice that all the entities have methods:
 
@@ -35,7 +35,7 @@ These four methods should be useful.
 
 We hope to make available soon a full documentation on RDoc that will make easier to understand all this.
 
-A good example on how to get everything from KalibroEntities should be Mezuro. So, have a look there for some examples.
+A good example on how to get everything from KalibroGem should be Mezuro. So, have a look there for some examples.
 
 ### Cucumber helpers
 
@@ -43,7 +43,7 @@ Acceptance tests with the Kalibro webservice can be painful. But we've created c
 
 Just add to your `env.rb` the following:
 
-    require 'kalibro_entities/kalibro_cucumber_helpers/hooks.rb'
+    require 'kalibro_gem/kalibro_cucumber_helpers/hooks.rb'
 
 The test configurations available are:
 
@@ -59,7 +59,7 @@ The test configurations available are:
 
 An example on how to change them is:
 
-    KalibroEntities::KalibroCucumberHelpers.configure do |config|
+    KalibroGem::KalibroCucumberHelpers.configure do |config|
       config.database = "kalibro_test"
     end
 

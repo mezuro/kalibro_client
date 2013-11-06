@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :repository, class: KalibroEntities::Entities::Repository do
+  factory :repository, class: KalibroGem::Entities::Repository do
     id 1
     name "QtCalculator"
     description "A simple calculator"
@@ -28,7 +28,7 @@ FactoryGirl.define do
     send_email "test@test.com"
   end
 
-  factory :another_repository, class: KalibroEntities::Entities::Repository, parent: :repository do
+  factory :another_repository, class: KalibroGem::Entities::Repository, parent: :repository do
     id 2
   end
 end

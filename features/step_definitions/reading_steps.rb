@@ -3,11 +3,11 @@ Given(/^I have a reading within the given reading group$/) do
 end
 
 When(/^I ask for a reading with the same id of the given reading$/) do
-  @found_reading = KalibroEntities::Entities::Reading.find @reading.id
+  @found_reading = KalibroGem::Entities::Reading.find @reading.id
 end
 
 When(/^I ask for the readings of the given reading group$/) do
-  @found_readings = KalibroEntities::Entities::Reading.readings_of @reading_group.id
+  @found_readings = KalibroGem::Entities::Reading.readings_of @reading_group.id
 end
 
 Then(/^I should get the given reading$/) do

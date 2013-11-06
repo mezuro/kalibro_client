@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'spec_helper'
-require 'kalibro_entities/helpers/hash_converters'
+require 'kalibro_gem/helpers/hash_converters'
 
 include HashConverters
 
@@ -50,7 +50,7 @@ describe HashConverters do
 
     context 'with a Model' do
       before :each do
-        @model = KalibroEntities::Entities::Model.new
+        @model = KalibroGem::Entities::Model.new
       end
 
       it "should return the Model's Hash" do
@@ -84,7 +84,7 @@ describe HashConverters do
   describe 'field_to_hash' do
     context 'with a nil field value' do
       before do
-        @model = KalibroEntities::Entities::Model.new
+        @model = KalibroGem::Entities::Model.new
         @model.expects(:send).with(:field_getter).returns(nil)
       end
 
@@ -99,7 +99,7 @@ describe HashConverters do
 
     context 'with a Float field value' do
       before do
-        @model = KalibroEntities::Entities::Model.new
+        @model = KalibroGem::Entities::Model.new
         @model.expects(:send).with(:field_getter).returns(1.0)
       end
 

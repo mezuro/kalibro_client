@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 require 'rake'
 require 'rake/tasklib'
 
-module KalibroEntities
+module KalibroGem
   module Rake
     class TestTask < ::Rake::TaskLib
       def initialize

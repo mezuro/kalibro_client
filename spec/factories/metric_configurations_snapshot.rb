@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :metric_configuration_snapshot, class: KalibroEntities::Entities::MetricConfigurationSnapshot do
+  factory :metric_configuration_snapshot, class: KalibroGem::Entities::MetricConfigurationSnapshot do
 		code "code"
 		weight "1.0"
 		aggregation_form 'AVERAGE'

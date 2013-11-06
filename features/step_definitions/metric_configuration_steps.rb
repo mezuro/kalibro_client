@@ -22,21 +22,21 @@ Given(/^I have a loc configuration within the given configuration$/) do
 end
 
 When(/^I search a metric configuration with the same id of the given metric configuration$/) do
-  @found_metric_configuration = KalibroEntities::Entities::MetricConfiguration.find(@metric_configuration.id)
+  @found_metric_configuration = KalibroGem::Entities::MetricConfiguration.find(@metric_configuration.id)
 end
 
 When(/^I search an inexistent metric configuration$/) do
   @is_error = false
   inexistent_id = rand(Time.now.to_i)
   begin
-  	KalibroEntities::Entities::MetricConfiguration.find(inexistent_id)
-  rescue KalibroEntities::Errors::RecordNotFound
+  	KalibroGem::Entities::MetricConfiguration.find(inexistent_id)
+  rescue KalibroGem::Errors::RecordNotFound
   	@is_error = true
   end
 end
 
 When(/^I request all metric configurations of the given configuration$/) do
-  @metric_configurations = KalibroEntities::Entities::MetricConfiguration.metric_configurations_of(@configuration.id)
+  @metric_configurations = KalibroGem::Entities::MetricConfiguration.metric_configurations_of(@configuration.id)
 end
 
 Then(/^it should return the same metric configuration as the given one$/) do

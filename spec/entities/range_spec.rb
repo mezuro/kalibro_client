@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::Range do
+describe KalibroGem::Entities::Range do
   subject { FactoryGirl.build(:range) }
 
   describe 'id=' do
@@ -62,7 +62,7 @@ describe KalibroEntities::Entities::Range do
     let(:reading) { FactoryGirl.build(:reading) }
 
     before :each do
-      KalibroEntities::Entities::Reading.
+      KalibroGem::Entities::Reading.
         expects(:find).
         with(subject.reading_id).
         returns(reading)
@@ -92,27 +92,27 @@ describe KalibroEntities::Entities::Range do
 
     context 'when does not exists the asked range' do
       before :each do
-        KalibroEntities::Entities::Range.
+        KalibroGem::Entities::Range.
           expects(:request).
           with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
           returns({range: nil})
       end
 
       it 'should return a list with the ranges' do
-        KalibroEntities::Entities::Range.ranges_of(metric_configuration.id).should eq([])
+        KalibroGem::Entities::Range.ranges_of(metric_configuration.id).should eq([])
       end
     end
 
     context 'when exist only one range for the given metric configuration' do
       before :each do
-        KalibroEntities::Entities::Range.
+        KalibroGem::Entities::Range.
           expects(:request).
           with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
           returns({range: subject.to_hash})
       end
 
       it 'should return a list with the range' do
-        KalibroEntities::Entities::Range.ranges_of(metric_configuration.id).
+        KalibroGem::Entities::Range.ranges_of(metric_configuration.id).
           first.beginning.should eq(subject.beginning)
       end
     end
@@ -121,14 +121,14 @@ describe KalibroEntities::Entities::Range do
       let(:another_range) { FactoryGirl.build(:another_range) }
       
       before :each do
-        KalibroEntities::Entities::Range.
+        KalibroGem::Entities::Range.
           expects(:request).
           with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
           returns({range: [subject.to_hash, another_range.to_hash]})
       end
 
       it 'should return a list with the ranges' do
-        ranges = KalibroEntities::Entities::Range.ranges_of(metric_configuration.id)
+        ranges = KalibroGem::Entities::Range.ranges_of(metric_configuration.id)
         ranges.first.comments.should eq(subject.comments)
         ranges.last.comments.should eq(another_range.comments)
       end
@@ -143,7 +143,7 @@ describe KalibroEntities::Entities::Range do
         any_error_message = ""
         any_code = rand(Time.now.to_i)
 
-        KalibroEntities::Entities::Range.
+        KalibroGem::Entities::Range.
           expects(:request).
           with(:save_range, {:range => subject.to_hash, :metric_configuration_id => metric_configuration.id}).
           raises(Savon::SOAPFault.new(any_error_message, any_code))
@@ -162,7 +162,7 @@ describe KalibroEntities::Entities::Range do
     context 'when kalibro saves the range' do
       let(:new_id) { rand(Time.now.to_i) }
       before :each do
-        KalibroEntities::Entities::Range.
+        KalibroGem::Entities::Range.
           expects(:request).
           with(:save_range, {:range => subject.to_hash, :metric_configuration_id => metric_configuration.id}).
           returns({range_id: new_id})

@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,13 +15,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :configuration, class: KalibroEntities::Entities::Configuration do
+  factory :configuration, class: KalibroGem::Entities::Configuration do
     id 1
     name "Java"
     description "Code metrics for Java."
   end
 
-  factory :another_configuration, class: KalibroEntities::Entities::Configuration do
+  factory :another_configuration, class: KalibroGem::Entities::Configuration do
     id 12
     name "Perl"
     description "Code metrics for Perl."

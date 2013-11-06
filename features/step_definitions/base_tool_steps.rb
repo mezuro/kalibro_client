@@ -1,16 +1,16 @@
 When(/^I get all base tool names$/) do
-  @base_tool_names = KalibroEntities::Entities::BaseTool.all_names
+  @base_tool_names = KalibroGem::Entities::BaseTool.all_names
 end
 
 When(/^I search base tool Analizo by name$/) do
-  @result = KalibroEntities::Entities::BaseTool.find_by_name("Analizo")
+  @result = KalibroGem::Entities::BaseTool.find_by_name("Analizo")
 end
 
 When(/^I search base tool Avalio by name$/) do
   @is_error = false
   begin 
-  	KalibroEntities::Entities::BaseTool.find_by_name("Avalio")
-	rescue KalibroEntities::Errors::RecordNotFound
+  	KalibroGem::Entities::BaseTool.find_by_name("Avalio")
+	rescue KalibroGem::Errors::RecordNotFound
   	@is_error = true 
   end
 end

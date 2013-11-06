@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,12 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::Repository do
+describe KalibroGem::Entities::Repository do
   subject { FactoryGirl.build(:repository) }
 
   describe 'repository_types' do
     before :each do
-      KalibroEntities::Entities::Repository.
+      KalibroGem::Entities::Repository.
         expects(:request).
         with(:supported_repository_types).
         returns({:supported_type=>["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"],
@@ -29,13 +29,13 @@ describe KalibroEntities::Entities::Repository do
     end
 
     it 'should return an array of repository types' do
-      KalibroEntities::Entities::Repository.repository_types.should eq(["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"])
+      KalibroGem::Entities::Repository.repository_types.should eq(["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"])
     end
   end
 
   describe 'repositories_of' do
     before :each do
-      KalibroEntities::Entities::Repository.
+      KalibroGem::Entities::Repository.
         expects(:request).
         with(:repositories_of, {:project_id => 1}).
         returns({:repository=>[],
@@ -43,11 +43,11 @@ describe KalibroEntities::Entities::Repository do
     end
 
     it 'should return an array' do
-      KalibroEntities::Entities::Repository.repositories_of(1).should be_an(Array)
+      KalibroGem::Entities::Repository.repositories_of(1).should be_an(Array)
     end
 
     it 'should set the repository_id' do
-      KalibroEntities::Entities::Repository.repositories_of(1).each do |repository|
+      KalibroGem::Entities::Repository.repositories_of(1).each do |repository|
         repository.project_id.should eq(1)
       end
     end
@@ -76,7 +76,7 @@ describe KalibroEntities::Entities::Repository do
 
   describe 'process' do
     before :each do
-      KalibroEntities::Entities::Repository.
+      KalibroGem::Entities::Repository.
         expects(:request).
         with(:process_repository, {:repository_id => subject.id})
     end
@@ -88,7 +88,7 @@ describe KalibroEntities::Entities::Repository do
 
   describe 'cancel_processing_of_repository' do
     before :each do
-      KalibroEntities::Entities::Repository.
+      KalibroGem::Entities::Repository.
         expects(:request).
         with(:cancel_processing_of_repository, {:repository_id => subject.id})
     end
@@ -102,43 +102,43 @@ describe KalibroEntities::Entities::Repository do
     let(:project) { FactoryGirl.build(:project) }
 
     before :each do
-      KalibroEntities::Entities::Project.
+      KalibroGem::Entities::Project.
         expects(:all).
         returns([project])
-      KalibroEntities::Entities::Repository.
+      KalibroGem::Entities::Repository.
         expects(:repositories_of).
         with(project.id).
         returns([subject])
     end
 
     it 'should list all the repositories' do
-      KalibroEntities::Entities::Repository.all.should include(subject)
+      KalibroGem::Entities::Repository.all.should include(subject)
     end
   end
 
   describe 'find' do
     context 'when the repository exists' do
       before :each do
-        KalibroEntities::Entities::Repository.
+        KalibroGem::Entities::Repository.
           expects(:all).
           returns([subject])
       end
 
       it 'should return the repository' do
-        KalibroEntities::Entities::Repository.find(subject.id).should eq(subject)
+        KalibroGem::Entities::Repository.find(subject.id).should eq(subject)
       end
     end
 
     context "when the repository doesn't exists" do
       before :each do
-        KalibroEntities::Entities::Repository.
+        KalibroGem::Entities::Repository.
           expects(:all).
           returns([FactoryGirl.build(:another_repository)])
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroEntities::Entities::Repository.find(subject.id) }.
-          to raise_error(KalibroEntities::Errors::RecordNotFound)
+        expect { KalibroGem::Entities::Repository.find(subject.id) }.
+          to raise_error(KalibroGem::Errors::RecordNotFound)
       end
     end
   end
@@ -148,12 +148,12 @@ describe KalibroEntities::Entities::Repository do
     subject {FactoryGirl.build(:repository, {id: nil})}
 
     before :each do
-      KalibroEntities::Entities::Repository.
+      KalibroGem::Entities::Repository.
         expects(:request).
         with(:save_repository, {:repository => subject.to_hash, :project_id => 1}).
         returns({:repository_id => 1})
 
-      KalibroEntities::Entities::Repository.any_instance.
+      KalibroGem::Entities::Repository.any_instance.
         expects(:id=).
         with(1).
         returns(1)
@@ -170,21 +170,21 @@ describe KalibroEntities::Entities::Repository do
 
     context 'when the repository exists' do
       before :each do
-        KalibroEntities::Entities::Repository.expects(:find).with(subject.id).returns(subject)
+        KalibroGem::Entities::Repository.expects(:find).with(subject.id).returns(subject)
       end
 
       it 'should return true' do
-        KalibroEntities::Entities::Repository.exists?(subject.id).should be_true
+        KalibroGem::Entities::Repository.exists?(subject.id).should be_true
       end
     end
 
     context 'when the repository does not exists' do
       before :each do
-        KalibroEntities::Entities::Repository.expects(:find).with(subject.id).raises(KalibroEntities::Errors::RecordNotFound)
+        KalibroGem::Entities::Repository.expects(:find).with(subject.id).raises(KalibroGem::Errors::RecordNotFound)
       end
 
       it 'should return false' do
-        KalibroEntities::Entities::Repository.exists?(subject.id).should be_false
+        KalibroGem::Entities::Repository.exists?(subject.id).should be_false
       end
     end
   end

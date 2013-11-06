@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroEntities do
+describe KalibroGem do
 
   context 'configuration' do
     #FIXME: there should be a better way to keep the default values
@@ -24,65 +24,65 @@ describe KalibroEntities do
 
     describe 'config' do
       it 'should return the default configuration' do
-        KalibroEntities.config.should eq({
+        KalibroGem.config.should eq({
                                           address: "http://localhost:8080/KalibroService/"
                                         })
       end
     end
 
     describe 'configure' do
-      after(:all) {KalibroEntities.configure(config)}
+      after(:all) {KalibroGem.configure(config)}
 
       it 'should set the address' do
-        KalibroEntities.configure({address: 'http://test.test'})
-        KalibroEntities.config.should eq({address: 'http://test.test'})
+        KalibroGem.configure({address: 'http://test.test'})
+        KalibroGem.config.should eq({address: 'http://test.test'})
       end
     end
 
     describe 'configure_with' do
       context 'with an existent YAML' do
-        after(:all) {KalibroEntities.configure(config)}
+        after(:all) {KalibroGem.configure(config)}
 
         it 'should set the config' do
-          KalibroEntities.configure_with('spec/savon/fixtures/config.yml')
+          KalibroGem.configure_with('spec/savon/fixtures/config.yml')
 
-          KalibroEntities.config.should eq({address: 'http://test1.test1'})
+          KalibroGem.config.should eq({address: 'http://test1.test1'})
         end
       end
 
       context 'with an inexistent YAML' do
         before :each do
           @logger = Logger.new(File::NULL)
-          KalibroEntities.expects(:logger).returns(@logger)
+          KalibroGem.expects(:logger).returns(@logger)
         end
 
         it 'should keep the defaults' do
-          KalibroEntities.configure_with('spec/savon/fixtures/inexistent_file.yml')
-          KalibroEntities.config.should eq({address: "http://localhost:8080/KalibroService/"})
+          KalibroGem.configure_with('spec/savon/fixtures/inexistent_file.yml')
+          KalibroGem.config.should eq({address: "http://localhost:8080/KalibroService/"})
         end
 
         it 'should log an warning' do
           @logger.expects(:warn).with("YAML configuration file couldn't be found. Using defaults.")
 
-          KalibroEntities.configure_with('spec/savon/fixtures/inexistent_file.yml')
+          KalibroGem.configure_with('spec/savon/fixtures/inexistent_file.yml')
         end
       end
 
       context 'with an invalid YAML' do
         before :each do
           @logger = Logger.new(File::NULL)
-          KalibroEntities.expects(:logger).returns(@logger)
+          KalibroGem.expects(:logger).returns(@logger)
         end
 
         it 'should keep the defaults' do
-          KalibroEntities.configure_with('spec/savon/fixtures/invalid_config.yml')
-          KalibroEntities.config.should eq({address: "http://localhost:8080/KalibroService/"})
+          KalibroGem.configure_with('spec/savon/fixtures/invalid_config.yml')
+          KalibroGem.config.should eq({address: "http://localhost:8080/KalibroService/"})
         end
 
         it 'should log an warning' do
           @logger.expects(:warn).with("YAML configuration file contains invalid syntax. Using defaults.")
 
-          KalibroEntities.configure_with('spec/savon/fixtures/invalid_config.yml')
+          KalibroGem.configure_with('spec/savon/fixtures/invalid_config.yml')
         end
       end
     end
@@ -91,7 +91,7 @@ describe KalibroEntities do
   context 'Logger' do
     describe 'logger' do
       it 'should return the default logger' do
-        KalibroEntities.logger.should be_a(Logger)
+        KalibroGem.logger.should be_a(Logger)
       end
     end
 
@@ -99,9 +99,9 @@ describe KalibroEntities do
       it 'should set the logger' do
         logger = Logger.new(STDOUT)
 
-        KalibroEntities.logger = logger
+        KalibroGem.logger = logger
 
-        KalibroEntities.logger.should eq(logger)
+        KalibroGem.logger.should eq(logger)
       end
     end
   end

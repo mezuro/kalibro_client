@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,18 +16,18 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::BaseTool do
+describe KalibroGem::Entities::BaseTool do
   describe 'all_names' do
     context 'with no base tools' do
       before :each do
-        KalibroEntities::Entities::BaseTool.
+        KalibroGem::Entities::BaseTool.
           expects(:request).
           with(:all_base_tool_names).
           returns({:base_tool_name => nil})
       end
 
       it 'should return empty array' do
-        KalibroEntities::Entities::BaseTool.all_names.should be_empty
+        KalibroGem::Entities::BaseTool.all_names.should be_empty
       end
     end
 
@@ -36,14 +36,14 @@ describe KalibroEntities::Entities::BaseTool do
       let(:another_base_tool_hash) { FactoryGirl.build(:another_base_tool).to_hash }
 
       before :each do
-        KalibroEntities::Entities::BaseTool.
+        KalibroGem::Entities::BaseTool.
           expects(:request).
           with(:all_base_tool_names).
           returns({:base_tool_name => [base_tool_hash, another_base_tool_hash]})
       end
 
       it 'should return the two elements' do
-        base_tool_names = KalibroEntities::Entities::BaseTool.all_names
+        base_tool_names = KalibroGem::Entities::BaseTool.all_names
 
         base_tool_names.size.should eq(2)
         base_tool_names.first.should eq(base_tool_hash)
@@ -55,14 +55,14 @@ describe KalibroEntities::Entities::BaseTool do
   describe 'all' do
     context 'with no base tools' do
       before :each do
-        KalibroEntities::Entities::BaseTool.
+        KalibroGem::Entities::BaseTool.
           expects(:request).
           with(:all_base_tool_names).
           returns({:base_tool_name => nil})
       end
 
       it 'should return empty array' do
-        KalibroEntities::Entities::BaseTool.all_names.should be_empty
+        KalibroGem::Entities::BaseTool.all_names.should be_empty
       end
     end
 
@@ -71,24 +71,24 @@ describe KalibroEntities::Entities::BaseTool do
       let(:another_base_tool) { FactoryGirl.build(:another_base_tool) }
 
       before :each do
-        KalibroEntities::Entities::BaseTool.
+        KalibroGem::Entities::BaseTool.
           expects(:request).
           with(:all_base_tool_names).
           returns({:base_tool_name => [base_tool.name, another_base_tool.name]})
         
-        KalibroEntities::Entities::BaseTool.
+        KalibroGem::Entities::BaseTool.
           expects(:request).
           with(:get_base_tool, {:base_tool_name => base_tool.name}).
           returns({:base_tool => base_tool.to_hash})
 
-        KalibroEntities::Entities::BaseTool.
+        KalibroGem::Entities::BaseTool.
           expects(:request).
           with(:get_base_tool, {:base_tool_name => another_base_tool.name}).
           returns({:base_tool => another_base_tool.to_hash})
       end
 
       it 'should return the two elements' do
-        base_tools = KalibroEntities::Entities::BaseTool.all
+        base_tools = KalibroGem::Entities::BaseTool.all
 
         base_tools.size.should eq(2)
         base_tools.first.name.should eq(base_tool.name)
@@ -102,28 +102,28 @@ describe KalibroEntities::Entities::BaseTool do
 
     context 'with an inexistent name' do
       before :each do
-        KalibroEntities::Entities::BaseTool.
+        KalibroGem::Entities::BaseTool.
           expects(:request).
           with(:get_base_tool, {:base_tool_name => subject.name}).
           returns({:base_tool => nil})
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroEntities::Entities::BaseTool.find_by_name(subject.name)}.
-          to raise_error(KalibroEntities::Errors::RecordNotFound)
+        expect { KalibroGem::Entities::BaseTool.find_by_name(subject.name)}.
+          to raise_error(KalibroGem::Errors::RecordNotFound)
       end
     end
 
     context 'with an existent name' do
       before :each do
-        KalibroEntities::Entities::BaseTool.
+        KalibroGem::Entities::BaseTool.
           expects(:request).
           with(:get_base_tool,{:base_tool_name => subject.name}).
           returns({:base_tool => subject.to_hash})
       end
 
       it 'should return a base_tool' do
-        KalibroEntities::Entities::BaseTool.find_by_name(subject.name).name.should eq(subject.name)
+        KalibroGem::Entities::BaseTool.find_by_name(subject.name).name.should eq(subject.name)
       end
     end
   end
@@ -132,7 +132,7 @@ describe KalibroEntities::Entities::BaseTool do
     let(:metric) { FactoryGirl.build(:metric) }
 
     before :each do
-      KalibroEntities::Entities::Metric.
+      KalibroGem::Entities::Metric.
         expects(:to_objects_array).at_least_once.
         with(metric.to_hash).
         returns([metric])

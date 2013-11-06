@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::RepositoryObserver do
+describe KalibroGem::Entities::RepositoryObserver do
   describe 'id=' do
     it 'should set the value of the attribute id' do
       subject.id = 42
@@ -27,28 +27,28 @@ describe KalibroEntities::Entities::RepositoryObserver do
   describe 'all' do
     context 'with no repository observers' do
       before :each do
-        KalibroEntities::Entities::RepositoryObserver.
+        KalibroGem::Entities::RepositoryObserver.
           expects(:request).
           with(:all_repository_observers).
           returns({:repository_observer => nil})
       end
 
       it 'should return nil' do
-        KalibroEntities::Entities::RepositoryObserver.all.should be_empty
+        KalibroGem::Entities::RepositoryObserver.all.should be_empty
       end
     end
 
     context 'with many repository observers' do
       let(:repository_observer) { FactoryGirl.build(:repository_observer) }
       before :each do
-        KalibroEntities::Entities::RepositoryObserver.
+        KalibroGem::Entities::RepositoryObserver.
           expects(:request).
           with(:all_repository_observers).
           returns({:repository_observer => [repository_observer.to_hash, repository_observer.to_hash]})
       end
 
       it 'should return the two elements' do
-        repository_observers = KalibroEntities::Entities::RepositoryObserver.all
+        repository_observers = KalibroGem::Entities::RepositoryObserver.all
         repository_observers.size.should eq(2)
         repository_observers.first.name.should eq(repository_observer.to_hash[:name])
         repository_observers.last.name.should eq(repository_observer.to_hash[:name])
@@ -61,13 +61,13 @@ describe KalibroEntities::Entities::RepositoryObserver do
     context 'with no repository observers' do
       let(:repository_without_observers) { FactoryGirl.build(:repository).to_hash }
       before :each do
-        KalibroEntities::Entities::RepositoryObserver.expects(:request).
+        KalibroGem::Entities::RepositoryObserver.expects(:request).
           with(:repository_observers_of, {:repository_observer_id => repository_without_observers[:id]}).
           returns({:repository_observer => []})
       end
 
       it 'should get an empty array' do
-        KalibroEntities::Entities::RepositoryObserver.
+        KalibroGem::Entities::RepositoryObserver.
           repository_observers_of(repository_without_observers[:id]).should eq []
       end
     end
@@ -77,13 +77,13 @@ describe KalibroEntities::Entities::RepositoryObserver do
       let(:repository_observer) { FactoryGirl.build(:repository_observer) }
       
       before :each do
-        KalibroEntities::Entities::RepositoryObserver.expects(:request).
+        KalibroGem::Entities::RepositoryObserver.expects(:request).
           with(:repository_observers_of, {:repository_observer_id => repository.id}).
           returns({:repository_observer => [repository_observer.to_hash, repository_observer.to_hash]})
       end
 
       it 'should return the two elements' do
-        repository_observers = KalibroEntities::Entities::RepositoryObserver.
+        repository_observers = KalibroGem::Entities::RepositoryObserver.
           repository_observers_of(repository.id)
 
         repository_observers.size.should eq(2)

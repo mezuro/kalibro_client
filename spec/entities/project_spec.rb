@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::Project do
+describe KalibroGem::Entities::Project do
   describe 'initialize' do
     subject { FactoryGirl.build(:project, {id: 42}) }
 
@@ -35,14 +35,14 @@ describe KalibroEntities::Entities::Project do
   describe 'all' do
     context 'with no projects' do
       before :each do
-        KalibroEntities::Entities::Project.
+        KalibroGem::Entities::Project.
           expects(:request).
           with(:all_projects).
           returns({:project => nil})
       end
 
       it 'should return nil' do
-        KalibroEntities::Entities::Project.all.should be_empty
+        KalibroGem::Entities::Project.all.should be_empty
       end
     end
 
@@ -51,14 +51,14 @@ describe KalibroEntities::Entities::Project do
       let(:another_project) { FactoryGirl.build(:another_project) }
 
       before :each do
-        KalibroEntities::Entities::Project.
+        KalibroGem::Entities::Project.
             expects(:request).
             with(:all_projects).
             returns({:project => [project.to_hash, another_project.to_hash]})
       end
 
       it 'should return a list with projects' do
-        projects = KalibroEntities::Entities::Project.all
+        projects = KalibroGem::Entities::Project.all
 
         projects.first.name.should eq(project.name)
         projects.last.name.should eq(another_project.name)

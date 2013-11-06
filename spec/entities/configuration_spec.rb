@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::Configuration do
+describe KalibroGem::Entities::Configuration do
   describe 'id=' do
     it 'should set the value of the attribute id as an Integer' do
       subject.id = "42"
@@ -27,14 +27,14 @@ describe KalibroEntities::Entities::Configuration do
   describe 'all' do
     context 'with no configurations' do
       before :each do
-        KalibroEntities::Entities::Configuration.
+        KalibroGem::Entities::Configuration.
           expects(:request).
           with(:all_configurations).
           returns({:configuration => nil})
       end
 
       it 'should return nil' do
-        KalibroEntities::Entities::Configuration.all.should be_empty
+        KalibroGem::Entities::Configuration.all.should be_empty
       end
     end
 
@@ -43,14 +43,14 @@ describe KalibroEntities::Entities::Configuration do
       let(:another_configuration) { FactoryGirl.build(:another_configuration) }
 
       before :each do
-        KalibroEntities::Entities::Configuration.
+        KalibroGem::Entities::Configuration.
           expects(:request).
           with(:all_configurations).
           returns({:configuration => [configuration.to_hash, another_configuration.to_hash]})
       end
 
       it 'should return the two elements' do
-        configurations = KalibroEntities::Entities::Configuration.all
+        configurations = KalibroGem::Entities::Configuration.all
 
         configurations.size.should eq(2)
         configurations.first.name.should eq(configuration.name)

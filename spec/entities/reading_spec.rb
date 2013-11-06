@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::Reading do
+describe KalibroGem::Entities::Reading do
   describe "id=" do
     it 'should set the id attribute as an integer' do
       subject.id = "44"
@@ -37,14 +37,14 @@ describe KalibroEntities::Entities::Reading do
     describe 'find' do
       context 'when the reading exists' do
         before :each do
-          KalibroEntities::Entities::Reading.
+          KalibroGem::Entities::Reading.
             expects(:request).
             with(:get_reading, {:reading_id => reading.id}).
             returns({:reading => reading.to_hash})
         end
 
         it 'should return a reading object' do
-          response = KalibroEntities::Entities::Reading.find reading.id
+          response = KalibroGem::Entities::Reading.find reading.id
           response.label.should eq(reading.label)
         end
       end
@@ -54,15 +54,15 @@ describe KalibroEntities::Entities::Reading do
           any_code = rand(Time.now.to_i)
           any_error_message = ""
 
-          KalibroEntities::Entities::Reading.
+          KalibroGem::Entities::Reading.
             expects(:request).
             with(:get_reading, {:reading_id => reading.id}).
             raises(Savon::SOAPFault.new(any_error_message, any_code))
         end
 
         it 'should return a reading object' do
-          expect {KalibroEntities::Entities::Reading.find(reading.id) }.
-            to raise_error(KalibroEntities::Errors::RecordNotFound)
+          expect {KalibroGem::Entities::Reading.find(reading.id) }.
+            to raise_error(KalibroGem::Errors::RecordNotFound)
         end
       end
     end
@@ -71,14 +71,14 @@ describe KalibroEntities::Entities::Reading do
       let(:reading_group) { FactoryGirl.build(:reading_group) }
       
       before do
-        KalibroEntities::Entities::Reading.
+        KalibroGem::Entities::Reading.
           expects(:request).
           with(:readings_of, {:group_id => reading_group.id}).
           returns({:reading => [reading.to_hash, reading.to_hash]})
       end
 
       it 'should returns a list of readings that belongs to the given reading group' do
-        response = KalibroEntities::Entities::Reading.readings_of reading_group.id
+        response = KalibroGem::Entities::Reading.readings_of reading_group.id
         response.first.label.should eq(reading.label)
         response.last.label.should eq(reading.label)
       end
@@ -91,7 +91,7 @@ describe KalibroEntities::Entities::Reading do
     let(:reading_id) { 73 }
     
     before :each do
-      KalibroEntities::Entities::Reading.
+      KalibroGem::Entities::Reading.
         expects(:request).
         with(:save_reading, {reading: reading.to_hash, group_id: reading.group_id}).
         returns({:reading_id => reading_id})

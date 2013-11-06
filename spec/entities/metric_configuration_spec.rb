@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::MetricConfiguration do
+describe KalibroGem::Entities::MetricConfiguration do
   describe 'id=' do
     it 'should set the id as an Integer' do
       subject.id = "42"
@@ -35,7 +35,7 @@ describe KalibroEntities::Entities::MetricConfiguration do
     let(:metric) { FactoryGirl.build(:metric) }
     
     before :each do
-      KalibroEntities::Entities::Metric.
+      KalibroGem::Entities::Metric.
         expects(:to_object).at_least_once.
         with(metric.to_hash).
         returns(metric)
@@ -58,7 +58,7 @@ describe KalibroEntities::Entities::MetricConfiguration do
     let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
     
     before :each do
-      KalibroEntities::Entities::MetricConfiguration.any_instance.
+      KalibroGem::Entities::MetricConfiguration.any_instance.
         expects(:save).
         returns(true)
     end
@@ -82,14 +82,14 @@ describe KalibroEntities::Entities::MetricConfiguration do
 
     context 'with and existant MetricConfiguration' do
       before :each do
-        KalibroEntities::Entities::MetricConfiguration.
+        KalibroGem::Entities::MetricConfiguration.
           expects(:request).
           with(:get_metric_configuration, {:metric_configuration_id => metric_configuration.id}).
           returns({metric_configuration: metric_configuration.to_hash})
       end
 
       it 'should return the metric_configuration' do
-        KalibroEntities::Entities::MetricConfiguration.find(metric_configuration.id).
+        KalibroGem::Entities::MetricConfiguration.find(metric_configuration.id).
           id.should eq(metric_configuration.id)
       end
     end
@@ -98,15 +98,15 @@ describe KalibroEntities::Entities::MetricConfiguration do
       before :each do
         any_code = rand(Time.now.to_i)
         any_error_message = ""
-        KalibroEntities::Entities::MetricConfiguration.
+        KalibroGem::Entities::MetricConfiguration.
           expects(:request).
           with(:get_metric_configuration, {:metric_configuration_id => metric_configuration.id}).
           raises(Savon::SOAPFault.new(any_error_message, any_code))
       end
 
       it 'should raise the RecordNotFound error' do
-        expect {KalibroEntities::Entities::MetricConfiguration.find(metric_configuration.id)}.
-          to raise_error(KalibroEntities::Errors::RecordNotFound)
+        expect {KalibroGem::Entities::MetricConfiguration.find(metric_configuration.id)}.
+          to raise_error(KalibroGem::Errors::RecordNotFound)
       end
     end
   end
@@ -116,14 +116,14 @@ describe KalibroEntities::Entities::MetricConfiguration do
     let(:configuration) { FactoryGirl.build(:configuration) }
 
     before :each do
-      KalibroEntities::Entities::MetricConfiguration.
+      KalibroGem::Entities::MetricConfiguration.
         expects(:request).
         with(:metric_configurations_of, {:configuration_id => configuration.id}).
         returns({metric_configuration: metric_configuration.to_hash})
     end
 
     it 'should return a array with a metric configuration' do
-      metric_configurations = KalibroEntities::Entities::MetricConfiguration.metric_configurations_of(configuration.id)
+      metric_configurations = KalibroGem::Entities::MetricConfiguration.metric_configurations_of(configuration.id)
 
       metric_configurations.should be_an(Array)
       metric_configurations.first.id.should eq(metric_configuration.id)
@@ -135,7 +135,7 @@ describe KalibroEntities::Entities::MetricConfiguration do
     subject {FactoryGirl.build(:metric_configuration, {id: nil})}
 
     before :each do
-      KalibroEntities::Entities::MetricConfiguration.
+      KalibroGem::Entities::MetricConfiguration.
         expects(:request).
         with(:save_metric_configuration, {:metric_configuration => subject.to_hash, :configuration_id => subject.configuration_id}).
         returns({:metric_configuration_id => 1})

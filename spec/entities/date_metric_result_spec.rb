@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::DateMetricResult do
+describe KalibroGem::Entities::DateMetricResult do
   describe 'date=' do
     context 'when the given value is a String' do
       it 'should set the date and convert it to DateTime' do
@@ -40,7 +40,7 @@ describe KalibroEntities::Entities::DateMetricResult do
     let(:metric_result) { FactoryGirl.build(:metric_result) }
 
     before :each do
-      KalibroEntities::Entities::MetricResult.
+      KalibroGem::Entities::MetricResult.
         expects(:to_object).
         with(metric_result.to_hash).
         returns(metric_result)

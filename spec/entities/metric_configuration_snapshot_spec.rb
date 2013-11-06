@@ -1,4 +1,4 @@
-# This file is part of KalibroEntities
+# This file is part of KalibroGem
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroEntities::Entities::MetricConfigurationSnapshot do
+describe KalibroGem::Entities::MetricConfigurationSnapshot do
   describe 'weight=' do
     it 'should set the value of the attribute weight' do
       subject.weight = "0.6"
@@ -36,7 +36,7 @@ describe KalibroEntities::Entities::MetricConfigurationSnapshot do
 
     context 'When it is a hash' do
       before :each do
-        KalibroEntities::Entities::Metric.
+        KalibroGem::Entities::Metric.
           expects(:to_object).
           at_least_once.
           with(metric.to_hash).
@@ -56,7 +56,7 @@ describe KalibroEntities::Entities::MetricConfigurationSnapshot do
 
     context 'with a single range' do
       before :each do
-        KalibroEntities::Entities::RangeSnapshot.
+        KalibroGem::Entities::RangeSnapshot.
           expects(:to_object).
           with(range_snapshot_hash).
           returns(range_snapshot)
@@ -70,7 +70,7 @@ describe KalibroEntities::Entities::MetricConfigurationSnapshot do
 
     context 'with a list of many ranges' do
       before :each do
-        KalibroEntities::Entities::RangeSnapshot.
+        KalibroGem::Entities::RangeSnapshot.
           expects(:to_object).
           twice.with(range_snapshot_hash).
           returns(range_snapshot)
