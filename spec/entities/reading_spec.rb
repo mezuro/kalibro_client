@@ -83,6 +83,24 @@ describe KalibroGem::Entities::Reading do
         response.last.label.should eq(reading.label)
       end
     end
+
+    describe 'all' do
+      let(:reading_group) { FactoryGirl.build(:reading_group) }
+
+      before :each do
+        KalibroGem::Entities::ReadingGroup.
+          expects(:all).
+          returns([reading_group])
+        KalibroGem::Entities::Reading.
+          expects(:readings_of).
+          with(reading_group.id).
+          returns([subject])
+      end
+
+      it 'should list all the readings' do
+        KalibroGem::Entities::Reading.all.should include(subject)
+      end
+    end
   end
 
   # The only purpose of this test is to cover the overrided save_params method

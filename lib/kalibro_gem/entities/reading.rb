@@ -40,6 +40,17 @@ module KalibroGem
         create_objects_array_from_hash request(:readings_of, {:group_id => group_id})[:reading]
       end
 
+      def self.all
+        reading_groups = ReadingGroup.all
+        readings = []
+
+        reading_groups.each do |reading_group|
+          readings.concat(readings_of(reading_group.id))
+        end
+
+        return readings
+      end
+
       private
 
       def save_params
