@@ -16,6 +16,7 @@
 
 FactoryGirl.define do
   factory :range, class: KalibroGem::Entities::Range do
+    id 1
     beginning 1.1 
     self.end 5.1 
     reading_id 3
@@ -25,6 +26,10 @@ FactoryGirl.define do
       comments "Another Comment"
     end
 
-    factory :another_range, traits: [:another_comment]
+    trait :another_id do
+      id 2
+    end
+
+    factory :another_range, traits: [:another_comment, :another_id]
   end
 end

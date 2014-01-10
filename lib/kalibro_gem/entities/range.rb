@@ -70,6 +70,37 @@ module KalibroGem
         @reading ||= KalibroGem::Entities::Reading.find(reading_id)
         @reading
       end
+
+      def self.all
+        metric_configurations = []
+        ranges = []
+        configurations = Configuration.all
+
+        configurations.each do |config|
+          metric_configurations.concat(MetricConfiguration.metric_configurations_of(config.id))
+        end
+
+        metric_configurations.each do |metric_config|
+          ranges.concat(self.ranges_of(metric_config.id))
+        end
+
+        return ranges
+      end
+
+      def self.find(id)
+        self.all.each do |range|
+          return range if range.id == id
+        end 
+        raise KalibroGem::Errors::RecordNotFound
+      end
+
+      def self.exists?(id)
+        begin
+          return true unless self.find(id).nil?
+        rescue KalibroGem::Errors::RecordNotFound
+          return false
+        end
+      end
     end
   end
 end

@@ -58,7 +58,6 @@ describe KalibroGem::Entities::Range do
   end
 
   describe 'getting reading attribute' do
-    subject { FactoryGirl.build(:range) }
     let(:reading) { FactoryGirl.build(:reading) }
 
     before :each do
@@ -176,6 +175,78 @@ describe KalibroGem::Entities::Range do
         subject.save(metric_configuration.id)
         subject.id.should eq(new_id)
       end
+    end
+  end
+
+  describe 'exists?' do
+    context 'when the range exists' do
+      before :each do
+        KalibroGem::Entities::Range.expects(:find).with(subject.id).returns(subject)
+      end
+
+      it 'should return true' do
+        KalibroGem::Entities::Range.exists?(subject.id).should be_true
+      end
+    end
+
+    context 'when the range does not exists' do
+      before :each do
+        KalibroGem::Entities::Range.expects(:find).with(subject.id).raises(KalibroGem::Errors::RecordNotFound)
+      end
+
+      it 'should return false' do
+        KalibroGem::Entities::Range.exists?(subject.id).should be_false
+      end
+    end
+  end
+
+  describe 'find' do
+    context 'when the range exists' do
+      before :each do
+        KalibroGem::Entities::Range.
+          expects(:all).
+          returns([subject])
+      end
+
+      it 'should return the range' do
+        KalibroGem::Entities::Range.find(subject.id).should eq(subject)
+      end
+    end
+
+    context "when the range doesn't exists" do
+      before :each do
+        KalibroGem::Entities::Range.
+          expects(:all).
+          returns([FactoryGirl.build(:another_range)])
+      end
+
+      it 'should raise a RecordNotFound error' do
+        expect { KalibroGem::Entities::Range.find(subject.id) }.
+          to raise_error(KalibroGem::Errors::RecordNotFound)
+      end
+    end
+  end
+
+  describe 'all' do
+    let(:configuration) { FactoryGirl.build(:configuration) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration) } 
+
+    before :each do
+      KalibroGem::Entities::Configuration.
+        expects(:all).
+        returns([configuration])
+      KalibroGem::Entities::MetricConfiguration.
+        expects(:metric_configurations_of).
+        with(configuration.id).
+        returns([metric_configuration])
+      KalibroGem::Entities::Range.
+        expects(:ranges_of).
+        with(metric_configuration.id).
+        returns([subject])
+    end
+
+    it 'should list all the ranges' do
+      KalibroGem::Entities::Range.all.should include(subject)
     end
   end
 end
