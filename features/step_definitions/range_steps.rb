@@ -23,8 +23,16 @@ When(/^I ask ranges of the given metric configuration$/) do
   @response = KalibroGem::Entities::Range.ranges_of @metric_configuration.id
 end
 
+When(/^I ask for all the ranges$/) do
+  @response = KalibroGem::Entities::Range.all
+end
+
 Then(/^I should get an empty list$/) do
   @response.should eq([])
+end
+
+Then(/^I should not get an empty list$/) do
+  @response.should_not eq([])
 end
 
 Then(/^I should get a list with the given range$/) do
