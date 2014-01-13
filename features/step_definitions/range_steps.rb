@@ -27,6 +27,10 @@ When(/^I ask for all the ranges$/) do
   @response = KalibroGem::Entities::Range.all
 end
 
+When(/^I search a range with the same id of the given range$/) do
+  @found_range = KalibroGem::Entities::Range.find(@range.id.to_i)
+end
+
 Then(/^I should get an empty list$/) do
   @response.should eq([])
 end
@@ -46,4 +50,12 @@ end
 
 Then(/^the id of the given range should be set$/) do
  @range.id.should_not eq(0)
+end
+
+Then(/^it should return the same range as the given one$/) do
+  @found_range == @range
+end
+
+Then(/^the range should exist$/) do
+  KalibroGem::Entities::Range.exists?(@range.id)
 end
