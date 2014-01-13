@@ -121,4 +121,28 @@ describe KalibroGem::Entities::Reading do
       reading.kalibro_errors.should be_empty
     end
   end
+
+  describe 'exists?' do
+    subject {FactoryGirl.build(:reading)}
+
+    context 'when the reading exists' do
+      before :each do
+        KalibroGem::Entities::Reading.expects(:find).with(subject.id).returns(subject)
+      end
+
+      it 'should return true' do
+        KalibroGem::Entities::Reading.exists?(subject.id).should be_true
+      end
+    end
+
+    context 'when the reading does not exists' do
+      before :each do
+        KalibroGem::Entities::Reading.expects(:find).with(subject.id).raises(KalibroGem::Errors::RecordNotFound)
+      end
+
+      it 'should return false' do
+        KalibroGem::Entities::Reading.exists?(subject.id).should be_false
+      end
+    end
+  end
 end

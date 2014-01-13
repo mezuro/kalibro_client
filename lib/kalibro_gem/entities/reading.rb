@@ -51,6 +51,14 @@ module KalibroGem
         return readings
       end
 
+      def self.exists?(id)
+        begin
+          return true unless find(id).nil?
+        rescue KalibroGem::Errors::RecordNotFound
+          return false
+        end
+      end
+
       private
 
       def save_params
