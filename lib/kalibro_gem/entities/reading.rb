@@ -47,7 +47,6 @@ module KalibroGem
         reading_groups.each do |reading_group|
           readings.concat(readings_of(reading_group.id))
         end
-
         return readings
       end
 
