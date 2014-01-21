@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 2.14"
   spec.add_development_dependency "cucumber", "~> 1.3.10"
-  spec.add_development_dependency "mocha", "~> 0.14.0"
+  spec.add_development_dependency "mocha", "~> 1.0.0"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "factory_girl", "~> 4.3.0"
   spec.add_development_dependency 'coveralls'
