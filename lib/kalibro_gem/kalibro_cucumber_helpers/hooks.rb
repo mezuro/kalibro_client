@@ -30,6 +30,12 @@ Before do
                 #{KalibroGem::KalibroCucumberHelpers.configuration.query_file_path}"
     system command
 
+    command = "#{__dir__}/scripts/delete_all_kalibro_entries.sh \\
+               #{KalibroGem::KalibroCucumberHelpers.configuration.password} \\
+               #{KalibroGem::KalibroCucumberHelpers.configuration.database} \\
+               #{KalibroGem::KalibroCucumberHelpers.configuration.query_file_path}"
+    system command
+
     $dunit = true
   end
 end

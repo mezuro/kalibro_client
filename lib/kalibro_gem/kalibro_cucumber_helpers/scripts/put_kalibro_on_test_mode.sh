@@ -34,5 +34,6 @@ echo "-->  Changing owner of tests directory to tomcat6"
 sudo chown -R $TOMCAT_USER:$TOMCAT_GROUP $KALIBRO_HOME/tests
 sudo chmod 777 -R $KALIBRO_HOME/tests
 
+echo "-->  Restarting tomcat"
 # you must restart tomcat6
 $TOMCAT_RESTART_COMMAND
