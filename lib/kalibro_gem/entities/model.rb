@@ -115,6 +115,10 @@ module KalibroGem
         response
       end
 
+      def self.endpoint
+        class_name
+      end
+      
       protected
 
       def instance_variable_names
@@ -148,9 +152,6 @@ module KalibroGem
         @kalibro_errors << exception
       end
 
-      def self.endpoint
-        class_name
-      end
 
       def self.class_name
         self.name.gsub(/KalibroGem::Entities::/,"")

@@ -272,4 +272,10 @@ describe KalibroGem::Entities::Model do
       end
     end
   end
+
+  describe 'endpoint' do
+    it 'should return the class name' do
+      KalibroGem::Entities::Model.endpoint.should eq("Model")
+    end
+  end
 end
