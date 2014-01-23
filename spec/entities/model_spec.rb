@@ -278,4 +278,10 @@ describe KalibroGem::Entities::Model do
       KalibroGem::Entities::Model.endpoint.should eq("Model")
     end
   end
+
+  describe 'instance_class_name' do
+    it 'should return the class name' do
+      subject.instance_class_name.should eq("Model")
+    end
+  end
 end

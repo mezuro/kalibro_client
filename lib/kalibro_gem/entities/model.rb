@@ -119,6 +119,10 @@ module KalibroGem
         class_name
       end
       
+      def instance_class_name
+        self.class.name.gsub(/KalibroGem::Entities::/,"")
+      end
+
       protected
 
       def instance_variable_names
@@ -141,9 +145,6 @@ module KalibroGem
         field.to_s[0] != '@' and field != :attributes! and (field.to_s =~ /xsi/).nil?
       end
 
-      def instance_class_name
-        self.class.name.gsub(/KalibroGem::Entities::/,"")
-      end
 
       include RequestMethods
       extend RequestMethods::ClassMethods
