@@ -15,5 +15,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module KalibroGem
-  VERSION = "0.0.1.rc12"
+  VERSION = "0.0.1.rc13"
 end
