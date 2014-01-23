@@ -115,14 +115,6 @@ module KalibroGem
         response
       end
 
-      def self.endpoint
-        class_name
-      end
-      
-      def instance_class_name
-        self.class.name.gsub(/KalibroGem::Entities::/,"")
-      end
-
       protected
 
       def instance_variable_names
@@ -145,6 +137,10 @@ module KalibroGem
         field.to_s[0] != '@' and field != :attributes! and (field.to_s =~ /xsi/).nil?
       end
 
+      # TODO: Rename to entitie_name
+      def instance_class_name
+        self.class.class_name
+      end
 
       include RequestMethods
       extend RequestMethods::ClassMethods
@@ -153,9 +149,19 @@ module KalibroGem
         @kalibro_errors << exception
       end
 
+      def self.endpoint
+        class_name
+      end
 
+      # TODO: Rename to entitie_name
       def self.class_name
-        self.name.gsub(/KalibroGem::Entities::/,"")
+        # This loop is a generic way to make this work even when the children class has a different name
+        entitie_class = self
+        until entitie_class.name.include?("KalibroGem::Entities::") do
+          entitie_class = entitie_class.superclass
+        end
+
+        entitie_class.name.gsub(/KalibroGem::Entities::/,"")
       end
 
       include HashConverters

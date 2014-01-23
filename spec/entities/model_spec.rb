@@ -54,16 +54,34 @@ describe KalibroGem::Entities::Model do
     let(:fixture) { File.read("spec/savon/fixtures/project/does_not_exists.xml") }
     let(:client) { mock('client') }
 
-    it 'should successfully get the Kalibro version' do
-      client.expects(:call).
-        with(:project_exists, message: {project_id: 1}).
-        returns(mock_savon_response(fixture))
-      KalibroGem::Entities::Model.
-        expects(:client).
-        with(any_parameters).
-        returns(client)
-      KalibroGem::Entities::Model.
-        request(:project_exists, {project_id: 1})[:exists].should eq(false)
+    context 'for the KalibroGem::Entitie class' do
+      it 'should successfully get the Kalibro version' do
+        client.expects(:call).
+          with(:project_exists, message: {project_id: 1}).
+          returns(mock_savon_response(fixture))
+        KalibroGem::Entities::Model.
+          expects(:client).
+          with(any_parameters).
+          returns(client)
+        KalibroGem::Entities::Model.
+          request(:project_exists, {project_id: 1})[:exists].should eq(false)
+      end
+    end
+
+    context 'with a children class from outside' do
+      class Child < KalibroGem::Entities::Model; end
+
+      it 'should successfully get the Kalibro version' do
+        client.expects(:call).
+          with(:project_exists, message: {project_id: 1}).
+          returns(mock_savon_response(fixture))
+        Child.
+          expects(:client).
+          with(any_parameters).
+          returns(client)
+        Child.
+          request(:project_exists, {project_id: 1})[:exists].should eq(false)
+      end
     end
   end
 
@@ -270,18 +288,6 @@ describe KalibroGem::Entities::Model do
       it 'should return the correspondent object to the given hash inside of an Array' do
         KalibroGem::Entities::Model.create_objects_array_from_hash({}).should eq([subject])
       end
-    end
-  end
-
-  describe 'endpoint' do
-    it 'should return the class name' do
-      KalibroGem::Entities::Model.endpoint.should eq("Model")
-    end
-  end
-
-  describe 'instance_class_name' do
-    it 'should return the class name' do
-      subject.instance_class_name.should eq("Model")
     end
   end
 end
