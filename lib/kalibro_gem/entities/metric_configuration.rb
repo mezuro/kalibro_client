@@ -60,6 +60,14 @@ module KalibroGem
         create_objects_array_from_hash request(:metric_configurations_of, {:configuration_id => configuration_id})[:metric_configuration]
       end
 
+      def self.exists?(id)
+        begin
+          return true unless find(id).nil?
+        rescue KalibroGem::Errors::RecordNotFound
+          return false
+        end
+      end
+
       private
       
       def save_params

@@ -146,4 +146,28 @@ describe KalibroGem::Entities::MetricConfiguration do
       subject.kalibro_errors.should be_empty
     end
   end
+  
+  describe 'exists?' do
+    subject {FactoryGirl.build(:metric_configuration)}
+
+    context 'when the metric configuration exists' do
+      before :each do
+        KalibroGem::Entities::MetricConfiguration.expects(:find).with(subject.id).returns(subject)
+      end
+
+      it 'should return true' do
+        KalibroGem::Entities::MetricConfiguration.exists?(subject.id).should be_true
+      end
+    end
+
+    context 'when the metric configuration does not exist' do
+      before :each do
+        KalibroGem::Entities::MetricConfiguration.expects(:find).with(subject.id).raises(KalibroGem::Errors::RecordNotFound)
+      end
+
+      it 'should return false' do
+        KalibroGem::Entities::MetricConfiguration.exists?(subject.id).should be_false
+      end
+    end
+  end
 end
