@@ -29,7 +29,7 @@ sudo mkdir $KALIBRO_HOME/tests
 echo "-->  Copying test settings"
 sudo cp $KALIBRO_HOME/kalibro_test.settings $KALIBRO_HOME/tests/kalibro.settings
 echo "-->  Copying log folder"
-sudo cp $KALIBRO_HOME/kalibro_test.settings $KALIBRO_HOME/tests/kalibro.settings
+sudo cp -r $KALIBRO_HOME/logs $KALIBRO_HOME/tests/logs/
 echo "-->  Changing owner of tests directory to tomcat6"
 sudo chown -R $TOMCAT_USER:$TOMCAT_GROUP $KALIBRO_HOME/tests
 sudo chmod 777 -R $KALIBRO_HOME/tests
