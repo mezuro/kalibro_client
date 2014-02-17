@@ -134,47 +134,20 @@ describe KalibroGem::Entities::Range do
     end
   end
 
+  # The only purpose of this test is to cover the overrided save_params method
   describe 'save' do
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
-    
-    context 'when kalibro does not save' do
-      before :each do
-        any_error_message = ""
-        any_code = rand(Time.now.to_i)
+    subject {FactoryGirl.build(:range, {id: nil})}
 
-        KalibroGem::Entities::Range.
-          expects(:request).
-          with(:save_range, {:range => subject.to_hash, :metric_configuration_id => metric_configuration.id}).
-          raises(Savon::SOAPFault.new(any_error_message, any_code))
-      end
-
-      it 'should returns false' do
-        subject.save(metric_configuration.id).should eq(false)
-      end
-
-      it 'should set the error on kalibro_errors attribute' do
-        subject.save(metric_configuration.id)
-        subject.kalibro_errors.should_not eq([])
-      end
+    before :each do
+      KalibroGem::Entities::Range.
+        expects(:request).
+        with(:save_range, {:range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}).
+        returns({:range_id => 2})
     end
 
-    context 'when kalibro saves the range' do
-      let(:new_id) { rand(Time.now.to_i) }
-      before :each do
-        KalibroGem::Entities::Range.
-          expects(:request).
-          with(:save_range, {:range => subject.to_hash, :metric_configuration_id => metric_configuration.id}).
-          returns({range_id: new_id})
-      end
-
-      it 'should returns true' do
-        subject.save(metric_configuration.id).should eq(true)
-      end
-
-      it 'should set the id attribute' do
-        subject.save(metric_configuration.id)
-        subject.id.should eq(new_id)
-      end
+    it 'should make a request to save model with id and return true without errors' do
+      subject.save.should be(true)
+      subject.kalibro_errors.should be_empty
     end
   end
 

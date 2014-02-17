@@ -20,7 +20,7 @@ module KalibroGem
   module Entities
     class Range < Model
 
-      attr_accessor :id, :beginning, :end, :reading_id, :comments
+      attr_accessor :id, :beginning, :end, :reading_id, :comments, :metric_configuration_id
 
       def id=(value)
         @id = value.to_i
@@ -53,18 +53,13 @@ module KalibroGem
       def self.ranges_of(metric_configuration_id)
         self.create_objects_array_from_hash request(:ranges_of, {metric_configuration_id: metric_configuration_id} )[:range]
       end
-
-      def save(metric_configuration_id)
-        begin
-          @id = self.class.request(:save_range, {:range => self.to_hash, :metric_configuration_id => metric_configuration_id})[:range_id]
-          true
-        rescue Exception => exception
-          add_error exception
-          false
-        end
-      end
-
+      
       private
+
+      def save_params
+        {:range => self.to_hash, :metric_configuration_id => self.metric_configuration_id}
+      end
+      
 
       def reading
         @reading ||= KalibroGem::Entities::Reading.find(reading_id)
@@ -101,6 +96,7 @@ module KalibroGem
           return false
         end
       end
+
     end
   end
 end
