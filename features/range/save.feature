@@ -17,8 +17,7 @@ Feature: Save
   Scenario: When there is not a metric configuration
     Given I have a reading group with name "Group"
     And I have a reading within the given reading group
-    And I have an unsaved range within the given reading
-    When I ask to save the given range with an inexistent metric configuration
+    When I try to save a range with an inexistent metric configuration
     Then I should get an error in range kalibro errors attribute
 
   @kalibro_restart

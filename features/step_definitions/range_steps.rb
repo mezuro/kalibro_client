@@ -1,6 +1,6 @@
 Given(/^I have a range within the given reading$/) do
-  @range = FactoryGirl.build(:range, {id: nil, reading_id: @reading.id})
-  @range.save @metric_configuration.id
+  @range = FactoryGirl.build(:range, {id: nil, reading_id: @reading.id, metric_configuration_id: @metric_configuration.id})
+  @range.save
 end
 
 Given(/^I have an unsaved range$/) do
@@ -8,20 +8,27 @@ Given(/^I have an unsaved range$/) do
 end
 
 Given(/^I have an unsaved range within the given reading$/) do
-  @range = FactoryGirl.build(:range, {id: nil, reading_id: @reading.id})
+  @range = FactoryGirl.build(:range, {id: nil, reading_id: @reading.id, metric_configuration_id: @metric_configuration.id})
 end
 
 When(/^I ask to save the given range$/) do
-  @range.save @metric_configuration.id
+  @range.save
 end
 
 When(/^I ask to save the given range with an inexistent metric configuration$/) do
-  @range.save rand(Time.now.to_i)
+  @range.metric_configuration_id = rand(Time.now.to_i)
+  @range.save 
 end
 
 When(/^I ask ranges of the given metric configuration$/) do
   @response = KalibroGem::Entities::Range.ranges_of @metric_configuration.id
 end
+
+When(/^I try to save a range with an inexistent metric configuration$/) do
+    @range = FactoryGirl.build(:range, {id: nil, reading_id: @reading.id})
+    @range.metric_configuration_id = rand(Time.now.to_i)
+    @range.save 
+end 
 
 When(/^I ask for all the ranges$/) do
   @response = KalibroGem::Entities::Range.all
@@ -49,7 +56,7 @@ Then(/^I should get an error in range kalibro errors attribute$/) do
 end
 
 Then(/^the id of the given range should be set$/) do
- @range.id.should_not eq(0)
+  @range.id.should_not eq(0)
 end
 
 Then(/^it should return the same range as the given one$/) do
