@@ -53,18 +53,6 @@ module KalibroGem
       def self.ranges_of(metric_configuration_id)
         self.create_objects_array_from_hash request(:ranges_of, {metric_configuration_id: metric_configuration_id} )[:range]
       end
-      
-      private
-
-      def save_params
-        {:range => self.to_hash, :metric_configuration_id => self.metric_configuration_id}
-      end
-      
-
-      def reading
-        @reading ||= KalibroGem::Entities::Reading.find(reading_id)
-        @reading
-      end
 
       def self.all
         metric_configurations = []
@@ -97,6 +85,16 @@ module KalibroGem
         end
       end
 
+      private
+
+      def save_params
+        {:range => self.to_hash, :metric_configuration_id => self.metric_configuration_id}
+      end
+
+      def reading
+        @reading ||= KalibroGem::Entities::Reading.find(reading_id)
+        @reading
+      end
     end
   end
 end
