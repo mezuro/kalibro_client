@@ -22,7 +22,7 @@ require "kalibro_gatekeeper_client/entities"
 
 module KalibroGatekeeperClient
   @config = {
-              address: "http://localhost:8080/KalibroService/"
+              address: "http://localhost:8081"
             }
 
   @valid_config_keys = @config.keys
