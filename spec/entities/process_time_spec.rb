@@ -1,4 +1,4 @@
-# This file is part of KalibroGem
+# This file is part of KalibroGatekeeperClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGem::Entities::ProcessTime do
+describe KalibroGatekeeperClient::Entities::ProcessTime do
   describe 'time=' do
     subject {FactoryGirl.build(:process_time)}
 

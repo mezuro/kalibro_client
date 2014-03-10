@@ -19,20 +19,20 @@ When(/^I create the project with name "(.*?)"$/) do |name|
 end
 
 When(/^I search a project with the same id of the given project$/) do
-  @found_project = KalibroGem::Entities::Project.find(@project.id)
+  @found_project = KalibroGatekeeperClient::Entities::Project.find(@project.id)
 end
 
 When(/^I destroy the project with the same id of the given project$/) do
-  @found_project = KalibroGem::Entities::Project.find(@project.id)
+  @found_project = KalibroGatekeeperClient::Entities::Project.find(@project.id)
   @found_project.destroy
 end
 
 When(/^I ask for all the projects$/) do
-  @all_projects = KalibroGem::Entities::Project.all
+  @all_projects = KalibroGatekeeperClient::Entities::Project.all
 end
 
 Then(/^the project should exist$/) do
-  KalibroGem::Entities::Project.exists?(@project.id)
+  KalibroGatekeeperClient::Entities::Project.exists?(@project.id)
 end
 
 Then(/^it should return the same project as the given one$/) do
@@ -40,7 +40,7 @@ Then(/^it should return the same project as the given one$/) do
 end
 
 Then(/^the project should not exist$/) do
-  !KalibroGem::Entities::Project.exists?(@found_project.id)
+  !KalibroGatekeeperClient::Entities::Project.exists?(@found_project.id)
 end
 
 Then(/^I should get a list with the given project$/) do

@@ -1,4 +1,4 @@
-# This file is part of KalibroGem
+# This file is part of KalibroGatekeeperClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGem::Entities::MetricConfiguration do
+describe KalibroGatekeeperClient::Entities::MetricConfiguration do
   describe 'id=' do
     it 'should set the id as an Integer' do
       subject.id = "42"
@@ -35,7 +35,7 @@ describe KalibroGem::Entities::MetricConfiguration do
     let(:metric) { FactoryGirl.build(:metric) }
     
     before :each do
-      KalibroGem::Entities::Metric.
+      KalibroGatekeeperClient::Entities::Metric.
         expects(:to_object).at_least_once.
         with(metric.to_hash).
         returns(metric)
@@ -58,7 +58,7 @@ describe KalibroGem::Entities::MetricConfiguration do
     let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
     
     before :each do
-      KalibroGem::Entities::MetricConfiguration.any_instance.
+      KalibroGatekeeperClient::Entities::MetricConfiguration.any_instance.
         expects(:save).
         returns(true)
     end
@@ -82,14 +82,14 @@ describe KalibroGem::Entities::MetricConfiguration do
 
     context 'with and existant MetricConfiguration' do
       before :each do
-        KalibroGem::Entities::MetricConfiguration.
+        KalibroGatekeeperClient::Entities::MetricConfiguration.
           expects(:request).
           with(:get_metric_configuration, {:metric_configuration_id => metric_configuration.id}).
           returns({metric_configuration: metric_configuration.to_hash})
       end
 
       it 'should return the metric_configuration' do
-        KalibroGem::Entities::MetricConfiguration.find(metric_configuration.id).
+        KalibroGatekeeperClient::Entities::MetricConfiguration.find(metric_configuration.id).
           id.should eq(metric_configuration.id)
       end
     end
@@ -98,15 +98,15 @@ describe KalibroGem::Entities::MetricConfiguration do
       before :each do
         any_code = rand(Time.now.to_i)
         any_error_message = ""
-        KalibroGem::Entities::MetricConfiguration.
+        KalibroGatekeeperClient::Entities::MetricConfiguration.
           expects(:request).
           with(:get_metric_configuration, {:metric_configuration_id => metric_configuration.id}).
           raises(Savon::SOAPFault.new(any_error_message, any_code))
       end
 
       it 'should raise the RecordNotFound error' do
-        expect {KalibroGem::Entities::MetricConfiguration.find(metric_configuration.id)}.
-          to raise_error(KalibroGem::Errors::RecordNotFound)
+        expect {KalibroGatekeeperClient::Entities::MetricConfiguration.find(metric_configuration.id)}.
+          to raise_error(KalibroGatekeeperClient::Errors::RecordNotFound)
       end
     end
   end
@@ -116,14 +116,14 @@ describe KalibroGem::Entities::MetricConfiguration do
     let(:configuration) { FactoryGirl.build(:configuration) }
 
     before :each do
-      KalibroGem::Entities::MetricConfiguration.
+      KalibroGatekeeperClient::Entities::MetricConfiguration.
         expects(:request).
         with(:metric_configurations_of, {:configuration_id => configuration.id}).
         returns({metric_configuration: metric_configuration.to_hash})
     end
 
     it 'should return a array with a metric configuration' do
-      metric_configurations = KalibroGem::Entities::MetricConfiguration.metric_configurations_of(configuration.id)
+      metric_configurations = KalibroGatekeeperClient::Entities::MetricConfiguration.metric_configurations_of(configuration.id)
 
       metric_configurations.should be_an(Array)
       metric_configurations.first.id.should eq(metric_configuration.id)
@@ -135,7 +135,7 @@ describe KalibroGem::Entities::MetricConfiguration do
     subject {FactoryGirl.build(:metric_configuration, {id: nil})}
 
     before :each do
-      KalibroGem::Entities::MetricConfiguration.
+      KalibroGatekeeperClient::Entities::MetricConfiguration.
         expects(:request).
         with(:save_metric_configuration, {:metric_configuration => subject.to_hash, :configuration_id => subject.configuration_id}).
         returns({:metric_configuration_id => 1})
@@ -152,21 +152,21 @@ describe KalibroGem::Entities::MetricConfiguration do
 
     context 'when the metric configuration exists' do
       before :each do
-        KalibroGem::Entities::MetricConfiguration.expects(:find).with(subject.id).returns(subject)
+        KalibroGatekeeperClient::Entities::MetricConfiguration.expects(:find).with(subject.id).returns(subject)
       end
 
       it 'should return true' do
-        KalibroGem::Entities::MetricConfiguration.exists?(subject.id).should be_true
+        KalibroGatekeeperClient::Entities::MetricConfiguration.exists?(subject.id).should be_true
       end
     end
 
     context 'when the metric configuration does not exist' do
       before :each do
-        KalibroGem::Entities::MetricConfiguration.expects(:find).with(subject.id).raises(KalibroGem::Errors::RecordNotFound)
+        KalibroGatekeeperClient::Entities::MetricConfiguration.expects(:find).with(subject.id).raises(KalibroGatekeeperClient::Errors::RecordNotFound)
       end
 
       it 'should return false' do
-        KalibroGem::Entities::MetricConfiguration.exists?(subject.id).should be_false
+        KalibroGatekeeperClient::Entities::MetricConfiguration.exists?(subject.id).should be_false
       end
     end
   end

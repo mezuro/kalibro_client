@@ -1,4 +1,4 @@
-# This file is part of KalibroGem
+# This file is part of KalibroGatekeeperClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :metric_result, class: KalibroGem::Entities::MetricResult do
+  factory :metric_result, class: KalibroGatekeeperClient::Entities::MetricResult do
     id  "42"
     self.configuration { FactoryGirl.build(:metric_configuration_snapshot) }
     value "10.0"

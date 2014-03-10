@@ -1,4 +1,4 @@
-# This file is part of KalibroGem
+# This file is part of KalibroGatekeeperClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGem::Entities::Metric do
+describe KalibroGatekeeperClient::Entities::Metric do
   describe 'languages' do
     subject { FactoryGirl.build(:metric) }
 
@@ -34,7 +34,7 @@ describe KalibroGem::Entities::Metric do
 
   describe 'language=' do
     before :each do
-      KalibroGem::Entities::Metric.
+      KalibroGatekeeperClient::Entities::Metric.
         expects(:to_objects_array).
         returns(["Java"])
     end

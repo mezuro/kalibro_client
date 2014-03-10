@@ -1,4 +1,4 @@
-# This file is part of KalibroGem
+# This file is part of KalibroGatekeeperClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,20 @@
 
 require 'spec_helper'
 
-describe KalibroGem::Entities::ModuleResult do
+describe KalibroGatekeeperClient::Entities::ModuleResult do
   subject { FactoryGirl.build(:module_result, id: rand(Time.now.to_i)) }
 
   describe 'find' do
     context 'when there is a module result for the given id' do
       before :each do
-        KalibroGem::Entities::ModuleResult.
+        KalibroGatekeeperClient::Entities::ModuleResult.
           expects(:request).
           with(:get_module_result, { :module_result_id => subject.id }).
           returns({module_result: subject.to_hash})
       end
 
       it 'should return a hash with module result' do
-        KalibroGem::Entities::ModuleResult.
+        KalibroGatekeeperClient::Entities::ModuleResult.
           find(subject.id).id.should eq(subject.id)
       end
     end
@@ -39,22 +39,22 @@ describe KalibroGem::Entities::ModuleResult do
         any_code = rand(Time.now.to_i)
         any_error_message = ""
 
-        KalibroGem::Entities::ModuleResult.
+        KalibroGatekeeperClient::Entities::ModuleResult.
           expects(:request).
           with(:get_module_result, { :module_result_id => subject.id }).
           raises(Savon::SOAPFault.new(any_error_message, any_code))
       end
 
       it 'should raise an error' do
-        expect {KalibroGem::Entities::ModuleResult.find(subject.id)}.
-          to raise_error KalibroGem::Errors::RecordNotFound
+        expect {KalibroGatekeeperClient::Entities::ModuleResult.find(subject.id)}.
+          to raise_error KalibroGatekeeperClient::Errors::RecordNotFound
       end
     end
   end
 
   describe 'children' do
     before :each do
-      KalibroGem::Entities::ModuleResult.
+      KalibroGatekeeperClient::Entities::ModuleResult.
         expects(:request).
         with(:children_of, {:module_result_id => subject.id}).
         returns({module_result: subject.to_hash})
@@ -70,7 +70,7 @@ describe KalibroGem::Entities::ModuleResult do
 
     context 'when module result has a parent' do
       before :each do
-        KalibroGem::Entities::ModuleResult.
+        KalibroGatekeeperClient::Entities::ModuleResult.
           expects(:request).at_least_once.
           with(:get_module_result, { :module_result_id => subject.parent_id }).
           returns({module_result: root_module_result.to_hash})
@@ -121,14 +121,14 @@ describe KalibroGem::Entities::ModuleResult do
   describe 'history_of' do
     let(:date_module_result) { FactoryGirl.build(:date_module_result) }
     before :each do
-      KalibroGem::Entities::ModuleResult.
+      KalibroGatekeeperClient::Entities::ModuleResult.
         expects(:request).
         with(:history_of_module, {:module_result_id => subject.id}).
         returns({date_module_result: date_module_result.to_hash})
     end
 
     it 'should return a list of date_module_results' do
-      date_module_results = KalibroGem::Entities::ModuleResult.history_of subject.id
+      date_module_results = KalibroGatekeeperClient::Entities::ModuleResult.history_of subject.id
       date_module_results.first.result.should eq date_module_result.result
     end
   end

@@ -1,4 +1,4 @@
-# This file is part of KalibroGem
+# This file is part of KalibroGatekeeperClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGem::Entities::ReadingGroup do
+describe KalibroGatekeeperClient::Entities::ReadingGroup do
   describe "id=" do
     subject { FactoryGirl.build(:reading_group) }
 
@@ -29,28 +29,28 @@ describe KalibroGem::Entities::ReadingGroup do
   describe 'all' do
     context 'with no reading_groups' do
       before :each do
-        KalibroGem::Entities::ReadingGroup.
+        KalibroGatekeeperClient::Entities::ReadingGroup.
           expects(:request).
           with(:all_reading_groups).
           returns({:reading_group => nil})
       end
 
       it 'should return nil' do
-        KalibroGem::Entities::ReadingGroup.all.should be_empty
+        KalibroGatekeeperClient::Entities::ReadingGroup.all.should be_empty
       end
     end
 
     context 'with many reading_groups' do
       let(:reading_group) { FactoryGirl.build(:reading_group) }
       before :each do
-        KalibroGem::Entities::ReadingGroup.
+        KalibroGatekeeperClient::Entities::ReadingGroup.
           expects(:request).
           with(:all_reading_groups).
           returns({:reading_group => [reading_group.to_hash, reading_group.to_hash]})
       end
 
       it 'should return nil' do
-        reading_groups = KalibroGem::Entities::ReadingGroup.all
+        reading_groups = KalibroGatekeeperClient::Entities::ReadingGroup.all
 
         reading_groups.first.name.should eq(reading_group.name)
         reading_groups.last.name.should eq(reading_group.name)
@@ -63,7 +63,7 @@ describe KalibroGem::Entities::ReadingGroup do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroGem::Entities::ReadingGroup.
+        KalibroGatekeeperClient::Entities::ReadingGroup.
           expects(:request).
           with(:delete_reading_group,{:group_id => subject.id})
       end
@@ -79,11 +79,11 @@ describe KalibroGem::Entities::ReadingGroup do
   describe 'exists?' do
     context 'with an inexistent id' do
       it 'should return false' do
-        KalibroGem::Entities::ReadingGroup.
+        KalibroGatekeeperClient::Entities::ReadingGroup.
           expects(:request).
           with(:reading_group_exists,{:group_id=>0}).
           returns({:exists => false})
-        KalibroGem::Entities::ReadingGroup.exists?(0)
+        KalibroGatekeeperClient::Entities::ReadingGroup.exists?(0)
       end
     end
   end

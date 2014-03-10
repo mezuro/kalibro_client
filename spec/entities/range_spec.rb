@@ -1,4 +1,4 @@
-# This file is part of KalibroGem
+# This file is part of KalibroGatekeeperClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGem::Entities::Range do
+describe KalibroGatekeeperClient::Entities::Range do
   subject { FactoryGirl.build(:range) }
 
   describe 'id=' do
@@ -61,7 +61,7 @@ describe KalibroGem::Entities::Range do
     let(:reading) { FactoryGirl.build(:reading) }
 
     before :each do
-      KalibroGem::Entities::Reading.
+      KalibroGatekeeperClient::Entities::Reading.
         expects(:find).
         with(subject.reading_id).
         returns(reading)
@@ -91,27 +91,27 @@ describe KalibroGem::Entities::Range do
 
     context 'when does not exists the asked range' do
       before :each do
-        KalibroGem::Entities::Range.
+        KalibroGatekeeperClient::Entities::Range.
           expects(:request).
           with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
           returns({range: nil})
       end
 
       it 'should return a list with the ranges' do
-        KalibroGem::Entities::Range.ranges_of(metric_configuration.id).should eq([])
+        KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id).should eq([])
       end
     end
 
     context 'when exist only one range for the given metric configuration' do
       before :each do
-        KalibroGem::Entities::Range.
+        KalibroGatekeeperClient::Entities::Range.
           expects(:request).
           with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
           returns({range: subject.to_hash})
       end
 
       it 'should return a list with the range' do
-        KalibroGem::Entities::Range.ranges_of(metric_configuration.id).
+        KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id).
           first.beginning.should eq(subject.beginning)
       end
     end
@@ -120,14 +120,14 @@ describe KalibroGem::Entities::Range do
       let(:another_range) { FactoryGirl.build(:another_range) }
       
       before :each do
-        KalibroGem::Entities::Range.
+        KalibroGatekeeperClient::Entities::Range.
           expects(:request).
           with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
           returns({range: [subject.to_hash, another_range.to_hash]})
       end
 
       it 'should return a list with the ranges' do
-        ranges = KalibroGem::Entities::Range.ranges_of(metric_configuration.id)
+        ranges = KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id)
         ranges.first.comments.should eq(subject.comments)
         ranges.last.comments.should eq(another_range.comments)
       end
@@ -139,7 +139,7 @@ describe KalibroGem::Entities::Range do
     subject {FactoryGirl.build(:range, {id: nil})}
 
     before :each do
-      KalibroGem::Entities::Range.
+      KalibroGatekeeperClient::Entities::Range.
         expects(:request).
         with(:save_range, {:range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}).
         returns({:range_id => 2})
@@ -154,21 +154,21 @@ describe KalibroGem::Entities::Range do
   describe 'exists?' do
     context 'when the range exists' do
       before :each do
-        KalibroGem::Entities::Range.expects(:find).with(subject.id).returns(subject)
+        KalibroGatekeeperClient::Entities::Range.expects(:find).with(subject.id).returns(subject)
       end
 
       it 'should return true' do
-        KalibroGem::Entities::Range.exists?(subject.id).should be_true
+        KalibroGatekeeperClient::Entities::Range.exists?(subject.id).should be_true
       end
     end
 
     context 'when the range does not exists' do
       before :each do
-        KalibroGem::Entities::Range.expects(:find).with(subject.id).raises(KalibroGem::Errors::RecordNotFound)
+        KalibroGatekeeperClient::Entities::Range.expects(:find).with(subject.id).raises(KalibroGatekeeperClient::Errors::RecordNotFound)
       end
 
       it 'should return false' do
-        KalibroGem::Entities::Range.exists?(subject.id).should be_false
+        KalibroGatekeeperClient::Entities::Range.exists?(subject.id).should be_false
       end
     end
   end
@@ -176,26 +176,26 @@ describe KalibroGem::Entities::Range do
   describe 'find' do
     context 'when the range exists' do
       before :each do
-        KalibroGem::Entities::Range.
+        KalibroGatekeeperClient::Entities::Range.
           expects(:all).
           returns([subject])
       end
 
       it 'should return the range' do
-        KalibroGem::Entities::Range.find(subject.id).should eq(subject)
+        KalibroGatekeeperClient::Entities::Range.find(subject.id).should eq(subject)
       end
     end
 
     context "when the range doesn't exists" do
       before :each do
-        KalibroGem::Entities::Range.
+        KalibroGatekeeperClient::Entities::Range.
           expects(:all).
           returns([FactoryGirl.build(:another_range)])
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroGem::Entities::Range.find(subject.id) }.
-          to raise_error(KalibroGem::Errors::RecordNotFound)
+        expect { KalibroGatekeeperClient::Entities::Range.find(subject.id) }.
+          to raise_error(KalibroGatekeeperClient::Errors::RecordNotFound)
       end
     end
   end
@@ -205,21 +205,21 @@ describe KalibroGem::Entities::Range do
     let(:metric_configuration) { FactoryGirl.build(:metric_configuration) } 
 
     before :each do
-      KalibroGem::Entities::Configuration.
+      KalibroGatekeeperClient::Entities::Configuration.
         expects(:all).
         returns([configuration])
-      KalibroGem::Entities::MetricConfiguration.
+      KalibroGatekeeperClient::Entities::MetricConfiguration.
         expects(:metric_configurations_of).
         with(configuration.id).
         returns([metric_configuration])
-      KalibroGem::Entities::Range.
+      KalibroGatekeeperClient::Entities::Range.
         expects(:ranges_of).
         with(metric_configuration.id).
         returns([subject])
     end
 
     it 'should list all the ranges' do
-      KalibroGem::Entities::Range.all.should include(subject)
+      KalibroGatekeeperClient::Entities::Range.all.should include(subject)
     end
   end
 end

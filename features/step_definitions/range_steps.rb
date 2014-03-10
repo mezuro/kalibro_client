@@ -21,7 +21,7 @@ When(/^I ask to save the given range with an inexistent metric configuration$/) 
 end
 
 When(/^I ask ranges of the given metric configuration$/) do
-  @response = KalibroGem::Entities::Range.ranges_of @metric_configuration.id
+  @response = KalibroGatekeeperClient::Entities::Range.ranges_of @metric_configuration.id
 end
 
 When(/^I try to save a range with an inexistent metric configuration$/) do
@@ -31,11 +31,11 @@ When(/^I try to save a range with an inexistent metric configuration$/) do
 end 
 
 When(/^I ask for all the ranges$/) do
-  @response = KalibroGem::Entities::Range.all
+  @response = KalibroGatekeeperClient::Entities::Range.all
 end
 
 When(/^I search a range with the same id of the given range$/) do
-  @found_range = KalibroGem::Entities::Range.find(@range.id.to_i)
+  @found_range = KalibroGatekeeperClient::Entities::Range.find(@range.id.to_i)
 end
 
 Then(/^I should get an empty list$/) do
@@ -64,5 +64,5 @@ Then(/^it should return the same range as the given one$/) do
 end
 
 Then(/^the range should exist$/) do
-  KalibroGem::Entities::Range.exists?(@range.id)
+  KalibroGatekeeperClient::Entities::Range.exists?(@range.id)
 end

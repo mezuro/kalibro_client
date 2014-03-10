@@ -1,4 +1,4 @@
-# This file is part of KalibroGem
+# This file is part of KalibroGatekeeperClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGem::Entities::DateModuleResult do
+describe KalibroGatekeeperClient::Entities::DateModuleResult do
   describe 'date=' do
     context 'when the given value is a String' do
       it 'should set the date and convert it to DateTime' do
@@ -39,7 +39,7 @@ describe KalibroGem::Entities::DateModuleResult do
   describe 'module_result=' do
     let(:module_result) { FactoryGirl.build(:module_result) }
     before :each do
-      KalibroGem::Entities::ModuleResult.
+      KalibroGatekeeperClient::Entities::ModuleResult.
         expects(:to_object).
         with(module_result.to_hash).
         returns(module_result)

@@ -1,4 +1,4 @@
-# This file is part of KalibroGem
+# This file is part of KalibroGatekeeperClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -25,10 +25,10 @@ SimpleCov.start do
                 Coveralls::SimpleCov::Formatter,
                 SimpleCov::Formatter::HTMLFormatter
               ]
-  add_group "Entities", "lib/kalibro_gem/entities"
-  add_group "Errors", "lib/kalibro_gem/errors"
-  add_group "Helpers", "lib/kalibro_gem/helpers"
-  add_group "Cucumber Helpers", "lib/kalibro_gem/kalibro_cucumber_helpers"
+  add_group "Entities", "lib/kalibro_gatekeeper_client/entities"
+  add_group "Errors", "lib/kalibro_gatekeeper_client/errors"
+  add_group "Helpers", "lib/kalibro_gatekeeper_client/helpers"
+  add_group "Cucumber Helpers", "lib/kalibro_gatekeeper_client/kalibro_cucumber_helpers"
 
   add_filter "/spec/"
   add_filter "/features/"
@@ -38,7 +38,7 @@ end
 
 require 'savon/savon_test_helper'
 
-require 'kalibro_gem'
+require 'kalibro_gatekeeper_client'
 
 require 'factory_girl'
 FactoryGirl.find_definitions

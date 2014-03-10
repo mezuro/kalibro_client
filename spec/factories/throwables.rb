@@ -1,4 +1,4 @@
-# This file is part of KalibroGem
+# This file is part of KalibroGatekeeperClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :throwable, class: KalibroGem::Entities::Throwable do
+  factory :throwable, class: KalibroGatekeeperClient::Entities::Throwable do
     target_string "publico getLanguage"
     message "Syntax Error"
     stack_trace_element {FactoryGirl.build(:stack_trace_element)}
