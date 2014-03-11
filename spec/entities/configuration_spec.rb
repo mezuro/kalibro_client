@@ -29,8 +29,8 @@ describe KalibroGatekeeperClient::Entities::Configuration do
       before :each do
         KalibroGatekeeperClient::Entities::Configuration.
           expects(:request).
-          with(:all_configurations).
-          returns({:configuration => nil})
+          with(:all, {}, :get).
+          returns({'configurations' => nil}.to_json)
       end
 
       it 'should return nil' do
@@ -45,8 +45,8 @@ describe KalibroGatekeeperClient::Entities::Configuration do
       before :each do
         KalibroGatekeeperClient::Entities::Configuration.
           expects(:request).
-          with(:all_configurations).
-          returns({:configuration => [configuration.to_hash, another_configuration.to_hash]})
+          with(:all, {}, :get).
+          returns({'configurations' => [configuration.to_hash, another_configuration.to_hash]}.to_json)
       end
 
       it 'should return the two elements' do
