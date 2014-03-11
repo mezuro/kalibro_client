@@ -47,17 +47,15 @@ module KalibroGatekeeperClient
         super :except => [:configuration_id]
       end
 
-      def self.find(id)
-        #TODO: on future versions of Kalibro this begin/rescue will be unnecessary
-        begin
-          new request(:get_metric_configuration, {:metric_configuration_id => id})[:metric_configuration]
-        rescue Savon::SOAPFault
-          raise KalibroGatekeeperClient::Errors::RecordNotFound
-        end
+      def self.metric_configurations_of(configuration_id)
+        create_objects_array_from_hash request(:of, {:configuration_id => configuration_id})['metric_configurations']
       end
 
-      def self.metric_configurations_of(configuration_id)
-        create_objects_array_from_hash request(:metric_configurations_of, {:configuration_id => configuration_id})[:metric_configuration]
+      def self.find(id)
+        #TODO: on future versions of Kalibro this begin/rescue will be unnecessary
+        metric_configuration = request(:get, {id: id})
+        raise KalibroGatekeeperClient::Errors::RecordNotFound unless metric_configuration['error'].nil?
+        return new(metric_configuration)
       end
 
       def self.exists?(id)
