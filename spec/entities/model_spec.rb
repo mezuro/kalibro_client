@@ -293,4 +293,30 @@ describe KalibroGatekeeperClient::Entities::Model do
       end
     end
   end
+
+  describe 'is_valid?' do
+    context 'with a global var' do
+      it 'should return false' do
+        KalibroGatekeeperClient::Entities::Model.is_valid?('@test').should be_false
+      end
+    end
+
+    context 'with the attributes var' do
+      it 'should return false' do
+        KalibroGatekeeperClient::Entities::Model.is_valid?(:attributes!).should be_false
+      end
+    end
+
+    context 'with a xsi var' do
+      it 'should return false' do
+        KalibroGatekeeperClient::Entities::Model.is_valid?('test_xsi').should be_false
+      end
+    end
+
+    context 'with a valid var' do
+      it 'should return true' do
+        KalibroGatekeeperClient::Entities::Model.is_valid?('test').should be_true
+      end
+    end
+  end
 end
