@@ -70,43 +70,43 @@ module KalibroGatekeeperClient
       end
 
       def self.has_processing(repository_id)
-        request(:has_processing, {:repository_id => repository_id})[:exists]
+        request('has', {repository_id: repository_id})['exists']
       end
 
       def self.has_ready_processing(repository_id)
-        request(:has_ready_processing, {:repository_id => repository_id})[:exists]
+        request('has_ready', {repository_id: repository_id})['exists']
       end
 
       def self.has_processing_after(repository_id, date)
-        request(:has_processing_after, {:repository_id => repository_id, :date => date})[:exists]
+        request('has_after', {repository_id: repository_id, :date => date})['exists']
       end
 
       def self.has_processing_before(repository_id, date)
-        request(:has_processing_before, {:repository_id => repository_id, :date => date})[:exists]
+        request('has_before', {repository_id: repository_id, :date => date})['exists']
       end
 
       def self.last_processing_state_of(repository_id)
-        request(:last_processing_state, {:repository_id => repository_id})[:process_state]
+        request('last_state', {repository_id: repository_id})['state']
       end
 
       def self.last_ready_processing_of(repository_id)
-        new request(:last_ready_processing, {:repository_id => repository_id})[:processing]
+        new(request('last_ready_of', {repository_id: repository_id})['processing'])
       end
 
       def self.first_processing_of(repository_id)
-        new request(:first_processing, {:repository_id => repository_id})[:processing]
+        new(request('first_of', {repository_id: repository_id})['processing'])
       end
 
       def self.last_processing_of(repository_id)
-        new request(:last_processing, {:repository_id => repository_id})[:processing]
+        new(request('last_of', {repository_id: repository_id})['processing'])
       end
 
       def self.first_processing_after(repository_id, date)
-        new request(:first_processing_after, {:repository_id => repository_id, :date => date})[:processing]
+        new(request('first_after_of', {repository_id: repository_id, :date => date})['processing'])
       end
 
       def self.last_processing_before(repository_id, date)
-        new request(:last_processing_before, {:repository_id => repository_id, :date => date})[:processing]
+        new(request('last_before_of', {repository_id: repository_id, :date => date})['processing'])
       end
     end
   end

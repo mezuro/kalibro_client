@@ -54,19 +54,17 @@ module KalibroGatekeeperClient
       end
 
       def descendant_results
-        response = self.class.request(:descendant_results_of, {:metric_result_id => id})[:descendant_result]
-        response = [] if response.nil?
-        response = [response] if response.is_a?(String)
-        response.map {|descendant_result| descendant_result.to_f}
+        descendant_results = self.class.request('descendant_results_of', {id: id})['descendant_results']
+        descendant_results.map {|descendant_result| descendant_result.to_f}
       end
 
       def self.metric_results_of(module_result_id)
-        create_objects_array_from_hash self.request(:metric_results_of, {:module_result_id => module_result_id})[:metric_result]
+        create_objects_array_from_hash self.request('of', {module_result_id: module_result_id})['metric_results']
       end
 
       def self.history_of(metric_name, module_result_id)
-        response = self.request(:history_of_metric, {:metric_name => metric_name,
-                                                     :module_result_id => module_result_id})[:date_metric_result]
+        response = self.request('history_of_metric', {:metric_name => metric_name,
+                                                     :module_result_id => module_result_id})['date_metric_results']
         create_array_from_hash(response).map { |date_metric_result| KalibroGatekeeperClient::Entities::DateMetricResult.new date_metric_result }
       end
     end

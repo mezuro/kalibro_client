@@ -23,11 +23,9 @@ module KalibroGatekeeperClient
       attr_accessor :id, :module, :grade, :parent_id, :height
 
       def self.find(id)
-        begin
-          new request(:get_module_result, { :module_result_id => id })[:module_result]
-        rescue Savon::SOAPFault
-          raise KalibroGatekeeperClient::Errors::RecordNotFound
-        end
+        response = request('get', { id: id })
+        raise KalibroGatekeeperClient::Errors::RecordNotFound unless response['error'].nil?
+        new response
       end
 
       def children

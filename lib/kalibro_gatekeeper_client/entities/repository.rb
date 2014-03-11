@@ -44,7 +44,7 @@ module KalibroGatekeeperClient
       end
 
       def process
-        self.class.request(:process_repository, {:repository_id => self.id})
+        self.class.request('process', {id: self.id})
       end
 
       def cancel_processing_of_repository

@@ -69,8 +69,8 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       before :each do
         KalibroGatekeeperClient::Entities::MetricResult.
           expects(:request).
-          with(:descendant_results_of, { :metric_result_id => subject.id }).
-          returns({descendant_result: "13.3"})
+          with('descendant_results_of', { id: subject.id }).
+          returns({'descendant_results' => [13.3]})
       end
 
       it 'should return an unitary list with the descendant result' do
@@ -82,25 +82,12 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       before :each do
         KalibroGatekeeperClient::Entities::MetricResult.
           expects(:request).
-          with(:descendant_results_of, { :metric_result_id => subject.id }).
-          returns({})
+          with('descendant_results_of', { id: subject.id }).
+          returns({'descendant_results' => []})
       end
 
       it 'should return an empty list' do
         subject.descendant_results.should eq([])
-      end
-    end
-
-    context 'when there are many descendant results for the given metric_result' do
-      before :each do
-        KalibroGatekeeperClient::Entities::MetricResult.
-          expects(:request).
-          with(:descendant_results_of, { :metric_result_id => subject.id }).
-          returns({descendant_result: ["-13.3", "42.42", "1"]})
-      end
-
-      it 'should return a list with the descendant results' do
-        subject.descendant_results.should eq([-13.3, 42.42, 1])
       end
     end
   end
@@ -110,8 +97,8 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       before :each do
         KalibroGatekeeperClient::Entities::MetricResult.
           expects(:request).
-          with(:metric_results_of, { :module_result_id => 123 }).
-          returns({metric_result: subject.to_hash})
+          with('of', { module_result_id: 123 }).
+          returns({'metric_results' => [subject.to_hash]})
       end
 
       it 'should return an unitary list with the metric result' do
@@ -123,8 +110,8 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       before :each do
         KalibroGatekeeperClient::Entities::MetricResult.
           expects(:request).
-          with(:metric_results_of, { :module_result_id => 42 }).
-          returns({})
+          with('of', { :module_result_id => 42 }).
+          returns({'metric_results' => []})
       end
 
       it 'should return an empty list' do
@@ -137,8 +124,8 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       before :each do
         KalibroGatekeeperClient::Entities::MetricResult.
           expects(:request).
-          with(:metric_results_of, { :module_result_id => 28 }).
-          returns({metric_result: [subject.to_hash, subject.to_hash]})
+          with('of', { :module_result_id => 28 }).
+          returns({'metric_results' => [subject.to_hash, subject.to_hash]})
       end
 
       it 'should return a list with the descendant results' do
@@ -155,8 +142,8 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       before :each do
         KalibroGatekeeperClient::Entities::MetricResult.
           expects(:request).
-          with(:history_of_metric, {:metric_name => metric.name, :module_result_id => module_result.id}).
-          returns({date_metric_result: nil})
+          with('history_of_metric', {:metric_name => metric.name, :module_result_id => module_result.id}).
+          returns({date_metric_results: []})
       end
 
       it 'should return an empty list' do
@@ -170,8 +157,8 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       before :each do
         KalibroGatekeeperClient::Entities::MetricResult.
           expects(:request).
-          with(:history_of_metric, {:metric_name => metric.name, :module_result_id => module_result.id}).
-          returns({date_metric_result: date_metric_result.to_hash})
+          with('history_of_metric', {:metric_name => metric.name, :module_result_id => module_result.id}).
+          returns({'date_metric_results' => [date_metric_result.to_hash]})
       end
 
       it 'should return the date metric result as an object into a list' do
@@ -187,8 +174,8 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       before :each do
         KalibroGatekeeperClient::Entities::MetricResult.
           expects(:request).
-          with(:history_of_metric, {:metric_name => metric.name, :module_result_id => module_result.id}).
-          returns({date_metric_result: [date_metric_result.to_hash, another_date_metric_result.to_hash]})
+          with('history_of_metric', {:metric_name => metric.name, :module_result_id => module_result.id}).
+          returns({'date_metric_results' => [date_metric_result.to_hash, another_date_metric_result.to_hash]})
       end
 
       it 'should return a list of date metric results as objects' do
