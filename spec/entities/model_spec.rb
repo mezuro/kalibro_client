@@ -38,33 +38,35 @@ describe KalibroGatekeeperClient::Entities::Model do
 
   describe 'endpoint' do
     it 'should return the class_name' do
-      endpoint = 'test'
+      endpoint = 'tests'
       KalibroGatekeeperClient::Entities::Model.expects(:class_name).returns(endpoint)
       KalibroGatekeeperClient::Entities::Model.endpoint.should eq(endpoint)
     end
   end
 
   describe 'client' do
-    it 'returns a Savon::Client' do
-      KalibroGatekeeperClient::Entities::Model.client('Model').should be_a(Savon::Client)
+    it 'returns a Faraday::Connection' do
+      KalibroGatekeeperClient::Entities::Model.client.should be_a(Faraday::Connection)
     end
   end
 
   describe 'request' do
     let(:fixture) { File.read("spec/savon/fixtures/project/does_not_exists.xml") }
     let(:client) { mock('client') }
+    let(:response) { mock('response') }
 
     context 'for the KalibroGatekeeperClient::Entitie class' do
       it 'should successfully get the Kalibro version' do
-        client.expects(:call).
-          with(:project_exists, message: {project_id: 1}).
-          returns(mock_savon_response(fixture))
+        response.expects(:body).returns({exists: false})
+        client.expects(:post).
+          with('/models/exists', {id: 1}).
+          returns(response)
         KalibroGatekeeperClient::Entities::Model.
           expects(:client).
           with(any_parameters).
           returns(client)
         KalibroGatekeeperClient::Entities::Model.
-          request(:project_exists, {project_id: 1})[:exists].should eq(false)
+          request('exists', {id: 1})[:exists].should eq(false)
       end
     end
 
@@ -72,15 +74,16 @@ describe KalibroGatekeeperClient::Entities::Model do
       class Child < KalibroGatekeeperClient::Entities::Model; end
 
       it 'should successfully get the Kalibro version' do
-        client.expects(:call).
-          with(:project_exists, message: {project_id: 1}).
-          returns(mock_savon_response(fixture))
+        response.expects(:body).returns({exists: false})
+        client.expects(:post).
+          with('/models/exists', {id: 1}).
+          returns(response)
         Child.
           expects(:client).
           with(any_parameters).
           returns(client)
         Child.
-          request(:project_exists, {project_id: 1})[:exists].should eq(false)
+          request('exists', {id: 1})[:exists].should eq(false)
       end
     end
   end
@@ -116,7 +119,7 @@ describe KalibroGatekeeperClient::Entities::Model do
     before :each do
       KalibroGatekeeperClient::Entities::Model.
         expects(:request).
-        with(:save_model, {:model=>{}}).returns({:model_id => 42})
+        with('save', {model: {}}).returns({'id' => 42})
     end
 
     context "when it doesn't have the method id=" do
@@ -196,8 +199,8 @@ describe KalibroGatekeeperClient::Entities::Model do
       before :each do
         KalibroGatekeeperClient::Entities::Model.
           expects(:request).
-          with(:model_exists,{:model_id=>0}).
-          returns({:exists => false})
+          with('exists', {id: 0}).
+          returns({'exists' => false})
       end
 
       it 'should return false' do
@@ -209,8 +212,8 @@ describe KalibroGatekeeperClient::Entities::Model do
       before :each do
         KalibroGatekeeperClient::Entities::Model.
           expects(:request).
-          with(:model_exists,{:model_id=>42}).
-          returns({:exists => true})
+          with('exists', {id: 42}).
+          returns({'exists' => true})
       end
 
       it 'should return false' do
@@ -237,7 +240,7 @@ describe KalibroGatekeeperClient::Entities::Model do
           returns(true)
         KalibroGatekeeperClient::Entities::Model.
           expects(:request).
-          with(:get_model,{:model_id => 42}).returns({:model => {}})
+          with('get',{id: 42}).returns({})
       end
 
       it 'should return an empty model' do
@@ -252,7 +255,7 @@ describe KalibroGatekeeperClient::Entities::Model do
         subject.expects(:id).at_least_once.returns(42)
         KalibroGatekeeperClient::Entities::Model.
           expects(:request).
-          with(:delete_model,{:model_id => subject.id})
+          with('destroy',{id: subject.id})
       end
 
       it 'should remain with the errors array empty' do
@@ -266,7 +269,7 @@ describe KalibroGatekeeperClient::Entities::Model do
         subject.expects(:id).at_least_once.returns(42)
         KalibroGatekeeperClient::Entities::Model.
           expects(:request).
-          with(:delete_model,{:model_id => subject.id}).raises(Exception.new)
+          with('destroy',{id: subject.id}).raises(Exception.new)
       end
 
       it "should have an exception inside it's errors" do
