@@ -20,28 +20,28 @@ module RequestMethods
   end
 
   def save_action
-    "save_#{instance_class_name.underscore}".to_sym
+    "save"
   end
 
   def destroy_action
-    "delete_#{instance_class_name.underscore}".to_sym
+    "destroy"
   end
 
   def destroy_params
-    {"#{instance_class_name.underscore}_id".to_sym => self.id}
+    {id: self.id}
   end
 
   module ClassMethods
     def exists_action
-      "#{class_name.underscore}_exists".to_sym
+      "exists"
     end
 
     def id_params(id)
-      {"#{class_name.underscore}_id".to_sym => id}
+      {id: id}
     end
 
     def find_action
-      "get_#{class_name.underscore}".to_sym
+      "get"
     end
   end
 end

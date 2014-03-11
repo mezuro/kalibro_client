@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'savon'
+require 'faraday_middleware'
 require 'kalibro_gatekeeper_client/helpers/hash_converters'
 require 'kalibro_gatekeeper_client/helpers/request_methods'
 
@@ -38,9 +38,8 @@ module KalibroGatekeeperClient
         hash
       end
 
-      def self.request(action, request_body = nil)
-        response = client(endpoint).call(action, message: request_body )
-        response.to_hash["#{action}_response".to_sym] # response is a Savon::SOAP::Response, and to_hash is a Savon::SOAP::Response method
+      def self.request(action, params = {}, method = :post)
+        client.send(method, "/#{endpoint}/#{action}", params).body
       end
 
       def self.to_object value
@@ -54,7 +53,7 @@ module KalibroGatekeeperClient
 
       def save
         begin
-          self.id = self.class.request(save_action, save_params)["#{instance_class_name.underscore}_id".to_sym]
+          self.id = self.class.request(save_action, save_params)["id"]
           true
         rescue Exception => exception
           add_error exception
@@ -86,12 +85,12 @@ module KalibroGatekeeperClient
       end
 
       def self.exists?(id)
-        request(exists_action, id_params(id))[:exists]
+        request(exists_action, id_params(id))['exists']
       end
 
       def self.find(id)
         if(exists?(id))
-          new request(find_action, id_params(id))["#{class_name.underscore}".to_sym]
+          new request(find_action, id_params(id))
         else
           raise KalibroGatekeeperClient::Errors::RecordNotFound
         end
@@ -129,8 +128,13 @@ module KalibroGatekeeperClient
         instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '') }
       end
 
-      def self.client(endpoint)
-        Savon.client({log: false, wsdl: "#{KalibroGatekeeperClient.config[:address]}#{endpoint}Endpoint/?wsdl"})
+      # TODO: probably the connection could be a class static variable.
+      def self.client
+        Faraday.new(:url => KalibroGatekeeperClient.config[:address]) do |conn|
+          conn.request :json
+          conn.response :json, :content_type => /\bjson$/
+          conn.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+        end
       end
 
       def self.is_valid?(field)
@@ -150,7 +154,7 @@ module KalibroGatekeeperClient
       end
 
       def self.endpoint
-        class_name
+        class_name.pluralize.underscore
       end
 
       # TODO: Rename to entitie_name

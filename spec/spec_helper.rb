@@ -36,17 +36,13 @@ SimpleCov.start do
   coverage_dir 'coverage/rspec'
 end
 
-require 'savon/savon_test_helper'
-
 require 'kalibro_gatekeeper_client'
 
 require 'factory_girl'
 FactoryGirl.find_definitions
 
 RSpec.configure do |config|
-  config.include SavonTestHelper
-
-  # ## Mock Framework
+  # Mock Framework
   config.mock_with :mocha
 
   # Run specs in random order to surface order dependencies. If you find an

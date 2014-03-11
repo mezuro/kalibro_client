@@ -27,7 +27,8 @@ module KalibroGatekeeperClient
       end
 
       def self.all
-        create_objects_array_from_hash request(:all_projects)[:project]
+        # FIXME: for some reason, the JSON is not getting automatically parsed
+        create_objects_array_from_hash(JSON.parse(request('all', {}, :get))["projects"])
       end
     end
   end

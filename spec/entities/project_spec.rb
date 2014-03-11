@@ -37,8 +37,8 @@ describe KalibroGatekeeperClient::Entities::Project do
       before :each do
         KalibroGatekeeperClient::Entities::Project.
           expects(:request).
-          with(:all_projects).
-          returns({:project => nil})
+          with('all', {}, :get).
+          returns({:projects => nil}.to_json)
       end
 
       it 'should return nil' do
@@ -53,8 +53,8 @@ describe KalibroGatekeeperClient::Entities::Project do
       before :each do
         KalibroGatekeeperClient::Entities::Project.
             expects(:request).
-            with(:all_projects).
-            returns({:project => [project.to_hash, another_project.to_hash]})
+            with('all', {}, :get).
+            returns({:projects => [project.to_hash, another_project.to_hash]}.to_json)
       end
 
       it 'should return a list with projects' do
