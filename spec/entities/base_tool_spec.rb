@@ -22,8 +22,8 @@ describe KalibroGatekeeperClient::Entities::BaseTool do
       before :each do
         KalibroGatekeeperClient::Entities::BaseTool.
           expects(:request).
-          with(:all_base_tool_names).
-          returns({:base_tool_name => nil})
+          with(:all_names, {}, :get).
+          returns({'names' => nil}.to_json)
       end
 
       it 'should return empty array' do
@@ -38,16 +38,16 @@ describe KalibroGatekeeperClient::Entities::BaseTool do
       before :each do
         KalibroGatekeeperClient::Entities::BaseTool.
           expects(:request).
-          with(:all_base_tool_names).
-          returns({:base_tool_name => [base_tool_hash, another_base_tool_hash]})
+          with(:all_names, {}, :get).
+          returns({'base_tool_names' => [base_tool_hash, another_base_tool_hash]}.to_json)
       end
 
       it 'should return the two elements' do
-        base_tool_names = KalibroGatekeeperClient::Entities::BaseTool.all_names
+        names = KalibroGatekeeperClient::Entities::BaseTool.all_names
 
-        base_tool_names.size.should eq(2)
-        base_tool_names.first.should eq(base_tool_hash)
-        base_tool_names.last.should eq(another_base_tool_hash)
+        names.size.should eq(2)
+        names.first.should eq(JSON.parse(base_tool_hash.to_json))
+        names.last.should eq(JSON.parse(another_base_tool_hash.to_json))
       end
     end
   end
@@ -57,8 +57,8 @@ describe KalibroGatekeeperClient::Entities::BaseTool do
       before :each do
         KalibroGatekeeperClient::Entities::BaseTool.
           expects(:request).
-          with(:all_base_tool_names).
-          returns({:base_tool_name => nil})
+          with(:all_names, {}, :get).
+          returns({'names' => nil}.to_json)
       end
 
       it 'should return empty array' do
@@ -73,18 +73,18 @@ describe KalibroGatekeeperClient::Entities::BaseTool do
       before :each do
         KalibroGatekeeperClient::Entities::BaseTool.
           expects(:request).
-          with(:all_base_tool_names).
-          returns({:base_tool_name => [base_tool.name, another_base_tool.name]})
+          with(:all_names, {}, :get).
+          returns({'base_tool_names' => [base_tool.name, another_base_tool.name]}.to_json)
         
         KalibroGatekeeperClient::Entities::BaseTool.
           expects(:request).
-          with(:get_base_tool, {:base_tool_name => base_tool.name}).
-          returns({:base_tool => base_tool.to_hash})
+          with(:get, {name: base_tool.name}).
+          returns(base_tool.to_hash)
 
         KalibroGatekeeperClient::Entities::BaseTool.
           expects(:request).
-          with(:get_base_tool, {:base_tool_name => another_base_tool.name}).
-          returns({:base_tool => another_base_tool.to_hash})
+          with(:get, {name: another_base_tool.name}).
+          returns(another_base_tool.to_hash)
       end
 
       it 'should return the two elements' do
@@ -104,8 +104,8 @@ describe KalibroGatekeeperClient::Entities::BaseTool do
       before :each do
         KalibroGatekeeperClient::Entities::BaseTool.
           expects(:request).
-          with(:get_base_tool, {:base_tool_name => subject.name}).
-          returns({:base_tool => nil})
+          with(:get, {name: subject.name}).
+          returns(nil)
       end
 
       it 'should raise a RecordNotFound error' do
@@ -118,8 +118,8 @@ describe KalibroGatekeeperClient::Entities::BaseTool do
       before :each do
         KalibroGatekeeperClient::Entities::BaseTool.
           expects(:request).
-          with(:get_base_tool,{:base_tool_name => subject.name}).
-          returns({:base_tool => subject.to_hash})
+          with(:get,{name: subject.name}).
+          returns(subject.to_hash)
       end
 
       it 'should return a base_tool' do

@@ -35,14 +35,15 @@ module KalibroGatekeeperClient
 
       def self.find_by_name(base_tool_name)
         begin
-          new request(:get_base_tool, {:base_tool_name => base_tool_name})[:base_tool]
+          new request(:get, {name: base_tool_name})
         rescue
           raise KalibroGatekeeperClient::Errors::RecordNotFound
         end
       end
       
       def self.all_names
-        request(:all_base_tool_names)[:base_tool_name].to_a
+        # FIXME: for some reason, the JSON is not getting automatically parsed
+        JSON.parse(request(:all_names, {}, :get))['base_tool_names'].to_a
       end
 
       def self.all
