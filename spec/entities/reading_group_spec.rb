@@ -31,8 +31,8 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
       before :each do
         KalibroGatekeeperClient::Entities::ReadingGroup.
           expects(:request).
-          with(:all_reading_groups).
-          returns({:reading_group => nil})
+          with('all', {}, :get).
+          returns({'reading_groups' => nil}.to_json)
       end
 
       it 'should return nil' do
@@ -45,8 +45,8 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
       before :each do
         KalibroGatekeeperClient::Entities::ReadingGroup.
           expects(:request).
-          with(:all_reading_groups).
-          returns({:reading_group => [reading_group.to_hash, reading_group.to_hash]})
+          with('all', {}, :get).
+          returns({'reading_groups' => [reading_group.to_hash, reading_group.to_hash]}.to_json)
       end
 
       it 'should return nil' do
@@ -65,7 +65,7 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
         subject.expects(:id).at_least_once.returns(42)
         KalibroGatekeeperClient::Entities::ReadingGroup.
           expects(:request).
-          with(:delete_reading_group,{:group_id => subject.id})
+          with('destroy',{id: subject.id})
       end
 
       it 'should remain with the errors array empty' do
@@ -81,8 +81,8 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
       it 'should return false' do
         KalibroGatekeeperClient::Entities::ReadingGroup.
           expects(:request).
-          with(:reading_group_exists,{:group_id=>0}).
-          returns({:exists => false})
+          with('exists',{id: 0}).
+          returns({'exists' => false})
         KalibroGatekeeperClient::Entities::ReadingGroup.exists?(0)
       end
     end
