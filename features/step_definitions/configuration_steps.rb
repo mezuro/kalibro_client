@@ -7,5 +7,5 @@ When(/^I get all the configurations$/) do
 end
 
 Then(/^I should get a list with the given configuration$/) do
-  @all_configurations.include?(@configuration)
+  @all_configurations.include?(@configuration).should be_true
 end
