@@ -85,8 +85,8 @@ describe KalibroGatekeeperClient::Entities::Processing do
         before :each do
           KalibroGatekeeperClient::Entities::Processing.
             expects(:request).once.
-            with(:has_processing, {:repository_id => repository.id}).
-            returns({exists: false})
+            with('has', {repository_id: repository.id}).
+            returns({'exists' => false})
         end
 
         it 'should convert the hash to a Boolean class' do
@@ -99,8 +99,8 @@ describe KalibroGatekeeperClient::Entities::Processing do
         before :each do
           KalibroGatekeeperClient::Entities::Processing.
             expects(:request).once.
-            with(:has_ready_processing, {:repository_id => repository.id}).
-            returns({exists: false})
+            with('has_ready', {repository_id: repository.id}).
+            returns({'exists' => false})
         end
 
         it 'should convert the hash to a Boolean class' do
@@ -113,8 +113,8 @@ describe KalibroGatekeeperClient::Entities::Processing do
         before :each do
           KalibroGatekeeperClient::Entities::Processing.
             expects(:request).once.
-            with(:has_processing_after, {:repository_id => repository.id, :date => date}).
-            returns({exists: false})
+            with('has_after', {repository_id: repository.id, date: date}).
+            returns({'exists' => false})
         end
 
         it 'should convert the hash to a Boolean class' do
@@ -127,8 +127,8 @@ describe KalibroGatekeeperClient::Entities::Processing do
         before :each do
           KalibroGatekeeperClient::Entities::Processing.
             expects(:request).once.
-            with(:has_processing_before, {:repository_id => repository.id, :date => date}).
-            returns({exists: false})
+            with('has_before', {repository_id: repository.id, date: date}).
+            returns({'exists' => false})
         end
 
         it 'should convert the hash to a Boolean class' do
@@ -142,8 +142,8 @@ describe KalibroGatekeeperClient::Entities::Processing do
         before :each do
           KalibroGatekeeperClient::Entities::Processing.
             expects(:request).once.
-            with(:last_processing_state, {:repository_id => repository.id}).
-            returns({process_state: any_state})
+            with('last_state_of', {repository_id: repository.id}).
+            returns({'state' => any_state})
         end
 
         it 'should return the state as string' do
@@ -160,13 +160,13 @@ describe KalibroGatekeeperClient::Entities::Processing do
             before do
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:has_ready_processing, {:repository_id => repository.id}).
-                returns({exists: true})
+                with('has_ready', {repository_id: repository.id}).
+                returns({'exists' => true})
 
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:last_ready_processing, {:repository_id => repository.id}).
-                returns({processing: processing.to_hash})
+                with('last_ready_of', {repository_id: repository.id}).
+                returns({'processing' => processing.to_hash})
             end
 
             it 'should return the last ready processing' do
@@ -179,13 +179,13 @@ describe KalibroGatekeeperClient::Entities::Processing do
             before do
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:has_ready_processing, {:repository_id => repository.id}).
-                returns({exists: false})
+                with('has_ready', {repository_id: repository.id}).
+                returns({'exists' => false})
 
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:last_processing, {:repository_id => repository.id}).
-                returns({processing: processing.to_hash})
+                with('last_of', {repository_id: repository.id}).
+                returns({'processing' => processing.to_hash})
             end
 
             it 'should return the last processing' do
@@ -200,13 +200,13 @@ describe KalibroGatekeeperClient::Entities::Processing do
             before do
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:has_processing_after, {:repository_id => repository.id, :date => date}).
-                returns({exists: true})
+                with('has_after', {repository_id: repository.id, date: date}).
+                returns({'exists' => true})
 
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:first_processing_after, {:repository_id => repository.id, :date => date}).
-                returns({processing: processing.to_hash})
+                with('first_after_of', {repository_id: repository.id, date: date}).
+                returns({'processing' => processing.to_hash})
             end
 
             it 'should return the first processing after the given date' do
@@ -219,18 +219,18 @@ describe KalibroGatekeeperClient::Entities::Processing do
             before do
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:has_processing_after, {:repository_id => repository.id, :date => date}).
-                returns({exists: false})
+                with('has_after', {repository_id: repository.id, date: date}).
+                returns({'exists' => false})
 
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:has_processing_before, {:repository_id => repository.id, :date => date}).
-                returns({exists: true})
+                with('has_before', {repository_id: repository.id, date: date}).
+                returns({'exists' => true})
 
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:last_processing_before, {:repository_id => repository.id, :date => date}).
-                returns({processing: processing.to_hash})
+                with('last_before_of', {repository_id: repository.id, date: date}).
+                returns({'processing' => processing.to_hash})
             end
 
             it 'should return the last ready processing' do
@@ -243,13 +243,13 @@ describe KalibroGatekeeperClient::Entities::Processing do
             before do
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:has_processing_after, {:repository_id => repository.id, :date => date}).
-                returns({exists: false})
+                with('has_after', {repository_id: repository.id, date: date}).
+                returns({'exists' => false})
 
               KalibroGatekeeperClient::Entities::Processing.
                 expects(:request).once.
-                with(:has_processing_before, {:repository_id => repository.id, :date => date}).
-                returns({exists: false})
+                with('has_before', {repository_id: repository.id, date: date}).
+                returns({'exists' => false})
             end
 
             it 'should return the last ready processing' do
@@ -263,8 +263,8 @@ describe KalibroGatekeeperClient::Entities::Processing do
           before :each do
             KalibroGatekeeperClient::Entities::Processing.
               expects(:request).once.
-              with(:last_ready_processing, {:repository_id => repository.id}).
-              returns({processing: processing.to_hash})
+              with('last_ready_of', {repository_id: repository.id}).
+              returns({'processing' => processing.to_hash})
           end
 
           it 'should return a processing object' do
@@ -277,8 +277,8 @@ describe KalibroGatekeeperClient::Entities::Processing do
           before :each do
             KalibroGatekeeperClient::Entities::Processing.
               expects(:request).once.
-              with(:first_processing, {:repository_id => repository.id}).
-              returns({processing: processing.to_hash})
+              with('first_of', {repository_id: repository.id}).
+              returns({'processing' => processing.to_hash})
           end
 
           it 'should return a processing object' do
@@ -291,8 +291,8 @@ describe KalibroGatekeeperClient::Entities::Processing do
           before :each do
             KalibroGatekeeperClient::Entities::Processing.
               expects(:request).once.
-              with(:last_processing, {:repository_id => repository.id}).
-              returns({processing: processing.to_hash})
+              with('last_of', {repository_id: repository.id}).
+              returns({'processing' => processing.to_hash})
           end
 
           it 'should return a processing object' do
@@ -305,8 +305,8 @@ describe KalibroGatekeeperClient::Entities::Processing do
           before :each do
             KalibroGatekeeperClient::Entities::Processing.
               expects(:request).once.
-              with(:first_processing_after, {:repository_id => repository.id, :date => date}).
-              returns({processing: processing.to_hash})
+              with('first_after_of', {repository_id: repository.id, date: date}).
+              returns({'processing' => processing.to_hash})
           end
 
           it 'should return a processing object' do
@@ -319,8 +319,8 @@ describe KalibroGatekeeperClient::Entities::Processing do
           before :each do
             KalibroGatekeeperClient::Entities::Processing.
               expects(:request).once.
-              with(:last_processing_before, {:repository_id => repository.id, :date => date}).
-              returns({processing: processing.to_hash})
+              with('last_before_of', {repository_id: repository.id, date: date}).
+              returns({'processing' => processing.to_hash})
           end
 
           it 'should return a processing object' do

@@ -86,7 +86,7 @@ module KalibroGatekeeperClient
       end
 
       def self.last_processing_state_of(repository_id)
-        request('last_state', {repository_id: repository_id})['state']
+        request('last_state_of', {repository_id: repository_id})['state']
       end
 
       def self.last_ready_processing_of(repository_id)
