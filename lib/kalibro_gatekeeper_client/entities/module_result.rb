@@ -29,7 +29,7 @@ module KalibroGatekeeperClient
       end
 
       def children
-        response = self.class.request(:children_of, {:module_result_id => id})[:module_result]
+        response = self.class.request('children_of', {id: id})['module_results']
         self.class.create_objects_array_from_hash(response)
       end
 
@@ -67,7 +67,7 @@ module KalibroGatekeeperClient
       end
 
       def self.history_of(module_result_id)
-        response = self.create_array_from_hash self.request(:history_of_module, {:module_result_id => module_result_id})[:date_module_result]
+        response = self.create_array_from_hash(self.request('history_of', {id: module_result_id})['date_module_results'])
         response.map {|date_module_result| KalibroGatekeeperClient::Entities::DateModuleResult.new date_module_result}
       end
     end

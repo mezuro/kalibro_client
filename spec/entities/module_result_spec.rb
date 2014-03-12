@@ -24,8 +24,8 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
       before :each do
         KalibroGatekeeperClient::Entities::ModuleResult.
           expects(:request).
-          with(:get_module_result, { :module_result_id => subject.id }).
-          returns({module_result: subject.to_hash})
+          with('get', { id: subject.id }).
+          returns(subject.to_hash)
       end
 
       it 'should return a hash with module result' do
@@ -41,8 +41,8 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
 
         KalibroGatekeeperClient::Entities::ModuleResult.
           expects(:request).
-          with(:get_module_result, { :module_result_id => subject.id }).
-          raises(Savon::SOAPFault.new(any_error_message, any_code))
+          with('get', { id: subject.id }).
+          returns({ 'error' => 'Error'})
       end
 
       it 'should raise an error' do
@@ -56,8 +56,8 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
     before :each do
       KalibroGatekeeperClient::Entities::ModuleResult.
         expects(:request).
-        with(:children_of, {:module_result_id => subject.id}).
-        returns({module_result: subject.to_hash})
+        with('children_of', {id: subject.id}).
+        returns({'module_results' => subject.to_hash})
     end
 
     it 'should return a list of a objects' do
@@ -66,14 +66,14 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
   end
 
   describe 'parents' do
-      let(:root_module_result) { FactoryGirl.build(:root_module_result) }
+    let(:root_module_result) { FactoryGirl.build(:root_module_result) }
 
     context 'when module result has a parent' do
       before :each do
         KalibroGatekeeperClient::Entities::ModuleResult.
           expects(:request).at_least_once.
-          with(:get_module_result, { :module_result_id => subject.parent_id }).
-          returns({module_result: root_module_result.to_hash})
+          with('get', { id: subject.parent_id }).
+          returns(root_module_result.to_hash)
       end
 
       it 'should return its parent' do
@@ -123,8 +123,8 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
     before :each do
       KalibroGatekeeperClient::Entities::ModuleResult.
         expects(:request).
-        with(:history_of_module, {:module_result_id => subject.id}).
-        returns({date_module_result: date_module_result.to_hash})
+        with('history_of', {id: subject.id}).
+        returns({'date_module_results' => date_module_result.to_hash})
     end
 
     it 'should return a list of date_module_results' do
