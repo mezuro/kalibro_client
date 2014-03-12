@@ -25,17 +25,18 @@ module KalibroGatekeeperClient
       end
 
       def self.all
-        create_objects_array_from_hash request(:all_reading_groups)[:reading_group]
+        # FIXME: for some reason, the JSON is not getting automatically parsed
+        create_objects_array_from_hash(JSON.parse(request('all', {}, :get))['reading_groups'])
       end
       
       private
 
       def self.id_params(id)
-        {:group_id => id}
+        {id: id}
       end
       
       def destroy_params
-        {:group_id => self.id}
+        {id: self.id}
       end
 
     end
