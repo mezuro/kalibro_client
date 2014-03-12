@@ -51,7 +51,7 @@ module KalibroGatekeeperClient
       end
 
       def self.ranges_of(metric_configuration_id)
-        self.create_objects_array_from_hash request(:ranges_of, {metric_configuration_id: metric_configuration_id} )[:range]
+        self.create_objects_array_from_hash request('of', {metric_configuration_id: metric_configuration_id} )['ranges']
       end
 
       def self.all
