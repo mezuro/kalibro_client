@@ -29,15 +29,13 @@ module KalibroGatekeeperClient
       end
 
       def self.find(id)
-        begin
-          new request(:get_reading, {:reading_id => id})[:reading]
-        rescue Savon::SOAPFault
-          raise KalibroGatekeeperClient::Errors::RecordNotFound
-        end
+        response = request('get', {id: id})
+        raise KalibroGatekeeperClient::Errors::RecordNotFound unless response['error'].nil?
+        new response
       end
 
       def self.readings_of(group_id)
-        create_objects_array_from_hash request(:readings_of, {:group_id => group_id})[:reading]
+        create_objects_array_from_hash(request('of', {reading_group_id: group_id})['readings'])
       end
 
       def self.all
@@ -61,7 +59,7 @@ module KalibroGatekeeperClient
       private
 
       def save_params
-        {:reading => self.to_hash, :group_id => group_id}
+        {reading: self.to_hash, reading_group_id: group_id}
       end
 
     end

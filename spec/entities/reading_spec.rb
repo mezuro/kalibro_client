@@ -39,12 +39,12 @@ describe KalibroGatekeeperClient::Entities::Reading do
         before :each do
           KalibroGatekeeperClient::Entities::Reading.
             expects(:request).
-            with(:get_reading, {:reading_id => reading.id}).
-            returns({:reading => reading.to_hash})
+            with('get', {id: reading.id}).
+            returns(reading.to_hash)
         end
 
         it 'should return a reading object' do
-          response = KalibroGatekeeperClient::Entities::Reading.find reading.id
+          response = KalibroGatekeeperClient::Entities::Reading.find(reading.id)
           response.label.should eq(reading.label)
         end
       end
@@ -56,8 +56,8 @@ describe KalibroGatekeeperClient::Entities::Reading do
 
           KalibroGatekeeperClient::Entities::Reading.
             expects(:request).
-            with(:get_reading, {:reading_id => reading.id}).
-            raises(Savon::SOAPFault.new(any_error_message, any_code))
+            with('get', {id: reading.id}).
+            returns({'error' => 'Error'})
         end
 
         it 'should return a reading object' do
@@ -73,8 +73,8 @@ describe KalibroGatekeeperClient::Entities::Reading do
       before do
         KalibroGatekeeperClient::Entities::Reading.
           expects(:request).
-          with(:readings_of, {:group_id => reading_group.id}).
-          returns({:reading => [reading.to_hash, reading.to_hash]})
+          with('of', {reading_group_id: reading_group.id}).
+          returns({'readings' => [reading.to_hash, reading.to_hash]})
       end
 
       it 'should returns a list of readings that belongs to the given reading group' do
@@ -111,8 +111,8 @@ describe KalibroGatekeeperClient::Entities::Reading do
     before :each do
       KalibroGatekeeperClient::Entities::Reading.
         expects(:request).
-        with(:save_reading, {reading: reading.to_hash, group_id: reading.group_id}).
-        returns({:reading_id => reading_id})
+        with('save', {reading: reading.to_hash, reading_group_id: reading.group_id}).
+        returns({'id' => reading_id})
     end
 
     it 'should make a request to save model with id and return true without errors' do
