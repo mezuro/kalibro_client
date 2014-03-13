@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -93,8 +93,8 @@ describe KalibroGatekeeperClient::Entities::Range do
       before :each do
         KalibroGatekeeperClient::Entities::Range.
           expects(:request).
-          with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
-          returns({range: nil})
+          with('of', {metric_configuration_id: metric_configuration.id}).
+          returns({'ranges' => nil})
       end
 
       it 'should return a list with the ranges' do
@@ -106,8 +106,8 @@ describe KalibroGatekeeperClient::Entities::Range do
       before :each do
         KalibroGatekeeperClient::Entities::Range.
           expects(:request).
-          with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
-          returns({range: subject.to_hash})
+          with('of', {metric_configuration_id: metric_configuration.id}).
+          returns({'ranges' => subject.to_hash})
       end
 
       it 'should return a list with the range' do
@@ -118,12 +118,12 @@ describe KalibroGatekeeperClient::Entities::Range do
 
     context 'when exists many ranges for the given metric configuration' do
       let(:another_range) { FactoryGirl.build(:another_range) }
-      
+
       before :each do
         KalibroGatekeeperClient::Entities::Range.
           expects(:request).
-          with(:ranges_of, {metric_configuration_id: metric_configuration.id}).
-          returns({range: [subject.to_hash, another_range.to_hash]})
+          with('of', {metric_configuration_id: metric_configuration.id}).
+          returns({'ranges' => [subject.to_hash, another_range.to_hash]})
       end
 
       it 'should return a list with the ranges' do
@@ -141,8 +141,8 @@ describe KalibroGatekeeperClient::Entities::Range do
     before :each do
       KalibroGatekeeperClient::Entities::Range.
         expects(:request).
-        with(:save_range, {:range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}).
-        returns({:range_id => 2})
+        with('save', {:range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}).
+        returns({'id' => 2})
     end
 
     it 'should make a request to save model with id and return true without errors' do
@@ -202,7 +202,7 @@ describe KalibroGatekeeperClient::Entities::Range do
 
   describe 'all' do
     let(:configuration) { FactoryGirl.build(:configuration) }
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration) } 
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
 
     before :each do
       KalibroGatekeeperClient::Entities::Configuration.

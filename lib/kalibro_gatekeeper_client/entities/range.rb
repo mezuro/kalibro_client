@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -31,7 +31,7 @@ module KalibroGatekeeperClient
       end
 
       def beginning=(value)
-        @beginning = value == "-INF" ? value : value.to_f  
+        @beginning = value == "-INF" ? value : value.to_f
       end
 
       def end=(value)
@@ -73,7 +73,7 @@ module KalibroGatekeeperClient
       def self.find(id)
         self.all.each do |range|
           return range if range.id == id
-        end 
+        end
         raise KalibroGatekeeperClient::Errors::RecordNotFound
       end
 
@@ -88,7 +88,7 @@ module KalibroGatekeeperClient
       private
 
       def save_params
-        {:range => self.to_hash, :metric_configuration_id => self.metric_configuration_id}
+        {range: self.to_hash, metric_configuration_id: self.metric_configuration_id}
       end
 
       def reading
