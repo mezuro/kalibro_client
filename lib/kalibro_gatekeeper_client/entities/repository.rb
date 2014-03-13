@@ -23,12 +23,11 @@ module KalibroGatekeeperClient
       attr_accessor :id, :name, :description, :license, :process_period, :type, :address, :configuration_id, :project_id, :send_email
 
       def self.repository_types
-        request(:supported_repository_types)[:supported_type].to_a
+        request('supported_types', {}, :get)['supported_types'].to_a
       end
 
       def self.repositories_of(project_id)
-        repositories = create_objects_array_from_hash request(:repositories_of, {:project_id => project_id})[:repository]
-        repositories.map { |repository| repository.project_id = project_id; repository }
+        repositories = create_objects_array_from_hash request('of', {project_id: project_id})['repositories']
       end
 
       def id=(value)
@@ -43,12 +42,16 @@ module KalibroGatekeeperClient
         @configuration_id = value.to_i
       end
 
+      def project_id=(value)
+        @project_id = value.to_i
+      end
+
       def process
         self.class.request('process', {id: self.id})
       end
 
       def cancel_processing_of_repository
-        self.class.request(:cancel_processing_of_repository, {:repository_id => self.id})
+        self.class.request('cancel_process', {id: self.id})
       end
 
       def self.all
@@ -79,7 +82,7 @@ module KalibroGatekeeperClient
       private
 
         def save_params
-          {:repository => self.to_hash, :project_id => project_id}
+          {repository: self.to_hash, project_id: project_id}
         end
     end
   end

@@ -23,8 +23,8 @@ describe KalibroGatekeeperClient::Entities::Repository do
     before :each do
       KalibroGatekeeperClient::Entities::Repository.
         expects(:request).
-        with(:supported_repository_types).
-        returns({:supported_type=>["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"],
+        with('supported_types', {}, :get).
+        returns({'supported_types'=>["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"],
                  :"@xmlns:ns2"=>"http://service.kalibro.org/"})
     end
 
@@ -37,8 +37,8 @@ describe KalibroGatekeeperClient::Entities::Repository do
     before :each do
       KalibroGatekeeperClient::Entities::Repository.
         expects(:request).
-        with(:repositories_of, {:project_id => 1}).
-        returns({:repository=>[],
+        with('of', {project_id: 1}).
+        returns({'repositories' => [],
                  :"@xmlns:ns2"=>"http://service.kalibro.org/"})
     end
 
@@ -78,7 +78,7 @@ describe KalibroGatekeeperClient::Entities::Repository do
     before :each do
       KalibroGatekeeperClient::Entities::Repository.
         expects(:request).
-        with(:process_repository, {:repository_id => subject.id})
+        with('process', {id: subject.id})
     end
 
     it 'should call the request method' do
@@ -90,7 +90,7 @@ describe KalibroGatekeeperClient::Entities::Repository do
     before :each do
       KalibroGatekeeperClient::Entities::Repository.
         expects(:request).
-        with(:cancel_processing_of_repository, {:repository_id => subject.id})
+        with('cancel_process', {id: subject.id})
     end
 
     it 'should call the request method' do
@@ -150,8 +150,8 @@ describe KalibroGatekeeperClient::Entities::Repository do
     before :each do
       KalibroGatekeeperClient::Entities::Repository.
         expects(:request).
-        with(:save_repository, {:repository => subject.to_hash, :project_id => 1}).
-        returns({:repository_id => 1})
+        with('save', {:repository => subject.to_hash, :project_id => 1}).
+        returns({'id' => 1})
 
       KalibroGatekeeperClient::Entities::Repository.any_instance.
         expects(:id=).
