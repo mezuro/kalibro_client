@@ -44,6 +44,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "factory_girl", "~> 4.4.0"
   spec.add_development_dependency 'coveralls'
 
-  spec.add_dependency "activesupport", "~> 4.1.0.rc1"
+  spec.add_dependency "activesupport", ">= 2.2.1" #version in which underscore was introduced
   spec.add_dependency "faraday_middleware", "~> 0.9.0"
 end

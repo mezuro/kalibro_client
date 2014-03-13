@@ -20,12 +20,12 @@ describe KalibroGatekeeperClient do
 
   context 'configuration' do
     #FIXME: there should be a better way to keep the default values
-    let(:config) {{address: "http://localhost:8080/KalibroService/"}}
+    let(:config) {{address: "http://localhost:8081"}}
 
     describe 'config' do
       it 'should return the default configuration' do
         KalibroGatekeeperClient.config.should eq({
-                                          address: "http://localhost:8080/KalibroService/"
+                                          address: "http://localhost:8081"
                                         })
       end
     end
@@ -58,7 +58,7 @@ describe KalibroGatekeeperClient do
 
         it 'should keep the defaults' do
           KalibroGatekeeperClient.configure_with('spec/savon/fixtures/inexistent_file.yml')
-          KalibroGatekeeperClient.config.should eq({address: "http://localhost:8080/KalibroService/"})
+          KalibroGatekeeperClient.config.should eq({address: "http://localhost:8081"})
         end
 
         it 'should log an warning' do
@@ -76,7 +76,7 @@ describe KalibroGatekeeperClient do
 
         it 'should keep the defaults' do
           KalibroGatekeeperClient.configure_with('spec/savon/fixtures/invalid_config.yml')
-          KalibroGatekeeperClient.config.should eq({address: "http://localhost:8080/KalibroService/"})
+          KalibroGatekeeperClient.config.should eq({address: "http://localhost:8081"})
         end
 
         it 'should log an warning' do
