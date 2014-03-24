@@ -32,7 +32,7 @@ When(/^I ask for all the projects$/) do
 end
 
 Then(/^the project should exist$/) do
-  KalibroGatekeeperClient::Entities::Project.exists?(@project.id)
+  KalibroGatekeeperClient::Entities::Project.exists?(@project.id).should be_true
 end
 
 Then(/^it should return the same project as the given one$/) do
@@ -40,7 +40,7 @@ Then(/^it should return the same project as the given one$/) do
 end
 
 Then(/^the project should not exist$/) do
-  !KalibroGatekeeperClient::Entities::Project.exists?(@found_project.id)
+  KalibroGatekeeperClient::Entities::Project.exists?(@found_project.id).should be_false
 end
 
 Then(/^I should get a list with the given project$/) do
