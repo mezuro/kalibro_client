@@ -53,8 +53,11 @@ module KalibroGatekeeperClient
 
       def save
         begin
-          self.id = self.class.request(save_action, save_params)["id"]
-          true
+          response = self.class.request(save_action, save_params)
+          self.id = response["id"]
+          self.kalibro_errors = response["kalibro_errors"]
+
+          self.kalibro_errors.empty? ? true : false
         rescue Exception => exception
           add_error exception
           false

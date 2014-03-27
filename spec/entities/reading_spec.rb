@@ -69,7 +69,7 @@ describe KalibroGatekeeperClient::Entities::Reading do
 
     describe 'readings_of' do
       let(:reading_group) { FactoryGirl.build(:reading_group) }
-      
+
       before do
         KalibroGatekeeperClient::Entities::Reading.
           expects(:request).
@@ -107,12 +107,12 @@ describe KalibroGatekeeperClient::Entities::Reading do
   describe 'save' do
     let(:reading) { FactoryGirl.build(:reading, {id: nil, group_id: FactoryGirl.build(:reading_group).id}) }
     let(:reading_id) { 73 }
-    
+
     before :each do
       KalibroGatekeeperClient::Entities::Reading.
         expects(:request).
         with('save', {reading: reading.to_hash, reading_group_id: reading.group_id}).
-        returns({'id' => reading_id})
+        returns({'id' => reading_id, 'kalibro_errors' => []})
     end
 
     it 'should make a request to save model with id and return true without errors' do

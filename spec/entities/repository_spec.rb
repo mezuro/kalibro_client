@@ -151,7 +151,7 @@ describe KalibroGatekeeperClient::Entities::Repository do
       KalibroGatekeeperClient::Entities::Repository.
         expects(:request).
         with('save', {:repository => subject.to_hash, :project_id => 1}).
-        returns({'id' => 1})
+        returns({'id' => 1, 'kalibro_errors' => []})
 
       KalibroGatekeeperClient::Entities::Repository.any_instance.
         expects(:id=).

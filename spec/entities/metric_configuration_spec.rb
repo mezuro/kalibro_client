@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -33,7 +33,7 @@ describe KalibroGatekeeperClient::Entities::MetricConfiguration do
 
   describe 'metric=' do
     let(:metric) { FactoryGirl.build(:metric) }
-    
+
     before :each do
       KalibroGatekeeperClient::Entities::Metric.
         expects(:to_object).at_least_once.
@@ -56,7 +56,7 @@ describe KalibroGatekeeperClient::Entities::MetricConfiguration do
 
   describe 'update_attributes' do
     let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
-    
+
     before :each do
       KalibroGatekeeperClient::Entities::MetricConfiguration.any_instance.
         expects(:save).
@@ -104,7 +104,7 @@ describe KalibroGatekeeperClient::Entities::MetricConfiguration do
       KalibroGatekeeperClient::Entities::MetricConfiguration.
         expects(:request).
         with('save', {:metric_configuration => subject.to_hash, :configuration_id => subject.configuration_id}).
-        returns({'id' => 1})
+        returns({'id' => 1, 'kalibro_errors' => []})
     end
 
     it 'should make a request to save model with id and return true without errors' do

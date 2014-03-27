@@ -119,7 +119,7 @@ describe KalibroGatekeeperClient::Entities::Model do
     before :each do
       KalibroGatekeeperClient::Entities::Model.
         expects(:request).
-        with('save', {model: {}}).returns({'id' => 42})
+        with('save', {model: {}}).returns({'id' => 42, 'kalibro_errors' => []})
     end
 
     context "when it doesn't have the method id=" do

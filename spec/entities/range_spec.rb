@@ -142,7 +142,7 @@ describe KalibroGatekeeperClient::Entities::Range do
       KalibroGatekeeperClient::Entities::Range.
         expects(:request).
         with('save', {:range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}).
-        returns({'id' => 2})
+        returns({'id' => 2, 'kalibro_errors' => []})
     end
 
     it 'should make a request to save model with id and return true without errors' do
