@@ -85,16 +85,17 @@ module KalibroGatekeeperClient
         end
       end
 
+      def reading
+        @reading ||= KalibroGatekeeperClient::Entities::Reading.find(reading_id)
+        @reading
+      end
+
       private
 
       def save_params
         {range: self.to_hash, metric_configuration_id: self.metric_configuration_id}
       end
 
-      def reading
-        @reading ||= KalibroGatekeeperClient::Entities::Reading.find(reading_id)
-        @reading
-      end
     end
   end
 end

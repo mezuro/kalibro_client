@@ -67,6 +67,12 @@ describe KalibroGatekeeperClient::Entities::Range do
         returns(reading)
     end
 
+    context 'reading' do
+      it 'should return the correct reading' do
+        subject.reading.should eq(reading)
+      end
+    end
+
     context 'label' do
       it 'should get the label of the reading' do
         subject.label.should eq(reading.label)
