@@ -21,14 +21,14 @@ describe KalibroGatekeeperClient::Entities::Project do
     subject { FactoryGirl.build(:project, {id: 42}) }
 
     it 'should have the id set to 42' do
-      subject.id.should eq(42)
+      expect(subject.id).to eq(42)
     end
   end
 
   describe 'id=' do
     it 'should set the value of the attribute id as integer' do
       subject.id = "42"
-      subject.id.should eq(42)
+      expect(subject.id).to eq(42)
     end
   end
 
@@ -42,7 +42,7 @@ describe KalibroGatekeeperClient::Entities::Project do
       end
 
       it 'should return nil' do
-        KalibroGatekeeperClient::Entities::Project.all.should be_empty
+        expect(KalibroGatekeeperClient::Entities::Project.all).to be_empty
       end
     end
 
@@ -60,8 +60,8 @@ describe KalibroGatekeeperClient::Entities::Project do
       it 'should return a list with projects' do
         projects = KalibroGatekeeperClient::Entities::Project.all
 
-        projects.first.name.should eq(project.name)
-        projects.last.name.should eq(another_project.name)
+        expect(projects.first.name).to eq(project.name)
+        expect(projects.last.name).to eq(another_project.name)
       end
     end
   end

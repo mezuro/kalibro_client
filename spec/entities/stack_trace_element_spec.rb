@@ -20,7 +20,7 @@ describe KalibroGatekeeperClient::Entities::StackTraceElement do
   describe 'line_number=' do
     it 'should set the line_number' do
       subject.line_number = 42
-      subject.line_number.should eq(42)
+      expect(subject.line_number).to eq(42)
     end
   end
 end

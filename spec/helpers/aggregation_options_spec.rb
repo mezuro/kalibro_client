@@ -21,7 +21,7 @@ include AggregationOptions
 
 describe 'all_with_label' do
   it 'should return the list of aggregation methods available' do
-    all_with_label.should eq(
+    expect(all_with_label).to eq(
       [
         ["Average","AVERAGE"], ["Median", "MEDIAN"], ["Maximum", "MAXIMUM"], ["Minimum", "MINIMUM"],
         ["Count", "COUNT"], ["Standard Deviation", "STANDARD_DEVIATION"]

@@ -22,19 +22,19 @@ describe KalibroGatekeeperClient::Entities::Processing do
   describe 'id=' do
     it 'should convert the id attribute to integer' do
       subject.id = "41"
-      subject.id.should eq 41
+      expect(subject.id).to eq 41
     end
   end
 
   describe 'date=' do
     it 'should set the date attribute' do
       subject.date  = date
-      subject.date.should eq date
+      expect(subject.date).to eq date
     end
 
     it 'should convert strings to date format' do
       subject.date = "2013-09-17T18:26:43.151+00:00"
-      subject.date.should be_kind_of(DateTime)
+      expect(subject.date).to be_kind_of(DateTime)
     end
   end
 
@@ -44,20 +44,20 @@ describe KalibroGatekeeperClient::Entities::Processing do
     context 'process_time=' do
       it 'should set the process_time attribute as a list of objects' do
         subject.process_time = another_process_time.to_hash
-        subject.process_time.should eq [another_process_time]
+        expect(subject.process_time).to eq [another_process_time]
       end
     end
 
     context 'process_times=' do
       it 'should set the process_time attribute' do
         subject.process_times = [another_process_time]
-        subject.process_time.should eq [another_process_time]
+        expect(subject.process_time).to eq [another_process_time]
       end
     end
 
     context 'process_times' do
       it 'should get the process_time attribute' do
-        subject.process_times.should eq subject.process_time
+        expect(subject.process_times).to eq subject.process_time
       end
     end
   end
@@ -67,14 +67,14 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
     it 'should set the attribute error as an object' do 
       subject.error = error.to_hash
-      subject.error.should eq error
+      expect(subject.error).to eq error
     end
   end
 
   describe 'results_root_id=' do
     it 'should set the attribute results root id as an integer' do
       subject.results_root_id = "36"
-      subject.results_root_id.should eq 36
+      expect(subject.results_root_id).to eq 36
     end
   end
 
@@ -91,7 +91,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
         it 'should convert the hash to a Boolean class' do
           response = KalibroGatekeeperClient::Entities::Processing.has_processing repository.id
-          response.should be_a_kind_of(FalseClass)
+          expect(response).to be_a_kind_of(FalseClass)
         end
       end
 
@@ -105,7 +105,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
         it 'should convert the hash to a Boolean class' do
           response = KalibroGatekeeperClient::Entities::Processing.has_ready_processing repository.id
-          response.should be_a_kind_of(FalseClass)
+          expect(response).to be_a_kind_of(FalseClass)
         end
       end
 
@@ -119,7 +119,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
         it 'should convert the hash to a Boolean class' do
           response = KalibroGatekeeperClient::Entities::Processing.has_processing_after(repository.id, date)
-          response.should be_a_kind_of(FalseClass)
+          expect(response).to be_a_kind_of(FalseClass)
         end
       end
 
@@ -133,7 +133,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
         it 'should convert the hash to a Boolean class' do
           response = KalibroGatekeeperClient::Entities::Processing.has_processing_before(repository.id, date)
-          response.should be_a_kind_of(FalseClass)
+          expect(response).to be_a_kind_of(FalseClass)
         end
       end
 
@@ -148,7 +148,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
         it 'should return the state as string' do
           response = KalibroGatekeeperClient::Entities::Processing.last_processing_state_of repository.id
-          response.should eq(any_state)
+          expect(response).to eq(any_state)
         end
       end
 
@@ -171,7 +171,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
             it 'should return the last ready processing' do
               response = KalibroGatekeeperClient::Entities::Processing.processing_of repository.id
-              response.state.should eq(processing.state)
+              expect(response.state).to eq(processing.state)
             end
           end
 
@@ -190,7 +190,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
             it 'should return the last processing' do
               response = KalibroGatekeeperClient::Entities::Processing.processing_of repository.id
-              response.state.should eq(processing.state)
+              expect(response.state).to eq(processing.state)
             end
           end
         end
@@ -211,7 +211,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
             it 'should return the first processing after the given date' do
               response = KalibroGatekeeperClient::Entities::Processing.processing_with_date_of(repository.id, date)
-              response.state.should eq(processing.state)
+              expect(response.state).to eq(processing.state)
             end
           end
 
@@ -235,7 +235,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
             it 'should return the last ready processing' do
               response = KalibroGatekeeperClient::Entities::Processing.processing_with_date_of(repository.id, date)
-              response.state.should eq(processing.state)
+              expect(response.state).to eq(processing.state)
             end
           end
 
@@ -254,7 +254,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
             it 'should return the last ready processing' do
               response = KalibroGatekeeperClient::Entities::Processing.processing_with_date_of(repository.id, date)
-              response.should be_nil
+              expect(response).to be_nil
             end
           end
         end
@@ -269,7 +269,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
           it 'should return a processing object' do
             response = KalibroGatekeeperClient::Entities::Processing.last_ready_processing_of repository.id
-            response.state.should eq(processing.state)
+            expect(response.state).to eq(processing.state)
           end
         end
 
@@ -283,7 +283,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
           it 'should return a processing object' do
             response = KalibroGatekeeperClient::Entities::Processing.first_processing_of repository.id
-            response.state.should eq(processing.state)
+            expect(response.state).to eq(processing.state)
           end
         end
 
@@ -297,7 +297,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
           it 'should return a processing object' do
             response = KalibroGatekeeperClient::Entities::Processing.last_processing_of repository.id
-            response.state.should eq(processing.state)
+            expect(response.state).to eq(processing.state)
           end
         end
 
@@ -311,7 +311,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
           it 'should return a processing object' do
             response = KalibroGatekeeperClient::Entities::Processing.first_processing_after(repository.id, date)
-            response.state.should eq(processing.state)
+            expect(response.state).to eq(processing.state)
           end
         end
 
@@ -325,7 +325,7 @@ describe KalibroGatekeeperClient::Entities::Processing do
 
           it 'should return a processing object' do
             response = KalibroGatekeeperClient::Entities::Processing.last_processing_before(repository.id, date)
-            response.state.should eq(processing.state)
+            expect(response.state).to eq(processing.state)
           end
         end
       end

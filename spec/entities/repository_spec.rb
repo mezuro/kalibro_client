@@ -29,7 +29,7 @@ describe KalibroGatekeeperClient::Entities::Repository do
     end
 
     it 'should return an array of repository types' do
-      KalibroGatekeeperClient::Entities::Repository.repository_types.should eq(["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"])
+      expect(KalibroGatekeeperClient::Entities::Repository.repository_types).to eq(["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"])
     end
   end
 
@@ -43,12 +43,12 @@ describe KalibroGatekeeperClient::Entities::Repository do
     end
 
     it 'should return an array' do
-      KalibroGatekeeperClient::Entities::Repository.repositories_of(1).should be_an(Array)
+      expect(KalibroGatekeeperClient::Entities::Repository.repositories_of(1)).to be_an(Array)
     end
 
     it 'should set the repository_id' do
       KalibroGatekeeperClient::Entities::Repository.repositories_of(1).each do |repository|
-        repository.project_id.should eq(1)
+        expect(repository.project_id).to eq(1)
       end
     end
   end
@@ -56,21 +56,21 @@ describe KalibroGatekeeperClient::Entities::Repository do
   describe "id=" do
     it 'should set the id attribute values as integer' do
       subject.id = "222"
-      subject.id.should eq(222)
+      expect(subject.id).to eq(222)
     end
   end
 
   describe "process_period=" do
     it 'should set the process_period attribute values as integer' do
       subject.process_period = "222"
-      subject.process_period.should eq(222)
+      expect(subject.process_period).to eq(222)
     end
   end
 
   describe "configuration_id=" do
     it 'should set the configuration_id attribute values as integer' do
       subject.configuration_id = "222"
-      subject.configuration_id.should eq(222)
+      expect(subject.configuration_id).to eq(222)
     end
   end
 
@@ -112,7 +112,7 @@ describe KalibroGatekeeperClient::Entities::Repository do
     end
 
     it 'should list all the repositories' do
-      KalibroGatekeeperClient::Entities::Repository.all.should include(subject)
+      expect(KalibroGatekeeperClient::Entities::Repository.all).to include(subject)
     end
   end
 
@@ -125,7 +125,7 @@ describe KalibroGatekeeperClient::Entities::Repository do
       end
 
       it 'should return the repository' do
-        KalibroGatekeeperClient::Entities::Repository.find(subject.id).should eq(subject)
+        expect(KalibroGatekeeperClient::Entities::Repository.find(subject.id)).to eq(subject)
       end
     end
 
@@ -160,8 +160,8 @@ describe KalibroGatekeeperClient::Entities::Repository do
     end
 
     it 'should make a request to save model with id and return true without errors' do
-      subject.save.should be(true)
-      subject.kalibro_errors.should be_empty
+      expect(subject.save).to be(true)
+      expect(subject.kalibro_errors).to be_empty
     end
   end
 
@@ -174,7 +174,7 @@ describe KalibroGatekeeperClient::Entities::Repository do
       end
 
       it 'should return true' do
-        KalibroGatekeeperClient::Entities::Repository.exists?(subject.id).should be_true
+        expect(KalibroGatekeeperClient::Entities::Repository.exists?(subject.id)).to be_truthy
       end
     end
 
@@ -184,7 +184,7 @@ describe KalibroGatekeeperClient::Entities::Repository do
       end
 
       it 'should return false' do
-        KalibroGatekeeperClient::Entities::Repository.exists?(subject.id).should be_false
+        expect(KalibroGatekeeperClient::Entities::Repository.exists?(subject.id)).to be_falsey
       end
     end
   end

@@ -24,7 +24,7 @@ describe KalibroGatekeeperClient do
 
     describe 'config' do
       it 'should return the default configuration' do
-        KalibroGatekeeperClient.config.should eq({
+        expect(KalibroGatekeeperClient.config).to eq({
                                           address: "http://localhost:8081"
                                         })
       end
@@ -35,7 +35,7 @@ describe KalibroGatekeeperClient do
 
       it 'should set the address' do
         KalibroGatekeeperClient.configure({address: 'http://test.test'})
-        KalibroGatekeeperClient.config.should eq({address: 'http://test.test'})
+        expect(KalibroGatekeeperClient.config).to eq({address: 'http://test.test'})
       end
     end
 
@@ -46,7 +46,7 @@ describe KalibroGatekeeperClient do
         it 'should set the config' do
           KalibroGatekeeperClient.configure_with('spec/savon/fixtures/config.yml')
 
-          KalibroGatekeeperClient.config.should eq({address: 'http://test1.test1'})
+          expect(KalibroGatekeeperClient.config).to eq({address: 'http://test1.test1'})
         end
       end
 
@@ -58,7 +58,7 @@ describe KalibroGatekeeperClient do
 
         it 'should keep the defaults' do
           KalibroGatekeeperClient.configure_with('spec/savon/fixtures/inexistent_file.yml')
-          KalibroGatekeeperClient.config.should eq({address: "http://localhost:8081"})
+          expect(KalibroGatekeeperClient.config).to eq({address: "http://localhost:8081"})
         end
 
         it 'should log an warning' do
@@ -76,7 +76,7 @@ describe KalibroGatekeeperClient do
 
         it 'should keep the defaults' do
           KalibroGatekeeperClient.configure_with('spec/savon/fixtures/invalid_config.yml')
-          KalibroGatekeeperClient.config.should eq({address: "http://localhost:8081"})
+          expect(KalibroGatekeeperClient.config).to eq({address: "http://localhost:8081"})
         end
 
         it 'should log an warning' do
@@ -91,7 +91,7 @@ describe KalibroGatekeeperClient do
   context 'Logger' do
     describe 'logger' do
       it 'should return the default logger' do
-        KalibroGatekeeperClient.logger.should be_a(Logger)
+        expect(KalibroGatekeeperClient.logger).to be_a(Logger)
       end
     end
 
@@ -101,7 +101,7 @@ describe KalibroGatekeeperClient do
 
         KalibroGatekeeperClient.logger = logger
 
-        KalibroGatekeeperClient.logger.should eq(logger)
+        expect(KalibroGatekeeperClient.logger).to eq(logger)
       end
     end
   end

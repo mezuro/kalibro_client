@@ -29,8 +29,8 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
       end
 
       it 'should return a hash with module result' do
-        KalibroGatekeeperClient::Entities::ModuleResult.
-          find(subject.id).id.should eq(subject.id)
+        expect(KalibroGatekeeperClient::Entities::ModuleResult.
+          find(subject.id).id).to eq(subject.id)
       end
     end
 
@@ -61,7 +61,7 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
     end
 
     it 'should return a list of a objects' do
-      subject.children.should eq [subject]
+      expect(subject.children).to eq [subject]
     end
   end
 
@@ -77,13 +77,13 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
       end
 
       it 'should return its parent' do
-        subject.parents.should eq [root_module_result]
+        expect(subject.parents).to eq [root_module_result]
       end
     end
 
     context 'when module result does not have a parent' do
       it 'should return an empty list' do
-        root_module_result.parents.should eq []
+        expect(root_module_result.parents).to eq []
       end
     end
   end
@@ -91,7 +91,7 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
   describe 'id=' do
     it 'should set the id attribute as integer' do
       subject.id = "23"
-      subject.id.should eq 23
+      expect(subject.id).to eq 23
     end
   end
 
@@ -100,21 +100,21 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
 
     it 'should set the module attribute as a Module object' do
       subject.module = another_module.to_hash
-      subject.module.should eq another_module
+      expect(subject.module).to eq another_module
     end
   end
 
   describe 'grade=' do
     it 'should set the grade attribute as float' do
       subject.grade = "12.5"
-      subject.grade.should eq 12.5
+      expect(subject.grade).to eq 12.5
     end
   end
 
   describe 'parent_id=' do
     it 'should set the parent_id attribute as integer' do
       subject.parent_id = "73"
-      subject.parent_id.should eq 73
+      expect(subject.parent_id).to eq 73
     end
   end
 
@@ -129,7 +129,7 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
 
     it 'should return a list of date_module_results' do
       date_module_results = KalibroGatekeeperClient::Entities::ModuleResult.history_of subject.id
-      date_module_results.first.result.should eq date_module_result.result
+      expect(date_module_results.first.result).to eq date_module_result.result
     end
   end
 
@@ -142,8 +142,8 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
       end
 
       it 'should return true for folder? and false for file?' do
-        subject.folder?.should be_true
-        subject.file?.should be_false
+        expect(subject.folder?).to be_truthy
+        expect(subject.file?).to be_falsey
       end
     end
 
@@ -155,8 +155,8 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
       end
 
       it 'should return true for folder? and false for file?' do
-        subject.folder?.should be_false
-        subject.file?.should be_true
+        expect(subject.folder?).to be_falsey
+        expect(subject.file?).to be_truthy
       end
     end
   end

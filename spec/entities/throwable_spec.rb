@@ -22,21 +22,21 @@ describe KalibroGatekeeperClient::Entities::Throwable do
   describe 'stack_trace_element=' do
     it 'should set the stack trace element' do
       subject.stack_trace_element = stack_trace_element.to_hash
-      subject.stack_trace_element.should eq([stack_trace_element])
+      expect(subject.stack_trace_element).to eq([stack_trace_element])
     end
   end
 
   describe 'stack_trace' do
     it 'should return the stack trace element' do
       subject.stack_trace_element = stack_trace_element.to_hash
-      subject.stack_trace.should eq([stack_trace_element])
+      expect(subject.stack_trace).to eq([stack_trace_element])
     end
   end
 
   describe 'stack_trace=' do
     it 'should set the stack trace element' do
       subject.stack_trace = [stack_trace_element]
-      subject.stack_trace_element.should eq([stack_trace_element])
+      expect(subject.stack_trace_element).to eq([stack_trace_element])
     end
   end
 
@@ -45,7 +45,7 @@ describe KalibroGatekeeperClient::Entities::Throwable do
 
     it 'should set the cause' do
       subject.cause = another_throwable.to_hash
-      subject.cause.should eq(another_throwable)
+      expect(subject.cause).to eq(another_throwable)
     end
   end
 end

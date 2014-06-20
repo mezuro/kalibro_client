@@ -22,7 +22,7 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
 
     it 'should set the id attribute values as an integer' do
       subject.id = "222"
-      subject.id.should eq(222)
+      expect(subject.id).to eq(222)
     end
   end
 
@@ -36,7 +36,7 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
       end
 
       it 'should return nil' do
-        KalibroGatekeeperClient::Entities::ReadingGroup.all.should be_empty
+        expect(KalibroGatekeeperClient::Entities::ReadingGroup.all).to be_empty
       end
     end
 
@@ -52,8 +52,8 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
       it 'should return nil' do
         reading_groups = KalibroGatekeeperClient::Entities::ReadingGroup.all
 
-        reading_groups.first.name.should eq(reading_group.name)
-        reading_groups.last.name.should eq(reading_group.name)
+        expect(reading_groups.first.name).to eq(reading_group.name)
+        expect(reading_groups.last.name).to eq(reading_group.name)
       end
     end
   end
@@ -70,7 +70,7 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
 
       it 'should remain with the errors array empty' do
         subject.destroy
-        subject.kalibro_errors.should be_empty
+        expect(subject.kalibro_errors).to be_empty
       end
     end
   end

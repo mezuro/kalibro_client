@@ -23,7 +23,7 @@ describe HashConverters do
   describe 'date_with_miliseconds' do
     context 'with 21/12/1995 (first Ruby publication)' do
       it 'should return 1995-12-21T00:00:00.0/1+00:00' do
-        date_with_milliseconds(DateTime.parse("21/12/1995")).should eq("1995-12-21T00:00:00.0/1+00:00")
+        expect(date_with_milliseconds(DateTime.parse("21/12/1995"))).to eq("1995-12-21T00:00:00.0/1+00:00")
       end
     end
   end
@@ -31,7 +31,7 @@ describe HashConverters do
   describe 'convert_to_hash' do
     context 'with a nil value' do
       it 'should return nil' do
-        convert_to_hash(nil).should be_nil
+        expect(convert_to_hash(nil)).to be_nil
       end
     end
 
@@ -44,7 +44,7 @@ describe HashConverters do
       end
 
       it 'should return the Array wth its elements converted' do
-        convert_to_hash(@array)[0].should eq(@element1.to_s)
+        expect(convert_to_hash(@array)[0]).to eq(@element1.to_s)
       end
     end
 
@@ -54,7 +54,7 @@ describe HashConverters do
       end
 
       it "should return the Model's Hash" do
-        convert_to_hash(@model).should eq(@model.to_hash)
+        expect(convert_to_hash(@model)).to eq(@model.to_hash)
       end
     end
 
@@ -64,19 +64,19 @@ describe HashConverters do
       end
 
       it 'should return th date with miliseconds' do
-        convert_to_hash(@date).should eq(date_with_milliseconds(@date))
+        expect(convert_to_hash(@date)).to eq(date_with_milliseconds(@date))
       end
     end
 
     context 'with an + infinite Float' do
       it 'should return INF' do
-        convert_to_hash(1.0/0.0).should eq('INF')
+        expect(convert_to_hash(1.0/0.0)).to eq('INF')
       end
     end
 
     context 'with an - infinite Float' do
       it 'should return -INF' do
-        convert_to_hash(-1.0/0.0).should eq('-INF')
+        expect(convert_to_hash(-1.0/0.0)).to eq('-INF')
       end
     end
   end
@@ -89,11 +89,11 @@ describe HashConverters do
       end
 
       it 'should return an instance of Hash' do
-        @model.field_to_hash(:field_getter).should be_a(Hash)
+        expect(@model.field_to_hash(:field_getter)).to be_a(Hash)
       end
 
       it 'should return an empty Hash' do
-        @model.field_to_hash(:field_getter).should eq({})
+        expect(@model.field_to_hash(:field_getter)).to eq({})
       end
     end
 
@@ -104,7 +104,7 @@ describe HashConverters do
       end
 
       it 'should return an instance of Hash' do
-        @model.field_to_hash(:field_getter).should be_a(Hash)
+        expect(@model.field_to_hash(:field_getter)).to be_a(Hash)
       end
     end
   end

@@ -24,7 +24,7 @@ describe XMLConverters do
     before { @model = KalibroGatekeeperClient::Entities::Model.new }
 
     it 'should return modelXml' do
-      xml_instance_class_name(@model).should eq('modelXml')
+      expect(xml_instance_class_name(@model)).to eq('modelXml')
     end
   end
 
@@ -33,11 +33,11 @@ describe XMLConverters do
       before { @object = "kalibro" }
 
       it 'should return a Hash' do
-        get_xml("field", @object).should be_a(Hash)
+        expect(get_xml("field", @object)).to be_a(Hash)
       end
 
       it 'should return an empty Hash' do
-        get_xml("field", @object).should eq({})
+        expect(get_xml("field", @object)).to eq({})
       end
     end
 
@@ -45,7 +45,7 @@ describe XMLConverters do
       before { @object = KalibroGatekeeperClient::Entities::Model.new }
 
       it 'should return a Hash' do
-        get_xml("field", @object).should be_a(Hash)
+        expect(get_xml("field", @object)).to be_a(Hash)
       end
 
       it 'should return the XML Hash' do
@@ -57,7 +57,7 @@ describe XMLConverters do
                             }
                           }
 
-        get_xml("field", @object).should eq(field_xml_hash)
+        expect(get_xml("field", @object)).to eq(field_xml_hash)
       end
     end
   end

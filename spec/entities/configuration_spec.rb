@@ -20,7 +20,7 @@ describe KalibroGatekeeperClient::Entities::Configuration do
   describe 'id=' do
     it 'should set the value of the attribute id as an Integer' do
       subject.id = "42"
-      subject.id.should eq(42)
+      expect(subject.id).to eq(42)
     end
   end
 
@@ -34,7 +34,7 @@ describe KalibroGatekeeperClient::Entities::Configuration do
       end
 
       it 'should return nil' do
-        KalibroGatekeeperClient::Entities::Configuration.all.should be_empty
+        expect(KalibroGatekeeperClient::Entities::Configuration.all).to be_empty
       end
     end
 
@@ -52,9 +52,9 @@ describe KalibroGatekeeperClient::Entities::Configuration do
       it 'should return the two elements' do
         configurations = KalibroGatekeeperClient::Entities::Configuration.all
 
-        configurations.size.should eq(2)
-        configurations.first.name.should eq(configuration.name)
-        configurations.last.name.should eq(another_configuration.name)
+        expect(configurations.size).to eq(2)
+        expect(configurations.first.name).to eq(configuration.name)
+        expect(configurations.last.name).to eq(another_configuration.name)
       end
     end
   end

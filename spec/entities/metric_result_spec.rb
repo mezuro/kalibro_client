@@ -24,7 +24,7 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
     context 'with value NaN' do
       it 'should set the value with aggregated_value' do
         metric_result = KalibroGatekeeperClient::Entities::MetricResult.new( FactoryGirl.attributes_for(:metric_result, {value: "NaN", aggregated_value: 1.6}) )
-        metric_result.value.should eq(1.6)
+        expect(metric_result.value).to eq(1.6)
       end
     end
   end
@@ -32,35 +32,35 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
   describe 'id=' do
     it 'should set the value of the attribute id' do
       subject.id = 42
-      subject.id.should eq(42)
+      expect(subject.id).to eq(42)
     end
   end
 
   describe 'configuration=' do
     it 'should set the configuration' do
       subject.configuration = metric_configuration_snapshot.to_hash
-      subject.configuration.code.should eq(metric_configuration_snapshot.code)
+      expect(subject.configuration.code).to eq(metric_configuration_snapshot.code)
     end
   end
 
   describe 'metric_configuration_snapshot' do
     it 'should be an alias to configuration' do
       subject.configuration = metric_configuration_snapshot.to_hash
-      subject.metric_configuration_snapshot.code.should eq(metric_configuration_snapshot.code)
+      expect(subject.metric_configuration_snapshot.code).to eq(metric_configuration_snapshot.code)
     end
   end
 
   describe 'value=' do
     it 'should set the value of the attribute value' do
       subject.value = 42
-      subject.value.should eq(42)
+      expect(subject.value).to eq(42)
     end
   end
 
   describe 'aggregated_value=' do
     it 'should set the value of the attribute aggregated_value' do
       subject.aggregated_value = 42
-      subject.aggregated_value.should eq(42)
+      expect(subject.aggregated_value).to eq(42)
     end
   end
 
@@ -74,7 +74,7 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       end
 
       it 'should return an unitary list with the descendant result' do
-        subject.descendant_results.should eq([13.3])
+        expect(subject.descendant_results).to eq([13.3])
       end
     end
 
@@ -87,7 +87,7 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       end
 
       it 'should return an empty list' do
-        subject.descendant_results.should eq([])
+        expect(subject.descendant_results).to eq([])
       end
     end
   end
@@ -102,7 +102,7 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       end
 
       it 'should return an unitary list with the metric result' do
-        KalibroGatekeeperClient::Entities::MetricResult.metric_results_of(123).first.value.should eq(subject.value)
+        expect(KalibroGatekeeperClient::Entities::MetricResult.metric_results_of(123).first.value).to eq(subject.value)
       end
     end
 
@@ -115,7 +115,7 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       end
 
       it 'should return an empty list' do
-        KalibroGatekeeperClient::Entities::MetricResult.metric_results_of(42).should eq([])
+        expect(KalibroGatekeeperClient::Entities::MetricResult.metric_results_of(42)).to eq([])
       end
     end
 
@@ -129,7 +129,7 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       end
 
       it 'should return a list with the descendant results' do
-        metric_results.first.value.should eq(subject.value)
+        expect(metric_results.first.value).to eq(subject.value)
       end
     end
   end
@@ -147,7 +147,7 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       end
 
       it 'should return an empty list' do
-        KalibroGatekeeperClient::Entities::MetricResult.history_of(metric.name, module_result.id).should eq([])
+        expect(KalibroGatekeeperClient::Entities::MetricResult.history_of(metric.name, module_result.id)).to eq([])
       end
     end
 
@@ -162,8 +162,8 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       end
 
       it 'should return the date metric result as an object into a list' do
-        KalibroGatekeeperClient::Entities::MetricResult.history_of(metric.name, module_result.id).
-          first.metric_result.id.should eq(subject.id)
+        expect(KalibroGatekeeperClient::Entities::MetricResult.history_of(metric.name, module_result.id).
+          first.metric_result.id).to eq(subject.id)
       end
     end
 
@@ -180,8 +180,8 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
 
       it 'should return a list of date metric results as objects' do
         response = KalibroGatekeeperClient::Entities::MetricResult.history_of(metric.name, module_result.id)
-        response.first.metric_result.id.should eq(date_metric_result.metric_result.id)
-        response.last.metric_result.id.should eq(another_date_metric_result.metric_result.id)
+        expect(response.first.metric_result.id).to eq(date_metric_result.metric_result.id)
+        expect(response.last.metric_result.id).to eq(another_date_metric_result.metric_result.id)
       end
     end
   end

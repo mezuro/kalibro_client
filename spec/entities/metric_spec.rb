@@ -21,14 +21,14 @@ describe KalibroGatekeeperClient::Entities::Metric do
     subject { FactoryGirl.build(:metric) }
 
     it 'should return the value of the language attribute' do
-      subject.languages.should eq(["C", "CPP", "JAVA"])
+      expect(subject.languages).to eq(["C", "CPP", "JAVA"])
     end
   end
 
   describe 'languages=' do
     it 'should set the value of the attribute language' do
       subject.languages = ["Java", "C"]
-      subject.languages.should eq(["Java", "C"])
+      expect(subject.languages).to eq(["Java", "C"])
     end
   end
 
@@ -41,7 +41,7 @@ describe KalibroGatekeeperClient::Entities::Metric do
 
     it 'should convert the value to an array of objects' do
       subject.language = "Java"
-      subject.languages.should eq(["Java"])
+      expect(subject.languages).to eq(["Java"])
     end
   end
 end

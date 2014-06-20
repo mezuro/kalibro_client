@@ -22,8 +22,8 @@ describe KalibroGatekeeperClient::Entities::DateModuleResult do
       it 'should set the date and convert it to DateTime' do
         subject.date = "21/12/1995" # Ruby's first publication
 
-        subject.date.should be_a(DateTime)
-        subject.date.should eq(DateTime.parse("21/12/1995"))
+        expect(subject.date).to be_a(DateTime)
+        expect(subject.date).to eq(DateTime.parse("21/12/1995"))
       end
     end
 
@@ -31,7 +31,7 @@ describe KalibroGatekeeperClient::Entities::DateModuleResult do
       it 'should just set the value' do
         subject.date = :something_else
 
-        subject.date.should eq(:something_else)
+        expect(subject.date).to eq(:something_else)
       end
     end
   end
@@ -47,7 +47,7 @@ describe KalibroGatekeeperClient::Entities::DateModuleResult do
 
     it 'should set the module_result with the given one' do
       subject.module_result = module_result.to_hash
-      subject.module_result.should eq(module_result)
+      expect(subject.module_result).to eq(module_result)
     end
   end
 
@@ -55,7 +55,7 @@ describe KalibroGatekeeperClient::Entities::DateModuleResult do
     subject {FactoryGirl.build(:date_module_result)}
 
     it 'should return the module_result grade' do
-      subject.result.should eq(10)
+      expect(subject.result).to eq(10)
     end
   end
 end

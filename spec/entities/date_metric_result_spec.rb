@@ -22,8 +22,8 @@ describe KalibroGatekeeperClient::Entities::DateMetricResult do
       it 'should set the date and convert it to DateTime' do
         subject.date = "21/12/1995" # Ruby's first publication
         
-        subject.date.should be_a(DateTime)
-        subject.date.should eq(DateTime.parse("21/12/1995"))
+        expect(subject.date).to be_a(DateTime)
+        expect(subject.date).to eq(DateTime.parse("21/12/1995"))
       end
     end
 
@@ -31,7 +31,7 @@ describe KalibroGatekeeperClient::Entities::DateMetricResult do
       it 'should just set the value' do
         subject.date = :something_else
 
-        subject.date.should eq(:something_else)
+        expect(subject.date).to eq(:something_else)
       end
     end
   end
@@ -48,7 +48,7 @@ describe KalibroGatekeeperClient::Entities::DateMetricResult do
 
     it 'should set the metric_result with the given one' do
       subject.metric_result = metric_result.to_hash
-      subject.metric_result.should eq(metric_result)
+      expect(subject.metric_result).to eq(metric_result)
     end
   end
 
@@ -56,7 +56,7 @@ describe KalibroGatekeeperClient::Entities::DateMetricResult do
     subject { FactoryGirl.build(:date_metric_result) }
 
     it 'should return the metric result value' do
-      subject.result.should eq(10)
+      expect(subject.result).to eq(10)
     end
   end
 end

@@ -20,7 +20,7 @@ describe KalibroGatekeeperClient::Entities::RepositoryObserver do
   describe 'id=' do
     it 'should set the value of the attribute id' do
       subject.id = 42
-      subject.id.should eq(42)
+      expect(subject.id).to eq(42)
     end
   end
 
@@ -34,7 +34,7 @@ describe KalibroGatekeeperClient::Entities::RepositoryObserver do
       end
 
       it 'should return nil' do
-        KalibroGatekeeperClient::Entities::RepositoryObserver.all.should be_empty
+        expect(KalibroGatekeeperClient::Entities::RepositoryObserver.all).to be_empty
       end
     end
 
@@ -49,9 +49,9 @@ describe KalibroGatekeeperClient::Entities::RepositoryObserver do
 
       it 'should return the two elements' do
         repository_observers = KalibroGatekeeperClient::Entities::RepositoryObserver.all
-        repository_observers.size.should eq(2)
-        repository_observers.first.name.should eq(repository_observer.to_hash[:name])
-        repository_observers.last.name.should eq(repository_observer.to_hash[:name])
+        expect(repository_observers.size).to eq(2)
+        expect(repository_observers.first.name).to eq(repository_observer.to_hash[:name])
+        expect(repository_observers.last.name).to eq(repository_observer.to_hash[:name])
       end
     end
   end
@@ -67,8 +67,8 @@ describe KalibroGatekeeperClient::Entities::RepositoryObserver do
       end
 
       it 'should get an empty array' do
-        KalibroGatekeeperClient::Entities::RepositoryObserver.
-          repository_observers_of(repository_without_observers[:id]).should eq []
+        expect(KalibroGatekeeperClient::Entities::RepositoryObserver.
+          repository_observers_of(repository_without_observers[:id])).to eq []
       end
     end
 
@@ -86,9 +86,9 @@ describe KalibroGatekeeperClient::Entities::RepositoryObserver do
         repository_observers = KalibroGatekeeperClient::Entities::RepositoryObserver.
           repository_observers_of(repository.id)
 
-        repository_observers.size.should eq(2)
-        repository_observers.first.name.should eq(repository_observer.name)
-        repository_observers.last.name.should eq(repository_observer.name)
+        expect(repository_observers.size).to eq(2)
+        expect(repository_observers.first.name).to eq(repository_observer.name)
+        expect(repository_observers.last.name).to eq(repository_observer.name)
       end
     end
   end
@@ -96,28 +96,28 @@ describe KalibroGatekeeperClient::Entities::RepositoryObserver do
   describe 'id=' do
     it 'should set the value of the attribute id' do
       subject.id = 65
-      subject.id.should eq(65)
+      expect(subject.id).to eq(65)
     end
   end
 
   describe 'repository_id=' do
     it 'should set the value of the attribute repository_id' do
       subject.repository_id = 91
-      subject.repository_id.should eq(91)
+      expect(subject.repository_id).to eq(91)
     end
   end
 
   describe 'name=' do
     it 'should set the value of the attribute name' do
       subject.name = 'William'
-      subject.name.should eq('William')
+      expect(subject.name).to eq('William')
     end
   end
 
   describe 'email=' do
     it 'should set the value of the attribute email' do
       subject.email = 'william@email.com'
-      subject.email.should eq('william@email.com')
+      expect(subject.email).to eq('william@email.com')
     end
   end
 end

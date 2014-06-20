@@ -22,38 +22,38 @@ describe KalibroGatekeeperClient::Entities::Range do
   describe 'id=' do
     it 'should set the value of the attribute id as an integer' do
       subject.id = "4"
-      subject.id.should eq(4)
+      expect(subject.id).to eq(4)
     end
   end
 
   describe 'reading_id=' do
     it 'should set the value of the attribute reading_id as an integer' do
       subject.reading_id = "12"
-      subject.reading_id.should eq(12)
+      expect(subject.reading_id).to eq(12)
     end
   end
 
   describe 'beginning=' do
     it 'should set the value of the attribute as a float' do
       subject.beginning = "12.3"
-      subject.beginning.should eq(12.3)
+      expect(subject.beginning).to eq(12.3)
     end
 
     it 'should set beginning to infinity' do
       subject.beginning = "-INF"
-      subject.beginning.should eq("-INF")
+      expect(subject.beginning).to eq("-INF")
     end
   end
 
   describe 'end=' do
     it 'should set the value of the attribute as a float' do
       subject.end = "23.4"
-      subject.end.should eq(23.4)
+      expect(subject.end).to eq(23.4)
     end
 
     it 'should set end to infinity' do
       subject.end = "INF"
-      subject.end.should eq("INF")
+      expect(subject.end).to eq("INF")
     end
   end
 
@@ -69,25 +69,25 @@ describe KalibroGatekeeperClient::Entities::Range do
 
     context 'reading' do
       it 'should return the correct reading' do
-        subject.reading.should eq(reading)
+        expect(subject.reading).to eq(reading)
       end
     end
 
     context 'label' do
       it 'should get the label of the reading' do
-        subject.label.should eq(reading.label)
+        expect(subject.label).to eq(reading.label)
       end
     end
 
     context 'grade' do
       it 'should get the grade of the reading' do
-        subject.grade.should eq(reading.grade)
+        expect(subject.grade).to eq(reading.grade)
       end
     end
 
     context 'color' do
       it 'should get the color of the reading' do
-        subject.color.should eq(reading.color)
+        expect(subject.color).to eq(reading.color)
       end
     end
   end
@@ -104,7 +104,7 @@ describe KalibroGatekeeperClient::Entities::Range do
       end
 
       it 'should return a list with the ranges' do
-        KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id).should eq([])
+        expect(KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id)).to eq([])
       end
     end
 
@@ -117,8 +117,8 @@ describe KalibroGatekeeperClient::Entities::Range do
       end
 
       it 'should return a list with the range' do
-        KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id).
-          first.beginning.should eq(subject.beginning)
+        expect(KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id).
+          first.beginning).to eq(subject.beginning)
       end
     end
 
@@ -134,8 +134,8 @@ describe KalibroGatekeeperClient::Entities::Range do
 
       it 'should return a list with the ranges' do
         ranges = KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id)
-        ranges.first.comments.should eq(subject.comments)
-        ranges.last.comments.should eq(another_range.comments)
+        expect(ranges.first.comments).to eq(subject.comments)
+        expect(ranges.last.comments).to eq(another_range.comments)
       end
     end
   end
@@ -152,8 +152,8 @@ describe KalibroGatekeeperClient::Entities::Range do
     end
 
     it 'should make a request to save model with id and return true without errors' do
-      subject.save.should be(true)
-      subject.kalibro_errors.should be_empty
+      expect(subject.save).to be(true)
+      expect(subject.kalibro_errors).to be_empty
     end
   end
 
@@ -164,7 +164,7 @@ describe KalibroGatekeeperClient::Entities::Range do
       end
 
       it 'should return true' do
-        KalibroGatekeeperClient::Entities::Range.exists?(subject.id).should be_true
+        expect(KalibroGatekeeperClient::Entities::Range.exists?(subject.id)).to be_truthy
       end
     end
 
@@ -174,7 +174,7 @@ describe KalibroGatekeeperClient::Entities::Range do
       end
 
       it 'should return false' do
-        KalibroGatekeeperClient::Entities::Range.exists?(subject.id).should be_false
+        expect(KalibroGatekeeperClient::Entities::Range.exists?(subject.id)).to be_falsey
       end
     end
   end
@@ -188,7 +188,7 @@ describe KalibroGatekeeperClient::Entities::Range do
       end
 
       it 'should return the range' do
-        KalibroGatekeeperClient::Entities::Range.find(subject.id).should eq(subject)
+        expect(KalibroGatekeeperClient::Entities::Range.find(subject.id)).to eq(subject)
       end
     end
 
@@ -225,7 +225,7 @@ describe KalibroGatekeeperClient::Entities::Range do
     end
 
     it 'should list all the ranges' do
-      KalibroGatekeeperClient::Entities::Range.all.should include(subject)
+      expect(KalibroGatekeeperClient::Entities::Range.all).to include(subject)
     end
   end
 end

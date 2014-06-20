@@ -22,12 +22,12 @@ describe KalibroGatekeeperClient::Entities::ProcessTime do
 
     it 'should set the time attribute to 6' do
       subject.time = 6
-      subject.time.should eq 6
+      expect(subject.time).to eq 6
     end
 
     it 'should convert to integer' do
       subject.time = "5"
-      subject.time.should eq 5
+      expect(subject.time).to eq 5
     end
   end
 end
