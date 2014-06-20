@@ -31,7 +31,7 @@ describe KalibroGatekeeperClient do
     end
 
     describe 'configure' do
-      after(:all) {KalibroGatekeeperClient.configure(config)}
+      after(:each) {KalibroGatekeeperClient.configure(config)}
 
       it 'should set the address' do
         KalibroGatekeeperClient.configure({address: 'http://test.test'})
@@ -41,7 +41,7 @@ describe KalibroGatekeeperClient do
 
     describe 'configure_with' do
       context 'with an existent YAML' do
-        after(:all) {KalibroGatekeeperClient.configure(config)}
+        after(:each) {KalibroGatekeeperClient.configure(config)}
 
         it 'should set the config' do
           KalibroGatekeeperClient.configure_with('spec/savon/fixtures/config.yml')
