@@ -36,26 +36,26 @@ When(/^I ask to check if the given repository exists$/) do
 end
 
 Then(/^I should get success$/) do
-  @response == true
+  expect(@response).to be_truthy
 end
 
 Then(/^I should get a list with the given repository$/) do
-  @response.should include(@repository)
+  expect(@response).to include(@repository)
 end
 
 Then(/^I should get an array of types$/) do
-  @repository_types.is_a?(Array)
-  @repository_types.count >= 1
+  expect(@repository_types).to be_a(Array)
+  expect(@repository_types.count >= 1).to be_truthy
 end
 
 Then(/^I should get the given repository$/) do
-  @response.should eq(@repository)
+  expect(@response).to eq(@repository)
 end
 
 Then(/^the response should contain the given repository$/) do
-  @response.first.project_id.should eq(@project.id)
+  expect(@response.first.project_id).to eq(@project.id)
 end
 
 Then(/^the repositories should contain the project id$/) do
-  @response.first.project_id.should eq(@project.id)
+  expect(@response.first.project_id).to eq(@project.id)
 end

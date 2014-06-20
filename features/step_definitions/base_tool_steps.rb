@@ -8,21 +8,21 @@ end
 
 When(/^I search base tool Avalio by name$/) do
   @is_error = false
-  begin 
+  begin
   	KalibroGatekeeperClient::Entities::BaseTool.find_by_name("Avalio")
 	rescue KalibroGatekeeperClient::Errors::RecordNotFound
-  	@is_error = true 
+  	@is_error = true
   end
 end
 
 Then(/^it should return Checkstyle and Analizo strings inside of an array$/) do
-  (@base_tool_names.include?("Checkstyle") && @base_tool_names.include?("Analizo")).should be_true
+  expect(@base_tool_names.include?("Checkstyle") && @base_tool_names.include?("Analizo")).to be_truthy
 end
 
 Then(/^I should get Analizo base tool$/) do
-  @result.name.should eq "Analizo"
+  expect(@result.name).to eq("Analizo")
 end
 
 Then(/^I should get an error$/) do
-  @is_error.should be_true
+  expect(@is_error).to be_truthy
 end

@@ -32,17 +32,17 @@ When(/^I ask for all the projects$/) do
 end
 
 Then(/^the project should exist$/) do
-  KalibroGatekeeperClient::Entities::Project.exists?(@project.id).should be_true
+  expect(KalibroGatekeeperClient::Entities::Project.exists?(@project.id)).to be_truthy
 end
 
 Then(/^it should return the same project as the given one$/) do
-  @found_project == @project
+  expect(@found_project).to eq(@project)
 end
 
 Then(/^the project should not exist$/) do
-  KalibroGatekeeperClient::Entities::Project.exists?(@found_project.id).should be_false
+  expect(KalibroGatekeeperClient::Entities::Project.exists?(@found_project.id)).to be_falsey
 end
 
 Then(/^I should get a list with the given project$/) do
-  @all_projects.include?(@project)
+  expect(@all_projects).to include(@project)
 end

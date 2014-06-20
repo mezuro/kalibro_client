@@ -14,16 +14,16 @@ When(/^I call the history of method with the metric name and the results root id
 end
 
 Then (/^I should get a Float list$/) do
-  @response.should be_a(Array)
-  @response.first.should be_a(Float)
+  expect(@response).to be_a(Array)
+  expect(@response.first).to be_a(Float)
 end
 
 Then(/^I should get a list of metric results$/) do
-  @response.should be_a(Array)
-  @response.first.should be_a(KalibroGatekeeperClient::Entities::MetricResult)
+  expect(@response).to be_a(Array)
+  expect(@response.first).to be_a(KalibroGatekeeperClient::Entities::MetricResult)
 end
 
 Then(/^I should get a list of date metric results$/) do
-  @response.should be_a(Array)
-  @response.first.should be_a(KalibroGatekeeperClient::Entities::DateMetricResult)
+  expect(@response).to be_a(Array)
+  expect(@response.first).to be_a(KalibroGatekeeperClient::Entities::DateMetricResult)
 end

@@ -11,9 +11,9 @@ When(/^I call the reading_group_of method for the given MetricConfiguration$/) d
 end
 
 Then(/^I should get a list with the given reading group$/) do
-   @all_reading_groups.include?(@reading_group)
+  expect(@all_reading_groups).to include(@reading_group)
 end
 
 Then(/^I should get the given RedingGroup$/) do
-  @metric_configuration_reading_group.should eq(@reading_group)  
+  expect(@metric_configuration_reading_group).to eq(@reading_group)
 end

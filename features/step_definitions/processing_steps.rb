@@ -67,25 +67,25 @@ When(/^I call the processing_with_date_of method for the given repository and ye
 end
 
 Then(/^I should get a Processing with state "(.*?)"$/) do |state|
-  @response.state.should eq(state)
+  expect(@response.state).to eq(state)
 end
 
 Then(/^I should get nil$/) do
-  @response.should be_nil
+  expect(@response).to be_nil
 end
 
 Then(/^I should get "(.*?)"$/) do |state|
-  @response.should eq(state)
+  expect(@response).to eq(state)
 end
 
 Then(/^I should get false$/) do
-  @response.should be_false
+  expect(@response).to be_falsey
 end
 
 Then(/^I should get true$/) do
-  @response.should be_true
+  expect(@response).to be_truthy
 end
 
 Then(/^I should get a Processing$/) do
-  @response.should be_a(KalibroGatekeeperClient::Entities::Processing)
+  expect(@response).to be_a(KalibroGatekeeperClient::Entities::Processing)
 end

@@ -16,15 +16,15 @@ When(/^I ask for an inexistent module result$/) do
   end
 end
 
-Then(/^I should get the given module result$/) do
-  @found_module_result == @module_result
-end
-
 When(/^I ask for the children of the processing root module result$/) do
   @children = KalibroGatekeeperClient::Entities::ModuleResult.
     find(KalibroGatekeeperClient::Entities::Processing.processing_of(@repository.id).results_root_id)
 end
 
 Then(/^I should get a list with the children module results$/) do
-  @children.should be_a(KalibroGatekeeperClient::Entities::ModuleResult)
+  expect(@children).to be_a(KalibroGatekeeperClient::Entities::ModuleResult)
+end
+
+Then(/^I should get the given module result$/) do
+  expect(@found_module_result).to eq(@module_result)
 end

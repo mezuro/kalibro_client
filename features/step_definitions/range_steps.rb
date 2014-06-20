@@ -17,7 +17,7 @@ end
 
 When(/^I ask to save the given range with an inexistent metric configuration$/) do
   @range.metric_configuration_id = rand(Time.now.to_i)
-  @range.save 
+  @range.save
 end
 
 When(/^I ask ranges of the given metric configuration$/) do
@@ -27,8 +27,8 @@ end
 When(/^I try to save a range with an inexistent metric configuration$/) do
     @range = FactoryGirl.build(:range, {id: nil, reading_id: @reading.id})
     @range.metric_configuration_id = rand(Time.now.to_i)
-    @range.save 
-end 
+    @range.save
+end
 
 When(/^I ask for all the ranges$/) do
   @response = KalibroGatekeeperClient::Entities::Range.all
@@ -39,30 +39,30 @@ When(/^I search a range with the same id of the given range$/) do
 end
 
 Then(/^I should get an empty list$/) do
-  @response.should eq([])
+  expect(@response).to eq([])
 end
 
 Then(/^I should not get an empty list$/) do
-  @response.should_not eq([])
+  expect(@response).to_not eq([])
 end
 
 Then(/^I should get a list with the given range$/) do
-  @response.size.should eq(1)
-  @response.first.comments.should eq(@range.comments)
+  expect(@response.size).to eq(1)
+  expect(@response.first.comments).to eq(@range.comments)
 end
 
 Then(/^I should get an error in range kalibro errors attribute$/) do
-  @range.kalibro_errors.should_not eq([])
+  expect(@range.kalibro_errors).to_not eq([])
 end
 
 Then(/^the id of the given range should be set$/) do
-  @range.id.should_not eq(0)
+  expect(@range.id).to_not eq(0)
 end
 
 Then(/^it should return the same range as the given one$/) do
-  @found_range == @range
+  expect(@found_range).to eq(@range)
 end
 
 Then(/^the range should exist$/) do
-  KalibroGatekeeperClient::Entities::Range.exists?(@range.id)
+  expect(KalibroGatekeeperClient::Entities::Range.exists?(@range.id)).to be_truthy
 end
