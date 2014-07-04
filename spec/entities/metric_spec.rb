@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -42,6 +42,24 @@ describe KalibroGatekeeperClient::Entities::Metric do
     it 'should convert the value to an array of objects' do
       subject.language = "Java"
       expect(subject.languages).to eq(["Java"])
+    end
+  end
+
+  describe 'compound' do
+    context "when it is a supported String" do
+      subject { FactoryGirl.build(:metric, compound: "false") }
+
+      it 'is expected to return a Boolean' do
+        expect(subject.compound).to be_falsey
+      end
+    end
+
+    context "when it is a unsupported String" do
+      subject { FactoryGirl.build(:metric, compound: "motaboolea") }
+
+      it 'is expected to raise a Error' do
+        expect {subject.compound}.to raise_error(ArgumentError)
+      end
     end
   end
 end
