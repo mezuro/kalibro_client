@@ -5,4 +5,4 @@ Feature: All Names
 
   Scenario: all base tools names
     When I get all base tool names
-    Then it should return Checkstyle and Analizo strings inside of an array
+    Then it should return Analizo string inside of an array

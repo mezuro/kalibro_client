@@ -15,8 +15,8 @@ When(/^I search base tool Avalio by name$/) do
   end
 end
 
-Then(/^it should return Checkstyle and Analizo strings inside of an array$/) do
-  expect(@base_tool_names.include?("Checkstyle") && @base_tool_names.include?("Analizo")).to be_truthy
+Then(/^it should return Analizo string inside of an array$/) do
+  expect(@base_tool_names.include?("Analizo")).to be_truthy
 end
 
 Then(/^I should get Analizo base tool$/) do
