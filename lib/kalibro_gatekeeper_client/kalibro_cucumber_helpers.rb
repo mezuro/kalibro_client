@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -35,6 +35,16 @@ module KalibroGatekeeperClient
 
     def KalibroCucumberHelpers.configuration
       @configuration
+    end
+
+    def KalibroCucumberHelpers.clean_processor
+      client = Faraday.new(:url => @configuration.kalibro_processor_address) do |conn|
+        conn.request :json
+        conn.response :json, :content_type => /\bjson$/
+        conn.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+      end
+
+      client.send(:post, "/tests/clean_database", {})
     end
   end
 end
