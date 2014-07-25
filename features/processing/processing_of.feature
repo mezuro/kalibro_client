@@ -15,7 +15,7 @@ Feature: Processing of
     And I call the process method for the given repository
     And I wait up to 1 seconds
     When I call the processing_of method for the given repository
-    Then I should get a Processing with state "LOADING"
+    Then I should get a Processing with state "PREPARING"
 
   @kalibro_restart
   Scenario: With one repository just after with ready processing
