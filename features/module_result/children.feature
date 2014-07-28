@@ -10,8 +10,8 @@ Feature: Children
     And I have a reading group with name "Group"
     And I have a metric configuration within the given configuration
     And the given project has the following Repositories:
-      |   name    | type |              address                  |
-      |  Kalibro  |  GIT | https://github.com/mezuro/kalibro.git |
+      |   name    | type |              address                        |
+      |  Kalibro  |  GIT | https://git.gitorious.org/sbking/sbking.git |
     And I call the process method for the given repository
     And I wait up for a ready processing
     When I ask for the children of the processing root module result
