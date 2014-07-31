@@ -27,3 +27,7 @@ Then(/^I should get a list of date metric results$/) do
   expect(@response).to be_a(Array)
   expect(@response.first).to be_a(KalibroGatekeeperClient::Entities::DateMetricResult)
 end
+
+Then(/^the first metric result should have a metric configuration snapshot$/) do
+  expect(@response.first.configuration).to be_a(KalibroGatekeeperClient::Entities::MetricConfigurationSnapshot)
+end

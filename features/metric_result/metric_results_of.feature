@@ -17,3 +17,4 @@ Feature: Metric results of
     And I call the first_processing_of method for the given repository
     When I call the metric results of method with the results root id of the given processing
     Then I should get a list of metric results
+    And the first metric result should have a metric configuration snapshot
