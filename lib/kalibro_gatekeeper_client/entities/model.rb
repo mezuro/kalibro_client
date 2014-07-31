@@ -39,7 +39,14 @@ module KalibroGatekeeperClient
       end
 
       def self.request(action, params = {}, method = :post)
-        client.send(method, "/#{endpoint}/#{action}", params).body
+        response = client.send(method) do |request|
+          request.url "/#{endpoint}/#{action}"
+          request.body = params
+          request.options.timeout = 300
+          request.options.open_timeout = 300
+        end
+
+        response.body
       end
 
       def self.to_object value
