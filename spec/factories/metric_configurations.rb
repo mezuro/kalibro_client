@@ -17,7 +17,7 @@
 FactoryGirl.define do
   factory :metric_configuration, class: KalibroGatekeeperClient::Entities::MetricConfiguration do
     id 1
-    code 'code'
+    code 'total_abstract_classes'
     metric {FactoryGirl.build(:metric)}
     base_tool_name "Analizo"
     weight 1

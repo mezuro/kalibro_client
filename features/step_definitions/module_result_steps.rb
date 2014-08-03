@@ -36,3 +36,7 @@ end
 Then(/^I should get a list with date module results$/) do
   expect(@history).to be_a(Array)
 end
+
+Then(/^I should get a module_result$/) do
+  expect(@module_result).to be_a(KalibroGatekeeperClient::Entities::ModuleResult)
+end

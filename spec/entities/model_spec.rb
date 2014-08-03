@@ -54,12 +54,22 @@ describe KalibroGatekeeperClient::Entities::Model do
     let(:fixture) { File.read("spec/savon/fixtures/project/does_not_exists.xml") }
     let(:client) { mock('client') }
     let(:response) { mock('response') }
+    let(:request) { mock('request') }
+    let(:options) { mock('options') }
+
+    before :each do
+      options.expects(:timeout=)
+      options.expects(:open_timeout=)
+      request.expects(:url).with('/models/exists')
+      request.expects(:body=).with({id: 1})
+      request.expects(:options).twice.returns(options)
+    end
 
     context 'for the KalibroGatekeeperClient::Entitie class' do
       it 'should successfully get the Kalibro version' do
         response.expects(:body).returns({exists: false})
         client.expects(:post).
-          with('/models/exists', {id: 1}).
+          yields(request).
           returns(response)
         KalibroGatekeeperClient::Entities::Model.
           expects(:client).
@@ -76,7 +86,7 @@ describe KalibroGatekeeperClient::Entities::Model do
       it 'should successfully get the Kalibro version' do
         response.expects(:body).returns({exists: false})
         client.expects(:post).
-          with('/models/exists', {id: 1}).
+          yields(request).
           returns(response)
         Child.
           expects(:client).
