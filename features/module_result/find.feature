@@ -3,7 +3,7 @@ Feature: Find
   As an developer
   I want to find module results
 
-  @kalibro_restart
+  @kalibro_restart @kalibro_processor_restart
   Scenario: find a valid module result
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"

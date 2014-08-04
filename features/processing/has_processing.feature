@@ -3,7 +3,7 @@ Feature: Has processing
   As a developer
   I want to be able to check if a repository has processings
 
-  @kalibro_restart
+  @kalibro_restart @kalibro_processor_restart
   Scenario: With one repository after process
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"

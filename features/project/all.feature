@@ -3,7 +3,7 @@ Feature: All
   As an developer
   I want to get all the available projects
 
-  @kalibro_restart
+  @kalibro_processor_restart
   Scenario: one project
     Given I have a project with name "Kalibro"
     When I ask for all the projects

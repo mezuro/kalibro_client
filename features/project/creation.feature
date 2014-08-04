@@ -3,7 +3,7 @@ Feature: Creation
   As an developer
   I want to create projects
 
-  @kalibro_restart
+  @kalibro_processor_restart
   Scenario: create a valid project
     When I create the project with name "Kalibro"
     Then the project should exist

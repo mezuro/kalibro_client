@@ -3,7 +3,7 @@ Feature: Repositories listing
   As a developer
   I want to find that repository
 
-  @kalibro_restart
+  @kalibro_restart @kalibro_processor_restart
   Scenario: With existing project repository
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"

@@ -3,7 +3,7 @@ Feature: Find
   As an developer
   I want to find projects
 
-  @kalibro_restart
+  @kalibro_processor_restart
   Scenario: find a valid project
     Given I have a project with name "Kalibro"
     When I search a project with the same id of the given project
