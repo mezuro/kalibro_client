@@ -16,3 +16,4 @@ Feature: Children
     And I wait up for a ready processing
     When I ask for the children of the processing root module result
     Then I should get a list with the children module results
+    And The first children should have a module

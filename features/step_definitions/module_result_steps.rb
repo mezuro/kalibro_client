@@ -40,3 +40,7 @@ end
 Then(/^I should get a module_result$/) do
   expect(@module_result).to be_a(KalibroGatekeeperClient::Entities::ModuleResult)
 end
+
+Then(/^The first children should have a module$/) do
+  expect(@children.first.module).to be_a(KalibroGatekeeperClient::Entities::Module)
+end
