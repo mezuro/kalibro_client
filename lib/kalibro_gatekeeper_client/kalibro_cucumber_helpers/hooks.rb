@@ -46,6 +46,9 @@ After ('@kalibro_restart') do
                #{KalibroGatekeeperClient::KalibroCucumberHelpers.configuration.database} \\
                #{KalibroGatekeeperClient::KalibroCucumberHelpers.configuration.query_file_path}"
   system command
+end
+
+After('@kalibro_processor_restart') do
   KalibroGatekeeperClient::KalibroCucumberHelpers.clean_processor
 end
 
