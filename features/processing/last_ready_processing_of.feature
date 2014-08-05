@@ -16,3 +16,4 @@ Feature: Last ready processing of
     And I wait up for a ready processing
     When I call the last_ready_processing_of method for the given repository
     Then I should get a Processing
+    And this processing should have process times

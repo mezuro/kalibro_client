@@ -89,3 +89,7 @@ end
 Then(/^I should get a Processing$/) do
   expect(@response).to be_a(KalibroGatekeeperClient::Entities::Processing)
 end
+
+Then(/^this processing should have process times$/) do
+  expect(@response.process_time.first).to be_a(KalibroGatekeeperClient::Entities::ProcessTime)
+end
