@@ -46,6 +46,8 @@ end
 Then(/^I should get an array of types$/) do
   expect(@repository_types).to be_a(Array)
   expect(@repository_types.count >= 1).to be_truthy
+  expect(@repository_types).to include("GIT")
+  expect(@repository_types).to include("SVN")
 end
 
 Then(/^I should get the given repository$/) do
