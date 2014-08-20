@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -40,7 +40,7 @@ module KalibroGatekeeperClient
           raise KalibroGatekeeperClient::Errors::RecordNotFound
         end
       end
-      
+
       def self.all_names
         # FIXME: for some reason, the JSON is not getting automatically parsed
         JSON.parse(request(:all_names, {}, :get))['base_tool_names'].to_a

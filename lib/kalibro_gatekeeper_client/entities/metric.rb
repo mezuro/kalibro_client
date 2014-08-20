@@ -1,7 +1,7 @@
 module KalibroGatekeeperClient
   module Entities
     class Metric < Model
-      attr_accessor :name, :compound, :scope, :description, :script, :language
+      attr_accessor :name, :code, :compound, :scope, :description, :script, :language
 
       def languages
         @language
