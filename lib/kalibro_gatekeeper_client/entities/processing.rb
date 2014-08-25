@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,8 +19,8 @@ require "kalibro_gatekeeper_client/entities/model"
 module KalibroGatekeeperClient
   module Entities
     class Processing < Model
-      
-      attr_accessor :id, :date, :state, :error, :process_time, :results_root_id
+
+      attr_accessor :id, :date, :state, :error, :process_time, :results_root_id, :error_message
 
       def id=(value)
         @id = value.to_i
