@@ -68,7 +68,12 @@ module KalibroGatekeeperClient
 
       def self.history_of(module_result_id)
         response = self.create_array_from_hash(self.request('history_of', {id: module_result_id})['date_module_results'])
-        response.map {|date_module_result| KalibroGatekeeperClient::Entities::DateModuleResult.new date_module_result}
+        response.map do |date_module_result_pair|
+          date_module_result = KalibroGatekeeperClient::Entities::DateModuleResult.new
+          date_module_result.date = date_module_result_pair.first
+          date_module_result.module_result = date_module_result_pair.last
+          date_module_result
+        end
       end
     end
   end
