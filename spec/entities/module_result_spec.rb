@@ -124,7 +124,7 @@ describe KalibroGatekeeperClient::Entities::ModuleResult do
       KalibroGatekeeperClient::Entities::ModuleResult.
         expects(:request).
         with('history_of', {id: subject.id}).
-        returns({'date_module_results' => date_module_result.to_hash})
+        returns({'date_module_results' => [[date_module_result.date, date_module_result.module_result.to_hash]]})
     end
 
     it 'should return a list of date_module_results' do
