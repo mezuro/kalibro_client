@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,114 +16,114 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::BaseTool do
+describe KalibroGatekeeperClient::Entities::MetricCollector do
   describe 'all_names' do
-    context 'with no base tools' do
+    context 'with no metric collectors' do
       before :each do
-        KalibroGatekeeperClient::Entities::BaseTool.
+        KalibroGatekeeperClient::Entities::MetricCollector.
           expects(:request).
           with(:all_names, {}, :get).
           returns({'names' => nil}.to_json)
       end
 
       it 'should return empty array' do
-        expect(KalibroGatekeeperClient::Entities::BaseTool.all_names).to be_empty
+        expect(KalibroGatekeeperClient::Entities::MetricCollector.all_names).to be_empty
       end
     end
 
-    context 'with many base tools' do
-      let(:base_tool_hash) { FactoryGirl.build(:base_tool).to_hash }
-      let(:another_base_tool_hash) { FactoryGirl.build(:another_base_tool).to_hash }
+    context 'with many metric collectors' do
+      let(:metric_collector_hash) { FactoryGirl.build(:metric_collector).to_hash }
+      let(:another_metric_collector_hash) { FactoryGirl.build(:another_metric_collector).to_hash }
 
       before :each do
-        KalibroGatekeeperClient::Entities::BaseTool.
+        KalibroGatekeeperClient::Entities::MetricCollector.
           expects(:request).
           with(:all_names, {}, :get).
-          returns({'base_tool_names' => [base_tool_hash, another_base_tool_hash]}.to_json)
+          returns({'metric_collector_names' => [metric_collector_hash, another_metric_collector_hash]}.to_json)
       end
 
       it 'should return the two elements' do
-        names = KalibroGatekeeperClient::Entities::BaseTool.all_names
+        names = KalibroGatekeeperClient::Entities::MetricCollector.all_names
 
         expect(names.size).to eq(2)
-        expect(names.first).to eq(JSON.parse(base_tool_hash.to_json))
-        expect(names.last).to eq(JSON.parse(another_base_tool_hash.to_json))
+        expect(names.first).to eq(JSON.parse(metric_collector_hash.to_json))
+        expect(names.last).to eq(JSON.parse(another_metric_collector_hash.to_json))
       end
     end
   end
 
   describe 'all' do
-    context 'with no base tools' do
+    context 'with no metric collectors' do
       before :each do
-        KalibroGatekeeperClient::Entities::BaseTool.
+        KalibroGatekeeperClient::Entities::MetricCollector.
           expects(:request).
           with(:all_names, {}, :get).
           returns({'names' => nil}.to_json)
       end
 
       it 'should return empty array' do
-        expect(KalibroGatekeeperClient::Entities::BaseTool.all_names).to be_empty
+        expect(KalibroGatekeeperClient::Entities::MetricCollector.all_names).to be_empty
       end
     end
 
-    context 'with many base tools' do
-      let(:base_tool) { FactoryGirl.build(:base_tool) }
-      let(:another_base_tool) { FactoryGirl.build(:another_base_tool) }
+    context 'with many metric collectors' do
+      let(:metric_collector) { FactoryGirl.build(:metric_collector) }
+      let(:another_metric_collector) { FactoryGirl.build(:another_metric_collector) }
 
       before :each do
-        KalibroGatekeeperClient::Entities::BaseTool.
+        KalibroGatekeeperClient::Entities::MetricCollector.
           expects(:request).
           with(:all_names, {}, :get).
-          returns({'base_tool_names' => [base_tool.name, another_base_tool.name]}.to_json)
-        
-        KalibroGatekeeperClient::Entities::BaseTool.
-          expects(:request).
-          with(:get, {name: base_tool.name}).
-          returns(base_tool.to_hash)
+          returns({'metric_collector_names' => [metric_collector.name, another_metric_collector.name]}.to_json)
 
-        KalibroGatekeeperClient::Entities::BaseTool.
+        KalibroGatekeeperClient::Entities::MetricCollector.
           expects(:request).
-          with(:get, {name: another_base_tool.name}).
-          returns(another_base_tool.to_hash)
+          with(:get, {name: metric_collector.name}).
+          returns(metric_collector.to_hash)
+
+        KalibroGatekeeperClient::Entities::MetricCollector.
+          expects(:request).
+          with(:get, {name: another_metric_collector.name}).
+          returns(another_metric_collector.to_hash)
       end
 
       it 'should return the two elements' do
-        base_tools = KalibroGatekeeperClient::Entities::BaseTool.all
+        metric_collectors = KalibroGatekeeperClient::Entities::MetricCollector.all
 
-        expect(base_tools.size).to eq(2)
-        expect(base_tools.first.name).to eq(base_tool.name)
-        expect(base_tools.last.name).to eq(another_base_tool.name)
+        expect(metric_collectors.size).to eq(2)
+        expect(metric_collectors.first.name).to eq(metric_collector.name)
+        expect(metric_collectors.last.name).to eq(another_metric_collector.name)
       end
     end
   end
 
   describe 'find_by_name' do
-    subject { FactoryGirl.build(:base_tool) }
+    subject { FactoryGirl.build(:metric_collector) }
 
     context 'with an inexistent name' do
       before :each do
-        KalibroGatekeeperClient::Entities::BaseTool.
+        KalibroGatekeeperClient::Entities::MetricCollector.
           expects(:request).
           with(:get, {name: subject.name}).
           returns(nil)
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroGatekeeperClient::Entities::BaseTool.find_by_name(subject.name)}.
+        expect { KalibroGatekeeperClient::Entities::MetricCollector.find_by_name(subject.name)}.
           to raise_error(KalibroGatekeeperClient::Errors::RecordNotFound)
       end
     end
 
     context 'with an existent name' do
       before :each do
-        KalibroGatekeeperClient::Entities::BaseTool.
+        KalibroGatekeeperClient::Entities::MetricCollector.
           expects(:request).
           with(:get,{name: subject.name}).
           returns(subject.to_hash)
       end
 
-      it 'should return a base_tool' do
-        expect(KalibroGatekeeperClient::Entities::BaseTool.find_by_name(subject.name).name).to eq(subject.name)
+      it 'should return a metric_collector' do
+        expect(KalibroGatekeeperClient::Entities::MetricCollector.find_by_name(subject.name).name).to eq(subject.name)
       end
     end
   end
@@ -152,11 +152,11 @@ describe KalibroGatekeeperClient::Entities::BaseTool do
       end
     end
   end
-  
+
   describe 'metric' do
-    subject { FactoryGirl.build(:base_tool) }
+    subject { FactoryGirl.build(:metric_collector) }
     let(:metric) { subject.supported_metrics.first }
-    
+
     it 'should return nil with an inexistent name' do
       expect(subject.metric("fake name")).to be_nil
     end
