@@ -15,5 +15,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module KalibroGatekeeperClient
-  VERSION = "0.3.2"
+  VERSION = "1.0.0.rc1"
 end
