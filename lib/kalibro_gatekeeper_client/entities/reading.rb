@@ -28,6 +28,10 @@ module KalibroGatekeeperClient
         @grade = value.to_f
       end
 
+      def group_id=(value)
+        @group_id = value.to_i
+      end
+
       def self.find(id)
         response = request('get', {id: id})
         raise KalibroGatekeeperClient::Errors::RecordNotFound unless response['error'].nil?

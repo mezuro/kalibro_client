@@ -27,16 +27,13 @@ When(/^I ask to check if the given reading exists$/) do
 end
 
 Then(/^I should get the given reading$/) do
-  pending
   expect(@found_reading).to eq(@reading)
 end
 
 Then(/^I should get a list with the given reading$/) do
-  pending
   expect(@found_readings.first).to eq(@reading)
 end
 
 Then(/^the response should contain the given reading$/) do
-  pending
   expect(@all_readings.first).to eq(@reading)
 end

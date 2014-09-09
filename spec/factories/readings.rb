@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,8 +18,8 @@ FactoryGirl.define do
   factory :reading, class: KalibroGatekeeperClient::Entities::Reading do
     id 42
     label "Good"
-    grade 10.5 
-    color "33DD33" 
+    grade 10.5
+    color "33dd33"
     group_id 31
-  end  
+  end
 end

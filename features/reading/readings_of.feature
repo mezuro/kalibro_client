@@ -1,4 +1,4 @@
-Feature: Find
+Feature: Readings Of
   In order to be able to have readings
   As an developer
   I want to get the readings of the given reading group

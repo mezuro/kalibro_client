@@ -8,6 +8,6 @@ Feature: Reading listing
     Given I have a reading group with name "Kalibro"
     And the given reading group has the following readings:
       |   label   | grade |     color    |
-      | "Awesome" |  10   |     3333FF   |
+      | "Awesome" |  10   |     3333ff   |
     When I ask for all the readings
     Then the response should contain the given reading

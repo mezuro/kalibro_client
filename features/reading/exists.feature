@@ -8,6 +8,6 @@ Feature: Reading listing
     Given I have a reading group with name "RG"
     And the given reading group has the following readings:
       |   label   | grade |     color    |
-      | "Awesome" |  10   |     3333FF   |
+      | "Awesome" |  10   |     3333ff   |
     When I ask to check if the given reading exists
     Then I should get true
