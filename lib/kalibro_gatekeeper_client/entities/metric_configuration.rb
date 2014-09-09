@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,12 +20,12 @@ module KalibroGatekeeperClient
   module Entities
     class MetricConfiguration < Model
 
-      attr_accessor :id, :code, :metric, :base_tool_name, :weight, :aggregation_form, :reading_group_id, :configuration_id
+      attr_accessor :id, :code, :metric, :metric_collector_name, :weight, :aggregation_form, :reading_group_id, :configuration_id
 
       def id=(value)
         @id = value.to_i
       end
-      
+
       def reading_group_id=(value)
         @reading_group_id = value.to_i
       end
@@ -67,7 +67,7 @@ module KalibroGatekeeperClient
       end
 
       private
-      
+
       def save_params
         {:metric_configuration => self.to_hash, :configuration_id => self.configuration_id}
       end

@@ -18,8 +18,8 @@ require "kalibro_gatekeeper_client/entities/model"
 
 module KalibroGatekeeperClient
   module Entities
-    class BaseTool < Model
-      attr_accessor :name, :description, :collector_class_name, :supported_metric
+    class MetricCollector < Model
+      attr_accessor :name, :description, :collector_class_name, :supported_metric, :wanted_metrics, :processing
 
       def supported_metric=(value)
         @supported_metric = KalibroGatekeeperClient::Entities::Metric.to_objects_array value
@@ -33,9 +33,9 @@ module KalibroGatekeeperClient
         supported_metrics.find {|metric| metric.name == name}
       end
 
-      def self.find_by_name(base_tool_name)
+      def self.find_by_name(metric_collector_name)
         begin
-          new request(:get, {name: base_tool_name})
+          new request(:get, {name: metric_collector_name})
         rescue
           raise KalibroGatekeeperClient::Errors::RecordNotFound
         end
@@ -43,12 +43,12 @@ module KalibroGatekeeperClient
 
       def self.all_names
         # FIXME: for some reason, the JSON is not getting automatically parsed
-        JSON.parse(request(:all_names, {}, :get))['base_tool_names'].to_a
+        JSON.parse(request(:all_names, {}, :get))['metric_collector_names'].to_a
       end
 
       def self.all
-        base_tools = all_names
-        base_tools.map{ |name| find_by_name(name) }
+        metric_collectors = all_names
+        metric_collectors.map{ |name| find_by_name(name) }
       end
     end
   end
