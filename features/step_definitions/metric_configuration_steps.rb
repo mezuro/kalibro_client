@@ -42,12 +42,10 @@ When(/^I request all metric configurations of the given configuration$/) do
 end
 
 Then(/^it should return the same metric configuration as the given one$/) do
-  pending
   expect(@found_metric_configuration).to eq(@metric_configuration)
 end
 
 Then(/^I should get a list of its metric configurations$/) do
-  pending
   expect(@metric_configurations).to eq([@metric_configuration])
 end
 
