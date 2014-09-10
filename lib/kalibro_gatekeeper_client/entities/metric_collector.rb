@@ -19,7 +19,7 @@ require "kalibro_gatekeeper_client/entities/model"
 module KalibroGatekeeperClient
   module Entities
     class MetricCollector < Model
-      attr_accessor :name, :description, :collector_class_name, :supported_metrics, :wanted_metrics, :processing
+      attr_accessor :name, :description, :supported_metrics, :wanted_metrics, :processing
 
       def supported_metrics=(value)
         @supported_metrics = {}
