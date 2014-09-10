@@ -19,14 +19,13 @@ require "kalibro_gatekeeper_client/entities/model"
 module KalibroGatekeeperClient
   module Entities
     class MetricCollector < Model
-      attr_accessor :name, :description, :collector_class_name, :supported_metric, :wanted_metrics, :processing
+      attr_accessor :name, :description, :collector_class_name, :supported_metrics, :wanted_metrics, :processing
 
-      def supported_metric=(value)
-        @supported_metric = KalibroGatekeeperClient::Entities::Metric.to_objects_array value
-      end
-
-      def supported_metrics
-        @supported_metric
+      def supported_metrics=(value)
+        @supported_metrics = {}
+        value.each do |code, metric| 
+          @supported_metrics[code] = KalibroGatekeeperClient::Entities::Metric.new metric
+        end
       end
 
       def metric(name)

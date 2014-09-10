@@ -17,18 +17,18 @@
 FactoryGirl.define do
   factory :metric, class: KalibroGatekeeperClient::Entities::Metric do
     name "Total Abstract Classes"
-    compound false
+    compound "false"
     scope "SOFTWARE"
-    description nil
+    description ""
     script ""
     language ["C", "CPP", "JAVA"]
   end
 
   factory :loc, class: KalibroGatekeeperClient::Entities::Metric do
     name "Lines of Code"
-    compound false
+    compound "false"
     scope "CLASS"
-    description nil
+    description ""
     script ""
     language ["C", "CPP", "JAVA"]
   end
