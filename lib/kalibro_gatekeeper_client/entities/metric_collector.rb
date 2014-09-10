@@ -23,13 +23,14 @@ module KalibroGatekeeperClient
 
       def supported_metrics=(value)
         @supported_metrics = {}
-        value.each do |code, metric| 
+        value.each do |code, metric|
           @supported_metrics[code] = KalibroGatekeeperClient::Entities::Metric.new metric
         end
       end
 
       def metric(name)
-        supported_metrics.find {|metric| metric.name == name}
+        metric = self.supported_metrics.find {|code, metric| metric.name == name}
+        metric.nil? ? nil : metric.last
       end
 
       def self.find_by_name(metric_collector_name)
@@ -46,8 +47,8 @@ module KalibroGatekeeperClient
       end
 
       def self.all
-        metric_collectors = all_names
-        metric_collectors.map{ |name| find_by_name(name) }
+        metric_collectors_names = all_names
+        metric_collectors_names.map{ |name| find_by_name(name) }
       end
     end
   end

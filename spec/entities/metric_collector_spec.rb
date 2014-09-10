@@ -67,8 +67,8 @@ describe KalibroGatekeeperClient::Entities::MetricCollector do
     end
 
     context 'with many metric collectors' do
-      let(:metric_collector) { FactoryGirl.build(:metric_collector) }
-      let(:another_metric_collector) { FactoryGirl.build(:another_metric_collector) }
+      let!(:metric_collector) { FactoryGirl.build(:metric_collector) }
+      let!(:another_metric_collector) { FactoryGirl.build(:another_metric_collector) }
 
       before :each do
         KalibroGatekeeperClient::Entities::MetricCollector.
@@ -77,18 +77,17 @@ describe KalibroGatekeeperClient::Entities::MetricCollector do
           returns({'metric_collector_names' => [metric_collector.name, another_metric_collector.name]}.to_json)
 
         KalibroGatekeeperClient::Entities::MetricCollector.
-          expects(:request).
-          with(:get, {name: metric_collector.name}).
-          returns(metric_collector.to_hash)
+          expects(:find_by_name).
+          with(metric_collector.name).
+          returns(metric_collector)
 
         KalibroGatekeeperClient::Entities::MetricCollector.
-          expects(:request).
-          with(:get, {name: another_metric_collector.name}).
-          returns(another_metric_collector.to_hash)
+          expects(:find_by_name).
+          with(another_metric_collector.name).
+          returns(another_metric_collector)
       end
 
       it 'should return the two elements' do
-        pending
         metric_collectors = KalibroGatekeeperClient::Entities::MetricCollector.all
 
         expect(metric_collectors.size).to eq(2)
@@ -116,15 +115,18 @@ describe KalibroGatekeeperClient::Entities::MetricCollector do
     end
 
     context 'with an existent name' do
+      #FIXME: Mocha is creating the expectations with strings, but FactoryGirl returns everything with sybols and integers
+      let!(:params) { Hash[FactoryGirl.attributes_for(:metric_collector).map { |k,v| [k.to_s, v.to_s]}] }
+      let(:metric_params) { { "total_abstract_classes" => Hash[FactoryGirl.attributes_for(:metric).map { |k,v| if v.is_a?(Array) then [k.to_s, v] else [k.to_s, v.to_s] end}] } }
       before :each do
+        params["supported_metrics"] = metric_params
         KalibroGatekeeperClient::Entities::MetricCollector.
           expects(:request).
           with(:get,{name: subject.name}).
-          returns(subject.to_hash)
+          returns(params)
       end
 
       it 'should return a metric_collector' do
-        pending
         expect(KalibroGatekeeperClient::Entities::MetricCollector.find_by_name(subject.name).name).to eq(subject.name)
       end
     end
@@ -133,7 +135,7 @@ describe KalibroGatekeeperClient::Entities::MetricCollector do
   describe 'Supported Metrics' do
     let(:code_and_metric) { { "total_abstract_classes" => FactoryGirl.build(:metric) } }
     #FIXME: Mocha is creating the expectations with strings, but FactoryGirl returns everything with sybols and integers
-    let(:code_and_metric_parameter) { { "total_abstract_classes" => Hash[FactoryGirl.attributes_for(:metric).map { |k,v| if v.is_a?(Array) then [k.to_s, v] else [k.to_s, v.to_s] end}] } }  
+    let(:code_and_metric_parameter) { { "total_abstract_classes" => Hash[FactoryGirl.attributes_for(:metric).map { |k,v| if v.is_a?(Array) then [k.to_s, v] else [k.to_s, v.to_s] end}] } }
 
     context 'supported_metrics acessors' do
       it 'should set the value of the array of supported metrics' do
@@ -145,15 +147,13 @@ describe KalibroGatekeeperClient::Entities::MetricCollector do
 
   describe 'metric' do
     subject { FactoryGirl.build(:metric_collector) }
-    let(:metric) { subject.supported_metrics.first }
+    let(:metric) { subject.supported_metrics["loc"] }
 
     it 'should return nil with an inexistent name' do
-      pending
       expect(subject.metric("fake name")).to be_nil
     end
 
     it 'should return a metric with an existent name' do
-      pending
       expect(subject.metric(metric.name).name).to eq(metric.name)
     end
   end
