@@ -19,7 +19,7 @@ require "kalibro_gatekeeper_client/entities/model"
 module KalibroGatekeeperClient
   module Entities
     class MetricConfigurationSnapshot < Model
-      attr_accessor :code, :weight, :aggregation_form, :metric, :base_tool_name, :range
+      attr_accessor :code, :weight, :aggregation_form, :metric, :metric_collector_name, :range
 
       def weight=(value)
         @weight = value.to_f
