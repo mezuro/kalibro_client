@@ -20,7 +20,7 @@ module KalibroGatekeeperClient
       attr_accessor :database, :user, :password,
                     :query_file_path, :psql_file_path, :kalibro_home,
                     :tomcat_user, :tomcat_group, :tomcat_restart_command,
-                    :kalibro_processor_address
+                    :kalibro_processor_address, :kalibro_configurations_address
 
       def initialize(attributes={})
         self.database                  = "kalibro_test"
