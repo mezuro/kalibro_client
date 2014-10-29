@@ -33,6 +33,7 @@ module KalibroGatekeeperClient
         self.tomcat_group              = "tomcat6"
         self.tomcat_restart_command    = "sudo\\ service\\ tomcat6\\ restart"
         self.kalibro_processor_address = "http://localhost:8082"
+        self.kalibro_configurations_address = "http://localhost:8083"
 
         attributes.each { |field, value| send("#{field}=", value) if respond_to?("#{field}=") }
       end

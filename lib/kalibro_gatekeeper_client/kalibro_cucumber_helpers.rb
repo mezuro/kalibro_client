@@ -46,5 +46,15 @@ module KalibroGatekeeperClient
 
       client.send(:post, "/tests/clean_database", {})
     end
+
+    def KalibroCucumberHelpers.clean_configurations
+      client = Faraday.new(:url => @configuration.kalibro_configurations_address) do |conn|
+        conn.request :json
+        conn.response :json, :content_type => /\bjson$/
+        conn.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+      end
+
+      client.send(:post, "/tests/clean_database", {})
+    end
   end
 end
