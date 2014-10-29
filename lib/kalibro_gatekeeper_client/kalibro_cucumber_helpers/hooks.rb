@@ -52,6 +52,10 @@ After('@kalibro_processor_restart') do
   KalibroGatekeeperClient::KalibroCucumberHelpers.clean_processor
 end
 
+After('@kalibro_configurations_restart') do
+  KalibroGatekeeperClient::KalibroCucumberHelpers.clean_configurations
+end
+
 at_exit do
   command = "#{__dir__}/scripts/return_kalibro_from_test_mode.sh \\
                 #{KalibroGatekeeperClient::KalibroCucumberHelpers.configuration.kalibro_home} \\
