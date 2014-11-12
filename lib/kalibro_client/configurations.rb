@@ -1,7 +1,8 @@
 require 'kalibro_client/configurations/base'
-require 'kalibro_client/configurations/metric_snapshot'
-require 'kalibro_client/configurations/metric_configuration'
 
 module KalibroClient
-  module Configurations; end
+  module Configurations
+    autoload :MetricSnapshot, 'kalibro_client/configurations/metric_snapshot'
+    autoload :MetricConfiguration, 'kalibro_client/configurations/metric_configuration'
+  end
 end
