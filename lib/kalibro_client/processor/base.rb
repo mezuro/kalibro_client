@@ -1,7 +1,7 @@
 module KalibroClient
-  module Configurations
+  module Processor
     class Base < ActiveResource::Base
-      self.site = "http://localhost:8083"
+      self.site = "http://localhost:8082"
     end
   end
 end
