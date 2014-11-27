@@ -6,9 +6,9 @@ module KalibroClient
 
       def last_processing
         if get(:has_ready_processing)
-          get(:last_ready_processing)
+          KalibroClient::Processor::Processing.new(get(:last_ready_processing))
         else
-          get(:last_processing_in_time)
+          KalibroClient::Processor::Processing.new(get(:last_processing_in_time))
         end
       end
 
