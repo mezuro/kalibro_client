@@ -8,6 +8,7 @@ module KalibroClient
     autoload :ProcessTime, 'kalibro_client/processor/process_time'
     autoload :Processing, 'kalibro_client/processor/processing'
     autoload :Project, 'kalibro_client/processor/project'
+    autoload :DateModuleResult, 'kalibro_client/processor/date_module_result'
     autoload :Repository, 'kalibro_client/processor/repository'
   end
 end

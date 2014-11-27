@@ -15,6 +15,15 @@ module KalibroClient
       def has_processing
         get(:has_processing)
       end
+
+      def module_result_history_of(module_result)
+        response = post(:module_result_history_of, module_id: module_result.kalibro_module.id)
+
+        JSON.parse(response.body)["module_result_history_of"].map do |date_module_result|
+          KalibroClient::Miscellaneous::DateModuleResult.new(date: Time.parse(date_module_result[0]),
+                                                              module_result: ModuleResult.new(date_module_result[1]))
+        end
+      end
     end
   end
 end
