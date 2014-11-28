@@ -2,13 +2,15 @@ require 'kalibro_client'
 
 describe KalibroClient::Processor::Repository, :type => :model do
   describe 'methods' do
-    describe 'last_processing' do
-      subject { FactoryGirl.build(:repository) }
+    subject { FactoryGirl.build(:repository) }
 
+    describe 'last_processing' do
       context 'with no processing at all' do
         before :each do
+          response = mock('response')
+          response.expects(:body).returns("{}")
           subject.expects(:get).with(:has_ready_processing).returns(false)
-          subject.expects(:get).with(:last_processing_in_time).returns({})
+          subject.expects(:post).with(:last_processing).returns(response)
         end
 
         it 'should return nil' do
@@ -39,18 +41,63 @@ describe KalibroClient::Processor::Repository, :type => :model do
         end
 
         it 'should return the latest processing' do
-          subject.expects(:get).with(:last_processing_in_time).returns(processing_params)
+          response = mock('response')
+          response.expects(:body).returns(processing_params.to_json)
+          subject.expects(:post).with(:last_processing).returns(response)
 
           expect(subject.last_processing).to eq(processing)
         end
       end
+    end
 
-      describe 'has_processing' do
-        it 'is expected to return true when there is a processing' do
-          subject.expects(:get).with(:has_processing).returns(true)
+    describe 'has_processing' do
+      it 'is expected to return true when there is a processing' do
+        subject.expects(:get).with(:has_processing).returns(true)
 
-          expect(subject.has_processing).to be_truthy
-        end
+        expect(subject.has_processing).to be_truthy
+      end
+    end
+
+    describe 'module_result_history_of' do
+      let!(:module_result) {FactoryGirl.build(:module_result)}
+      let!(:time) { Time.now }
+      before :each do
+        response = mock('response')
+        response.expects(:body).returns({module_result_history_of: [[time, module_result]]}.to_json)
+        subject.expects(:post).with(:module_result_history_of, module_id: module_result.kalibro_module.id).returns(response)
+
+        @history = subject.module_result_history_of(module_result)
+      end
+
+      it 'is expected to return just one DateModuleResult' do
+        expect(@history.count).to eq(1)
+      end
+
+      it 'is expected to return the given module result and date' do
+        expect(@history.first.date).to eq(Time.parse(time.to_json))
+        expect(@history.first.module_result).to eq(module_result)
+      end
+    end
+    
+    describe 'metric_result_history_of' do
+      let!(:module_result) {FactoryGirl.build(:module_result)}
+      let!(:metric_result) {FactoryGirl.build(:metric_result)}
+      let!(:time) { Time.now }
+      before :each do
+        response = mock('response')
+        response.expects(:body).returns({metric_result_history_of: [[time, module_result]]}.to_json)
+        subject.expects(:post).with(:metric_result_history_of, module_id: module_result.kalibro_module.id, metric_name: metric_result.metric.name).returns(response)
+
+        @history = subject.metric_result_history_of(module_result, metric_result)
+      end
+
+      it 'is expected to return just one DateMetricResult' do
+        expect(@history.count).to eq(1)
+      end
+
+      it 'is expected to return the given metric result and date' do
+        expect(@history.first.date).to eq(Time.parse(time.to_json))
+        expect(@history.first.metric_result).to eq(metric_result)
       end
     end
   end

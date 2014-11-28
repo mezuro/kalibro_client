@@ -22,9 +22,8 @@ class ActiveResource::Base
 end
 
 require "kalibro_client/version"
+require "kalibro_client/miscellaneous"
 require "kalibro_client/configurations"
 require "kalibro_client/processor"
 
-module KalibroClient
-  # Your code goes here...
-end
+module KalibroClient; end
