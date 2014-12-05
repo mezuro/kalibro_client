@@ -15,6 +15,10 @@ module KalibroClient
         end
         return nil
       end
+
+      def metric(name)
+        self.supported_metrics[name]
+      end
     end
   end
 end
