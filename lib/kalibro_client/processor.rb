@@ -11,6 +11,7 @@ module KalibroClient
     autoload :DateModuleResult, 'kalibro_client/processor/date_module_result'
     autoload :Repository, 'kalibro_client/processor/repository'
     autoload :Metric, 'kalibro_client/processor/metric'
+    autoload :CompoundMetric, 'kalibro_client/processor/compound_metric'
     autoload :MetricCollector, 'kalibro_client/processor/metric_collector'
   end
 end
