@@ -78,7 +78,7 @@ describe KalibroClient::Processor::Repository, :type => :model do
         expect(@history.first.module_result).to eq(module_result)
       end
     end
-    
+
     describe 'metric_result_history_of' do
       let!(:module_result) {FactoryGirl.build(:module_result)}
       let!(:metric_result) {FactoryGirl.build(:metric_result)}

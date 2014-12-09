@@ -1,7 +1,6 @@
 module KalibroClient
   module Processor
     class MetricCollector < Base
-
       def initialize(attributes)
         @name = attributes["name"]
         @description = attributes["description"]

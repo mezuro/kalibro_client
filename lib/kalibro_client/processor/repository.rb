@@ -24,7 +24,7 @@ module KalibroClient
                                                               module_result: ModuleResult.new(date_module_result[1]))
         end
       end
-      
+
       def metric_result_history_of(module_result, metric_result)
         response = post(:metric_result_history_of, module_id: module_result.kalibro_module.id, metric_name: metric_result.metric.name)
 
