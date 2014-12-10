@@ -1,6 +1,8 @@
 module KalibroClient
   module Processor
     class MetricCollector < Base
+      attr_reader :name
+
       def initialize(attributes)
         @name = attributes["name"]
         @description = attributes["description"]
