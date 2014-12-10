@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :metric_result, class: KalibroClient::Processor::MetricResult do
-    metric_configuration { FactoryGirl.build(:metric_configuration) }
     value nil
     metric { FactoryGirl.build(:metric) }
 
