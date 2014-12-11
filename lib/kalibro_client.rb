@@ -22,6 +22,7 @@ class ActiveResource::Base
 end
 
 require "kalibro_client/version"
+require "kalibro_client/errors"
 require "kalibro_client/miscellaneous"
 require "kalibro_client/configurations"
 require "kalibro_client/processor"
