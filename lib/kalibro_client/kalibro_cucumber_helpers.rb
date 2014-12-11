@@ -16,6 +16,8 @@
 
 require 'yaml'
 require 'kalibro_client/kalibro_cucumber_helpers/configuration'
+require 'kalibro_client/kalibro_cucumber_helpers/kalibro_configurations'
+require 'kalibro_client/kalibro_cucumber_helpers/kalibro_processor'
 
 module KalibroClient
   module KalibroCucumberHelpers
@@ -30,21 +32,11 @@ module KalibroClient
     end
 
     def KalibroCucumberHelpers.clean_processor
-      clean_service(@configuration.kalibro_processor_address)
+      KalibroClient::KalibroCucumberHelpers::KalibroProcessor.new(site: @configuration.kalibro_processor_address).clear
     end
 
     def KalibroCucumberHelpers.clean_configuration
-      clean_service(@configuration.kalibro_configuration_address)
-    end
-
-    def KalibroCucumberHelpers.clean_service(address)
-      client = Faraday.new(:url => address) do |conn|
-        conn.request :json
-        conn.response :json, :content_type => /\bjson$/
-        conn.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-      end
-
-      client.send(:post, "/tests/clean_database", {})
+      KalibroClient::KalibroCucumberHelpers::KalibroConfigurations.new(site: @configuration.kalibro_configuration_address).clear
     end
   end
 end
