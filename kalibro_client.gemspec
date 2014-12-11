@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = KalibroClient::VERSION
   spec.authors       = ["Diego Araújo Martinez", "Daniel Alves Paulino", "Heitor Reis Ribeiro", "Rafael Reggiani Manzo"]
   spec.email         = ["diegamc90@gmail.com", "danpaulalves@gmail.com", "marcheing@gmail.com", "rr.manzo@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = "Interface for the Kalibro Processor and Configurations webservices"
+  spec.description   = "Programmable interface for accessing the webservices that compose the Kalibro code analysis tool: Processor and Configurations"
+  spec.homepage      = "https://github.com/mezuro/kalibro_client"
   spec.license       = "LGPLv3"
 
   spec.files         = `git ls-files -z`.split("\x0")
