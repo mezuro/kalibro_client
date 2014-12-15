@@ -25,6 +25,16 @@ module KalibroClient
       def metric(code)
         @supported_metrics[code]
       end
+
+      def supported_metrics
+        supported_metrics = []
+
+        @supported_metrics.each_value do |metric_params|
+          supported_metrics << KalibroClient::Processor::Metric.new(false, metric_params["name"], metric_params["code"], metric_params["scope"])
+        end
+
+        return supported_metrics
+      end
     end
   end
 end

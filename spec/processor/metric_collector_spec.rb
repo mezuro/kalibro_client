@@ -64,5 +64,14 @@ describe KalibroClient::Processor::MetricCollector, :type => :model do
         expect(subject.metric("total_abstract_classes")).to eq(metric)
       end
     end
+
+    describe 'supported_metrics' do
+      let(:metric_params) { FactoryGirl.attributes_for(:metric) }
+      subject { FactoryGirl.build(:metric_collector_details, supported_metrics: {"total_abstract_classes" => metric_params}) }
+
+      it 'is expected to return a metric' do
+        expect(subject.supported_metrics.first).to be_a(KalibroClient::Processor::Metric)
+      end
+    end
   end
 end
