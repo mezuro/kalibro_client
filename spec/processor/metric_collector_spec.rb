@@ -8,8 +8,8 @@ describe KalibroClient::Processor::MetricCollector, :type => :model do
     describe 'all_names' do
       context 'with available metric collectors' do
         before :each do
-          response = {"all_names" => [metric_collector_name]}.to_json
-          KalibroClient::Processor::MetricCollector.expects(:get).with(:all_names).returns(response)
+          response = [metric_collector_name]
+          KalibroClient::Processor::MetricCollector.expects(:get).with(:names).returns(response)
         end
 
         it 'is expected to return a list of names' do
@@ -19,8 +19,8 @@ describe KalibroClient::Processor::MetricCollector, :type => :model do
 
       context 'without available metric collectors' do
         before :each do
-          response = {"all_names" => []}.to_json
-          KalibroClient::Processor::MetricCollector.expects(:get).with(:all_names).returns(response)
+          response = []
+          KalibroClient::Processor::MetricCollector.expects(:get).with(:names).returns(response)
         end
 
         it 'is expected to return a list of names' do

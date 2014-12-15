@@ -10,8 +10,7 @@ module KalibroClient
       end
 
       def self.all_names
-        response = get(:all_names)
-        JSON.parse(response)["all_names"]
+        get(:names)
       end
 
       def self.find(name)
