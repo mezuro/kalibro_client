@@ -23,7 +23,7 @@ module KalibroClient
       end
 
       def metric(code)
-        @supported_metrics[code]
+        KalibroClient::Processor::Metric.new(false, @supported_metrics[code]["name"], @supported_metrics[code]["code"], @supported_metrics[code]["scope"])
       end
 
       def supported_metrics
