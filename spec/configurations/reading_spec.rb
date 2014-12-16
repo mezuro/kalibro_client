@@ -4,38 +4,40 @@ describe KalibroClient::Configurations::Reading, :type => :model do
   describe 'methods' do
     subject { FactoryGirl.build(:reading) }
 
-    describe 'reading_group_id=' do
+    describe 'save' do
       context 'with a valid reading' do
-        let(:reading_group) { FactoryGirl.build(:reading_group, id: 94) } 
-
-        it 'should modify the prefix options' do
-          subject.reading_group_id = reading_group.id
-
-          expect(subject.reading_group_id).to eq reading_group.id
-          expect(subject.prefix_options[:reading_group_id]).to eq reading_group.id
-        end
-      end
-
-    describe 'find' do
-      context 'with no ready processing' do
-        let(:processing) { FactoryGirl.build(:processing, state: 'COLLECTING') }
-
-        before :each do
-          KalibroClient::Configurations::Base.expects(:find).with(subject.id).returns(subject)
-          p subject.class.prefix
-        end
-
         it 'should have the default prefix options' do
-          expect(KalibroClient::Configurations::Reading.prefix).to eq "/reading_groups/:reading_group_id/"
+          expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
         end
 
-      end
-        it 'should return the reading' do
-          expect(KalibroClient::Configurations::Reading.find(subject.id)).to eq subject
+        it 'should save the reading' do
+          KalibroClient::Configurations::Base.any_instance.expects(:save).returns(true)
+          expect(subject.save).to be_truthy
+          expect(subject.prefix_options[:reading_group_id]).to eq(subject.reading_group_id)
         end
 
         it 'should not modify the prefix options' do
-          expect(KalibroClient::Configurations::Reading.prefix).to eq "/reading_groups/:reading_group_id/"
+          expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
+        end
+      end
+    end
+
+    describe 'destroy' do
+      context 'with a valid reading' do
+        let(:reading) { FactoryGirl.build(:processing, state: 'COLLECTING') }
+
+        it 'should have the default prefix options' do
+          expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
+        end
+
+        it 'should destroy the reading' do
+          KalibroClient::Configurations::Base.any_instance.expects(:destroy).returns(true)
+          expect(subject.destroy).to be_truthy
+          expect(subject.prefix_options[:reading_group_id]).to eq(subject.reading_group_id)
+        end
+
+        it 'should not modify the prefix options' do
+          expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
         end
       end
     end

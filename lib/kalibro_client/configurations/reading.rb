@@ -4,19 +4,28 @@ module KalibroClient
       belongs_to :reading_group, class_name: KalibroClient::Configurations::ReadingGroup
       has_many :kalibro_ranges, class_name: KalibroClient::Configurations::KalibroRange
 
-      self.prefix = "/reading_groups/:reading_group_id/"
-
-      def reading_group_id=(reading_group_id)
-        @attributes["reading_group_id"] = reading_group_id
-        @prefix_options[:reading_group_id] = @attributes["reading_group_id"]
+      def save
+        default_prefix = Reading.prefix
+        Reading.prefix = "/reading_groups/:reading_group_id/"
+        @prefix_options[:reading_group_id] = reading_group_id
+        begin
+          saved = super
+        ensure
+          Reading.prefix = default_prefix
+        end
+        return saved
       end
 
-      def self.find(id)
-        self.prefix = "/reading_groups/:all/"
-        reading = super(id)
-        reading.prefix_options[:reading_group_id] = reading.reading_group_id
-        self.prefix = "/reading_groups/:reading_group_id/"
-        reading
+      def destroy
+        default_prefix = Reading.prefix
+        Reading.prefix = "/reading_groups/:reading_group_id/"
+        @prefix_options[:reading_group_id] = reading_group_id
+        begin
+          destroyed = super
+        ensure
+          Reading.prefix = default_prefix
+        end
+        return destroyed
       end
     end
   end
