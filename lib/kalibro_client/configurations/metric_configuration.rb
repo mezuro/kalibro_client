@@ -5,8 +5,8 @@ module KalibroClient
       belongs_to :kalibro_configuration, class_name: KalibroClient::Configurations::KalibroConfiguration
       has_many :kalibro_ranges, class_name: KalibroClient::Configurations::KalibroRange
 
-      def initialize(weight=0.0, aggregation_form=:AVERAGE)
-        super(weight: weight, aggregation_form: aggregation_form)
+      def initialize(weight=0.0, aggregation_form=:AVERAGE, reading_group_id=nil)
+        super(weight: weight, aggregation_form: aggregation_form, reading_group_id: reading_group_id)
       end
     end
   end
