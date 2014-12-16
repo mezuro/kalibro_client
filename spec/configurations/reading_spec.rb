@@ -13,7 +13,21 @@ describe KalibroClient::Configurations::Reading, :type => :model do
         it 'should save the reading' do
           KalibroClient::Configurations::Base.any_instance.expects(:save).returns(true)
           expect(subject.save).to be_truthy
-          expect(subject.prefix_options[:reading_group_id]).to eq(subject.reading_group_id)
+          expect(subject.prefix_options[:reading_group_id]).to eq(subject.reading_group.id)
+        end
+
+        it 'should not modify the prefix options' do
+          expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
+        end
+      end
+
+      context 'with an invalid reading' do
+        it 'should have the default prefix options' do
+          expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
+        end
+
+        it 'should not save the reading' do
+          expect(KalibroClient::Configurations::Reading.new.save).to be_falsey
         end
 
         it 'should not modify the prefix options' do
@@ -22,21 +36,26 @@ describe KalibroClient::Configurations::Reading, :type => :model do
       end
     end
 
+
     describe 'destroy' do
       context 'with a valid reading' do
-        let(:reading) { FactoryGirl.build(:processing, state: 'COLLECTING') }
-
         it 'should have the default prefix options' do
           expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
         end
 
-        it 'should destroy the reading' do
-          KalibroClient::Configurations::Base.any_instance.expects(:destroy).returns(true)
-          expect(subject.destroy).to be_truthy
-          expect(subject.prefix_options[:reading_group_id]).to eq(subject.reading_group_id)
+        it 'should not modify the prefix options after deletion' do
+          subject.destroy
+          expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
+        end
+      end
+
+      context 'with an invalid reading' do
+        it 'should have the default prefix options' do
+          expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
         end
 
-        it 'should not modify the prefix options' do
+        it 'should not modify the prefix options after exception' do
+          KalibroClient::Configurations::Reading.new.destroy
           expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
         end
       end

@@ -4,6 +4,6 @@ FactoryGirl.define do
     label "Reading"
     grade 1.5
     color "FF0000"
-    reading_group_id { FactoryGirl.build(:reading_group).id }
+    reading_group { FactoryGirl.build(:reading_group) }
   end
 end
