@@ -6,5 +6,7 @@ FactoryGirl.define do
     reading_group_id 1
     metric_snapshot { FactoryGirl.build(:metric_snapshot) }
     kalibro_configuration { FactoryGirl.build(:kalibro_configuration) }
+
+    initialize_with { KalibroClient::Configurations::MetricConfiguration.new(weight) }
   end
 end
