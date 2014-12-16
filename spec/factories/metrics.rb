@@ -5,8 +5,7 @@ FactoryGirl.define  do
     code "total_abstract_classes"
     scope { :SOFTWARE }
     description "Total Abstract Classes"
-    languages { [:C, :CPP] }
 
-    initialize_with { KalibroClient::Processor::Metric.new(compound, name, code, scope, description, languages) }
+    initialize_with { KalibroClient::Processor::Metric.new(compound, name, code, scope, description) }
   end
 end

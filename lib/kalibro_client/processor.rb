@@ -12,6 +12,7 @@ module KalibroClient
     autoload :Repository, 'kalibro_client/processor/repository'
     autoload :Metric, 'kalibro_client/processor/metric'
     autoload :CompoundMetric, 'kalibro_client/processor/compound_metric'
+    autoload :NativeMetric, 'kalibro_client/processor/native_metric'
     autoload :MetricCollector, 'kalibro_client/processor/metric_collector'
   end
 end
