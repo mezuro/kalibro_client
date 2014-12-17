@@ -23,9 +23,9 @@ module KalibroClient
       end
 
       def metric(code)
-        # We may need to make the distinction between Native and Compound metrics here.
-        KalibroClient::Processor::Metric.new(false, @supported_metrics[code]["name"], @supported_metrics[code]["code"],
-                                              @supported_metrics[code]["scope"], @supported_metrics[code]["description"])
+        KalibroClient::Processor::NativeMetric.new(@supported_metrics[code]["name"], @supported_metrics[code]["code"],
+                                              @supported_metrics[code]["scope"], @supported_metrics[code]["description"],
+                                              @supported_metrics[code]["languages"])
       end
 
       def supported_metrics
