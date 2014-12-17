@@ -44,6 +44,7 @@ describe KalibroClient::Configurations::Reading, :type => :model do
         end
 
         it 'should not modify the prefix options after deletion' do
+          KalibroClient::Configurations::Base.any_instance.expects(:destroy)
           subject.destroy
           expect(KalibroClient::Configurations::Reading.prefix).to eq "/"
         end
