@@ -20,7 +20,7 @@ Or install it yourself as:
 
 KalibroClient is intended to be an easy interface that encapsulates the usage of all the Kalibro service's endpoints. So have a look at the available entities at `lib/kalibro_client/processor` and `lib/kalibro_client/configuration`.
 
-e hope to make available soon a full documentation on RDoc that will make easier to understand all this.
+We hope to make available soon a full documentation on RDoc that will make easier to understand all this.
 
 A good example on how to get everything from KalibroClient should be Prezento. So, have a look there for some examples.
 

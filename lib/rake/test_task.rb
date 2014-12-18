@@ -6,7 +6,7 @@ module KalibroClient
     class TestTask < ::Rake::TaskLib
       def initialize
         namespace :test do
-          desc 'Runs acceptance and unit tests'
+          desc 'Runs unit tests'
           task :all => [:units]
 
           desc 'Runs the unit tests'
