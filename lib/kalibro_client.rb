@@ -1,5 +1,6 @@
 require 'active_resource'
 
+# :nocov:
 # FIXME
 # Extracted from ActiveResource code on master branch
 # https://github.com/rails/activeresource/blob/master/lib/active_resource/associations.rb
@@ -20,6 +21,7 @@ class ActiveResource::Base
     end
   end
 end
+# :nocov:
 
 require "kalibro_client/version"
 require "kalibro_client/errors"
