@@ -57,12 +57,15 @@ describe KalibroClient::Processor::MetricCollector, :type => :model do
     end
 
     describe 'metric' do
-      let(:native_metric_params) { FactoryGirl.attributes_for(:native_metric) }
+      let(:native_metric_params) { hash_keys_to_string(FactoryGirl.attributes_for(:native_metric)) }
       let(:native_metric) { FactoryGirl.build(:native_metric) }
       subject { FactoryGirl.build(:metric_collector_details, supported_metrics: {"total_abstract_classes" => native_metric_params}) }
 
       it 'is expected to return a native metric with the same code' do
-        expect(subject.metric("total_abstract_classes")).to eq(native_metric)
+        expect(subject.metric("total_abstract_classes").code).to eq(native_metric.code)
+        expect(subject.metric("total_abstract_classes").name).to eq(native_metric.name)
+        expect(subject.metric("total_abstract_classes").description).to eq(native_metric.description)
+        expect(subject.metric("total_abstract_classes").languages).to eq(native_metric.languages)
       end
     end
 
@@ -71,7 +74,7 @@ describe KalibroClient::Processor::MetricCollector, :type => :model do
       subject { FactoryGirl.build(:metric_collector_details, supported_metrics: {"total_abstract_classes" => metric_params}) }
 
       it 'is expected to return a metric' do
-        expect(subject.supported_metrics.first).to be_a(KalibroClient::Processor::NativeMetric)
+        expect(subject.supported_metrics.first).to be_a(KalibroClient::Miscellaneous::NativeMetric)
       end
     end
   end

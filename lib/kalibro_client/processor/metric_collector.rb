@@ -23,18 +23,19 @@ module KalibroClient
       end
 
       def metric(code)
-        KalibroClient::Processor::NativeMetric.new(@supported_metrics[code]["name"], @supported_metrics[code]["code"],
-                                              @supported_metrics[code]["scope"], @supported_metrics[code]["description"],
-                                              @supported_metrics[code]["languages"])
+       metric = KalibroClient::Miscellaneous::NativeMetric.new(@supported_metrics[code]["name"], @supported_metrics[code]["code"],
+                                              @supported_metrics[code]["scope"], @supported_metrics[code]["languages"])
+       metric.description = @supported_metrics[code]["description"]
+       return metric
       end
 
       def supported_metrics
         supported_metrics = []
 
         @supported_metrics.each_value do |metric_params|
-          supported_metrics << KalibroClient::Processor::NativeMetric.new(metric_params["name"],
-                                metric_params["code"], metric_params["scope"],
-                                metric_params["description"], metric_params["languages"])
+          metric = KalibroClient::Miscellaneous::NativeMetric.new(metric_params["name"], metric_params["code"], metric_params["scope"], metric_params["languages"])
+          metric.description = metric_params["description"]
+          supported_metrics << metric
         end
 
         return supported_metrics
