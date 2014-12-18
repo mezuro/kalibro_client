@@ -1,0 +1,13 @@
+language: ruby
+rvm:
+  - 2.1.5
+
+script:
+  - rake
+
+notifications:
+  email:
+    recipients:
+      - mezuro-core@lists.ime.usp.br
+    on_success: change
+    on_failure: always
