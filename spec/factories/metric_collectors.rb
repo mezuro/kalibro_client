@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :metric_collector, class: KalibroClient::Entities::MetricCollector do
+  factory :metric_collector, class: KalibroClient::Entities::Processor::MetricCollector do
     name "Analizo"
     description "Analizo is a suite of source code analysis tools."
     supported_metrics { { "total_abstract_classes" => FactoryGirl.build(:metric).to_hash, "loc" => FactoryGirl.build(:loc).to_hash } }

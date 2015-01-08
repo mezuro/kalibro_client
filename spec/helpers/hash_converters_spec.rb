@@ -48,12 +48,12 @@ describe HashConverters do
       end
     end
 
-    context 'with a Model' do
+    context 'with a Base' do
       before :each do
-        @model = KalibroClient::Entities::Model.new
+        @model = KalibroClient::Entities::Base.new
       end
 
-      it "should return the Model's Hash" do
+      it "should return the Base's Hash" do
         expect(convert_to_hash(@model)).to eq(@model.to_hash)
       end
     end
@@ -84,7 +84,7 @@ describe HashConverters do
   describe 'field_to_hash' do
     context 'with a nil field value' do
       before do
-        @model = KalibroClient::Entities::Model.new
+        @model = KalibroClient::Entities::Base.new
         @model.expects(:send).with(:field_getter).returns(nil)
       end
 
@@ -99,7 +99,7 @@ describe HashConverters do
 
     context 'with a Float field value' do
       before do
-        @model = KalibroClient::Entities::Model.new
+        @model = KalibroClient::Entities::Base.new
         @model.expects(:send).with(:field_getter).returns(1.0)
       end
 

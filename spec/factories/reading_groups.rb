@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :reading_group, class: KalibroClient::Entities::ReadingGroup do
+  factory :reading_group, class: KalibroClient::Entities::Configurations::ReadingGroup do
     id 1
     name "Mussum"
     description "Cacildis!"

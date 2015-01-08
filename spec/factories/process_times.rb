@@ -15,13 +15,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-	factory :process_time, class: KalibroClient::Entities::ProcessTime do
-		state "Ready"
-		time  "3600"
-	end
+  factory :process_time, class: KalibroClient::Entities::Processor::ProcessTime do
+    state "Ready"
+    time  "3600"
+  end
 
-      factory :analyzing_process_time, class: KalibroClient::Entities::ProcessTime do
-          state "Analyzing"
-          time  "12345"
-      end      
+  factory :analyzing_process_time, class: KalibroClient::Entities::Processor::ProcessTime do
+    state "Analyzing"
+    time  "12345"
+  end      
 end

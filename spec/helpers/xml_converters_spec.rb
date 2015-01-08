@@ -21,15 +21,15 @@ include XMLConverters
 
 describe XMLConverters do
   describe 'xml_instance_class_name' do
-    before { @model = KalibroClient::Entities::Model.new }
+    before { @model = KalibroClient::Entities::Base.new }
 
     it 'should return modelXml' do
-      expect(xml_instance_class_name(@model)).to eq('modelXml')
+      expect(xml_instance_class_name(@model)).to eq('baseXml')
     end
   end
 
   describe 'get_xml' do
-    context 'with an object that is not an instance of Model' do
+    context 'with an object that is not an instance of Base' do
       before { @object = "kalibro" }
 
       it 'should return a Hash' do
@@ -41,8 +41,8 @@ describe XMLConverters do
       end
     end
 
-    context 'with an instance of Model' do
-      before { @object = KalibroClient::Entities::Model.new }
+    context 'with an instance of Base' do
+      before { @object = KalibroClient::Entities::Base.new }
 
       it 'should return a Hash' do
         expect(get_xml("field", @object)).to be_a(Hash)
@@ -52,7 +52,7 @@ describe XMLConverters do
         field_xml_hash = {:attributes! =>
                             {:field =>
                               {"xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance", 
-                               "xsi:type"=>"kalibro:modelXml"
+                               "xsi:type"=>"kalibro:baseXml"
                               }
                             }
                           }

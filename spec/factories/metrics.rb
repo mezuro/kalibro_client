@@ -15,21 +15,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :metric, class: KalibroClient::Entities::Metric do
+  factory :metric, class: KalibroClient::Entities::Miscellaneous::Metric do
     name "Total Abstract Classes"
-    compound "false"
+    code "total_abstract_classes"
+    type :native
     scope "SOFTWARE"
     description ""
-    script ""
-    language ["C", "CPP", "JAVA"]
+
+    initialize_with { KalibroClient::Entities::Miscellaneous::Metric.new(type, name, code, scope) }
   end
 
-  factory :loc, class: KalibroClient::Entities::Metric do
+  factory :loc, class: KalibroClient::Entities::Miscellaneous::Metric do
     name "Lines of Code"
-    compound "false"
+    code "loc"
+    type :native
     scope "CLASS"
     description ""
-    script ""
-    language ["C", "CPP", "JAVA"]
+    
+    initialize_with { KalibroClient::Entities::Miscellaneous::Metric.new(type, name, code, scope) }
   end
 end

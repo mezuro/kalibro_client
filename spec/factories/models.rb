@@ -15,6 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :model, class: KalibroClient::Entities::Model do
+  factory :model, class: KalibroClient::Entities::Base do
   end  
 end

@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :module_result, class: KalibroClient::Entities::ModuleResult do
+  factory :module_result, class: KalibroClient::Entities::Processor::ModuleResult do
     id  "42"
     self.module { FactoryGirl.build(:module) }
     grade "10.0"
@@ -23,7 +23,7 @@ FactoryGirl.define do
     height "6"
   end
 
-   factory :root_module_result, class: KalibroClient::Entities::ModuleResult do
+   factory :root_module_result, class: KalibroClient::Entities::Processor::ModuleResult do
     id  "21"
     self.module { FactoryGirl.build(:module) }
     grade "6.0"

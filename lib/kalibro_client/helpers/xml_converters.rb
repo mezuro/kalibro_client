@@ -8,7 +8,7 @@ module XMLConverters
 
   def get_xml(field, field_value)
     hash = Hash.new
-    if field_value.is_a?(KalibroClient::Entities::Model)
+    if field_value.is_a?(KalibroClient::Entities::Base)
       hash = {:attributes! => {}}
       hash[:attributes!][field.to_sym] = {
         'xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance',

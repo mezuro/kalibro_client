@@ -15,13 +15,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :project, class: KalibroClient::Entities::Project do
+  factory :project, class: KalibroClient::Entities::Processor::Project do
     id 1
     name "QtCalculator"
     description "A simple calculator for us."
   end
   
-  factory :another_project, class: KalibroClient::Entities::Project do
+  factory :another_project, class: KalibroClient::Entities::Processor::Project do
     id 42
     name "Kalibro"
     description "A Kalibro description."

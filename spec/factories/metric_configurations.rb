@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :metric_configuration, class: KalibroClient::Entities::MetricConfiguration do
+  factory :metric_configuration, class: KalibroClient::Entities::Configurations::MetricConfiguration do
     id 1
     code 'total_abstract_classes'
     metric {FactoryGirl.build(:metric)}

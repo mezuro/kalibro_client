@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :repository, class: KalibroClient::Entities::Repository do
+  factory :repository, class: KalibroClient::Entities::Processor::Repository do
     id 1
     name "QtCalculator"
     description "A simple calculator"
@@ -28,7 +28,7 @@ FactoryGirl.define do
     send_email "test@test.com"
   end
 
-  factory :another_repository, class: KalibroClient::Entities::Repository, parent: :repository do
+  factory :another_repository, class: KalibroClient::Entities::Processor::Repository, parent: :repository do
     id 2
   end
 end
