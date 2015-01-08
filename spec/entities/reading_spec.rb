@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::Reading do
+describe KalibroClient::Entities::Reading do
   describe "id=" do
     it 'should set the id attribute as an integer' do
       subject.id = "44"
@@ -37,14 +37,14 @@ describe KalibroGatekeeperClient::Entities::Reading do
     describe 'find' do
       context 'when the reading exists' do
         before :each do
-          KalibroGatekeeperClient::Entities::Reading.
+          KalibroClient::Entities::Reading.
             expects(:request).
             with('get', {id: reading.id}).
             returns(reading.to_hash)
         end
 
         it 'should return a reading object' do
-          response = KalibroGatekeeperClient::Entities::Reading.find(reading.id)
+          response = KalibroClient::Entities::Reading.find(reading.id)
           expect(response.label).to eq(reading.label)
         end
       end
@@ -54,15 +54,15 @@ describe KalibroGatekeeperClient::Entities::Reading do
           any_code = rand(Time.now.to_i)
           any_error_message = ""
 
-          KalibroGatekeeperClient::Entities::Reading.
+          KalibroClient::Entities::Reading.
             expects(:request).
             with('get', {id: reading.id}).
             returns({'error' => 'Error'})
         end
 
         it 'should return a reading object' do
-          expect {KalibroGatekeeperClient::Entities::Reading.find(reading.id) }.
-            to raise_error(KalibroGatekeeperClient::Errors::RecordNotFound)
+          expect {KalibroClient::Entities::Reading.find(reading.id) }.
+            to raise_error(KalibroClient::Errors::RecordNotFound)
         end
       end
     end
@@ -71,14 +71,14 @@ describe KalibroGatekeeperClient::Entities::Reading do
       let(:reading_group) { FactoryGirl.build(:reading_group) }
 
       before do
-        KalibroGatekeeperClient::Entities::Reading.
+        KalibroClient::Entities::Reading.
           expects(:request).
           with('of', {reading_group_id: reading_group.id}).
           returns({'readings' => [reading.to_hash, reading.to_hash]})
       end
 
       it 'should returns a list of readings that belongs to the given reading group' do
-        response = KalibroGatekeeperClient::Entities::Reading.readings_of reading_group.id
+        response = KalibroClient::Entities::Reading.readings_of reading_group.id
         expect(response.first.label).to eq(reading.label)
         expect(response.last.label).to eq(reading.label)
       end
@@ -88,17 +88,17 @@ describe KalibroGatekeeperClient::Entities::Reading do
       let(:reading_group) { FactoryGirl.build(:reading_group) }
 
       before :each do
-        KalibroGatekeeperClient::Entities::ReadingGroup.
+        KalibroClient::Entities::ReadingGroup.
           expects(:all).
           returns([reading_group])
-        KalibroGatekeeperClient::Entities::Reading.
+        KalibroClient::Entities::Reading.
           expects(:readings_of).
           with(reading_group.id).
           returns([subject])
       end
 
       it 'should list all the readings' do
-        expect(KalibroGatekeeperClient::Entities::Reading.all).to include(subject)
+        expect(KalibroClient::Entities::Reading.all).to include(subject)
       end
     end
   end
@@ -109,7 +109,7 @@ describe KalibroGatekeeperClient::Entities::Reading do
     let(:reading_id) { 73 }
 
     before :each do
-      KalibroGatekeeperClient::Entities::Reading.
+      KalibroClient::Entities::Reading.
         expects(:request).
         with('save', {reading: reading.to_hash, reading_group_id: reading.group_id}).
         returns({'id' => reading_id, 'kalibro_errors' => []})
@@ -127,21 +127,21 @@ describe KalibroGatekeeperClient::Entities::Reading do
 
     context 'when the reading exists' do
       before :each do
-        KalibroGatekeeperClient::Entities::Reading.expects(:find).with(subject.id).returns(subject)
+        KalibroClient::Entities::Reading.expects(:find).with(subject.id).returns(subject)
       end
 
       it 'should return true' do
-        expect(KalibroGatekeeperClient::Entities::Reading.exists?(subject.id)).to be_truthy
+        expect(KalibroClient::Entities::Reading.exists?(subject.id)).to be_truthy
       end
     end
 
     context 'when the reading does not exists' do
       before :each do
-        KalibroGatekeeperClient::Entities::Reading.expects(:find).with(subject.id).raises(KalibroGatekeeperClient::Errors::RecordNotFound)
+        KalibroClient::Entities::Reading.expects(:find).with(subject.id).raises(KalibroClient::Errors::RecordNotFound)
       end
 
       it 'should return false' do
-        expect(KalibroGatekeeperClient::Entities::Reading.exists?(subject.id)).to be_falsey
+        expect(KalibroClient::Entities::Reading.exists?(subject.id)).to be_falsey
       end
     end
   end

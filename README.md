@@ -1,16 +1,16 @@
-# KalibroGatekeeperClient
+# KalibroClient
 
-[![Build Status](https://travis-ci.org/mezuro/kalibro_gatekeeper_client.png?branch=master)](https://travis-ci.org/mezuro/kalibro_gatekeeper_client)
-[![Code Climate](https://codeclimate.com/github/mezuro/kalibro_gatekeeper_client.png)](https://codeclimate.com/github/mezuro/kalibro_gatekeeper_client)
-[![Coverage Status](https://coveralls.io/repos/mezuro/kalibro_gatekeeper_client/badge.png)](https://coveralls.io/r/mezuro/kalibro_gatekeeper_client)
+[![Build Status](https://travis-ci.org/mezuro/kalibro_client.png?branch=master)](https://travis-ci.org/mezuro/kalibro_client)
+[![Code Climate](https://codeclimate.com/github/mezuro/kalibro_client.png)](https://codeclimate.com/github/mezuro/kalibro_client)
+[![Coverage Status](https://coveralls.io/repos/mezuro/kalibro_client/badge.png)](https://coveralls.io/r/mezuro/kalibro_client)
 
-KalibroGatekeeperClient is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservice Kalibro (http://gitorious.org/kalibro/kalibro).
+KalibroClient is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservice Kalibro (http://gitorious.org/kalibro/kalibro).
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'kalibro_gatekeeper_client'
+    gem 'kalibro_client'
 
 And then execute:
 
@@ -18,11 +18,11 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install kalibro_gatekeeper_client
+    $ gem install kalibro_client
 
 ## Usage
 
-KalibroGatekeeperClient is intended to be an easy interface that encapsulates the usage of all the Kalibro service's endpoints. So have a look at the available entities at `lib/kalibro_gatekeeper_client/entities`.
+KalibroClient is intended to be an easy interface that encapsulates the usage of all the Kalibro service's endpoints. So have a look at the available entities at `lib/kalibro_client/entities`.
 
 All the entities are subclasses from `Model`, so have a good look at it. Specially notice that all the entities have methods:
 
@@ -35,7 +35,7 @@ These four methods should be useful.
 
 We hope to make available soon a full documentation on RDoc that will make easier to understand all this.
 
-A good example on how to get everything from KalibroGatekeeperClient should be Mezuro. So, have a look there for some examples.
+A good example on how to get everything from KalibroClient should be Mezuro. So, have a look there for some examples.
 
 ### Cucumber helpers
 
@@ -43,7 +43,7 @@ Acceptance tests with the Kalibro webservice can be painful. But we've created c
 
 Just add to your `env.rb` the following:
 
-    require 'kalibro_gatekeeper_client/kalibro_cucumber_helpers/hooks.rb'
+    require 'kalibro_client/kalibro_cucumber_helpers/hooks.rb'
 
 The test configurations available are:
 
@@ -59,7 +59,7 @@ The test configurations available are:
 
 An example on how to change them is:
 
-    KalibroGatekeeperClient::KalibroCucumberHelpers.configure do |config|
+    KalibroClient::KalibroCucumberHelpers.configure do |config|
       config.database = "kalibro_test"
     end
 

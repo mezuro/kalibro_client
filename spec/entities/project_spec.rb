@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::Project do
+describe KalibroClient::Entities::Project do
   describe 'initialize' do
     subject { FactoryGirl.build(:project, {id: 42}) }
 
@@ -35,14 +35,14 @@ describe KalibroGatekeeperClient::Entities::Project do
   describe 'all' do
     context 'with no projects' do
       before :each do
-        KalibroGatekeeperClient::Entities::Project.
+        KalibroClient::Entities::Project.
           expects(:request).
           with('all', {}, :get).
           returns({:projects => nil}.to_json)
       end
 
       it 'should return nil' do
-        expect(KalibroGatekeeperClient::Entities::Project.all).to be_empty
+        expect(KalibroClient::Entities::Project.all).to be_empty
       end
     end
 
@@ -51,14 +51,14 @@ describe KalibroGatekeeperClient::Entities::Project do
       let(:another_project) { FactoryGirl.build(:another_project) }
 
       before :each do
-        KalibroGatekeeperClient::Entities::Project.
+        KalibroClient::Entities::Project.
             expects(:request).
             with('all', {}, :get).
             returns({:projects => [project.to_hash, another_project.to_hash]}.to_json)
       end
 
       it 'should return a list with projects' do
-        projects = KalibroGatekeeperClient::Entities::Project.all
+        projects = KalibroClient::Entities::Project.all
 
         expect(projects.first.name).to eq(project.name)
         expect(projects.last.name).to eq(another_project.name)

@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::Configuration do
+describe KalibroClient::Entities::Configuration do
   describe 'id=' do
     it 'should set the value of the attribute id as an Integer' do
       subject.id = "42"
@@ -27,14 +27,14 @@ describe KalibroGatekeeperClient::Entities::Configuration do
   describe 'all' do
     context 'with no configurations' do
       before :each do
-        KalibroGatekeeperClient::Entities::Configuration.
+        KalibroClient::Entities::Configuration.
           expects(:request).
           with(:all, {}, :get).
           returns({'configurations' => nil}.to_json)
       end
 
       it 'should return nil' do
-        expect(KalibroGatekeeperClient::Entities::Configuration.all).to be_empty
+        expect(KalibroClient::Entities::Configuration.all).to be_empty
       end
     end
 
@@ -43,14 +43,14 @@ describe KalibroGatekeeperClient::Entities::Configuration do
       let(:another_configuration) { FactoryGirl.build(:another_configuration) }
 
       before :each do
-        KalibroGatekeeperClient::Entities::Configuration.
+        KalibroClient::Entities::Configuration.
           expects(:request).
           with(:all, {}, :get).
           returns({'configurations' => [configuration.to_hash, another_configuration.to_hash]}.to_json)
       end
 
       it 'should return the two elements' do
-        configurations = KalibroGatekeeperClient::Entities::Configuration.all
+        configurations = KalibroClient::Entities::Configuration.all
 
         expect(configurations.size).to eq(2)
         expect(configurations.first.name).to eq(configuration.name)

@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,12 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::Repository do
+describe KalibroClient::Entities::Repository do
   subject { FactoryGirl.build(:repository) }
 
   describe 'repository_types' do
     before :each do
-      KalibroGatekeeperClient::Entities::Repository.
+      KalibroClient::Entities::Repository.
         expects(:request).
         with('supported_types', {}, :get).
         returns({'supported_types'=>["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"],
@@ -29,13 +29,13 @@ describe KalibroGatekeeperClient::Entities::Repository do
     end
 
     it 'should return an array of repository types' do
-      expect(KalibroGatekeeperClient::Entities::Repository.repository_types).to eq(["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"])
+      expect(KalibroClient::Entities::Repository.repository_types).to eq(["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"])
     end
   end
 
   describe 'repositories_of' do
     before :each do
-      KalibroGatekeeperClient::Entities::Repository.
+      KalibroClient::Entities::Repository.
         expects(:request).
         with('of', {project_id: 1}).
         returns({'repositories' => [],
@@ -43,11 +43,11 @@ describe KalibroGatekeeperClient::Entities::Repository do
     end
 
     it 'should return an array' do
-      expect(KalibroGatekeeperClient::Entities::Repository.repositories_of(1)).to be_an(Array)
+      expect(KalibroClient::Entities::Repository.repositories_of(1)).to be_an(Array)
     end
 
     it 'should set the repository_id' do
-      KalibroGatekeeperClient::Entities::Repository.repositories_of(1).each do |repository|
+      KalibroClient::Entities::Repository.repositories_of(1).each do |repository|
         expect(repository.project_id).to eq(1)
       end
     end
@@ -76,7 +76,7 @@ describe KalibroGatekeeperClient::Entities::Repository do
 
   describe 'process' do
     before :each do
-      KalibroGatekeeperClient::Entities::Repository.
+      KalibroClient::Entities::Repository.
         expects(:request).
         with('process', {id: subject.id})
     end
@@ -88,7 +88,7 @@ describe KalibroGatekeeperClient::Entities::Repository do
 
   describe 'cancel_processing_of_repository' do
     before :each do
-      KalibroGatekeeperClient::Entities::Repository.
+      KalibroClient::Entities::Repository.
         expects(:request).
         with('cancel_process', {id: subject.id})
     end
@@ -102,43 +102,43 @@ describe KalibroGatekeeperClient::Entities::Repository do
     let(:project) { FactoryGirl.build(:project) }
 
     before :each do
-      KalibroGatekeeperClient::Entities::Project.
+      KalibroClient::Entities::Project.
         expects(:all).
         returns([project])
-      KalibroGatekeeperClient::Entities::Repository.
+      KalibroClient::Entities::Repository.
         expects(:repositories_of).
         with(project.id).
         returns([subject])
     end
 
     it 'should list all the repositories' do
-      expect(KalibroGatekeeperClient::Entities::Repository.all).to include(subject)
+      expect(KalibroClient::Entities::Repository.all).to include(subject)
     end
   end
 
   describe 'find' do
     context 'when the repository exists' do
       before :each do
-        KalibroGatekeeperClient::Entities::Repository.
+        KalibroClient::Entities::Repository.
           expects(:all).
           returns([subject])
       end
 
       it 'should return the repository' do
-        expect(KalibroGatekeeperClient::Entities::Repository.find(subject.id)).to eq(subject)
+        expect(KalibroClient::Entities::Repository.find(subject.id)).to eq(subject)
       end
     end
 
     context "when the repository doesn't exists" do
       before :each do
-        KalibroGatekeeperClient::Entities::Repository.
+        KalibroClient::Entities::Repository.
           expects(:all).
           returns([FactoryGirl.build(:another_repository)])
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroGatekeeperClient::Entities::Repository.find(subject.id) }.
-          to raise_error(KalibroGatekeeperClient::Errors::RecordNotFound)
+        expect { KalibroClient::Entities::Repository.find(subject.id) }.
+          to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
   end
@@ -148,12 +148,12 @@ describe KalibroGatekeeperClient::Entities::Repository do
     subject {FactoryGirl.build(:repository, {id: nil})}
 
     before :each do
-      KalibroGatekeeperClient::Entities::Repository.
+      KalibroClient::Entities::Repository.
         expects(:request).
         with('save', {:repository => subject.to_hash, :project_id => 1}).
         returns({'id' => 1, 'kalibro_errors' => []})
 
-      KalibroGatekeeperClient::Entities::Repository.any_instance.
+      KalibroClient::Entities::Repository.any_instance.
         expects(:id=).
         with(1).
         returns(1)
@@ -170,21 +170,21 @@ describe KalibroGatekeeperClient::Entities::Repository do
 
     context 'when the repository exists' do
       before :each do
-        KalibroGatekeeperClient::Entities::Repository.expects(:find).with(subject.id).returns(subject)
+        KalibroClient::Entities::Repository.expects(:find).with(subject.id).returns(subject)
       end
 
       it 'should return true' do
-        expect(KalibroGatekeeperClient::Entities::Repository.exists?(subject.id)).to be_truthy
+        expect(KalibroClient::Entities::Repository.exists?(subject.id)).to be_truthy
       end
     end
 
     context 'when the repository does not exists' do
       before :each do
-        KalibroGatekeeperClient::Entities::Repository.expects(:find).with(subject.id).raises(KalibroGatekeeperClient::Errors::RecordNotFound)
+        KalibroClient::Entities::Repository.expects(:find).with(subject.id).raises(KalibroClient::Errors::RecordNotFound)
       end
 
       it 'should return false' do
-        expect(KalibroGatekeeperClient::Entities::Repository.exists?(subject.id)).to be_falsey
+        expect(KalibroClient::Entities::Repository.exists?(subject.id)).to be_falsey
       end
     end
   end

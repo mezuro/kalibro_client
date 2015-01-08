@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :range_snapshot, class: KalibroGatekeeperClient::Entities::RangeSnapshot do
+  factory :range_snapshot, class: KalibroClient::Entities::RangeSnapshot do
     beginning 1.1 
 	self.end 5.1 
 	label "Snapshot"

@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :metric_configuration, class: KalibroGatekeeperClient::Entities::MetricConfiguration do
+  factory :metric_configuration, class: KalibroClient::Entities::MetricConfiguration do
     id 1
     code 'total_abstract_classes'
     metric {FactoryGirl.build(:metric)}

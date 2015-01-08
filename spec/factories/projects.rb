@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,13 +15,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :project, class: KalibroGatekeeperClient::Entities::Project do
+  factory :project, class: KalibroClient::Entities::Project do
     id 1
     name "QtCalculator"
     description "A simple calculator for us."
   end
   
-  factory :another_project, class: KalibroGatekeeperClient::Entities::Project do
+  factory :another_project, class: KalibroClient::Entities::Project do
     id 42
     name "Kalibro"
     description "A Kalibro description."

@@ -1,16 +1,16 @@
 When(/^I get all metric collector names$/) do
-  @metric_collector_names = KalibroGatekeeperClient::Entities::MetricCollector.all_names
+  @metric_collector_names = KalibroClient::Entities::MetricCollector.all_names
 end
 
 When(/^I search metric collector Analizo by name$/) do
-  @result = KalibroGatekeeperClient::Entities::MetricCollector.find_by_name("Analizo")
+  @result = KalibroClient::Entities::MetricCollector.find_by_name("Analizo")
 end
 
 When(/^I search metric collector Avalio by name$/) do
   @is_error = false
   begin
-  	KalibroGatekeeperClient::Entities::MetricCollector.find_by_name("Avalio")
-	rescue KalibroGatekeeperClient::Errors::RecordNotFound
+  	KalibroClient::Entities::MetricCollector.find_by_name("Avalio")
+	rescue KalibroClient::Errors::RecordNotFound
   	@is_error = true
   end
 end

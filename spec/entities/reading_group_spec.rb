@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::ReadingGroup do
+describe KalibroClient::Entities::ReadingGroup do
   describe "id=" do
     subject { FactoryGirl.build(:reading_group) }
 
@@ -29,28 +29,28 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
   describe 'all' do
     context 'with no reading_groups' do
       before :each do
-        KalibroGatekeeperClient::Entities::ReadingGroup.
+        KalibroClient::Entities::ReadingGroup.
           expects(:request).
           with('all', {}, :get).
           returns({'reading_groups' => nil}.to_json)
       end
 
       it 'should return nil' do
-        expect(KalibroGatekeeperClient::Entities::ReadingGroup.all).to be_empty
+        expect(KalibroClient::Entities::ReadingGroup.all).to be_empty
       end
     end
 
     context 'with many reading_groups' do
       let(:reading_group) { FactoryGirl.build(:reading_group) }
       before :each do
-        KalibroGatekeeperClient::Entities::ReadingGroup.
+        KalibroClient::Entities::ReadingGroup.
           expects(:request).
           with('all', {}, :get).
           returns({'reading_groups' => [reading_group.to_hash, reading_group.to_hash]}.to_json)
       end
 
       it 'should return nil' do
-        reading_groups = KalibroGatekeeperClient::Entities::ReadingGroup.all
+        reading_groups = KalibroClient::Entities::ReadingGroup.all
 
         expect(reading_groups.first.name).to eq(reading_group.name)
         expect(reading_groups.last.name).to eq(reading_group.name)
@@ -63,7 +63,7 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroGatekeeperClient::Entities::ReadingGroup.
+        KalibroClient::Entities::ReadingGroup.
           expects(:request).
           with('destroy',{id: subject.id})
       end
@@ -79,11 +79,11 @@ describe KalibroGatekeeperClient::Entities::ReadingGroup do
   describe 'exists?' do
     context 'with an inexistent id' do
       it 'should return false' do
-        KalibroGatekeeperClient::Entities::ReadingGroup.
+        KalibroClient::Entities::ReadingGroup.
           expects(:request).
           with('exists',{id: 0}).
           returns({'exists' => false})
-        KalibroGatekeeperClient::Entities::ReadingGroup.exists?(0)
+        KalibroClient::Entities::ReadingGroup.exists?(0)
       end
     end
   end

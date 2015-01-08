@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,73 +16,77 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient do
+describe KalibroClient do
 
   context 'configuration' do
     #FIXME: there should be a better way to keep the default values
-    let(:config) {{address: "http://localhost:8081"}}
+    let(:config) { { processor_address: "http://localhost:8082",
+                   configurations_address: "http://localhost:8083" } }
 
     describe 'config' do
       it 'should return the default configuration' do
-        expect(KalibroGatekeeperClient.config).to eq({
-                                          address: "http://localhost:8081"
-                                        })
+        expect(KalibroClient.config).to eq({
+          processor_address: "http://localhost:8082",
+          configurations_address: "http://localhost:8083"
+        })
       end
     end
 
     describe 'configure' do
-      after(:each) {KalibroGatekeeperClient.configure(config)}
+      after(:each) {KalibroClient.configure(config)}
 
       it 'should set the address' do
-        KalibroGatekeeperClient.configure({address: 'http://test.test'})
-        expect(KalibroGatekeeperClient.config).to eq({address: 'http://test.test'})
+        KalibroClient.configure({processor_address: 'http://test.test'})
+        expect(KalibroClient.config[:processor_address]).to eq('http://test.test')
       end
     end
 
     describe 'configure_with' do
       context 'with an existent YAML' do
-        after(:each) {KalibroGatekeeperClient.configure(config)}
+        after(:each) {KalibroClient.configure(config)}
 
         it 'should set the config' do
-          KalibroGatekeeperClient.configure_with('spec/savon/fixtures/config.yml')
+          KalibroClient.configure_with('spec/savon/fixtures/config.yml')
 
-          expect(KalibroGatekeeperClient.config).to eq({address: 'http://test1.test1'})
+          expect(KalibroClient.config).to eq({
+            processor_address: 'http://test1.test1',
+            configurations_address: 'http://test2.test2'})
         end
       end
 
       context 'with an inexistent YAML' do
         before :each do
           @logger = Logger.new(File::NULL)
-          KalibroGatekeeperClient.expects(:logger).returns(@logger)
+          KalibroClient.expects(:logger).returns(@logger)
         end
 
         it 'should keep the defaults' do
-          KalibroGatekeeperClient.configure_with('spec/savon/fixtures/inexistent_file.yml')
-          expect(KalibroGatekeeperClient.config).to eq({address: "http://localhost:8081"})
+          KalibroClient.configure_with('spec/savon/fixtures/inexistent_file.yml')
+          expect(KalibroClient.config).to eq(config)
         end
 
         it 'should log an warning' do
           @logger.expects(:warn).with("YAML configuration file couldn't be found. Using defaults.")
 
-          KalibroGatekeeperClient.configure_with('spec/savon/fixtures/inexistent_file.yml')
+          KalibroClient.configure_with('spec/savon/fixtures/inexistent_file.yml')
         end
       end
 
       context 'with an invalid YAML' do
         before :each do
           @logger = Logger.new(File::NULL)
-          KalibroGatekeeperClient.expects(:logger).returns(@logger)
+          KalibroClient.expects(:logger).returns(@logger)
         end
 
         it 'should keep the defaults' do
-          KalibroGatekeeperClient.configure_with('spec/savon/fixtures/invalid_config.yml')
-          expect(KalibroGatekeeperClient.config).to eq({address: "http://localhost:8081"})
+          KalibroClient.configure_with('spec/savon/fixtures/invalid_config.yml')
+          expect(KalibroClient.config).to eq(config)
         end
 
         it 'should log an warning' do
           @logger.expects(:warn).with("YAML configuration file contains invalid syntax. Using defaults.")
 
-          KalibroGatekeeperClient.configure_with('spec/savon/fixtures/invalid_config.yml')
+          KalibroClient.configure_with('spec/savon/fixtures/invalid_config.yml')
         end
       end
     end
@@ -91,7 +95,7 @@ describe KalibroGatekeeperClient do
   context 'Logger' do
     describe 'logger' do
       it 'should return the default logger' do
-        expect(KalibroGatekeeperClient.logger).to be_a(Logger)
+        expect(KalibroClient.logger).to be_a(Logger)
       end
     end
 
@@ -99,9 +103,9 @@ describe KalibroGatekeeperClient do
       it 'should set the logger' do
         logger = Logger.new(STDOUT)
 
-        KalibroGatekeeperClient.logger = logger
+        KalibroClient.logger = logger
 
-        expect(KalibroGatekeeperClient.logger).to eq(logger)
+        expect(KalibroClient.logger).to eq(logger)
       end
     end
   end

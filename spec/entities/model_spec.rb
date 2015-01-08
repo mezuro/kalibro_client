@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,12 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::Model do
+describe KalibroClient::Entities::Model do
   subject { FactoryGirl.build(:model) }
 
   describe 'new' do
     it 'should create a model from an empty hash' do
-      subject = KalibroGatekeeperClient::Entities::Model.new {}
+      subject = KalibroClient::Entities::Model.new {}
       expect(subject.kalibro_errors).to eq([])
     end
   end
@@ -39,14 +39,14 @@ describe KalibroGatekeeperClient::Entities::Model do
   describe 'endpoint' do
     it 'should return the class_name' do
       endpoint = 'tests'
-      KalibroGatekeeperClient::Entities::Model.expects(:class_name).returns(endpoint)
-      expect(KalibroGatekeeperClient::Entities::Model.endpoint).to eq(endpoint)
+      KalibroClient::Entities::Model.expects(:class_name).returns(endpoint)
+      expect(KalibroClient::Entities::Model.endpoint).to eq(endpoint)
     end
   end
 
   describe 'client' do
     it 'returns a Faraday::Connection' do
-      expect(KalibroGatekeeperClient::Entities::Model.client).to be_a(Faraday::Connection)
+      expect(KalibroClient::Entities::Model.client).to be_a(Faraday::Connection)
     end
   end
 
@@ -65,23 +65,23 @@ describe KalibroGatekeeperClient::Entities::Model do
       request.expects(:options).twice.returns(options)
     end
 
-    context 'for the KalibroGatekeeperClient::Entitie class' do
+    context 'for the KalibroClient::Entitie class' do
       it 'should successfully get the Kalibro version' do
         response.expects(:body).returns({exists: false})
         client.expects(:post).
           yields(request).
           returns(response)
-        KalibroGatekeeperClient::Entities::Model.
+        KalibroClient::Entities::Model.
           expects(:client).
           with(any_parameters).
           returns(client)
-        expect(KalibroGatekeeperClient::Entities::Model.
+        expect(KalibroClient::Entities::Model.
           request('exists', {id: 1})[:exists]).to eq(false)
       end
     end
 
     context 'with a children class from outside' do
-      class Child < KalibroGatekeeperClient::Entities::Model; end
+      class Child < KalibroClient::Entities::Model; end
 
       it 'should successfully get the Kalibro version' do
         response.expects(:body).returns({exists: false})
@@ -106,28 +106,28 @@ describe KalibroGatekeeperClient::Entities::Model do
 
   describe 'to_object' do
     it 'should return an Object with an empty hash' do
-      expect(KalibroGatekeeperClient::Entities::Model.to_object({})).to eq(FactoryGirl.build(:model))
+      expect(KalibroClient::Entities::Model.to_object({})).to eq(FactoryGirl.build(:model))
     end
 
     it "should remain an object if it isn't a Hash" do
-      expect(KalibroGatekeeperClient::Entities::Model.to_object(Object.new)).to be_an(Object)
+      expect(KalibroClient::Entities::Model.to_object(Object.new)).to be_an(Object)
     end
   end
 
   describe 'to_objects_array' do
     it 'should convert [{}] to [Model]' do
-      expect(KalibroGatekeeperClient::Entities::Model.to_objects_array({})).to eq([FactoryGirl.build(:model)]) 
+      expect(KalibroClient::Entities::Model.to_objects_array({})).to eq([FactoryGirl.build(:model)]) 
     end
 
     it 'should remain an array if it already is one' do
       object = Object.new
-      expect(KalibroGatekeeperClient::Entities::Model.to_objects_array([object])).to eq([object]) 
+      expect(KalibroClient::Entities::Model.to_objects_array([object])).to eq([object]) 
     end
   end
 
   describe 'save' do
     before :each do
-      KalibroGatekeeperClient::Entities::Model.
+      KalibroClient::Entities::Model.
         expects(:request).
         with('save', {model: {}}).returns({'id' => 42, 'kalibro_errors' => []})
     end
@@ -141,7 +141,7 @@ describe KalibroGatekeeperClient::Entities::Model do
 
     context 'when it has the method id=' do
       before :each do
-        KalibroGatekeeperClient::Entities::Model.
+        KalibroClient::Entities::Model.
           any_instance.expects(:id=).
           with(42).
           returns(42)
@@ -166,14 +166,14 @@ describe KalibroGatekeeperClient::Entities::Model do
   describe 'create' do
     before :each do
       subject.expects(:save)
-      KalibroGatekeeperClient::Entities::Model.
+      KalibroClient::Entities::Model.
         expects(:new).
         with({}).
         returns(subject)
     end
 
     it 'should instantiate and save the model' do
-      expect(KalibroGatekeeperClient::Entities::Model.create {}).to eq(subject)
+      expect(KalibroClient::Entities::Model.create {}).to eq(subject)
     end
   end
 
@@ -207,27 +207,27 @@ describe KalibroGatekeeperClient::Entities::Model do
   describe 'exists?' do
     context 'with an inexistent id' do
       before :each do
-        KalibroGatekeeperClient::Entities::Model.
+        KalibroClient::Entities::Model.
           expects(:request).
           with('exists', {id: 0}).
           returns({'exists' => false})
       end
 
       it 'should return false' do
-        expect(KalibroGatekeeperClient::Entities::Model.exists?(0)).to eq(false)
+        expect(KalibroClient::Entities::Model.exists?(0)).to eq(false)
       end
     end
 
     context 'with an existent id' do
       before :each do
-        KalibroGatekeeperClient::Entities::Model.
+        KalibroClient::Entities::Model.
           expects(:request).
           with('exists', {id: 42}).
           returns({'exists' => true})
       end
 
       it 'should return false' do
-        expect(KalibroGatekeeperClient::Entities::Model.exists?(42)).to eq(true)
+        expect(KalibroClient::Entities::Model.exists?(42)).to eq(true)
       end
     end
   end
@@ -235,26 +235,26 @@ describe KalibroGatekeeperClient::Entities::Model do
   describe 'find' do
     context 'with an inexistent id' do
       before :each do
-        KalibroGatekeeperClient::Entities::Model.expects(:exists?).with(0).returns(false)
+        KalibroClient::Entities::Model.expects(:exists?).with(0).returns(false)
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroGatekeeperClient::Entities::Model.find(0)}.to raise_error(KalibroGatekeeperClient::Errors::RecordNotFound)
+        expect { KalibroClient::Entities::Model.find(0)}.to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
 
     context 'with an existent id' do
       before :each do
-        KalibroGatekeeperClient::Entities::Model.
+        KalibroClient::Entities::Model.
           expects(:exists?).with(42).
           returns(true)
-        KalibroGatekeeperClient::Entities::Model.
+        KalibroClient::Entities::Model.
           expects(:request).
           with('get',{id: 42}).returns({})
       end
 
       it 'should return an empty model' do
-        expect(KalibroGatekeeperClient::Entities::Model.find(42)).to eq(subject)
+        expect(KalibroClient::Entities::Model.find(42)).to eq(subject)
       end
     end
   end
@@ -263,7 +263,7 @@ describe KalibroGatekeeperClient::Entities::Model do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroGatekeeperClient::Entities::Model.
+        KalibroClient::Entities::Model.
           expects(:request).
           with('destroy',{id: subject.id})
       end
@@ -277,7 +277,7 @@ describe KalibroGatekeeperClient::Entities::Model do
     context 'when the destruction fails' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroGatekeeperClient::Entities::Model.
+        KalibroClient::Entities::Model.
           expects(:request).
           with('destroy',{id: subject.id}).raises(Exception.new)
       end
@@ -293,13 +293,13 @@ describe KalibroGatekeeperClient::Entities::Model do
   describe 'create_objects_array_from_hash' do
     context 'with nil' do
       it 'should return an empty array' do
-        expect(KalibroGatekeeperClient::Entities::Model.create_objects_array_from_hash(nil)).to eq([])
+        expect(KalibroClient::Entities::Model.create_objects_array_from_hash(nil)).to eq([])
       end
     end
 
     context 'with a Hash' do
       it 'should return the correspondent object to the given hash inside of an Array' do
-        expect(KalibroGatekeeperClient::Entities::Model.create_objects_array_from_hash({})).to eq([subject])
+        expect(KalibroClient::Entities::Model.create_objects_array_from_hash({})).to eq([subject])
       end
     end
   end
@@ -307,25 +307,25 @@ describe KalibroGatekeeperClient::Entities::Model do
   describe 'is_valid?' do
     context 'with a global var' do
       it 'should return false' do
-        expect(KalibroGatekeeperClient::Entities::Model.is_valid?('@test')).to be_falsey
+        expect(KalibroClient::Entities::Model.is_valid?('@test')).to be_falsey
       end
     end
 
     context 'with the attributes var' do
       it 'should return false' do
-        expect(KalibroGatekeeperClient::Entities::Model.is_valid?(:attributes!)).to be_falsey
+        expect(KalibroClient::Entities::Model.is_valid?(:attributes!)).to be_falsey
       end
     end
 
     context 'with a xsi var' do
       it 'should return false' do
-        expect(KalibroGatekeeperClient::Entities::Model.is_valid?('test_xsi')).to be_falsey
+        expect(KalibroClient::Entities::Model.is_valid?('test_xsi')).to be_falsey
       end
     end
 
     context 'with a valid var' do
       it 'should return true' do
-        expect(KalibroGatekeeperClient::Entities::Model.is_valid?('test')).to be_truthy
+        expect(KalibroClient::Entities::Model.is_valid?('test')).to be_truthy
       end
     end
   end

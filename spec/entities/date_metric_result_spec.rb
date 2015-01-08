@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::DateMetricResult do
+describe KalibroClient::Entities::DateMetricResult do
   describe 'date=' do
     context 'when the given value is a String' do
       it 'should set the date and convert it to DateTime' do
@@ -40,7 +40,7 @@ describe KalibroGatekeeperClient::Entities::DateMetricResult do
     let(:metric_result) { FactoryGirl.build(:metric_result) }
 
     before :each do
-      KalibroGatekeeperClient::Entities::MetricResult.
+      KalibroClient::Entities::MetricResult.
         expects(:to_object).
         with(metric_result.to_hash).
         returns(metric_result)

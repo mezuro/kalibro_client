@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::MetricConfigurationSnapshot do
+describe KalibroClient::Entities::MetricConfigurationSnapshot do
   describe 'weight=' do
     it 'should set the value of the attribute weight' do
       subject.weight = "0.6"
@@ -36,7 +36,7 @@ describe KalibroGatekeeperClient::Entities::MetricConfigurationSnapshot do
 
     context 'When it is a hash' do
       before :each do
-        KalibroGatekeeperClient::Entities::Metric.
+        KalibroClient::Entities::Metric.
           expects(:to_object).
           at_least_once.
           with(metric.to_hash).
@@ -56,7 +56,7 @@ describe KalibroGatekeeperClient::Entities::MetricConfigurationSnapshot do
 
     context 'with a single range' do
       before :each do
-        KalibroGatekeeperClient::Entities::RangeSnapshot.
+        KalibroClient::Entities::RangeSnapshot.
           expects(:to_object).
           with(range_snapshot_hash).
           returns(range_snapshot)
@@ -70,7 +70,7 @@ describe KalibroGatekeeperClient::Entities::MetricConfigurationSnapshot do
 
     context 'with a list of many ranges' do
       before :each do
-        KalibroGatekeeperClient::Entities::RangeSnapshot.
+        KalibroClient::Entities::RangeSnapshot.
           expects(:to_object).
           twice.with(range_snapshot_hash).
           returns(range_snapshot)

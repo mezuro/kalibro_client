@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,14 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::MetricResult do
+describe KalibroClient::Entities::MetricResult do
   subject { FactoryGirl.build(:metric_result) }
   let(:metric_configuration_snapshot) { FactoryGirl.build(:metric_configuration_snapshot) }
 
   describe 'new' do
     context 'with value NaN' do
       it 'should set the value with aggregated_value' do
-        metric_result = KalibroGatekeeperClient::Entities::MetricResult.new( FactoryGirl.attributes_for(:metric_result, {value: "NaN", aggregated_value: 1.6}) )
+        metric_result = KalibroClient::Entities::MetricResult.new( FactoryGirl.attributes_for(:metric_result, {value: "NaN", aggregated_value: 1.6}) )
         expect(metric_result.value).to eq(1.6)
       end
     end
@@ -67,7 +67,7 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
   describe 'descendant_results_of' do
     context 'when there is one descendant result for the given metric_result' do
       before :each do
-        KalibroGatekeeperClient::Entities::MetricResult.
+        KalibroClient::Entities::MetricResult.
           expects(:request).
           with('descendant_results_of', { id: subject.id }).
           returns({'descendant_results' => [13.3]})
@@ -80,7 +80,7 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
 
     context 'when there is no descendant result for the given metric_result' do
       before :each do
-        KalibroGatekeeperClient::Entities::MetricResult.
+        KalibroClient::Entities::MetricResult.
           expects(:request).
           with('descendant_results_of', { id: subject.id }).
           returns({'descendant_results' => []})
@@ -95,34 +95,34 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
   describe 'metric_results_of' do
     context 'when there is one metric result for the given module_result' do
       before :each do
-        KalibroGatekeeperClient::Entities::MetricResult.
+        KalibroClient::Entities::MetricResult.
           expects(:request).
           with('of', { module_result_id: 123 }).
           returns({'metric_results' => [subject.to_hash]})
       end
 
       it 'should return an unitary list with the metric result' do
-        expect(KalibroGatekeeperClient::Entities::MetricResult.metric_results_of(123).first.value).to eq(subject.value)
+        expect(KalibroClient::Entities::MetricResult.metric_results_of(123).first.value).to eq(subject.value)
       end
     end
 
     context 'when there is no metric result for the given module_result' do
       before :each do
-        KalibroGatekeeperClient::Entities::MetricResult.
+        KalibroClient::Entities::MetricResult.
           expects(:request).
           with('of', { :module_result_id => 42 }).
           returns({'metric_results' => []})
       end
 
       it 'should return an empty list' do
-        expect(KalibroGatekeeperClient::Entities::MetricResult.metric_results_of(42)).to eq([])
+        expect(KalibroClient::Entities::MetricResult.metric_results_of(42)).to eq([])
       end
     end
 
     context 'when there are many metric results for the given module_result' do
-      let(:metric_results) { KalibroGatekeeperClient::Entities::MetricResult.metric_results_of(28) }
+      let(:metric_results) { KalibroClient::Entities::MetricResult.metric_results_of(28) }
       before :each do
-        KalibroGatekeeperClient::Entities::MetricResult.
+        KalibroClient::Entities::MetricResult.
           expects(:request).
           with('of', { :module_result_id => 28 }).
           returns({'metric_results' => [subject.to_hash, subject.to_hash]})
@@ -140,14 +140,14 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
 
     context 'when there is not a date metric result' do
       before :each do
-        KalibroGatekeeperClient::Entities::MetricResult.
+        KalibroClient::Entities::MetricResult.
           expects(:request).
           with('history_of_metric', {:metric_name => metric.name, :module_result_id => module_result.id}).
           returns({date_metric_results: []})
       end
 
       it 'should return an empty list' do
-        expect(KalibroGatekeeperClient::Entities::MetricResult.history_of(metric.name, module_result.id)).to eq([])
+        expect(KalibroClient::Entities::MetricResult.history_of(metric.name, module_result.id)).to eq([])
       end
     end
 
@@ -155,14 +155,14 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       let(:date_metric_result) { FactoryGirl.build(:date_metric_result, {metric_result: subject}) }
 
       before :each do
-        KalibroGatekeeperClient::Entities::MetricResult.
+        KalibroClient::Entities::MetricResult.
           expects(:request).
           with('history_of_metric', {:metric_name => metric.name, :module_result_id => module_result.id}).
           returns({'date_metric_results' => [date_metric_result.to_hash]})
       end
 
       it 'should return the date metric result as an object into a list' do
-        expect(KalibroGatekeeperClient::Entities::MetricResult.history_of(metric.name, module_result.id).
+        expect(KalibroClient::Entities::MetricResult.history_of(metric.name, module_result.id).
           first.metric_result.id).to eq(subject.id)
       end
     end
@@ -172,14 +172,14 @@ describe KalibroGatekeeperClient::Entities::MetricResult do
       let(:another_date_metric_result) { FactoryGirl.build(:another_date_metric_result, {metric_result: subject}) }
 
       before :each do
-        KalibroGatekeeperClient::Entities::MetricResult.
+        KalibroClient::Entities::MetricResult.
           expects(:request).
           with('history_of_metric', {:metric_name => metric.name, :module_result_id => module_result.id}).
           returns({'date_metric_results' => [date_metric_result.to_hash, another_date_metric_result.to_hash]})
       end
 
       it 'should return a list of date metric results as objects' do
-        response = KalibroGatekeeperClient::Entities::MetricResult.history_of(metric.name, module_result.id)
+        response = KalibroClient::Entities::MetricResult.history_of(metric.name, module_result.id)
         expect(response.first.metric_result.id).to eq(date_metric_result.metric_result.id)
         expect(response.last.metric_result.id).to eq(another_date_metric_result.metric_result.id)
       end

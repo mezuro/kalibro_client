@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,13 +15,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'spec_helper'
-require 'kalibro_gatekeeper_client/helpers/xml_converters'
+require 'kalibro_client/helpers/xml_converters'
 
 include XMLConverters
 
 describe XMLConverters do
   describe 'xml_instance_class_name' do
-    before { @model = KalibroGatekeeperClient::Entities::Model.new }
+    before { @model = KalibroClient::Entities::Model.new }
 
     it 'should return modelXml' do
       expect(xml_instance_class_name(@model)).to eq('modelXml')
@@ -42,7 +42,7 @@ describe XMLConverters do
     end
 
     context 'with an instance of Model' do
-      before { @object = KalibroGatekeeperClient::Entities::Model.new }
+      before { @object = KalibroClient::Entities::Model.new }
 
       it 'should return a Hash' do
         expect(get_xml("field", @object)).to be_a(Hash)

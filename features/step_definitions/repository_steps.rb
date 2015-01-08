@@ -12,7 +12,7 @@ When(/^I call the cancel_process method for the given repository$/) do
 end
 
 When(/^I ask for repositories from the given project$/) do
-  @response = KalibroGatekeeperClient::Entities::Repository.repositories_of(@project.id)
+  @response = KalibroClient::Entities::Repository.repositories_of(@project.id)
 end
 
 When(/^I call the process method for the given repository$/) do
@@ -20,19 +20,19 @@ When(/^I call the process method for the given repository$/) do
 end
 
 When(/^I list types$/) do
-  @repository_types = KalibroGatekeeperClient::Entities::Repository.repository_types
+  @repository_types = KalibroClient::Entities::Repository.repository_types
 end
 
 When(/^I ask for all the repositories$/) do
-  @response = KalibroGatekeeperClient::Entities::Repository.all
+  @response = KalibroClient::Entities::Repository.all
 end
 
 When(/^I ask to find the given repository$/) do
-  @response = KalibroGatekeeperClient::Entities::Repository.find(@repository.id)
+  @response = KalibroClient::Entities::Repository.find(@repository.id)
 end
 
 When(/^I ask to check if the given repository exists$/) do
-  @response = KalibroGatekeeperClient::Entities::Repository.exists?(@repository.id)
+  @response = KalibroClient::Entities::Repository.exists?(@repository.id)
 end
 
 Then(/^I should get success$/) do

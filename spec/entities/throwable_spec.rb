@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::Throwable do
+describe KalibroClient::Entities::Throwable do
   let(:stack_trace_element) { FactoryGirl.build(:stack_trace_element) }
 
   describe 'stack_trace_element=' do

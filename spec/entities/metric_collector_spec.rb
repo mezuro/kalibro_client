@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,18 +16,18 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::MetricCollector do
+describe KalibroClient::Entities::MetricCollector do
   describe 'all_names' do
     context 'with no metric collectors' do
       before :each do
-        KalibroGatekeeperClient::Entities::MetricCollector.
+        KalibroClient::Entities::MetricCollector.
           expects(:request).
           with(:all_names, {}, :get).
           returns({'names' => nil}.to_json)
       end
 
       it 'should return empty array' do
-        expect(KalibroGatekeeperClient::Entities::MetricCollector.all_names).to be_empty
+        expect(KalibroClient::Entities::MetricCollector.all_names).to be_empty
       end
     end
 
@@ -36,14 +36,14 @@ describe KalibroGatekeeperClient::Entities::MetricCollector do
       let(:another_metric_collector_hash) { FactoryGirl.build(:another_metric_collector).to_hash }
 
       before :each do
-        KalibroGatekeeperClient::Entities::MetricCollector.
+        KalibroClient::Entities::MetricCollector.
           expects(:request).
           with(:all_names, {}, :get).
           returns({'metric_collector_names' => [metric_collector_hash, another_metric_collector_hash]}.to_json)
       end
 
       it 'should return the two elements' do
-        names = KalibroGatekeeperClient::Entities::MetricCollector.all_names
+        names = KalibroClient::Entities::MetricCollector.all_names
 
         expect(names.size).to eq(2)
         expect(names.first).to eq(JSON.parse(metric_collector_hash.to_json))
@@ -55,14 +55,14 @@ describe KalibroGatekeeperClient::Entities::MetricCollector do
   describe 'all' do
     context 'with no metric collectors' do
       before :each do
-        KalibroGatekeeperClient::Entities::MetricCollector.
+        KalibroClient::Entities::MetricCollector.
           expects(:request).
           with(:all_names, {}, :get).
           returns({'names' => nil}.to_json)
       end
 
       it 'should return empty array' do
-        expect(KalibroGatekeeperClient::Entities::MetricCollector.all_names).to be_empty
+        expect(KalibroClient::Entities::MetricCollector.all_names).to be_empty
       end
     end
 
@@ -71,24 +71,24 @@ describe KalibroGatekeeperClient::Entities::MetricCollector do
       let!(:another_metric_collector) { FactoryGirl.build(:another_metric_collector) }
 
       before :each do
-        KalibroGatekeeperClient::Entities::MetricCollector.
+        KalibroClient::Entities::MetricCollector.
           expects(:request).
           with(:all_names, {}, :get).
           returns({'metric_collector_names' => [metric_collector.name, another_metric_collector.name]}.to_json)
 
-        KalibroGatekeeperClient::Entities::MetricCollector.
+        KalibroClient::Entities::MetricCollector.
           expects(:find_by_name).
           with(metric_collector.name).
           returns(metric_collector)
 
-        KalibroGatekeeperClient::Entities::MetricCollector.
+        KalibroClient::Entities::MetricCollector.
           expects(:find_by_name).
           with(another_metric_collector.name).
           returns(another_metric_collector)
       end
 
       it 'should return the two elements' do
-        metric_collectors = KalibroGatekeeperClient::Entities::MetricCollector.all
+        metric_collectors = KalibroClient::Entities::MetricCollector.all
 
         expect(metric_collectors.size).to eq(2)
         expect(metric_collectors.first.name).to eq(metric_collector.name)
@@ -102,15 +102,15 @@ describe KalibroGatekeeperClient::Entities::MetricCollector do
 
     context 'with an inexistent name' do
       before :each do
-        KalibroGatekeeperClient::Entities::MetricCollector.
+        KalibroClient::Entities::MetricCollector.
           expects(:request).
           with(:get, {name: subject.name}).
           returns(nil)
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroGatekeeperClient::Entities::MetricCollector.find_by_name(subject.name)}.
-          to raise_error(KalibroGatekeeperClient::Errors::RecordNotFound)
+        expect { KalibroClient::Entities::MetricCollector.find_by_name(subject.name)}.
+          to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
 
@@ -120,14 +120,14 @@ describe KalibroGatekeeperClient::Entities::MetricCollector do
       let(:metric_params) { { "total_abstract_classes" => Hash[FactoryGirl.attributes_for(:metric).map { |k,v| if v.is_a?(Array) then [k.to_s, v] else [k.to_s, v.to_s] end}] } }
       before :each do
         params["supported_metrics"] = metric_params
-        KalibroGatekeeperClient::Entities::MetricCollector.
+        KalibroClient::Entities::MetricCollector.
           expects(:request).
           with(:get,{name: subject.name}).
           returns(params)
       end
 
       it 'should return a metric_collector' do
-        expect(KalibroGatekeeperClient::Entities::MetricCollector.find_by_name(subject.name).name).to eq(subject.name)
+        expect(KalibroClient::Entities::MetricCollector.find_by_name(subject.name).name).to eq(subject.name)
       end
     end
   end

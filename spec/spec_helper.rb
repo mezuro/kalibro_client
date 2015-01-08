@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -25,10 +25,10 @@ SimpleCov.start do
                 Coveralls::SimpleCov::Formatter,
                 SimpleCov::Formatter::HTMLFormatter
               ]
-  add_group "Entities", "lib/kalibro_gatekeeper_client/entities"
-  add_group "Errors", "lib/kalibro_gatekeeper_client/errors"
-  add_group "Helpers", "lib/kalibro_gatekeeper_client/helpers"
-  add_group "Cucumber Helpers", "lib/kalibro_gatekeeper_client/kalibro_cucumber_helpers"
+  add_group "Entities", "lib/kalibro_client/entities"
+  add_group "Errors", "lib/kalibro_client/errors"
+  add_group "Helpers", "lib/kalibro_client/helpers"
+  add_group "Cucumber Helpers", "lib/kalibro_client/kalibro_cucumber_helpers"
 
   add_filter "/spec/"
   add_filter "/features/"
@@ -36,7 +36,7 @@ SimpleCov.start do
   coverage_dir 'coverage/rspec'
 end
 
-require 'kalibro_gatekeeper_client'
+require 'kalibro_client'
 
 require 'factory_girl'
 FactoryGirl.find_definitions

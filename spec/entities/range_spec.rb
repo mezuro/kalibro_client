@@ -1,4 +1,4 @@
-# This file is part of KalibroGatekeeperClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroGatekeeperClient::Entities::Range do
+describe KalibroClient::Entities::Range do
   subject { FactoryGirl.build(:range) }
 
   describe 'id=' do
@@ -61,7 +61,7 @@ describe KalibroGatekeeperClient::Entities::Range do
     let(:reading) { FactoryGirl.build(:reading) }
 
     before :each do
-      KalibroGatekeeperClient::Entities::Reading.
+      KalibroClient::Entities::Reading.
         expects(:find).
         with(subject.reading_id).
         returns(reading)
@@ -97,27 +97,27 @@ describe KalibroGatekeeperClient::Entities::Range do
 
     context 'when does not exists the asked range' do
       before :each do
-        KalibroGatekeeperClient::Entities::Range.
+        KalibroClient::Entities::Range.
           expects(:request).
           with('of', {metric_configuration_id: metric_configuration.id}).
           returns({'ranges' => nil})
       end
 
       it 'should return a list with the ranges' do
-        expect(KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id)).to eq([])
+        expect(KalibroClient::Entities::Range.ranges_of(metric_configuration.id)).to eq([])
       end
     end
 
     context 'when exist only one range for the given metric configuration' do
       before :each do
-        KalibroGatekeeperClient::Entities::Range.
+        KalibroClient::Entities::Range.
           expects(:request).
           with('of', {metric_configuration_id: metric_configuration.id}).
           returns({'ranges' => subject.to_hash})
       end
 
       it 'should return a list with the range' do
-        expect(KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id).
+        expect(KalibroClient::Entities::Range.ranges_of(metric_configuration.id).
           first.beginning).to eq(subject.beginning)
       end
     end
@@ -126,14 +126,14 @@ describe KalibroGatekeeperClient::Entities::Range do
       let(:another_range) { FactoryGirl.build(:another_range) }
 
       before :each do
-        KalibroGatekeeperClient::Entities::Range.
+        KalibroClient::Entities::Range.
           expects(:request).
           with('of', {metric_configuration_id: metric_configuration.id}).
           returns({'ranges' => [subject.to_hash, another_range.to_hash]})
       end
 
       it 'should return a list with the ranges' do
-        ranges = KalibroGatekeeperClient::Entities::Range.ranges_of(metric_configuration.id)
+        ranges = KalibroClient::Entities::Range.ranges_of(metric_configuration.id)
         expect(ranges.first.comments).to eq(subject.comments)
         expect(ranges.last.comments).to eq(another_range.comments)
       end
@@ -145,7 +145,7 @@ describe KalibroGatekeeperClient::Entities::Range do
     subject {FactoryGirl.build(:range, {id: nil})}
 
     before :each do
-      KalibroGatekeeperClient::Entities::Range.
+      KalibroClient::Entities::Range.
         expects(:request).
         with('save', {:range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}).
         returns({'id' => 2, 'kalibro_errors' => []})
@@ -160,21 +160,21 @@ describe KalibroGatekeeperClient::Entities::Range do
   describe 'exists?' do
     context 'when the range exists' do
       before :each do
-        KalibroGatekeeperClient::Entities::Range.expects(:find).with(subject.id).returns(subject)
+        KalibroClient::Entities::Range.expects(:find).with(subject.id).returns(subject)
       end
 
       it 'should return true' do
-        expect(KalibroGatekeeperClient::Entities::Range.exists?(subject.id)).to be_truthy
+        expect(KalibroClient::Entities::Range.exists?(subject.id)).to be_truthy
       end
     end
 
     context 'when the range does not exists' do
       before :each do
-        KalibroGatekeeperClient::Entities::Range.expects(:find).with(subject.id).raises(KalibroGatekeeperClient::Errors::RecordNotFound)
+        KalibroClient::Entities::Range.expects(:find).with(subject.id).raises(KalibroClient::Errors::RecordNotFound)
       end
 
       it 'should return false' do
-        expect(KalibroGatekeeperClient::Entities::Range.exists?(subject.id)).to be_falsey
+        expect(KalibroClient::Entities::Range.exists?(subject.id)).to be_falsey
       end
     end
   end
@@ -182,26 +182,26 @@ describe KalibroGatekeeperClient::Entities::Range do
   describe 'find' do
     context 'when the range exists' do
       before :each do
-        KalibroGatekeeperClient::Entities::Range.
+        KalibroClient::Entities::Range.
           expects(:all).
           returns([subject])
       end
 
       it 'should return the range' do
-        expect(KalibroGatekeeperClient::Entities::Range.find(subject.id)).to eq(subject)
+        expect(KalibroClient::Entities::Range.find(subject.id)).to eq(subject)
       end
     end
 
     context "when the range doesn't exists" do
       before :each do
-        KalibroGatekeeperClient::Entities::Range.
+        KalibroClient::Entities::Range.
           expects(:all).
           returns([FactoryGirl.build(:another_range)])
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroGatekeeperClient::Entities::Range.find(subject.id) }.
-          to raise_error(KalibroGatekeeperClient::Errors::RecordNotFound)
+        expect { KalibroClient::Entities::Range.find(subject.id) }.
+          to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
   end
@@ -211,21 +211,21 @@ describe KalibroGatekeeperClient::Entities::Range do
     let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
 
     before :each do
-      KalibroGatekeeperClient::Entities::Configuration.
+      KalibroClient::Entities::Configuration.
         expects(:all).
         returns([configuration])
-      KalibroGatekeeperClient::Entities::MetricConfiguration.
+      KalibroClient::Entities::MetricConfiguration.
         expects(:metric_configurations_of).
         with(configuration.id).
         returns([metric_configuration])
-      KalibroGatekeeperClient::Entities::Range.
+      KalibroClient::Entities::Range.
         expects(:ranges_of).
         with(metric_configuration.id).
         returns([subject])
     end
 
     it 'should list all the ranges' do
-      expect(KalibroGatekeeperClient::Entities::Range.all).to include(subject)
+      expect(KalibroClient::Entities::Range.all).to include(subject)
     end
   end
 end
