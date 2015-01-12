@@ -1,23 +1,23 @@
 When(/^I ask a module result with the same id of the given module result$/) do
-  @found_module_result = KalibroClient::Entities::ModuleResult.find(@module_result.id)
+  @found_module_result = KalibroClient::Entities::Processor::ModuleResult.find(@module_result.id)
 end
 
 When(/^I ask for an inexistent module result$/) do
   @is_error = false
   begin
-    KalibroClient::Entities::ModuleResult.find(-1)
+    KalibroClient::Entities::Processor::ModuleResult.find(-1)
   rescue KalibroClient::Errors::RecordNotFound
     @is_error = true
   end
 end
 
 When(/^I ask for the children of the processing root module result$/) do
-  @children = KalibroClient::Entities::ModuleResult.
-    find(KalibroClient::Entities::Processing.processing_of(@repository.id).results_root_id).children
+  @children = KalibroClient::Entities::Processor::ModuleResult.
+    find(KalibroClient::Entities::Processor::Processing.processing_of(@repository.id).results_root_id).children
 end
 
 Then(/^I should get a list with the children module results$/) do
-  expect(@children.first).to be_a(KalibroClient::Entities::ModuleResult)
+  expect(@children.first).to be_a(KalibroClient::Entities::Processor::ModuleResult)
 end
 
 Then(/^I should get the given module result$/) do
@@ -25,12 +25,12 @@ Then(/^I should get the given module result$/) do
 end
 
 Given(/^I get the module result of the processing$/) do
-  @module_result = KalibroClient::Entities::ModuleResult.
-    find(KalibroClient::Entities::Processing.processing_of(@repository.id).results_root_id)
+  @module_result = KalibroClient::Entities::Processor::ModuleResult.
+    find(KalibroClient::Entities::Processor::Processing.processing_of(@repository.id).results_root_id)
 end
 
 When(/^I ask for the history of the given module result$/) do
-  @history = KalibroClient::Entities::ModuleResult.history_of(@module_result.id)
+  @history = KalibroClient::Entities::Processor::ModuleResult.history_of(@module_result.id)
 end
 
 Then(/^I should get a list with date module results$/) do
@@ -38,9 +38,9 @@ Then(/^I should get a list with date module results$/) do
 end
 
 Then(/^I should get a module_result$/) do
-  expect(@module_result).to be_a(KalibroClient::Entities::ModuleResult)
+  expect(@module_result).to be_a(KalibroClient::Entities::Processor::ModuleResult)
 end
 
 Then(/^The first children should have a module$/) do
-  expect(@children.first.module).to be_a(KalibroClient::Entities::Module)
+  expect(@children.first.module).to be_a(KalibroClient::Entities::Processor::Module)
 end

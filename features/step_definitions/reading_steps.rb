@@ -11,19 +11,19 @@ Given(/^I have a reading within the given reading group$/) do
 end
 
 When(/^I ask for all the readings$/) do
-  @all_readings = KalibroClient::Entities::Reading.all
+  @all_readings = KalibroClient::Entities::Configurations::Reading.all
 end
 
 When(/^I ask for a reading with the same id of the given reading$/) do
-  @found_reading = KalibroClient::Entities::Reading.find @reading.id
+  @found_reading = KalibroClient::Entities::Configurations::Reading.find @reading.id
 end
 
 When(/^I ask for the readings of the given reading group$/) do
-  @found_readings = KalibroClient::Entities::Reading.readings_of @reading_group.id
+  @found_readings = KalibroClient::Entities::Configurations::Reading.readings_of @reading_group.id
 end
 
 When(/^I ask to check if the given reading exists$/) do
-  @response = KalibroClient::Entities::Reading.exists?(@reading.id)
+  @response = KalibroClient::Entities::Configurations::Reading.exists?(@reading.id)
 end
 
 Then(/^I should get the given reading$/) do

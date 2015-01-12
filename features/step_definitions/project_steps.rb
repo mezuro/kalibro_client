@@ -19,20 +19,20 @@ When(/^I create the project with name "(.*?)"$/) do |name|
 end
 
 When(/^I search a project with the same id of the given project$/) do
-  @found_project = KalibroClient::Entities::Project.find(@project.id)
+  @found_project = KalibroClient::Entities::Processor::Project.find(@project.id)
 end
 
 When(/^I destroy the project with the same id of the given project$/) do
-  @found_project = KalibroClient::Entities::Project.find(@project.id)
+  @found_project = KalibroClient::Entities::Processor::Project.find(@project.id)
   @found_project.destroy
 end
 
 When(/^I ask for all the projects$/) do
-  @all_projects = KalibroClient::Entities::Project.all
+  @all_projects = KalibroClient::Entities::Processor::Project.all
 end
 
 Then(/^the project should exist$/) do
-  expect(KalibroClient::Entities::Project.exists?(@project.id)).to be_truthy
+  expect(KalibroClient::Entities::Processor::Project.exists?(@project.id)).to be_truthy
 end
 
 Then(/^it should return the same project as the given one$/) do
@@ -40,7 +40,7 @@ Then(/^it should return the same project as the given one$/) do
 end
 
 Then(/^the project should not exist$/) do
-  expect(KalibroClient::Entities::Project.exists?(@found_project.id)).to be_falsey
+  expect(KalibroClient::Entities::Processor::Project.exists?(@found_project.id)).to be_falsey
 end
 
 Then(/^I should get a list with the given project$/) do

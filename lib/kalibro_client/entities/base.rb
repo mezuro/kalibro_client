@@ -138,9 +138,13 @@ module KalibroClient
         instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '') }
       end
 
+      def self.address
+        raise NotImplementedError
+      end
+
       # TODO: probably the connection could be a class static variable.
       def self.client
-        Faraday.new(:url => KalibroClient.config[:address]) do |conn|
+        Faraday.new(:url => KalibroClient.config[address]) do |conn|
           conn.request :json
           conn.response :json, :content_type => /\bjson$/
           conn.adapter  Faraday.default_adapter  # make requests with Net::HTTP
@@ -171,11 +175,11 @@ module KalibroClient
       def self.class_name
         # This loop is a generic way to make this work even when the children class has a different name
         entitie_class = self
-        until entitie_class.name.include?("KalibroClient::Entities::") do
+        until entitie_class.name.include?("KalibroClient::Entities::Processor") or entitie_class.name.include?("KalibroClient::Entities::Configurations") do
           entitie_class = entitie_class.superclass
         end
 
-        entitie_class.name.gsub(/KalibroClient::Entities::/,"")
+        entitie_class.name.gsub(/KalibroClient::Entities::Configurations::/,"").gsub(/KalibroClient::Entities::Processor::/,"")
       end
 
       include HashConverters

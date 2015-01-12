@@ -3,11 +3,11 @@ Given(/^I have a reading group with name "(.*?)"$/) do |name|
 end
 
 When(/^I ask for all the reading groups$/) do
-  @all_reading_groups = KalibroClient::Entities::ReadingGroup.all
+  @all_reading_groups = KalibroClient::Entities::Configurations::ReadingGroup.all
 end
 
 When(/^I call the reading_group_of method for the given MetricConfiguration$/) do
-  @metric_configuration_reading_group = KalibroClient::Entities::ReadingGroup.reading_group_of(@metric_configuration.id)
+  @metric_configuration_reading_group = KalibroClient::Entities::Configurations::ReadingGroup.reading_group_of(@metric_configuration.id)
 end
 
 Then(/^I should get a list with the given reading group$/) do
