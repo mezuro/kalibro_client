@@ -41,10 +41,6 @@ module KalibroClient
           @process_time
         end
 
-        def error=(value)
-          @error = KalibroClient::Entities::Throwable.to_object value
-        end
-
         def results_root_id=(value)
           @results_root_id = value.to_i
         end

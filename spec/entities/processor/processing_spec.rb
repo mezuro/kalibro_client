@@ -62,17 +62,6 @@ describe KalibroClient::Entities::Processor::Processing do
     end
   end
 
-  describe 'error=' do
-    pending 'decide if there will be a throwable object' do
-      let(:error) { FactoryGirl.build(:throwable, message: 'Another Error!') }
-
-      it 'should set the attribute error as an object' do 
-        subject.error = error.to_hash
-        expect(subject.error).to eq error
-      end
-    end
-  end
-
   describe 'results_root_id=' do
     it 'should set the attribute results root id as an integer' do
       subject.results_root_id = "36"
