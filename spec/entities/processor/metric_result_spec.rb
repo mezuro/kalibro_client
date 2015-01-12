@@ -17,8 +17,8 @@
 require 'spec_helper'
 
 describe KalibroClient::Entities::Processor::MetricResult do
-  subject { FactoryGirl.build(:metric_result) }
   let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
+  subject { FactoryGirl.build(:metric_result, configuration: metric_configuration) }
 
   describe 'new' do
     context 'with value NaN' do
@@ -40,6 +40,12 @@ describe KalibroClient::Entities::Processor::MetricResult do
     it 'should set the configuration' do
       subject.configuration = metric_configuration.to_hash
       expect(subject.configuration.code).to eq(metric_configuration.code)
+    end
+  end
+
+  describe 'metric_configuration' do
+    it 'should return the metric configuration' do
+      expect(subject.metric_configuration).to eq(metric_configuration)
     end
   end
 

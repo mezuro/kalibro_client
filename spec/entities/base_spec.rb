@@ -26,27 +26,27 @@ describe KalibroClient::Entities::Base do
     end
   end
 
-  describe 'class_name' do
+  describe 'entity_name' do
     it 'should be a String' do
-      expect(subject.class.class_name).to be_a(String)
+      expect(subject.class.entity_name).to be_a(String)
     end
 
     it 'should return Base' do
-      expect(subject.class.class_name).to eq('Base')
+      expect(subject.class.entity_name).to eq('Base')
     end
   end
 
   describe 'endpoint' do
-    it 'should return the class_name' do
+    it 'should return the entity_name' do
       endpoint = 'tests'
-      KalibroClient::Entities::Base.expects(:class_name).returns(endpoint)
+      KalibroClient::Entities::Base.expects(:entity_name).returns(endpoint)
       expect(KalibroClient::Entities::Base.endpoint).to eq(endpoint)
     end
   end
 
   describe 'client' do
     it 'returns a Faraday::Connection' do
-      expect(KalibroClient::Entities::Base.client).to be_a(Faraday::Connection)
+      expect { KalibroClient::Entities::Base.client }.to raise_error(NotImplementedError)
     end
   end
 

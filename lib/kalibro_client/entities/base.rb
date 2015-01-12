@@ -155,9 +155,9 @@ module KalibroClient
         field.to_s[0] != '@' and field != :attributes! and (field =~ /attributes!/).nil? and (field.to_s =~ /xsi/).nil?  and (field.to_s =~ /errors/).nil?
       end
 
-      # TODO: Rename to entitie_name
+      # TODO rename to instance_entity_name
       def instance_class_name
-        self.class.class_name
+        self.class.entity_name
       end
 
       include RequestMethods
@@ -168,18 +168,17 @@ module KalibroClient
       end
 
       def self.endpoint
-        class_name.pluralize.underscore
+        entity_name.pluralize.underscore
       end
 
-      # TODO: Rename to entitie_name
-      def self.class_name
+      def self.entity_name
         # This loop is a generic way to make this work even when the children class has a different name
-        entitie_class = self
-        until entitie_class.name.include?("KalibroClient::Entities::Processor") or entitie_class.name.include?("KalibroClient::Entities::Configurations") do
-          entitie_class = entitie_class.superclass
+        entity_class = self
+        until entity_class.name.include?("KalibroClient::Entities::") do
+          entity_class = entity_class.superclass
         end
 
-        entitie_class.name.gsub(/KalibroClient::Entities::Configurations::/,"").gsub(/KalibroClient::Entities::Processor::/,"")
+        return entity_class.name.split("::").last
       end
 
       include HashConverters

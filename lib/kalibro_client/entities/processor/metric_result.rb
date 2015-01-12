@@ -40,7 +40,7 @@ module KalibroClient
           @configuration = KalibroClient::Entities::Configurations::MetricConfiguration.to_object value
         end
 
-        def metric_configuration_snapshot
+        def metric_configuration
           @configuration
         end
 
