@@ -7,7 +7,7 @@ Given(/^the project name is "(.*?)"$/) do |name|
 end
 
 Given(/^I have a project with name "(.*?)"$/) do |name|
-  @project = FactoryGirl.create(:project_without_id, {name: name})
+  @project = FactoryGirl.create(:project, {name: name})
 end
 
 When(/^I save the project$/) do

@@ -38,7 +38,7 @@ describe KalibroClient::Entities::Processor::Project do
         KalibroClient::Entities::Processor::Project.
           expects(:request).
           with('', {}, :get).
-          returns({:projects => nil}.to_json)
+          returns({"projects" => nil})
       end
 
       it 'should return nil' do
@@ -54,7 +54,7 @@ describe KalibroClient::Entities::Processor::Project do
         KalibroClient::Entities::Processor::Project.
             expects(:request).
             with('', {}, :get).
-            returns({:projects => [project.to_hash, another_project.to_hash]}.to_json)
+            returns({"projects" => [project.to_hash, another_project.to_hash]})
       end
 
       it 'should return a list with projects' do

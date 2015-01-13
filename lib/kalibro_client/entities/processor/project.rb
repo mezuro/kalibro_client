@@ -26,7 +26,7 @@ module KalibroClient
         end
 
         def self.all
-          create_objects_array_from_hash(JSON.parse(request('', {}, :get)))
+          create_objects_array_from_hash(request('', {}, :get))
         end
       end
     end
