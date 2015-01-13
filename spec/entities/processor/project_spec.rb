@@ -37,7 +37,7 @@ describe KalibroClient::Entities::Processor::Project do
       before :each do
         KalibroClient::Entities::Processor::Project.
           expects(:request).
-          with('all', {}, :get).
+          with('', {}, :get).
           returns({:projects => nil}.to_json)
       end
 
@@ -53,7 +53,7 @@ describe KalibroClient::Entities::Processor::Project do
       before :each do
         KalibroClient::Entities::Processor::Project.
             expects(:request).
-            with('all', {}, :get).
+            with('', {}, :get).
             returns({:projects => [project.to_hash, another_project.to_hash]}.to_json)
       end
 

@@ -37,7 +37,7 @@ describe KalibroClient::Entities::Processor::Repository do
     before :each do
       KalibroClient::Entities::Processor::Repository.
         expects(:request).
-        with('of', {project_id: 1}).
+        with('of', {project_id: 1}, :get).
         returns({'repositories' => [],
                  :"@xmlns:ns2"=>"http://service.kalibro.org/"})
     end
@@ -145,13 +145,13 @@ describe KalibroClient::Entities::Processor::Repository do
 
   # The only purpose of this test is to cover the overrided save_params method
   describe 'save' do
-    subject {FactoryGirl.build(:repository, {id: nil})}
+    subject {FactoryGirl.build(:repository)}
 
     before :each do
       KalibroClient::Entities::Processor::Repository.
         expects(:request).
-        with('save', {:repository => subject.to_hash, :project_id => 1}).
-        returns({'id' => 1, 'kalibro_errors' => []})
+        with('', {:repository => subject.to_hash, :project_id => 1}).
+        returns("repository" => {'id' => 1, 'kalibro_errors' => []})
 
       KalibroClient::Entities::Processor::Repository.any_instance.
         expects(:id=).

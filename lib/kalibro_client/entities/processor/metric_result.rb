@@ -58,7 +58,7 @@ module KalibroClient
         end
 
         def self.metric_results_of(module_result_id)
-          create_objects_array_from_hash self.request('of', {module_result_id: module_result_id})['metric_results']
+          create_objects_array_from_hash self.request('of', {module_result_id: module_result_id})
         end
 
         def self.history_of(metric_name, module_result_id)

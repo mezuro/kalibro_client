@@ -40,7 +40,8 @@ module KalibroClient
 
       def self.request(action, params = {}, method = :post)
         response = client.send(method) do |request|
-          request.url "/#{endpoint}/#{action}"
+          url = "/#{endpoint}/#{action}".gsub(":id", params[:id].to_s)
+          request.url url
           request.body = params unless params.empty?
           request.options.timeout = 300
           request.options.open_timeout = 300
@@ -61,7 +62,7 @@ module KalibroClient
       def save
         begin
           response = self.class.request(save_action, save_params)
-          self.id = response["id"]
+          self.id = response[instance_class_name]["id"]
           self.kalibro_errors = response["kalibro_errors"] unless response["kalibro_errors"].nil?
 
           self.kalibro_errors.empty? ? true : false
@@ -87,6 +88,7 @@ module KalibroClient
         end
         self.variable_names.each {
           |name|
+          next if name == "created_at" or name == "updated_at"
           unless self.send("#{name}") == another.send("#{name}") then
             return false
           end
@@ -95,12 +97,13 @@ module KalibroClient
       end
 
       def self.exists?(id)
-        request(exists_action, id_params(id))['exists']
+        request(exists_action, id_params(id), :get)['exists']
       end
 
       def self.find(id)
         if(exists?(id))
-          new request(find_action, id_params(id))
+          response = request(find_action, id_params(id), :get)
+          new response[entity_name]
         else
           raise KalibroClient::Errors::RecordNotFound
         end
@@ -108,14 +111,14 @@ module KalibroClient
 
       def destroy
         begin
-          self.class.request(destroy_action, destroy_params)
+          self.class.request(destroy_action, destroy_params, :delete)
         rescue Exception => exception
           add_error exception
         end
       end
 
       def self.create_objects_array_from_hash (response)
-        create_array_from_hash(response).map { |hash| new hash }
+        create_array_from_hash(response[entity_name.pluralize]).map { |hash| new hash }
       end
 
       def self.create_array_from_hash (response)
@@ -168,7 +171,7 @@ module KalibroClient
       end
 
       def self.endpoint
-        entity_name.pluralize.underscore
+        entity_name.pluralize
       end
 
       def self.entity_name
@@ -178,7 +181,7 @@ module KalibroClient
           entity_class = entity_class.superclass
         end
 
-        return entity_class.name.split("::").last
+        return entity_class.name.split("::").last.underscore.downcase
       end
 
       include HashConverters

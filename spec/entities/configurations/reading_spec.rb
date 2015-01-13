@@ -111,8 +111,8 @@ describe KalibroClient::Entities::Configurations::Reading do
     before :each do
       KalibroClient::Entities::Configurations::Reading.
         expects(:request).
-        with('save', {reading: reading.to_hash, reading_group_id: reading.group_id}).
-        returns({'id' => reading_id, 'kalibro_errors' => []})
+        with('', {reading: reading.to_hash, reading_group_id: reading.group_id}).
+        returns("reading" => {'id' => reading_id, 'kalibro_errors' => []})
     end
 
     it 'should make a request to save model with id and return true without errors' do

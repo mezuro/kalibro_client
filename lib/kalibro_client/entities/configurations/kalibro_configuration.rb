@@ -17,7 +17,7 @@
 module KalibroClient
   module Entities
     module Configurations
-      class Configuration < KalibroClient::Entities::Configurations::Base
+      class KalibroConfiguration < KalibroClient::Entities::Configurations::Base
         attr_accessor :id, :name, :description
 
         def id=(value)
@@ -26,7 +26,7 @@ module KalibroClient
 
         def self.all
           # FIXME: for some reason, the JSON is not getting automatically parsed
-          create_objects_array_from_hash(JSON.parse(request(:all, {}, :get))['configurations'])
+          create_objects_array_from_hash(JSON.parse(request('', {}, :get)))
         end
       end
     end

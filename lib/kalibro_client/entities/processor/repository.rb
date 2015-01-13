@@ -26,7 +26,7 @@ module KalibroClient
         end
 
         def self.repositories_of(project_id)
-          create_objects_array_from_hash request('of', {project_id: project_id})['repositories']
+          create_objects_array_from_hash request('of', {project_id: project_id}, :get)
         end
 
         def id=(value)

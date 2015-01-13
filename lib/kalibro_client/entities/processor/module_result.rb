@@ -28,7 +28,7 @@ module KalibroClient
         end
 
         def children
-          response = self.class.request('children_of', {id: id})['module_results']
+          response = self.class.request('children_of', {id: id}, :get)
           self.class.create_objects_array_from_hash(response)
         end
 

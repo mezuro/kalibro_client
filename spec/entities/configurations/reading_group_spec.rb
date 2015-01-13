@@ -31,7 +31,7 @@ describe KalibroClient::Entities::Configurations::ReadingGroup do
       before :each do
         KalibroClient::Entities::Configurations::ReadingGroup.
           expects(:request).
-          with('all', {}, :get).
+          with('', {}, :get).
           returns({'reading_groups' => nil}.to_json)
       end
 
@@ -45,7 +45,7 @@ describe KalibroClient::Entities::Configurations::ReadingGroup do
       before :each do
         KalibroClient::Entities::Configurations::ReadingGroup.
           expects(:request).
-          with('all', {}, :get).
+          with('', {}, :get).
           returns({'reading_groups' => [reading_group.to_hash, reading_group.to_hash]}.to_json)
       end
 
@@ -65,7 +65,7 @@ describe KalibroClient::Entities::Configurations::ReadingGroup do
         subject.expects(:id).at_least_once.returns(42)
         KalibroClient::Entities::Configurations::ReadingGroup.
           expects(:request).
-          with('destroy',{id: subject.id})
+          with(':id',{id: subject.id}, :delete)
       end
 
       it 'should remain with the errors array empty' do
@@ -81,7 +81,7 @@ describe KalibroClient::Entities::Configurations::ReadingGroup do
       it 'should return false' do
         KalibroClient::Entities::Configurations::ReadingGroup.
           expects(:request).
-          with('exists',{id: 0}).
+          with(':id/exists',{id: 0}, :get).
           returns({'exists' => false})
         KalibroClient::Entities::Configurations::ReadingGroup.exists?(0)
       end

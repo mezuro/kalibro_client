@@ -20,11 +20,11 @@ module RequestMethods
   end
 
   def save_action
-    "save"
+    ""
   end
 
   def destroy_action
-    "destroy"
+    ":id"
   end
 
   def destroy_params
@@ -33,7 +33,7 @@ module RequestMethods
 
   module ClassMethods
     def exists_action
-      "exists"
+      ":id/exists"
     end
 
     def id_params(id)
@@ -41,7 +41,7 @@ module RequestMethods
     end
 
     def find_action
-      "get"
+      ":id"
     end
   end
 end

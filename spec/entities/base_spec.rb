@@ -32,7 +32,7 @@ describe KalibroClient::Entities::Base do
     end
 
     it 'should return Base' do
-      expect(subject.class.entity_name).to eq('Base')
+      expect(subject.class.entity_name).to eq('base')
     end
   end
 
@@ -117,7 +117,7 @@ describe KalibroClient::Entities::Base do
     before :each do
       KalibroClient::Entities::Base.
         expects(:request).
-        with('save', {base: {}}).returns({'id' => 42, 'kalibro_errors' => []})
+        with('', {base: {}}).returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
     end
 
     context "when it doesn't have the method id=" do
@@ -194,7 +194,7 @@ describe KalibroClient::Entities::Base do
       before :each do
         KalibroClient::Entities::Base.
           expects(:request).
-          with('exists', {id: 0}).
+          with(':id/exists', {id: 0}, :get).
           returns({'exists' => false})
       end
 
@@ -207,7 +207,7 @@ describe KalibroClient::Entities::Base do
       before :each do
         KalibroClient::Entities::Base.
           expects(:request).
-          with('exists', {id: 42}).
+          with(':id/exists', {id: 42}, :get).
           returns({'exists' => true})
       end
 
@@ -235,7 +235,7 @@ describe KalibroClient::Entities::Base do
           returns(true)
         KalibroClient::Entities::Base.
           expects(:request).
-          with('get',{id: 42}).returns({})
+          with(':id',{id: 42}, :get).returns("base" => {})
       end
 
       it 'should return an empty model' do
@@ -248,7 +248,7 @@ describe KalibroClient::Entities::Base do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroClient::Entities::Base.expects(:request).with('destroy',{id: subject.id})
+        KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete)
       end
 
       it 'should remain with the errors array empty' do
@@ -260,7 +260,7 @@ describe KalibroClient::Entities::Base do
     context 'when the destruction fails' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroClient::Entities::Base.expects(:request).with('destroy',{id: subject.id}).raises(Exception.new)
+        KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete).raises(Exception.new)
       end
 
       it "should have an exception inside it's errors" do
@@ -274,13 +274,13 @@ describe KalibroClient::Entities::Base do
   describe 'create_objects_array_from_hash' do
     context 'with nil' do
       it 'should return an empty array' do
-        expect(KalibroClient::Entities::Base.create_objects_array_from_hash(nil)).to eq([])
+        expect(KalibroClient::Entities::Base.create_objects_array_from_hash("bases" => nil)).to eq([])
       end
     end
 
     context 'with a Hash' do
       it 'should return the correspondent object to the given hash inside of an Array' do
-        expect(KalibroClient::Entities::Base.create_objects_array_from_hash({})).to eq([subject])
+        expect(KalibroClient::Entities::Base.create_objects_array_from_hash("bases" => {})).to eq([subject])
       end
     end
   end

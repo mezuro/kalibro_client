@@ -47,7 +47,7 @@ module KalibroClient
         end
 
         def self.metric_configurations_of(configuration_id)
-          create_objects_array_from_hash request(:of, {:configuration_id => configuration_id})['metric_configurations']
+          create_objects_array_from_hash request(:of, {:configuration_id => configuration_id}, :get)
         end
 
         def self.find(id)

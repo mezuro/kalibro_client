@@ -56,7 +56,7 @@ describe KalibroClient::Entities::Processor::ModuleResult do
     before :each do
       KalibroClient::Entities::Processor::ModuleResult.
         expects(:request).
-        with('children_of', {id: subject.id}).
+        with('children_of', {id: subject.id}, :get).
         returns({'module_results' => subject.to_hash})
     end
 

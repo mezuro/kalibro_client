@@ -16,7 +16,6 @@
 
 FactoryGirl.define do
   factory :repository, class: KalibroClient::Entities::Processor::Repository do
-    id 1
     name "QtCalculator"
     description "A simple calculator"
     license "GPLv3"
@@ -26,6 +25,12 @@ FactoryGirl.define do
     configuration_id 1
     project_id 1
     send_email "test@test.com"
+
+    trait :with_id do
+      id 1
+    end
+
+    factory :repository_with_id, traits: [:with_id]
   end
 
   factory :another_repository, class: KalibroClient::Entities::Processor::Repository, parent: :repository do

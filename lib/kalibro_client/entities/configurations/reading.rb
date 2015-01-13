@@ -40,7 +40,7 @@ module KalibroClient
         end
 
         def self.readings_of(group_id)
-          create_objects_array_from_hash(request('of', {reading_group_id: group_id})['readings'])
+          create_objects_array_from_hash(request('of', {reading_group_id: group_id}))
         end
 
         def self.all

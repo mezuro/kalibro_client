@@ -84,7 +84,7 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.
         expects(:request).
-        with(:of, {:configuration_id => configuration.id}).
+        with(:of, {:configuration_id => configuration.id}, :get).
         returns({'metric_configurations' => [metric_configuration.to_hash]})
     end
 
@@ -103,8 +103,8 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.
         expects(:request).
-        with('save', {:metric_configuration => subject.to_hash, :configuration_id => subject.configuration_id}).
-        returns({'id' => 1, 'kalibro_errors' => []})
+        with('', {:metric_configuration => subject.to_hash, :configuration_id => subject.configuration_id}).
+        returns("metric_configuration" => {'id' => 1, 'kalibro_errors' => []})
     end
 
     it 'should make a request to save model with id and return true without errors' do

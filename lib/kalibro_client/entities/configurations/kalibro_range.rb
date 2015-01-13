@@ -17,7 +17,7 @@
 module KalibroClient
   module Entities
     module Configurations
-      class Range < KalibroClient::Entities::Configurations::Base
+      class KalibroRange < KalibroClient::Entities::Configurations::Base
 
         attr_accessor :id, :beginning, :end, :reading_id, :comments, :metric_configuration_id
 
@@ -50,13 +50,13 @@ module KalibroClient
         end
 
         def self.ranges_of(metric_configuration_id)
-          self.create_objects_array_from_hash request('of', {metric_configuration_id: metric_configuration_id} )['ranges']
+          self.create_objects_array_from_hash request('of', {metric_configuration_id: metric_configuration_id} )
         end
 
         def self.all
           metric_configurations = []
           ranges = []
-          configurations = Configuration.all
+          configurations = KalibroConfiguration.all
 
           configurations.each do |config|
             metric_configurations.concat(MetricConfiguration.metric_configurations_of(config.id))

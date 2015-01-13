@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe KalibroClient::Entities::Configurations::Configuration do
+describe KalibroClient::Entities::Configurations::KalibroConfiguration do
   describe 'id=' do
     it 'should set the value of the attribute id as an Integer' do
       subject.id = "42"
@@ -27,14 +27,14 @@ describe KalibroClient::Entities::Configurations::Configuration do
   describe 'all' do
     context 'with no configurations' do
       before :each do
-        KalibroClient::Entities::Configurations::Configuration.
+        KalibroClient::Entities::Configurations::KalibroConfiguration.
           expects(:request).
-          with(:all, {}, :get).
-          returns({'configurations' => nil}.to_json)
+          with('', {}, :get).
+          returns({'kalibro_configurations' => nil}.to_json)
       end
 
       it 'should return nil' do
-        expect(KalibroClient::Entities::Configurations::Configuration.all).to be_empty
+        expect(KalibroClient::Entities::Configurations::KalibroConfiguration.all).to be_empty
       end
     end
 
@@ -43,14 +43,14 @@ describe KalibroClient::Entities::Configurations::Configuration do
       let(:another_configuration) { FactoryGirl.build(:another_configuration) }
 
       before :each do
-        KalibroClient::Entities::Configurations::Configuration.
+        KalibroClient::Entities::Configurations::KalibroConfiguration.
           expects(:request).
-          with(:all, {}, :get).
-          returns({'configurations' => [configuration.to_hash, another_configuration.to_hash]}.to_json)
+          with('', {}, :get).
+          returns({'kalibro_configurations' => [configuration.to_hash, another_configuration.to_hash]}.to_json)
       end
 
       it 'should return the two elements' do
-        configurations = KalibroClient::Entities::Configurations::Configuration.all
+        configurations = KalibroClient::Entities::Configurations::KalibroConfiguration.all
 
         expect(configurations.size).to eq(2)
         expect(configurations.first.name).to eq(configuration.name)
