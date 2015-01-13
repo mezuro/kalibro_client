@@ -34,17 +34,17 @@ module KalibroClient
 
         def self.find_by_name(metric_collector_name)
           begin
-            new request(:get, {name: metric_collector_name})
+            new request(:find, {name: metric_collector_name})["metric_collector_details"]
           rescue
             raise KalibroClient::Errors::RecordNotFound
           end
         end
 
         def self.all_names
-          # FIXME: for some reason, the JSON is not getting automatically parsed
           request(:names, {}, :get)['metric_collector_names'].to_a
         end
 
+        #FIXME: Do we need this method? If so, refactor it. We have a route on KalibroProcessor for it now.
         def self.all
           metric_collectors_names = all_names
           metric_collectors_names.map{ |name| find_by_name(name) }
