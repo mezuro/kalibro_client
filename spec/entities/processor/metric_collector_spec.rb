@@ -22,7 +22,7 @@ describe KalibroClient::Entities::Processor::MetricCollector do
       before :each do
         KalibroClient::Entities::Processor::MetricCollector.
           expects(:request).
-          with(:all_names, {}, :get).
+          with(:names, {}, :get).
           returns({'names' => nil}.to_json)
       end
 
@@ -38,16 +38,16 @@ describe KalibroClient::Entities::Processor::MetricCollector do
       before :each do
         KalibroClient::Entities::Processor::MetricCollector.
           expects(:request).
-          with(:all_names, {}, :get).
-          returns({'metric_collector_names' => [metric_collector_hash, another_metric_collector_hash]}.to_json)
+          with(:names, {}, :get).
+          returns({'metric_collector_names' => [metric_collector_hash[:name], another_metric_collector_hash[:name]]})
       end
 
       it 'should return the two elements' do
         names = KalibroClient::Entities::Processor::MetricCollector.all_names
 
         expect(names.size).to eq(2)
-        expect(names.first).to eq(JSON.parse(metric_collector_hash.to_json))
-        expect(names.last).to eq(JSON.parse(another_metric_collector_hash.to_json))
+        expect(names.first).to eq(metric_collector_hash[:name])
+        expect(names.last).to eq(another_metric_collector_hash[:name])
       end
     end
   end
@@ -57,7 +57,7 @@ describe KalibroClient::Entities::Processor::MetricCollector do
       before :each do
         KalibroClient::Entities::Processor::MetricCollector.
           expects(:request).
-          with(:all_names, {}, :get).
+          with(:names, {}, :get).
           returns({'names' => nil}.to_json)
       end
 
@@ -73,8 +73,8 @@ describe KalibroClient::Entities::Processor::MetricCollector do
       before :each do
         KalibroClient::Entities::Processor::MetricCollector.
           expects(:request).
-          with(:all_names, {}, :get).
-          returns({'metric_collector_names' => [metric_collector.name, another_metric_collector.name]}.to_json)
+          with(:names, {}, :get).
+          returns({'metric_collector_names' => [metric_collector.name, another_metric_collector.name]})
 
         KalibroClient::Entities::Processor::MetricCollector.
           expects(:find_by_name).

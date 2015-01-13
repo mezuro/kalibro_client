@@ -42,7 +42,7 @@ module KalibroClient
 
         def self.all_names
           # FIXME: for some reason, the JSON is not getting automatically parsed
-          JSON.parse(request(:all_names, {}, :get))['metric_collector_names'].to_a
+          request(:names, {}, :get)['metric_collector_names'].to_a
         end
 
         def self.all
