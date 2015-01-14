@@ -22,7 +22,7 @@ module KalibroClient
         attr_accessor :id, :name, :description, :license, :process_period, :type, :address, :configuration_id, :project_id, :send_email
 
         def self.repository_types
-          request('supported_types', {}, :get)['supported_types'].to_a
+          request('types', {}, :get)['types'].to_a
         end
 
         def self.repositories_of(project_id)

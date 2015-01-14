@@ -23,9 +23,8 @@ describe KalibroClient::Entities::Processor::Repository do
     before :each do
       KalibroClient::Entities::Processor::Repository.
         expects(:request).
-        with('supported_types', {}, :get).
-        returns({'supported_types'=>["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"],
-                 :"@xmlns:ns2"=>"http://service.kalibro.org/"})
+        with('types', {}, :get).
+        returns({'types'=>["BAZAAR", "GIT", "MERCURIAL", "REMOTE_TARBALL", "REMOTE_ZIP"]})
     end
 
     it 'should return an array of repository types' do
@@ -38,8 +37,7 @@ describe KalibroClient::Entities::Processor::Repository do
       KalibroClient::Entities::Processor::Repository.
         expects(:request).
         with('of', {project_id: 1}, :get).
-        returns({'repositories' => [],
-                 :"@xmlns:ns2"=>"http://service.kalibro.org/"})
+        returns({'repositories' => []})
     end
 
     it 'should return an array' do
