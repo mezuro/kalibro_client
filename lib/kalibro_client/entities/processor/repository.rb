@@ -64,20 +64,6 @@ module KalibroClient
           return repositories
         end
 
-        def self.find(id)
-          all.each { |repository| return repository if repository.id == id }
-
-          raise KalibroClient::Errors::RecordNotFound
-        end
-
-        def self.exists?(id)
-          begin
-            return true unless find(id).nil?
-          rescue KalibroClient::Errors::RecordNotFound
-            return false
-          end
-        end
-
         private
 
         def save_params

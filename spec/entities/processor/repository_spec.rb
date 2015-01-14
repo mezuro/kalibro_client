@@ -116,33 +116,6 @@ describe KalibroClient::Entities::Processor::Repository do
     end
   end
 
-  describe 'find' do
-    context 'when the repository exists' do
-      before :each do
-        KalibroClient::Entities::Processor::Repository.
-          expects(:all).
-          returns([subject])
-      end
-
-      it 'should return the repository' do
-        expect(KalibroClient::Entities::Processor::Repository.find(subject.id)).to eq(subject)
-      end
-    end
-
-    context "when the repository doesn't exists" do
-      before :each do
-        KalibroClient::Entities::Processor::Repository.
-          expects(:all).
-          returns([FactoryGirl.build(:another_repository)])
-      end
-
-      it 'should raise a RecordNotFound error' do
-        expect { KalibroClient::Entities::Processor::Repository.find(subject.id) }.
-          to raise_error(KalibroClient::Errors::RecordNotFound)
-      end
-    end
-  end
-
   # The only purpose of this test is to cover the overrided save_params method
   describe 'save' do
     subject {FactoryGirl.build(:repository)}
@@ -162,30 +135,6 @@ describe KalibroClient::Entities::Processor::Repository do
     it 'should make a request to save model with id and return true without errors' do
       expect(subject.save).to be(true)
       expect(subject.kalibro_errors).to be_empty
-    end
-  end
-
-  describe 'exists?' do
-    subject {FactoryGirl.build(:repository)}
-
-    context 'when the repository exists' do
-      before :each do
-        KalibroClient::Entities::Processor::Repository.expects(:find).with(subject.id).returns(subject)
-      end
-
-      it 'should return true' do
-        expect(KalibroClient::Entities::Processor::Repository.exists?(subject.id)).to be_truthy
-      end
-    end
-
-    context 'when the repository does not exists' do
-      before :each do
-        KalibroClient::Entities::Processor::Repository.expects(:find).with(subject.id).raises(KalibroClient::Errors::RecordNotFound)
-      end
-
-      it 'should return false' do
-        expect(KalibroClient::Entities::Processor::Repository.exists?(subject.id)).to be_falsey
-      end
     end
   end
 end
