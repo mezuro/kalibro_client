@@ -19,8 +19,8 @@ FactoryGirl.define do
     name "QtCalculator"
     description "A simple calculator"
     license "GPLv3"
-    process_period 1
-    type "SVN"
+    period 1
+    scm_type "SVN"
     address "svn://svn.code.sf.net/p/qt-calculator/code/trunk"
     configuration_id 1
     project_id 1

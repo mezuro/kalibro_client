@@ -33,20 +33,22 @@ describe KalibroClient::Entities::Processor::Repository do
   end
 
   describe 'repositories_of' do
+    let!(:project) { FactoryGirl.build(:project_with_id) }
+    let!(:repository_hash) { FactoryGirl.attributes_for(:repository_with_id) }
     before :each do
       KalibroClient::Entities::Processor::Repository.
         expects(:request).
-        with('of', {project_id: 1}, :get).
-        returns({'repositories' => []})
+        with('', {}, :get, "projects/#{project.id}").
+        returns({'repositories' => [repository_hash]})
     end
 
     it 'should return an array' do
-      expect(KalibroClient::Entities::Processor::Repository.repositories_of(1)).to be_an(Array)
+      expect(KalibroClient::Entities::Processor::Repository.repositories_of(project.id)).to be_an(Array)
     end
 
     it 'should set the repository_id' do
-      KalibroClient::Entities::Processor::Repository.repositories_of(1).each do |repository|
-        expect(repository.project_id).to eq(1)
+      KalibroClient::Entities::Processor::Repository.repositories_of(project.id).each do |repository|
+        expect(repository.project_id).to eq(project.id)
       end
     end
   end
@@ -58,10 +60,10 @@ describe KalibroClient::Entities::Processor::Repository do
     end
   end
 
-  describe "process_period=" do
-    it 'should set the process_period attribute values as integer' do
-      subject.process_period = "222"
-      expect(subject.process_period).to eq(222)
+  describe "period=" do
+    it 'should set the period attribute values as integer' do
+      subject.period = "222"
+      expect(subject.period).to eq(222)
     end
   end
 

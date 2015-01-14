@@ -19,22 +19,22 @@ module KalibroClient
     module Processor
       class Repository < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :name, :description, :license, :process_period, :type, :address, :configuration_id, :project_id, :send_email
+        attr_accessor :id, :name, :description, :license, :period, :scm_type, :address, :configuration_id, :project_id, :send_email, :code_directory
 
         def self.repository_types
           request('types', {}, :get)['types'].to_a
         end
 
         def self.repositories_of(project_id)
-          create_objects_array_from_hash request('of', {project_id: project_id}, :get)
+          create_objects_array_from_hash(request('', {}, :get, "projects/#{project_id}"))
         end
 
         def id=(value)
           @id = value.to_i
         end
 
-        def process_period=(value)
-          @process_period = value.to_i
+        def period=(value)
+          @period = value.to_i
         end
 
         def configuration_id=(value)
