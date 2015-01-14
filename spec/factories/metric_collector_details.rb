@@ -15,16 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :metric_collector, class: KalibroClient::Entities::Processor::MetricCollector do
+  factory :metric_collector_details, class: KalibroClient::Entities::Processor::MetricCollectorDetails do
     name "Analizo"
     description "Analizo is a suite of source code analysis tools."
     supported_metrics { { "total_abstract_classes" => FactoryGirl.build(:metric).to_hash, "loc" => FactoryGirl.build(:loc).to_hash } }
 
-    trait :another_metric_collector do
+    trait :another_metric_collector_details do
       name "Avalio"
       description "Avalio is another source code analyser that hasn't been developed yet."
     end
 
-    factory  :another_metric_collector, traits: [:another_metric_collector]
+    factory  :another_metric_collector_details, traits: [:another_metric_collector_details]
   end
 end

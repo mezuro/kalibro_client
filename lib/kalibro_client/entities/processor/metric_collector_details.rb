@@ -17,7 +17,7 @@
 module KalibroClient
   module Entities
     module Processor
-      class MetricCollector < KalibroClient::Entities::Processor::Base
+      class MetricCollectorDetails < KalibroClient::Entities::Processor::Base
         attr_accessor :name, :description, :supported_metrics, :wanted_metrics, :processing
 
         def supported_metrics=(value)
@@ -45,9 +45,7 @@ module KalibroClient
         end
 
         def self.all
-          response = request('', {}, :get)
-          response['metric_collectors'] = response.delete('metric_collector_details')
-          create_objects_array_from_hash(response)
+          create_objects_array_from_hash(request('', {}, :get))
         end
       end
     end
