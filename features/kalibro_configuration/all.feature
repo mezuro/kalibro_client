@@ -3,7 +3,7 @@ Feature: All
   As an developer
   I want to get all the available configurations
 
-  @kalibro_restart
+  @kalibro_configuration_restart
   Scenario: one configuration
     Given I have a configuration with name "Java"
     When I get all the configurations

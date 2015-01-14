@@ -30,7 +30,7 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
         KalibroClient::Entities::Configurations::KalibroConfiguration.
           expects(:request).
           with('', {}, :get).
-          returns({'kalibro_configurations' => nil}.to_json)
+          returns({'kalibro_configurations' => nil})
       end
 
       it 'should return nil' do
@@ -46,7 +46,7 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
         KalibroClient::Entities::Configurations::KalibroConfiguration.
           expects(:request).
           with('', {}, :get).
-          returns({'kalibro_configurations' => [configuration.to_hash, another_configuration.to_hash]}.to_json)
+          returns({'kalibro_configurations' => [configuration.to_hash, another_configuration.to_hash]})
       end
 
       it 'should return the two elements' do
