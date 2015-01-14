@@ -3,7 +3,7 @@ Feature: Reading listing
   As a developer
   I want to check that on the service
 
-  @kalibro_restart
+  @kalibro_configuration_restart
   Scenario: With existing reading group reading
     Given I have a reading group with name "RG"
     And the given reading group has the following readings:

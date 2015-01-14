@@ -38,9 +38,10 @@ module KalibroClient
         hash
       end
 
-      def self.request(action, params = {}, method = :post)
+      def self.request(action, params = {}, method = :post, prefix="")
         response = client.send(method) do |request|
           url = "/#{endpoint}/#{action}".gsub(":id", params[:id].to_s)
+          url = "/#{prefix}#{url}" unless prefix.empty?
           request.url url
           request.body = params unless params.empty?
           request.options.timeout = 300
@@ -61,7 +62,7 @@ module KalibroClient
 
       def save
         begin
-          response = self.class.request(save_action, save_params)
+          response = self.class.request(save_action, save_params, :post, save_prefix)
           self.id = response[instance_class_name]["id"]
           self.kalibro_errors = response["kalibro_errors"] unless response["kalibro_errors"].nil?
 

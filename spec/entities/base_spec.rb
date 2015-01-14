@@ -117,7 +117,7 @@ describe KalibroClient::Entities::Base do
     before :each do
       KalibroClient::Entities::Base.
         expects(:request).
-        with('', {base: {}}).returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
+        with('', {base: {}}, :post, '').returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
     end
 
     context "when it doesn't have the method id=" do

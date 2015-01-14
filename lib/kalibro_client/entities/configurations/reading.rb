@@ -19,7 +19,7 @@ module KalibroClient
     module Configurations
       class Reading < KalibroClient::Entities::Configurations::Base
 
-        attr_accessor :id, :label, :grade, :color, :group_id
+        attr_accessor :id, :label, :grade, :color, :reading_group_id
 
         def id=(value)
           @id = value.to_i
@@ -29,8 +29,8 @@ module KalibroClient
           @grade = value.to_f
         end
 
-        def group_id=(value)
-          @group_id = value.to_i
+        def reading_group_id=(value)
+          @reading_group_id = value.to_i
         end
 
         def self.find(id)
@@ -39,8 +39,8 @@ module KalibroClient
           new response
         end
 
-        def self.readings_of(group_id)
-          create_objects_array_from_hash(request('of', {reading_group_id: group_id}))
+        def self.readings_of(reading_group_id)
+          create_objects_array_from_hash(request('', {}, :get, "reading_groups/#{reading_group_id}"))
         end
 
         def self.all
@@ -64,9 +64,12 @@ module KalibroClient
         private
 
         def save_params
-          {reading: self.to_hash, reading_group_id: group_id}
+          {reading: self.to_hash, reading_group_id: reading_group_id}
         end
 
+        def save_prefix
+          "reading_groups/#{reading_group_id}"
+        end
       end
     end
   end

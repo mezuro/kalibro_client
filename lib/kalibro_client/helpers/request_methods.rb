@@ -23,6 +23,10 @@ module RequestMethods
     ""
   end
 
+  def save_prefix
+    ""
+  end
+
   def destroy_action
     ":id"
   end

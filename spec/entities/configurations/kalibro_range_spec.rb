@@ -147,7 +147,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
     before :each do
       KalibroClient::Entities::Configurations::KalibroRange.
         expects(:request).
-        with('', {:range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}).
+        with('', {:range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}, :post, '').
         returns("kalibro_range" => { 'id' => 2, 'kalibro_errors' => []})
     end
 

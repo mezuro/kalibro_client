@@ -73,7 +73,7 @@ describe KalibroClient::Entities::Configurations::Reading do
       before do
         KalibroClient::Entities::Configurations::Reading.
           expects(:request).
-          with('of', {reading_group_id: reading_group.id}).
+          with('', {}, :get, "reading_groups/#{reading_group.id}").
           returns({'readings' => [reading.to_hash, reading.to_hash]})
       end
 
@@ -105,13 +105,13 @@ describe KalibroClient::Entities::Configurations::Reading do
 
   # The only purpose of this test is to cover the overrided save_params method
   describe 'save' do
-    let(:reading) { FactoryGirl.build(:reading, {id: nil, group_id: FactoryGirl.build(:reading_group).id}) }
+    let(:reading) { FactoryGirl.build(:reading, {id: nil, reading_group_id: FactoryGirl.build(:reading_group).id}) }
     let(:reading_id) { 73 }
 
     before :each do
       KalibroClient::Entities::Configurations::Reading.
         expects(:request).
-        with('', {reading: reading.to_hash, reading_group_id: reading.group_id}).
+        with('', {reading: reading.to_hash, reading_group_id: reading.reading_group_id}, :post, "reading_groups/#{reading.reading_group_id}").
         returns("reading" => {'id' => reading_id, 'kalibro_errors' => []})
     end
 

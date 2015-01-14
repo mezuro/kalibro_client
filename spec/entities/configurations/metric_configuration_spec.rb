@@ -103,7 +103,7 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.
         expects(:request).
-        with('', {:metric_configuration => subject.to_hash, :configuration_id => subject.configuration_id}).
+        with('', {:metric_configuration => subject.to_hash, :configuration_id => subject.configuration_id}, :post, '').
         returns("metric_configuration" => {'id' => 1, 'kalibro_errors' => []})
     end
 

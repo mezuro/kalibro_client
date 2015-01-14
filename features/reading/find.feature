@@ -3,7 +3,7 @@ Feature: Find
   As an developer
   I want to find reading
 
-  @kalibro_restart
+  @kalibro_configuration_restart
   Scenario: find a valid reading
     Given I have a reading group with name "Kalibro"
     And I have a reading within the given reading group
