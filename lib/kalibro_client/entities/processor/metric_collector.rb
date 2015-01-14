@@ -44,10 +44,10 @@ module KalibroClient
           request(:names, {}, :get)['metric_collector_names'].to_a
         end
 
-        #FIXME: Do we need this method? If so, refactor it. We have a route on KalibroProcessor for it now.
         def self.all
-          metric_collectors_names = all_names
-          metric_collectors_names.map{ |name| find_by_name(name) }
+          response = request('', {}, :get)
+          response['metric_collectors'] = response.delete('metric_collector_details')
+          create_objects_array_from_hash(response)
         end
       end
     end

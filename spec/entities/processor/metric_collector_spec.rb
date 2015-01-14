@@ -57,8 +57,8 @@ describe KalibroClient::Entities::Processor::MetricCollector do
       before :each do
         KalibroClient::Entities::Processor::MetricCollector.
           expects(:request).
-          with(:names, {}, :get).
-          returns({'names' => nil}.to_json)
+          with('', {}, :get).
+          returns({"metric_collector_details" => nil})
       end
 
       it 'should return empty array' do
@@ -67,32 +67,22 @@ describe KalibroClient::Entities::Processor::MetricCollector do
     end
 
     context 'with many metric collectors' do
-      let!(:metric_collector) { FactoryGirl.build(:metric_collector) }
-      let!(:another_metric_collector) { FactoryGirl.build(:another_metric_collector) }
+      let!(:metric_collector_hash) { FactoryGirl.attributes_for(:metric_collector) }
+      let!(:another_metric_collector_hash) { FactoryGirl.attributes_for(:another_metric_collector) }
 
       before :each do
         KalibroClient::Entities::Processor::MetricCollector.
           expects(:request).
-          with(:names, {}, :get).
-          returns({'metric_collector_names' => [metric_collector.name, another_metric_collector.name]})
-
-        KalibroClient::Entities::Processor::MetricCollector.
-          expects(:find_by_name).
-          with(metric_collector.name).
-          returns(metric_collector)
-
-        KalibroClient::Entities::Processor::MetricCollector.
-          expects(:find_by_name).
-          with(another_metric_collector.name).
-          returns(another_metric_collector)
+          with('', {}, :get).
+          returns({"metric_collector_details" => [metric_collector_hash, another_metric_collector_hash]})
       end
 
       it 'should return the two elements' do
         metric_collectors = KalibroClient::Entities::Processor::MetricCollector.all
 
         expect(metric_collectors.size).to eq(2)
-        expect(metric_collectors.first.name).to eq(metric_collector.name)
-        expect(metric_collectors.last.name).to eq(another_metric_collector.name)
+        expect(metric_collectors.first.name).to eq(metric_collector_hash[:name])
+        expect(metric_collectors.last.name).to eq(another_metric_collector_hash[:name])
       end
     end
   end
