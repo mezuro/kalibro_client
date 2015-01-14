@@ -39,8 +39,8 @@ describe KalibroClient::Entities::Configurations::Reading do
         before :each do
           KalibroClient::Entities::Configurations::Reading.
             expects(:request).
-            with('get', {id: reading.id}).
-            returns(reading.to_hash)
+            with(':id', {id: reading.id}, :get).
+            returns('reading' => reading.to_hash)
         end
 
         it 'should return a reading object' do
@@ -56,7 +56,7 @@ describe KalibroClient::Entities::Configurations::Reading do
 
           KalibroClient::Entities::Configurations::Reading.
             expects(:request).
-            with('get', {id: reading.id}).
+            with(':id', {id: reading.id}, :get).
             returns({'error' => 'Error'})
         end
 

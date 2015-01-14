@@ -34,9 +34,9 @@ module KalibroClient
         end
 
         def self.find(id)
-          response = request('get', {id: id})
+          response = request(':id', {id: id}, :get)
           raise KalibroClient::Errors::RecordNotFound unless response['error'].nil?
-          new response
+          new response['reading']
         end
 
         def self.readings_of(reading_group_id)

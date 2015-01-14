@@ -1,6 +1,6 @@
 Given(/^the given reading group has the following readings:$/) do |table|
   hash = table.hashes.first
-  hash[:group_id] = @reading_group.id
+  hash[:reading_group_id] = @reading_group.id
   hash[:id] = nil
 
   @reading = FactoryGirl.create(:reading, hash)
