@@ -26,20 +26,8 @@ module KalibroClient
         end
 
         def self.all
-          # FIXME: for some reason, the JSON is not getting automatically parsed
           create_objects_array_from_hash(request('', {}, :get))
         end
-
-        private
-
-        def self.id_params(id)
-          {id: id}
-        end
-
-        def destroy_params
-          {id: self.id}
-        end
-
       end
     end
   end

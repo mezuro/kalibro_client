@@ -57,34 +57,4 @@ describe KalibroClient::Entities::Configurations::ReadingGroup do
       end
     end
   end
-
-  # The only purpose of this test is to cover the overrided destroy_params private method
-  describe 'destroy' do
-    context 'when it gets successfully destroyed' do
-      before :each do
-        subject.expects(:id).at_least_once.returns(42)
-        KalibroClient::Entities::Configurations::ReadingGroup.
-          expects(:request).
-          with(':id',{id: subject.id}, :delete)
-      end
-
-      it 'should remain with the errors array empty' do
-        subject.destroy
-        expect(subject.kalibro_errors).to be_empty
-      end
-    end
-  end
-
-    # The only purpose of this test is to cover the overrided id_params private method
-  describe 'exists?' do
-    context 'with an inexistent id' do
-      it 'should return false' do
-        KalibroClient::Entities::Configurations::ReadingGroup.
-          expects(:request).
-          with(':id/exists',{id: 0}, :get).
-          returns({'exists' => false})
-        KalibroClient::Entities::Configurations::ReadingGroup.exists?(0)
-      end
-    end
-  end
 end

@@ -115,9 +115,11 @@ module KalibroClient
 
       def destroy
         begin
-          self.class.request(destroy_action, destroy_params, :delete)
+          self.class.request(destroy_action, destroy_params, :delete, destroy_prefix)
+          self.kalibro_errors.empty? ? true : false
         rescue Exception => exception
           add_error exception
+          false
         end
       end
 

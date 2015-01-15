@@ -248,7 +248,7 @@ describe KalibroClient::Entities::Base do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete)
+        KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '')
       end
 
       it 'should remain with the errors array empty' do
@@ -260,7 +260,7 @@ describe KalibroClient::Entities::Base do
     context 'when the destruction fails' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete).raises(Exception.new)
+        KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '').raises(Exception.new)
       end
 
       it "should have an exception inside it's errors" do

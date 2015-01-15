@@ -35,6 +35,10 @@ module RequestMethods
     {id: self.id}
   end
 
+  def destroy_prefix
+    ""
+  end
+
   module ClassMethods
     def exists_action
       ":id/exists"
