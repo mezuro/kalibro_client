@@ -1,5 +1,5 @@
 Given(/^I have a configuration with name "(.*?)"$/) do |name|
-  @configuration = FactoryGirl.create(:configuration, {name: name, id: nil})
+  @configuration = FactoryGirl.create(:configuration, {name: name})
 end
 
 When(/^I get all the configurations$/) do
@@ -7,7 +7,7 @@ When(/^I get all the configurations$/) do
 end
 
 When(/^I create the configuration with name "(.*?)"$/) do |name|
-  @configuration = FactoryGirl.create(:configuration, {name: name, id: nil})
+  @configuration = FactoryGirl.create(:configuration, {name: name})
 end
 
 Then(/^I should get a list with the given configuration$/) do

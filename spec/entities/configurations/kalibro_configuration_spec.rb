@@ -39,7 +39,7 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
     end
 
     context 'with many configurations' do
-      let(:configuration) { FactoryGirl.build(:configuration) }
+      let(:configuration) { FactoryGirl.build(:configuration_with_id) }
       let(:another_configuration) { FactoryGirl.build(:another_configuration) }
 
       before :each do

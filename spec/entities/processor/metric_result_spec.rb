@@ -17,7 +17,7 @@
 require 'spec_helper'
 
 describe KalibroClient::Entities::Processor::MetricResult do
-  let(:metric_configuration) { FactoryGirl.build(:metric_configuration, metric: FactoryGirl.build(:loc)) }
+  let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
   subject { FactoryGirl.build(:metric_result, configuration: metric_configuration) }
 
   describe 'new' do

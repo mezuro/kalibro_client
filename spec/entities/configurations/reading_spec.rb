@@ -68,7 +68,7 @@ describe KalibroClient::Entities::Configurations::Reading do
     end
 
     describe 'readings_of' do
-      let(:reading_group) { FactoryGirl.build(:reading_group) }
+      let(:reading_group) { FactoryGirl.build(:reading_group_with_id) }
 
       before do
         KalibroClient::Entities::Configurations::Reading.
@@ -85,7 +85,7 @@ describe KalibroClient::Entities::Configurations::Reading do
     end
 
     describe 'all' do
-      let(:reading_group) { FactoryGirl.build(:reading_group) }
+      let(:reading_group) { FactoryGirl.build(:reading_group_with_id) }
 
       before :each do
         KalibroClient::Entities::Configurations::ReadingGroup.
@@ -105,7 +105,7 @@ describe KalibroClient::Entities::Configurations::Reading do
 
   # The only purpose of this test is to cover the overrided save_params method
   describe 'save' do
-    let(:reading) { FactoryGirl.build(:reading, {id: nil, reading_group_id: FactoryGirl.build(:reading_group).id}) }
+    let(:reading) { FactoryGirl.build(:reading, {id: nil, reading_group_id: FactoryGirl.build(:reading_group_with_id).id}) }
     let(:reading_id) { 73 }
 
     before :each do

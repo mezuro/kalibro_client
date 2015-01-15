@@ -93,7 +93,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
   end
 
   describe 'ranges_of' do
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
 
     context 'when does not exists the asked range' do
       before :each do
@@ -208,7 +208,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
 
   describe 'all' do
     let(:configuration) { FactoryGirl.build(:configuration) }
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
 
     before :each do
       KalibroClient::Entities::Configurations::KalibroConfiguration.

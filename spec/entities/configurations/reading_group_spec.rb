@@ -18,7 +18,7 @@ require 'spec_helper'
 
 describe KalibroClient::Entities::Configurations::ReadingGroup do
   describe "id=" do
-    subject { FactoryGirl.build(:reading_group) }
+    subject { FactoryGirl.build(:reading_group_with_id) }
 
     it 'should set the id attribute values as an integer' do
       subject.id = "222"
@@ -41,7 +41,7 @@ describe KalibroClient::Entities::Configurations::ReadingGroup do
     end
 
     context 'with many reading_groups' do
-      let(:reading_group) { FactoryGirl.build(:reading_group) }
+      let(:reading_group) { FactoryGirl.build(:reading_group_with_id) }
       before :each do
         KalibroClient::Entities::Configurations::ReadingGroup.
           expects(:request).

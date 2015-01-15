@@ -1,5 +1,5 @@
 Given(/^I have a reading group with name "(.*?)"$/) do |name|
-  @reading_group = FactoryGirl.create(:reading_group, {id: nil, name: name})
+  @reading_group = FactoryGirl.create(:reading_group, {name: name})
 end
 
 When(/^I ask for all the reading groups$/) do

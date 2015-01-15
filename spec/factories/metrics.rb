@@ -32,7 +32,7 @@ FactoryGirl.define do
     description ""
     languages nil
     metric_collector_name "Analizo"
-    
+
     initialize_with { KalibroClient::Entities::Miscellaneous::NativeMetric.new(name, code, scope, languages, metric_collector_name) }
   end
 

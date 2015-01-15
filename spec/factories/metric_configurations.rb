@@ -16,11 +16,16 @@
 
 FactoryGirl.define do
   factory :metric_configuration, class: KalibroClient::Entities::Configurations::MetricConfiguration do
-    id 1
-    metric { FactoryGirl.build(:metric) }
+    metric { FactoryGirl.build(:loc) }
     weight 1
     aggregation_form "AVERAGE"
     reading_group_id 1
     kalibro_configuration_id 1
+
+    trait :with_id do
+      id 1
+    end
+
+    factory :metric_configuration_with_id, traits: [:with_id]
   end
 end

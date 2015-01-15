@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -17,7 +17,7 @@
 FactoryGirl.define do
   factory :metric_result, class: KalibroClient::Entities::Processor::MetricResult do
     id  "42"
-    self.configuration { FactoryGirl.build(:metric_configuration) }
+    self.configuration { FactoryGirl.build(:metric_configuration_with_id) }
     value "10.0"
     aggregated_value "21"
   end

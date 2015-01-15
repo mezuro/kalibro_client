@@ -109,7 +109,7 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   end
 
   describe 'update_attributes' do
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration, metric: FactoryGirl.build(:loc)) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
 
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.any_instance.
@@ -127,7 +127,7 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   end
 
   describe 'to_hash' do
-    subject {FactoryGirl.build(:metric_configuration)}
+    subject {FactoryGirl.build(:metric_configuration_with_id)}
 
     it 'should not include the configuration_id' do
       expect(subject.to_hash[:configuration_id]).to be_nil
@@ -135,13 +135,13 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   end
 
   describe 'metric_configurations_of' do
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration, metric: FactoryGirl.build(:loc)) }
-    let(:configuration) { FactoryGirl.build(:configuration) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
+    let(:configuration) { FactoryGirl.build(:configuration_with_id) }
 
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.
       expects(:request).
-      with(:of, {:configuration_id => configuration.id}, :get).
+      with('', {}, :get, "kalibro_configurations/#{configuration.id}").
       returns({'metric_configurations' => [metric_configuration.to_hash]})
     end
 
@@ -155,7 +155,7 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
 
   # The only purpose of this test is to cover the overrided save_params method
   describe 'save' do
-    subject {FactoryGirl.build(:metric_configuration, {id: nil})}
+    subject {FactoryGirl.build(:metric_configuration)}
 
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.
@@ -171,7 +171,7 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   end
 
   describe 'exists?' do
-    subject {FactoryGirl.build(:metric_configuration)}
+    subject {FactoryGirl.build(:metric_configuration_with_id)}
 
     context 'when the metric configuration exists' do
       before :each do
@@ -195,7 +195,7 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   end
 
   describe 'find' do
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration, metric: FactoryGirl.build(:loc)) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
 
     context 'with an existant MetricConfiguration' do
       before :each do
