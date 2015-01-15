@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,7 +18,7 @@ require 'spec_helper'
 
 describe KalibroClient::Entities::Processor::Processing do
   subject {FactoryGirl.build(:processing)}
-  let(:date) { DateTime.now } 
+  let(:date) { DateTime.now }
   describe 'id=' do
     it 'should convert the id attribute to integer' do
       subject.id = "41"
@@ -35,6 +35,13 @@ describe KalibroClient::Entities::Processor::Processing do
     it 'should convert strings to date format' do
       subject.date = "2013-09-17T18:26:43.151+00:00"
       expect(subject.date).to be_kind_of(DateTime)
+    end
+  end
+
+  describe "repository_id=" do
+    it 'should set the repository_id attribute values as integer' do
+      subject.repository_id = "222"
+      expect(subject.repository_id).to eq(222)
     end
   end
 
