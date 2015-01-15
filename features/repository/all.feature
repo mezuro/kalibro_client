@@ -8,7 +8,7 @@ Feature: Repositories listing
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"
     And the given project has the following Repositories:
-      |   name    | type |              address                  |
+      |   name    | scm_type |              address                  |
       | "Kalibro" |  GIT | https://git.gitorious.org/sbking/sbking.git |
     When I ask for all the repositories
     Then the response should contain the given repository

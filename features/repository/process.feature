@@ -10,7 +10,7 @@ Feature: Process
     And I have a reading group with name "Group"
     And I have a loc configuration within the given configuration
     And the given project has the following Repositories:
-      |   name    | type |              address                  |
+      |   name    | scm_type |              address                  |
       |  Kalibro  |  GIT | https://git.gitorious.org/sbking/sbking.git |
     When I call the process method for the given repository
     Then I should get success
