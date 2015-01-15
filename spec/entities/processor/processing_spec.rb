@@ -218,9 +218,9 @@ describe KalibroClient::Entities::Processor::Processing do
                 with('has_before', {repository_id: repository.id, date: date}).
                 returns({'exists' => true})
 
-              KalibroClient::Entities::Processor::Processing.
+              KalibroClient::Entities::Processor::Repository.
                 expects(:request).once.
-                with('last_before_of', {repository_id: repository.id, date: date}).
+                with("#{repository.id}/last_processing/before", {date: date}).
                 returns({'processing' => processing.to_hash})
             end
 
@@ -308,9 +308,9 @@ describe KalibroClient::Entities::Processor::Processing do
 
         describe 'last_processing_before' do
           before :each do
-            KalibroClient::Entities::Processor::Processing.
+            KalibroClient::Entities::Processor::Repository.
               expects(:request).once.
-              with('last_before_of', {repository_id: repository.id, date: date}).
+              with("#{repository.id}/last_processing/before", {date: date}).
               returns({'processing' => processing.to_hash})
           end
 

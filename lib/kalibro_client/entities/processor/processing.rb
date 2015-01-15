@@ -105,7 +105,7 @@ module KalibroClient
         end
 
         def self.last_processing_before(repository_id, date)
-          new(request('last_before_of', {repository_id: repository_id, :date => date})['processing'])
+          new(Repository.request("#{repository_id}/last_processing/before", {:date => date})['processing'])
         end
       end
     end

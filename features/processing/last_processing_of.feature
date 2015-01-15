@@ -3,7 +3,7 @@ Feature: Last processing of
   As a developer
   I want to be able to retrieve the last processing
 
-  @kalibro_restart @kalibro_processor_restart
+  @kalibro_processor_restart @kalibro_configuration_restart
   Scenario: With one repository just after starting to process
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"

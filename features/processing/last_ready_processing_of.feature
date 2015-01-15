@@ -3,7 +3,7 @@ Feature: Last ready processing of
   As a developer
   I want to be able to check the last ready processing
 
-  @kalibro_restart @kalibro_processor_restart
+  @kalibro_processor_restart @kalibro_configuration_restart @wip
   Scenario: With one repository just after with ready processing
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"
