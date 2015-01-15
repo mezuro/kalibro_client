@@ -131,10 +131,10 @@ describe KalibroClient::Entities::Processor::Processing do
       describe 'last_processing_state_of' do
         let(:any_state)  { "READY" }
         before :each do
-          KalibroClient::Entities::Processor::Processing.
+          KalibroClient::Entities::Processor::Repository.
             expects(:request).once.
-            with('last_state_of', {repository_id: repository.id}).
-            returns({'state' => any_state})
+            with("#{repository.id}/last_processing_state", {}, :get).
+            returns({'processing_state' => any_state})
         end
 
         it 'should return the state as string' do
