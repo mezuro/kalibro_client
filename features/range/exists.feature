@@ -3,7 +3,7 @@ Feature: Exists
   As a developer
   I want to find wich range exists
 
-@kalibro_restart
+@kalibro_configuration_restart
 Scenario: find a valid range
     Given I have a configuration with name "Java"
     And I have a reading group with name "Group"

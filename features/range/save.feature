@@ -3,7 +3,7 @@ Feature: Save
   As a developer
   I want to save it on kalibro database
 
-  @kalibro_restart
+  @kalibro_configuration_restart
   Scenario: When there is a metric configuration
     Given I have a configuration with name "Java"
     And I have a reading group with name "Group"

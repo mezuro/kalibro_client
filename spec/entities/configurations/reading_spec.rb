@@ -32,7 +32,7 @@ describe KalibroClient::Entities::Configurations::Reading do
   end
 
   context 'static methods' do
-    let(:reading) { FactoryGirl.build(:reading) }
+    let(:reading) { FactoryGirl.build(:reading_with_id) }
 
     describe 'find' do
       context 'when the reading exists' do
@@ -105,7 +105,7 @@ describe KalibroClient::Entities::Configurations::Reading do
 
   # The only purpose of this test is to cover the overrided save_params method
   describe 'save' do
-    let(:reading) { FactoryGirl.build(:reading, {id: nil, reading_group_id: FactoryGirl.build(:reading_group_with_id).id}) }
+    let(:reading) { FactoryGirl.build(:reading, {reading_group_id: FactoryGirl.build(:reading_group_with_id).id}) }
     let(:reading_id) { 73 }
 
     before :each do
@@ -123,7 +123,7 @@ describe KalibroClient::Entities::Configurations::Reading do
   end
 
   describe 'exists?' do
-    subject {FactoryGirl.build(:reading)}
+    subject {FactoryGirl.build(:reading_with_id)}
 
     context 'when the reading exists' do
       before :each do

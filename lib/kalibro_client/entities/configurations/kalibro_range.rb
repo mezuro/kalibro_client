@@ -50,38 +50,7 @@ module KalibroClient
         end
 
         def self.ranges_of(metric_configuration_id)
-          self.create_objects_array_from_hash request('of', {metric_configuration_id: metric_configuration_id} )
-        end
-
-        def self.all
-          metric_configurations = []
-          ranges = []
-          configurations = KalibroConfiguration.all
-
-          configurations.each do |config|
-            metric_configurations.concat(MetricConfiguration.metric_configurations_of(config.id))
-          end
-
-          metric_configurations.each do |metric_config|
-            ranges.concat(self.ranges_of(metric_config.id))
-          end
-
-          return ranges
-        end
-
-        def self.find(id)
-          self.all.each do |range|
-            return range if range.id == id
-          end
-          raise KalibroClient::Errors::RecordNotFound
-        end
-
-        def self.exists?(id)
-          begin
-            return true unless self.find(id).nil?
-          rescue KalibroClient::Errors::RecordNotFound
-            return false
-          end
+          self.create_objects_array_from_hash(request('', {}, :get, "metric_configurations/#{metric_configuration_id}"))
         end
 
         def reading
@@ -92,9 +61,12 @@ module KalibroClient
         private
 
         def save_params
-          {range: self.to_hash, metric_configuration_id: self.metric_configuration_id}
+          {kalibro_range: self.to_hash, metric_configuration_id: self.metric_configuration_id}
         end
 
+        def save_prefix
+          "metric_configurations/#{metric_configuration_id}"
+        end
       end
     end
   end

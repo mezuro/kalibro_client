@@ -1,14 +1,13 @@
 Given(/^I have a range within the given reading$/) do
-  @range = FactoryGirl.build(:range, {id: nil, reading_id: @reading.id, metric_configuration_id: @metric_configuration.id})
-  @range.save
+  @range = FactoryGirl.create(:range, {reading_id: @reading.id, metric_configuration_id: @metric_configuration.id})
 end
 
 Given(/^I have an unsaved range$/) do
-  @range = FactoryGirl.build(:range, {id: nil})
+  @range = FactoryGirl.build(:range_with_id)
 end
 
 Given(/^I have an unsaved range within the given reading$/) do
-  @range = FactoryGirl.build(:range, {id: nil, reading_id: @reading.id, metric_configuration_id: @metric_configuration.id})
+  @range = FactoryGirl.build(:range, {reading_id: @reading.id, metric_configuration_id: @metric_configuration.id})
 end
 
 When(/^I ask to save the given range$/) do
@@ -21,21 +20,17 @@ When(/^I ask to save the given range with an inexistent metric configuration$/) 
 end
 
 When(/^I ask ranges of the given metric configuration$/) do
-  @response = KalibroClient::Entities::Configurations::Range.ranges_of @metric_configuration.id
+  @response = KalibroClient::Entities::Configurations::KalibroRange.ranges_of @metric_configuration.id
 end
 
 When(/^I try to save a range with an inexistent metric configuration$/) do
-    @range = FactoryGirl.build(:range, {id: nil, reading_id: @reading.id})
+    @range = FactoryGirl.build(:range_with_id, {reading_id: @reading.id})
     @range.metric_configuration_id = rand(Time.now.to_i)
     @range.save
 end
 
-When(/^I ask for all the ranges$/) do
-  @response = KalibroClient::Entities::Configurations::Range.all
-end
-
 When(/^I search a range with the same id of the given range$/) do
-  @found_range = KalibroClient::Entities::Configurations::Range.find(@range.id.to_i)
+  @found_range = KalibroClient::Entities::Configurations::KalibroRange.find(@range.id.to_i)
 end
 
 Then(/^I should get an empty list$/) do
@@ -64,5 +59,5 @@ Then(/^it should return the same range as the given one$/) do
 end
 
 Then(/^the range should exist$/) do
-  expect(KalibroClient::Entities::Configurations::Range.exists?(@range.id)).to be_truthy
+  expect(KalibroClient::Entities::Configurations::KalibroRange.exists?(@range.id)).to be_truthy
 end

@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,9 +16,8 @@
 
 FactoryGirl.define do
   factory :range, class: KalibroClient::Entities::Configurations::KalibroRange do
-    id 1
-    beginning 1.1 
-    self.end 5.1 
+    beginning 1.1
+    self.end 5.1
     reading_id 3
     comments "Comment"
 
@@ -26,10 +25,15 @@ FactoryGirl.define do
       comments "Another Comment"
     end
 
+    trait :with_id do
+      id 42
+    end
+
     trait :another_id do
       id 2
     end
 
+    factory :range_with_id, traits: [:with_id]
     factory :another_range, traits: [:another_comment, :another_id]
   end
 end

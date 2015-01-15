@@ -1,13 +1,12 @@
 Given(/^the given reading group has the following readings:$/) do |table|
   hash = table.hashes.first
   hash[:reading_group_id] = @reading_group.id
-  hash[:id] = nil
 
   @reading = FactoryGirl.create(:reading, hash)
 end
 
 Given(/^I have a reading within the given reading group$/) do
-  @reading = FactoryGirl.create(:reading, {id: nil, reading_group_id: @reading_group.id})
+  @reading = FactoryGirl.create(:reading, {reading_group_id: @reading_group.id})
 end
 
 When(/^I ask for all the readings$/) do

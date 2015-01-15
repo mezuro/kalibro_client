@@ -17,7 +17,7 @@
 require 'spec_helper'
 
 describe KalibroClient::Entities::Configurations::KalibroRange do
-  subject { FactoryGirl.build(:range) }
+  subject { FactoryGirl.build(:range_with_id) }
 
   describe 'id=' do
     it 'should set the value of the attribute id as an integer' do
@@ -58,7 +58,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
   end
 
   describe 'getting reading attribute' do
-    let(:reading) { FactoryGirl.build(:reading) }
+    let(:reading) { FactoryGirl.build(:reading_with_id) }
 
     before :each do
       KalibroClient::Entities::Configurations::Reading.
@@ -99,7 +99,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
       before :each do
         KalibroClient::Entities::Configurations::KalibroRange.
           expects(:request).
-          with('of', {metric_configuration_id: metric_configuration.id}).
+          with('', {}, :get, "metric_configurations/#{metric_configuration.id}").
           returns({'ranges' => nil})
       end
 
@@ -112,7 +112,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
       before :each do
         KalibroClient::Entities::Configurations::KalibroRange.
           expects(:request).
-          with('of', {metric_configuration_id: metric_configuration.id}).
+          with('', {}, :get, "metric_configurations/#{metric_configuration.id}").
           returns({'kalibro_ranges' => subject.to_hash})
       end
 
@@ -128,7 +128,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
       before :each do
         KalibroClient::Entities::Configurations::KalibroRange.
           expects(:request).
-          with('of', {metric_configuration_id: metric_configuration.id}).
+          with('', {}, :get, "metric_configurations/#{metric_configuration.id}").
           returns({'kalibro_ranges' => [subject.to_hash, another_range.to_hash]})
       end
 
@@ -142,90 +142,18 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
 
   # The only purpose of this test is to cover the overrided save_params method
   describe 'save' do
-    subject {FactoryGirl.build(:range, {id: nil})}
+    subject {FactoryGirl.build(:range)}
 
     before :each do
       KalibroClient::Entities::Configurations::KalibroRange.
         expects(:request).
-        with('', {:range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}, :post, '').
+        with('', {:kalibro_range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}, :post, "metric_configurations/#{subject.metric_configuration_id}").
         returns("kalibro_range" => { 'id' => 2, 'kalibro_errors' => []})
     end
 
     it 'should make a request to save model with id and return true without errors' do
       expect(subject.save).to be(true)
       expect(subject.kalibro_errors).to be_empty
-    end
-  end
-
-  describe 'exists?' do
-    context 'when the range exists' do
-      before :each do
-        KalibroClient::Entities::Configurations::KalibroRange.expects(:find).with(subject.id).returns(subject)
-      end
-
-      it 'should return true' do
-        expect(KalibroClient::Entities::Configurations::KalibroRange.exists?(subject.id)).to be_truthy
-      end
-    end
-
-    context 'when the range does not exists' do
-      before :each do
-        KalibroClient::Entities::Configurations::KalibroRange.expects(:find).with(subject.id).raises(KalibroClient::Errors::RecordNotFound)
-      end
-
-      it 'should return false' do
-        expect(KalibroClient::Entities::Configurations::KalibroRange.exists?(subject.id)).to be_falsey
-      end
-    end
-  end
-
-  describe 'find' do
-    context 'when the range exists' do
-      before :each do
-        KalibroClient::Entities::Configurations::KalibroRange.
-          expects(:all).
-          returns([subject])
-      end
-
-      it 'should return the range' do
-        expect(KalibroClient::Entities::Configurations::KalibroRange.find(subject.id)).to eq(subject)
-      end
-    end
-
-    context "when the range doesn't exists" do
-      before :each do
-        KalibroClient::Entities::Configurations::KalibroRange.
-          expects(:all).
-          returns([FactoryGirl.build(:another_range)])
-      end
-
-      it 'should raise a RecordNotFound error' do
-        expect { KalibroClient::Entities::Configurations::KalibroRange.find(subject.id) }.
-          to raise_error(KalibroClient::Errors::RecordNotFound)
-      end
-    end
-  end
-
-  describe 'all' do
-    let(:configuration) { FactoryGirl.build(:configuration) }
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
-
-    before :each do
-      KalibroClient::Entities::Configurations::KalibroConfiguration.
-        expects(:all).
-        returns([configuration])
-      KalibroClient::Entities::Configurations::MetricConfiguration.
-        expects(:metric_configurations_of).
-        with(configuration.id).
-        returns([metric_configuration])
-      KalibroClient::Entities::Configurations::KalibroRange.
-        expects(:ranges_of).
-        with(metric_configuration.id).
-        returns([subject])
-    end
-
-    it 'should list all the ranges' do
-      expect(KalibroClient::Entities::Configurations::KalibroRange.all).to include(subject)
     end
   end
 end

@@ -3,7 +3,7 @@ Feature: Range of
   As a developer
   I want to see all the ranges of the given metric configuration
 
-  @kalibro_restart
+  @kalibro_configuration_restart
   Scenario: With a inexistent range
     Given I have a configuration with name "Java"
     And I have a reading group with name "Group"
@@ -11,7 +11,7 @@ Feature: Range of
     When I ask ranges of the given metric configuration
     Then I should get an empty list
 
-  @kalibro_restart
+  @kalibro_configuration_restart
   Scenario: With an existing range
     Given I have a configuration with name "Java"
     And I have a reading group with name "Group"
