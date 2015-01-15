@@ -97,7 +97,7 @@ module KalibroClient
         end
 
         def self.last_processing_of(repository_id)
-          new(request('last_of', {repository_id: repository_id})['processing'])
+          new(Repository.request("#{repository_id}/last_processing")['processing'])
         end
 
         def self.first_processing_after(repository_id, date)
