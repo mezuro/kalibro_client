@@ -32,18 +32,72 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   end
 
   describe 'metric=' do
-    let(:metric) { FactoryGirl.build(:metric) }
 
-    before :each do
-      KalibroClient::Entities::Miscellaneous::Metric.
-        expects(:to_object).at_least_once.
-        with(metric.to_hash).
-        returns(metric)
+    context 'with a Hash' do
+      context 'Metric' do
+        let!(:metric) { FactoryGirl.build(:metric) }
+
+        before :each do
+          KalibroClient::Entities::Miscellaneous::Metric.
+          expects(:to_object).at_least_once.
+          with(metric.to_hash).
+          returns(metric)
+        end
+
+        it 'should convert the argument and set the metric' do
+          subject.metric = metric.to_hash
+          expect(subject.metric).to eq(metric)
+        end
+      end
+
+      context 'NativeMetric' do
+        let!(:metric) { FactoryGirl.build(:loc) }
+
+        before :each do
+          KalibroClient::Entities::Miscellaneous::NativeMetric.
+          expects(:to_object).at_least_once.
+          with(metric.to_hash).
+          returns(metric)
+        end
+
+        it 'should convert the argument and set the metric' do
+          subject.metric = metric.to_hash
+          expect(subject.metric).to eq(metric)
+        end
+      end
+
+      context 'CompoundMetric' do
+        let!(:metric) { FactoryGirl.build(:compound_metric) }
+
+        before :each do
+          KalibroClient::Entities::Miscellaneous::CompoundMetric.
+          expects(:to_object).at_least_once.
+          with(metric.to_hash).
+          returns(metric)
+        end
+
+        it 'should convert the argument and set the metric' do
+          subject.metric = metric.to_hash
+          expect(subject.metric).to eq(metric)
+        end
+      end
     end
 
-    it 'should convert the argument and set the metric' do
-      subject.metric = metric.to_hash
-      expect(subject.metric).to eq(metric)
+    context 'with a Metric' do
+      let!(:metric) { FactoryGirl.build(:metric) }
+
+      it 'should convert the argument and set the metric' do
+        subject.metric = metric
+        expect(subject.metric).to eq(metric)
+      end
+    end
+
+    context 'with something else' do
+      let!(:repository) { FactoryGirl.build(:repository) }
+
+      it 'should convert the argument and set the metric' do
+        expect { subject.metric=(repository) }.to raise_error(TypeError).with_message("Cannot cast #{repository.inspect} into Metric")
+      end
     end
   end
 
@@ -55,17 +109,20 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   end
 
   describe 'update_attributes' do
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration, metric: FactoryGirl.build(:loc)) }
 
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.any_instance.
-        expects(:save).
-        returns(true)
+      expects(:save).
+      returns(true)
     end
 
     it 'should set the attributes and save' do
       subject.update_attributes(metric_configuration.to_hash)
-      expect(subject.code).to eq(metric_configuration.code)
+      expect(subject.weight).to eq(metric_configuration.weight)
+      expect(subject.aggregation_form).to eq(metric_configuration.aggregation_form)
+      expect(subject.reading_group_id).to eq(metric_configuration.reading_group_id)
+      expect(subject.kalibro_configuration_id).to eq(metric_configuration.kalibro_configuration_id)
     end
   end
 
@@ -78,14 +135,14 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   end
 
   describe 'metric_configurations_of' do
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration, metric: FactoryGirl.build(:loc)) }
     let(:configuration) { FactoryGirl.build(:configuration) }
 
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.
-        expects(:request).
-        with(:of, {:configuration_id => configuration.id}, :get).
-        returns({'metric_configurations' => [metric_configuration.to_hash]})
+      expects(:request).
+      with(:of, {:configuration_id => configuration.id}, :get).
+      returns({'metric_configurations' => [metric_configuration.to_hash]})
     end
 
     it 'should return a array with a metric configuration' do
@@ -102,9 +159,9 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
 
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.
-        expects(:request).
-        with('', {:metric_configuration => subject.to_hash, :configuration_id => subject.configuration_id}, :post, '').
-        returns("metric_configuration" => {'id' => 1, 'kalibro_errors' => []})
+      expects(:request).
+      with('', {:metric_configuration => subject.to_hash, :kalibro_configuration_id => subject.kalibro_configuration_id}, :post, '').
+      returns("metric_configuration" => {'id' => 1, 'kalibro_errors' => []})
     end
 
     it 'should make a request to save model with id and return true without errors' do
@@ -138,14 +195,14 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   end
 
   describe 'find' do
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration, metric: FactoryGirl.build(:loc)) }
 
     context 'with an existant MetricConfiguration' do
       before :each do
         KalibroClient::Entities::Configurations::MetricConfiguration.
-          expects(:request).
-          with(:get, {id: metric_configuration.id}).
-          returns(metric_configuration.to_hash)
+        expects(:request).
+        with(':id', {id: metric_configuration.id}, :get).
+        returns({'metric_configuration' => metric_configuration.to_hash})
       end
 
       it 'should return the metric_configuration' do
@@ -159,14 +216,14 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
         any_code = rand(Time.now.to_i)
         any_error_message = ""
         KalibroClient::Entities::Configurations::MetricConfiguration.
-          expects(:request).
-          with(:get, {id: metric_configuration.id}).
-          returns({'error' => 'RecordNotFound'})
+        expects(:request).
+        with(':id', {id: metric_configuration.id}, :get).
+        returns({'error' => 'RecordNotFound'})
       end
 
       it 'should raise the RecordNotFound error' do
         expect {KalibroClient::Entities::Configurations::MetricConfiguration.find(metric_configuration.id)}.
-          to raise_error(KalibroClient::Errors::RecordNotFound)
+        to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
   end

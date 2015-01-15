@@ -19,7 +19,7 @@ module KalibroClient
     module Configurations
       class MetricConfiguration < KalibroClient::Entities::Configurations::Base
 
-        attr_accessor :id, :code, :metric, :metric_collector_name, :weight, :aggregation_form, :reading_group_id, :configuration_id
+        attr_accessor :id, :metric, :weight, :aggregation_form, :reading_group_id, :kalibro_configuration_id
 
         def id=(value)
           @id = value.to_i
@@ -29,8 +29,26 @@ module KalibroClient
           @reading_group_id = value.to_i
         end
 
+        def kalibro_configuration_id=(value)
+          @kalibro_configuration_id = value.to_i
+        end
+
         def metric=(value)
-          @metric = KalibroClient::Entities::Miscellaneous::Metric.to_object(value)
+          if value.is_a?(Hash)
+            if value['type'] == "NativeMetricSnapshot" || value[:type] == "NativeMetricSnapshot"
+              @metric = KalibroClient::Entities::Miscellaneous::NativeMetric.to_object(value)
+            elsif value['type'] == "CompoundMetricSnapshot" || value[:type] == "CompoundMetricSnapshot"
+              @metric = KalibroClient::Entities::Miscellaneous::CompoundMetric.to_object(value)
+            else
+              @metric = KalibroClient::Entities::Miscellaneous::Metric.to_object(value)
+            end
+          elsif value.is_a?(KalibroClient::Entities::Miscellaneous::Metric)
+            @metric = value
+          else
+            raise TypeError.new("Cannot cast #{value.inspect} into Metric")
+          end
+
+          return @metric
         end
 
         def weight=(value)
@@ -51,10 +69,9 @@ module KalibroClient
         end
 
         def self.find(id)
-          #TODO: on future versions of Kalibro this begin/rescue will be unnecessary
-          metric_configuration = request(:get, {id: id})
+          metric_configuration = request(':id', {id: id}, :get)
           raise KalibroClient::Errors::RecordNotFound unless metric_configuration['error'].nil?
-          return new(metric_configuration)
+          return new(metric_configuration['metric_configuration'])
         end
 
         def self.exists?(id)
@@ -68,7 +85,7 @@ module KalibroClient
         private
 
         def save_params
-          {:metric_configuration => self.to_hash, :configuration_id => self.configuration_id}
+          {:metric_configuration => self.to_hash, :kalibro_configuration_id => self.kalibro_configuration_id}
         end
       end
     end

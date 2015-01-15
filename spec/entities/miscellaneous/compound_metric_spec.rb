@@ -15,5 +15,22 @@ describe KalibroClient::Entities::Miscellaneous::CompoundMetric, :type => :model
         end
       end
     end
+
+    describe 'to_object' do
+      subject{ FactoryGirl.build(:compound_metric) }
+
+      context 'with a hash' do
+        it 'is expected to create a object from the hash' do
+          subject_hash = Hash[subject.to_hash.map { |k,v| if v.is_a?(Array) then [k.to_s, v] else [k.to_s, v.to_s] end}]
+          expect(KalibroClient::Entities::Miscellaneous::CompoundMetric.to_object(subject_hash)).to eq(subject)
+        end
+      end
+
+      context 'with a metric' do
+        it 'is expected to be the same object as the argument' do
+          expect(KalibroClient::Entities::Miscellaneous::CompoundMetric.to_object(subject)).to eq(subject)
+        end
+      end
+    end
   end
 end

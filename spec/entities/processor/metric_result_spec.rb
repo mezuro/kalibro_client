@@ -17,7 +17,7 @@
 require 'spec_helper'
 
 describe KalibroClient::Entities::Processor::MetricResult do
-  let(:metric_configuration) { FactoryGirl.build(:metric_configuration) }
+  let(:metric_configuration) { FactoryGirl.build(:metric_configuration, metric: FactoryGirl.build(:loc)) }
   subject { FactoryGirl.build(:metric_result, configuration: metric_configuration) }
 
   describe 'new' do
@@ -39,7 +39,10 @@ describe KalibroClient::Entities::Processor::MetricResult do
   describe 'configuration=' do
     it 'should set the configuration' do
       subject.configuration = metric_configuration.to_hash
-      expect(subject.configuration.code).to eq(metric_configuration.code)
+      expect(subject.configuration.weight).to eq(metric_configuration.weight)
+      expect(subject.configuration.aggregation_form).to eq(metric_configuration.aggregation_form)
+      expect(subject.configuration.reading_group_id).to eq(metric_configuration.reading_group_id)
+      expect(subject.configuration.kalibro_configuration_id).to eq(metric_configuration.kalibro_configuration_id)
     end
   end
 

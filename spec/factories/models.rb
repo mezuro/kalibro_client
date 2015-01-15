@@ -16,5 +16,8 @@
 
 FactoryGirl.define do
   factory :model, class: KalibroClient::Entities::Base do
+  end
+
+  factory :misc_model, class: KalibroClient::Entities::Miscellaneous::Base do
   end  
 end

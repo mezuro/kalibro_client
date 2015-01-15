@@ -25,13 +25,24 @@ FactoryGirl.define do
     initialize_with { KalibroClient::Entities::Miscellaneous::Metric.new(type, name, code, scope) }
   end
 
-  factory :loc, class: KalibroClient::Entities::Miscellaneous::Metric do
+  factory :loc, class: KalibroClient::Entities::Miscellaneous::NativeMetric do
     name "Lines of Code"
     code "loc"
-    type :native
     scope "CLASS"
     description ""
+    languages nil
+    metric_collector_name "Analizo"
     
-    initialize_with { KalibroClient::Entities::Miscellaneous::Metric.new(type, name, code, scope) }
+    initialize_with { KalibroClient::Entities::Miscellaneous::NativeMetric.new(name, code, scope, languages, metric_collector_name) }
+  end
+
+  factory :compound_metric, class: KalibroClient::Entities::Miscellaneous::CompoundMetric do
+    name "Lines of Code"
+    code "loc"
+    scope "CLASS"
+    description ""
+    script "return 0;"
+
+    initialize_with { KalibroClient::Entities::Miscellaneous::CompoundMetric.new(name, code, scope, script) }
   end
 end

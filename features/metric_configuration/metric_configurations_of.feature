@@ -3,7 +3,7 @@ Feature: MetricConfigurationsOf
   As an developer
   I want to get all metric_configurations of a configuration
 
-  @kalibro_restart
+  @kalibro_configuration_restart
   Scenario: get a list of all metric configurations of some configuration
 	  Given I have a configuration with name "Kalibro for Java"
     And I have a reading group with name "Group"
@@ -11,7 +11,7 @@ Feature: MetricConfigurationsOf
     When I request all metric configurations of the given configuration
     Then I should get a list of its metric configurations
 
-  @kalibro_restart
+  @kalibro_configuration_restart
   Scenario: get an empty list for a configuration without metric configurations
   	Given I have a configuration with name "Kalibro for Java"
     When I request all metric configurations of the given configuration

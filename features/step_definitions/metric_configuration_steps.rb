@@ -2,7 +2,7 @@ Given(/^I have a metric configuration within the given configuration$/) do
   @metric_configuration = FactoryGirl.create(:metric_configuration,
                                              {id: nil,
                                               reading_group_id: @reading_group.id,
-                                              configuration_id: @configuration.id})
+                                              kalibro_configuration_id: @configuration.id})
 end
 
 Given(/^I have a metric configuration within the given configuration with the given metric$/) do
@@ -10,17 +10,15 @@ Given(/^I have a metric configuration within the given configuration with the gi
                                              {id: nil,
                                               metric: @metric,
                                               reading_group_id: @reading_group.id,
-                                              configuration_id: @configuration.id,
-                                              code: "loc"})
+                                              kalibro_configuration_id: @configuration.id})
 end
 
 Given(/^I have a loc configuration within the given configuration$/) do
   @metric_configuration = FactoryGirl.create(:metric_configuration,
                                              {id: nil,
-                                              metric: FactoryGirl.create(:loc),
+                                              metric: FactoryGirl.build(:loc),
                                               reading_group_id: @reading_group.id,
-                                              configuration_id: @configuration.id,
-                                              code: "loc"})
+                                              kalibro_configuration_id: @configuration.id})
 end
 
 When(/^I search a metric configuration with the same id of the given metric configuration$/) do

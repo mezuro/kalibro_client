@@ -17,12 +17,10 @@
 FactoryGirl.define do
   factory :metric_configuration, class: KalibroClient::Entities::Configurations::MetricConfiguration do
     id 1
-    code 'total_abstract_classes'
-    metric {FactoryGirl.build(:metric)}
-    metric_collector_name "Analizo"
+    metric { FactoryGirl.build(:metric) }
     weight 1
     aggregation_form "AVERAGE"
     reading_group_id 1
-    configuration_id 1
+    kalibro_configuration_id 1
   end
 end

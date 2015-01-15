@@ -7,6 +7,14 @@ module KalibroClient
           super('CompoundMetricSnapshot', name, code, scope)
           @script = script
         end
+
+        def self.to_object(value)
+          if value.is_a?(Hash)
+            new(value['name'], value['code'], value['scope'], value['script'])
+          else
+            value
+          end
+        end
       end
     end
   end
