@@ -78,7 +78,7 @@ describe KalibroClient::Entities::Processor::Repository do
     before :each do
       KalibroClient::Entities::Processor::Repository.
         expects(:request).
-        with('process', {id: subject.id})
+        with("#{subject.id}/process", {}, :get)
     end
 
     it 'should call the request method' do

@@ -19,10 +19,14 @@ module KalibroClient
     module Processor
       class Processing < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :date, :state, :error, :process_time, :results_root_id, :error_message
+        attr_accessor :id, :date, :state, :error, :process_time, :root_module_result_id, :error_message, :repository_id
 
         def id=(value)
           @id = value.to_i
+        end
+
+        def repository_id=(value)
+          @repository_id = value.to_i
         end
 
         def date=(value)
@@ -41,8 +45,8 @@ module KalibroClient
           @process_time
         end
 
-        def results_root_id=(value)
-          @results_root_id = value.to_i
+        def root_module_result_id=(value)
+          @root_module_result_id = value.to_i
         end
 
         def self.processing_of(repository_id)
@@ -97,7 +101,7 @@ module KalibroClient
         end
 
         def self.first_processing_after(repository_id, date)
-          new(request('first_after_of', {repository_id: repository_id, :date => date})['processing'])
+          new(Repository.request("#{repository_id}/first_processing/after", {:date => date})["processing"])
         end
 
         def self.last_processing_before(repository_id, date)

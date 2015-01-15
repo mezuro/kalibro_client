@@ -62,10 +62,10 @@ describe KalibroClient::Entities::Processor::Processing do
     end
   end
 
-  describe 'results_root_id=' do
+  describe 'root_module_result_id=' do
     it 'should set the attribute results root id as an integer' do
-      subject.results_root_id = "36"
-      expect(subject.results_root_id).to eq 36
+      subject.root_module_result_id = "36"
+      expect(subject.root_module_result_id).to eq 36
     end
   end
 
@@ -194,9 +194,9 @@ describe KalibroClient::Entities::Processor::Processing do
                 with('has_after', {repository_id: repository.id, date: date}).
                 returns({'exists' => true})
 
-              KalibroClient::Entities::Processor::Processing.
+              KalibroClient::Entities::Processor::Repository.
                 expects(:request).once.
-                with('first_after_of', {repository_id: repository.id, date: date}).
+                with("#{repository.id}/first_processing/after", {date: date}).
                 returns({'processing' => processing.to_hash})
             end
 
@@ -294,9 +294,9 @@ describe KalibroClient::Entities::Processor::Processing do
 
         describe 'first_processing_after' do
           before :each do
-            KalibroClient::Entities::Processor::Processing.
+            KalibroClient::Entities::Processor::Repository.
               expects(:request).once.
-              with('first_after_of', {repository_id: repository.id, date: date}).
+              with("#{repository.id}/first_processing/after", {date: date}).
               returns({'processing' => processing.to_hash})
           end
 

@@ -46,7 +46,7 @@ module KalibroClient
         end
 
         def process
-          self.class.request('process', {id: self.id})
+          self.class.request("#{self.id}/process", {}, :get)
         end
 
         def cancel_processing_of_repository
