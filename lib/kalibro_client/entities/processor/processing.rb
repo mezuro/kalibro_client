@@ -69,19 +69,19 @@ module KalibroClient
         end
 
         def self.has_processing(repository_id)
-          request('has', {repository_id: repository_id})['exists']
+          Repository.request("#{repository_id}/has_processing")['has_processing']
         end
 
         def self.has_ready_processing(repository_id)
-          Repository.request("#{repository_id}/has_ready_processing", {}, :get)['exists']
+          Repository.request("#{repository_id}/has_ready_processing", {}, :get)['has_ready_processing']
         end
 
         def self.has_processing_after(repository_id, date)
-          request('has_after', {repository_id: repository_id, :date => date})['exists']
+          Repository.request("#{repository_id}/has_processing/after", {:date => date})['has_processing_in_time']
         end
 
         def self.has_processing_before(repository_id, date)
-          request('has_before', {repository_id: repository_id, :date => date})['exists']
+          Repository.request("#{repository_id}/has_processing/before", {:date => date})['has_processing_in_time']
         end
 
         def self.last_processing_state_of(repository_id)
