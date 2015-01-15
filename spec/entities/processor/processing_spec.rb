@@ -88,9 +88,9 @@ describe KalibroClient::Entities::Processor::Processing do
 
       describe 'has_ready_processing' do
         before :each do
-          KalibroClient::Entities::Processor::Processing.
+          KalibroClient::Entities::Processor::Repository.
             expects(:request).once.
-            with('has_ready', {repository_id: repository.id}).
+            with("#{repository.id}/has_ready_processing", {}, :get).
             returns({'exists' => false})
         end
 
@@ -149,9 +149,9 @@ describe KalibroClient::Entities::Processor::Processing do
         describe 'processing_of' do
           context 'when the repository has a ready processing' do
             before do
-              KalibroClient::Entities::Processor::Processing.
+              KalibroClient::Entities::Processor::Repository.
                 expects(:request).once.
-                with('has_ready', {repository_id: repository.id}).
+                with("#{repository.id}/has_ready_processing", {}, :get).
                 returns({'exists' => true})
 
               KalibroClient::Entities::Processor::Processing.
@@ -168,9 +168,9 @@ describe KalibroClient::Entities::Processor::Processing do
 
           context 'when the repository has not a ready processing' do
             before do
-              KalibroClient::Entities::Processor::Processing.
+              KalibroClient::Entities::Processor::Repository.
                 expects(:request).once.
-                with('has_ready', {repository_id: repository.id}).
+                with("#{repository.id}/has_ready_processing", {}, :get).
                 returns({'exists' => false})
 
               KalibroClient::Entities::Processor::Processing.

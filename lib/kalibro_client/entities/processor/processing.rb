@@ -73,7 +73,7 @@ module KalibroClient
         end
 
         def self.has_ready_processing(repository_id)
-          request('has_ready', {repository_id: repository_id})['exists']
+          Repository.request("#{repository_id}/has_ready_processing", {}, :get)['exists']
         end
 
         def self.has_processing_after(repository_id, date)
