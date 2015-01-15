@@ -93,7 +93,7 @@ module KalibroClient
         end
 
         def self.first_processing_of(repository_id)
-          new(request('first_of', {repository_id: repository_id})['processing'])
+          new(Repository.request("#{repository_id}/first_processing")['processing'])
         end
 
         def self.last_processing_of(repository_id)

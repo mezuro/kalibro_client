@@ -266,9 +266,9 @@ describe KalibroClient::Entities::Processor::Processing do
 
         describe 'first_processing_of' do
           before :each do
-            KalibroClient::Entities::Processor::Processing.
+            KalibroClient::Entities::Processor::Repository.
               expects(:request).once.
-              with('first_of', {repository_id: repository.id}).
+              with("#{repository.id}/first_processing").
               returns({'processing' => processing.to_hash})
           end
 
