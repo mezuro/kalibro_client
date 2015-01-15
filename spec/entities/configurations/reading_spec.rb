@@ -33,40 +33,6 @@ describe KalibroClient::Entities::Configurations::Reading do
 
   context 'static methods' do
     let(:reading) { FactoryGirl.build(:reading_with_id) }
-
-    describe 'find' do
-      context 'when the reading exists' do
-        before :each do
-          KalibroClient::Entities::Configurations::Reading.
-            expects(:request).
-            with(':id', {id: reading.id}, :get).
-            returns('reading' => reading.to_hash)
-        end
-
-        it 'should return a reading object' do
-          response = KalibroClient::Entities::Configurations::Reading.find(reading.id)
-          expect(response.label).to eq(reading.label)
-        end
-      end
-
-      context "when the reading doesn't exists" do
-        before :each do
-          any_code = rand(Time.now.to_i)
-          any_error_message = ""
-
-          KalibroClient::Entities::Configurations::Reading.
-            expects(:request).
-            with(':id', {id: reading.id}, :get).
-            returns({'error' => 'Error'})
-        end
-
-        it 'should return a reading object' do
-          expect {KalibroClient::Entities::Configurations::Reading.find(reading.id) }.
-            to raise_error(KalibroClient::Errors::RecordNotFound)
-        end
-      end
-    end
-
     describe 'readings_of' do
       let(:reading_group) { FactoryGirl.build(:reading_group_with_id) }
 
@@ -81,24 +47,6 @@ describe KalibroClient::Entities::Configurations::Reading do
         response = KalibroClient::Entities::Configurations::Reading.readings_of reading_group.id
         expect(response.first.label).to eq(reading.label)
         expect(response.last.label).to eq(reading.label)
-      end
-    end
-
-    describe 'all' do
-      let(:reading_group) { FactoryGirl.build(:reading_group_with_id) }
-
-      before :each do
-        KalibroClient::Entities::Configurations::ReadingGroup.
-          expects(:all).
-          returns([reading_group])
-        KalibroClient::Entities::Configurations::Reading.
-          expects(:readings_of).
-          with(reading_group.id).
-          returns([subject])
-      end
-
-      it 'should list all the readings' do
-        expect(KalibroClient::Entities::Configurations::Reading.all).to include(subject)
       end
     end
   end
@@ -119,30 +67,6 @@ describe KalibroClient::Entities::Configurations::Reading do
       expect(reading.save).to be(true)
       expect(reading.id).to eq(reading_id)
       expect(reading.kalibro_errors).to be_empty
-    end
-  end
-
-  describe 'exists?' do
-    subject {FactoryGirl.build(:reading_with_id)}
-
-    context 'when the reading exists' do
-      before :each do
-        KalibroClient::Entities::Configurations::Reading.expects(:find).with(subject.id).returns(subject)
-      end
-
-      it 'should return true' do
-        expect(KalibroClient::Entities::Configurations::Reading.exists?(subject.id)).to be_truthy
-      end
-    end
-
-    context 'when the reading does not exists' do
-      before :each do
-        KalibroClient::Entities::Configurations::Reading.expects(:find).with(subject.id).raises(KalibroClient::Errors::RecordNotFound)
-      end
-
-      it 'should return false' do
-        expect(KalibroClient::Entities::Configurations::Reading.exists?(subject.id)).to be_falsey
-      end
     end
   end
 end

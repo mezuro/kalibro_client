@@ -33,32 +33,8 @@ module KalibroClient
           @reading_group_id = value.to_i
         end
 
-        def self.find(id)
-          response = request(':id', {id: id}, :get)
-          raise KalibroClient::Errors::RecordNotFound unless response['error'].nil?
-          new response['reading']
-        end
-
         def self.readings_of(reading_group_id)
           create_objects_array_from_hash(request('', {}, :get, "reading_groups/#{reading_group_id}"))
-        end
-
-        def self.all
-          reading_groups = ReadingGroup.all
-          readings = []
-
-          reading_groups.each do |reading_group|
-            readings.concat(readings_of(reading_group.id))
-          end
-          return readings
-        end
-
-        def self.exists?(id)
-          begin
-            return true unless find(id).nil?
-          rescue KalibroClient::Errors::RecordNotFound
-            return false
-          end
         end
 
         private
