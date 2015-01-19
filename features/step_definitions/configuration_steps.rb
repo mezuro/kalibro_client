@@ -17,3 +17,12 @@ end
 Then(/^the configuration should exist$/) do
   expect(KalibroClient::Entities::Configurations::KalibroConfiguration.exists?(@configuration.id)).to be_truthy
 end
+
+When(/^I destroy the configuration$/) do
+  @configuration.destroy
+end
+
+Then(/^the configuration should not exist$/) do
+  expect(KalibroClient::Entities::Configurations::KalibroConfiguration.exists?(@configuration.id)).to be_falsey
+end
+
