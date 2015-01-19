@@ -60,3 +60,12 @@ end
 Then(/^the repositories should contain the project id$/) do
   expect(@response.first.project_id).to eq(@project.id)
 end
+
+When(/^I destroy the repository$/) do
+  @repository.destroy
+end
+
+Then(/^the repository should not exist$/) do
+  expect(KalibroClient::Entities::Processor::Repository.exists?(@repository.id)).to be_falsey
+end
+
