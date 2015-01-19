@@ -56,3 +56,6 @@ Then(/^the metric configuration should not exist$/) do
   expect { KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration.id) }.to raise_error(KalibroClient::Errors::RecordNotFound)
 end
 
+Then(/^the metric configuration should exist$/) do
+  expect(KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration.id)).to eq(@metric_configuration)
+end
