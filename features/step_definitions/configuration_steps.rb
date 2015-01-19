@@ -22,7 +22,7 @@ When(/^I destroy the configuration$/) do
   @configuration.destroy
 end
 
-Then(/^the configuration should not exist$/) do
+Then(/^the configuration should no longer exist$/) do
   expect(KalibroClient::Entities::Configurations::KalibroConfiguration.exists?(@configuration.id)).to be_falsey
 end
 

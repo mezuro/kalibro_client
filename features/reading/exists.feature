@@ -4,7 +4,7 @@ Feature: Reading listing
   I want to check that on the service
 
   @kalibro_configuration_restart
-  Scenario: With existing reading group reading
+  Scenario: With an existing reading
     Given I have a reading group with name "RG"
     And the given reading group has the following readings:
       |   label   | grade |     color    |

@@ -1,6 +1,6 @@
 Feature: Find By Names
   In order to be able to have metric collectors
-  As an developer
+  As a developer
   I want to get a metric collector by name
 
   Scenario: get a metric collector by name

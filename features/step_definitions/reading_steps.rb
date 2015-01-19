@@ -41,7 +41,7 @@ When(/^I destroy the reading$/) do
   @reading.destroy
 end
 
-Then(/^the reading should not exist$/) do
+Then(/^the reading should no longer exist$/) do
   expect(KalibroClient::Entities::Configurations::Reading.exists?(@reading.id)).to be_falsey
 end
 

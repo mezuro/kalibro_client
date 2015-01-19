@@ -1,7 +1,7 @@
 Feature: Find
   In order to be able to have readings
-  As an developer
-  I want to find reading
+  As a developer
+  I want to find a given reading
 
   @kalibro_configuration_restart
   Scenario: find a valid reading

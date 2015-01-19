@@ -1,7 +1,7 @@
 Feature: Destroy
   In order to manipulate metric configurations
   As a developer
-  I want to  destroy a metric configuration
+  I want to destroy a given metric configuration
 
   @kalibro_configuration_restart
   Scenario: destroying a metric configuration
@@ -9,4 +9,4 @@ Feature: Destroy
     And I have a reading group with name "Group"
     And I have a loc configuration within the given configuration
     When I destroy the metric configuration
-    Then the metric configuration should not exist
+    Then the metric configuration should no longer exist

@@ -1,6 +1,6 @@
 Feature: Find
   In order to be able to have projects
-  As an developer
+  As a developer
   I want to find projects
 
   @kalibro_processor_restart

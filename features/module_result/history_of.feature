@@ -1,6 +1,6 @@
 Feature: /history of
   In order to be able to have the history of a module result
-  As an developer
+  As a developer
   I want to get the history of module results
 
   @kalibro_restart @kalibro_processor_restart

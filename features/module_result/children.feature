@@ -1,6 +1,6 @@
 Feature: Children
   In order to be able to have the children of a module result
-  As an developer
+  As a developer
   I want to find children module results
 
   @kalibro_restart @kalibro_processor_restart

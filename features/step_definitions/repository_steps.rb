@@ -65,7 +65,7 @@ When(/^I destroy the repository$/) do
   @repository.destroy
 end
 
-Then(/^the repository should not exist$/) do
+Then(/^the repository should no longer exist$/) do
   expect(KalibroClient::Entities::Processor::Repository.exists?(@repository.id)).to be_falsey
 end
 

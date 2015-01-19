@@ -11,7 +11,7 @@ Feature: Processing with date of
     And I have a loc configuration within the given configuration
     And the given project has the following Repositories:
       |   name    | scm_type |                  address                    |
-      | "Kalibro" |    GIT   | https://git.gitorious.org/sbking/sbking.git |
+      |  Kalibro  |    GIT   | https://git.gitorious.org/sbking/sbking.git |
     And I call the process method for the given repository
     And I wait up to 1 seconds
     When I call the processing_with_date_of method for the given repository and tomorrow's date
@@ -25,7 +25,7 @@ Feature: Processing with date of
     And I have a loc configuration within the given configuration
     And the given project has the following Repositories:
       |   name    | scm_type |                  address                    |
-      | "Kalibro" |    GIT   | https://git.gitorious.org/sbking/sbking.git |
+      |  Kalibro  |    GIT   | https://git.gitorious.org/sbking/sbking.git |
     And I call the process method for the given repository
     And I wait up to 1 seconds
     When I call the processing_with_date_of method for the given repository and yesterday's date

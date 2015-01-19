@@ -22,7 +22,7 @@ When(/^I destroy the reading group$/) do
   @reading_group.destroy
 end
 
-Then(/^the reading group should not exist$/) do
+Then(/^the reading group should no longer exist$/) do
   expect(KalibroClient::Entities::Configurations::ReadingGroup.exists?(@reading_group.id)).to be_falsey
 end
 

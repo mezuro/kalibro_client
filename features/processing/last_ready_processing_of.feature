@@ -11,7 +11,7 @@ Feature: Last ready processing of
     And I have a loc configuration within the given configuration
     And the given project has the following Repositories:
       |   name    | scm_type |                  address                    |
-      | "Kalibro" |    GIT   | https://git.gitorious.org/sbking/sbking.git |
+      |  Kalibro  |    GIT   | https://git.gitorious.org/sbking/sbking.git |
     And I call the process method for the given repository
     And I wait up for a ready processing
     When I call the last_ready_processing_of method for the given repository

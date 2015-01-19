@@ -39,7 +39,7 @@ Then(/^it should return the same project as the given one$/) do
   expect(@found_project).to eq(@project)
 end
 
-Then(/^the project should not exist$/) do
+Then(/^the project should no longer exist$/) do
   expect(KalibroClient::Entities::Processor::Project.exists?(@found_project.id)).to be_falsey
 end
 
