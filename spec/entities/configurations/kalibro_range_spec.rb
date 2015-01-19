@@ -156,4 +156,19 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
       expect(subject.kalibro_errors).to be_empty
     end
   end
+
+  # The only purpose of this test is to cover the overrided destroy_prefix method
+  describe 'destroy' do
+    subject {FactoryGirl.build(:range_with_id)}
+
+    before :each do
+      KalibroClient::Entities::Configurations::KalibroRange.
+        expects(:request).
+        with(":id", {id: subject.id}, :delete, "metric_configurations/#{subject.metric_configuration_id}").returns({})
+    end
+
+    it 'should make a request to destroy' do
+      subject.destroy
+    end
+  end
 end
