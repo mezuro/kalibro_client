@@ -25,3 +25,12 @@ end
 Then(/^the reading group should not exist$/) do
   expect(KalibroClient::Entities::Configurations::ReadingGroup.exists?(@reading_group.id)).to be_falsey
 end
+
+When(/^I create a reading group with name "(.*?)"$/) do |name|
+  @reading_group = FactoryGirl.create(:reading_group, {name: name})
+end
+
+Then(/^the reading group should exist$/) do
+  expect(KalibroClient::Entities::Configurations::ReadingGroup.exists?(@reading_group.id)).to be_truthy
+end
+
