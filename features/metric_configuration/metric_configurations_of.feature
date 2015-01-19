@@ -1,6 +1,6 @@
 Feature: MetricConfigurationsOf
   In order to be able to have configurations
-  As an developer
+  As a developer
   I want to get all metric_configurations of a configuration
 
   @kalibro_configuration_restart

@@ -47,3 +47,12 @@ end
 Then(/^I should get an empty list of metric configurations$/) do
   expect(@metric_configurations).to eq([])
 end
+
+When(/^I destroy the metric configuration$/) do
+  @metric_configuration.destroy
+end
+
+Then(/^the metric configuration should not exist$/) do
+  expect { KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration.id) }.to raise_error(KalibroClient::Errors::RecordNotFound)
+end
+
