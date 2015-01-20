@@ -31,7 +31,7 @@ module KalibroClient
       def to_hash(options={})
         hash = Hash.new
         excepts = options[:except].nil? ? [] : options[:except]
-        excepts << :kalibro_errors
+        excepts << "kalibro_errors"
         fields.each do |field|
           hash = field_to_hash(field).merge(hash) if !excepts.include?(field)
         end
@@ -140,7 +140,7 @@ module KalibroClient
       end
 
       def fields
-        instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '').to_sym }
+        instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '') }
       end
 
       def variable_names

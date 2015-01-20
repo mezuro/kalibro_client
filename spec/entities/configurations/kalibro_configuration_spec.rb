@@ -58,4 +58,34 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
       end
     end
   end
+
+  describe 'metric_configurations' do
+    context 'with no metric configurations' do
+      before :each do
+        KalibroClient::Entities::Configurations::KalibroConfiguration.
+          expects(:request).
+          with(':id/metric_configurations', {id: subject.id}, :get).
+          returns({'metric_configurations' => []})
+      end
+
+      it 'should return an empty array' do
+        expect(subject.metric_configurations).to be_empty
+      end
+    end
+
+    context 'with metric configurations' do
+      let(:metric_configuration_1) { FactoryGirl.build(:metric_configuration, kalibro_configuration_id: subject.id) }
+      let(:metric_configuration_2) { FactoryGirl.build(:metric_configuration, kalibro_configuration_id: subject.id) }
+      before :each do
+        KalibroClient::Entities::Configurations::KalibroConfiguration.
+          expects(:request).
+          with(':id/metric_configurations', {id: subject.id}, :get).
+          returns({'metric_configurations' => [metric_configuration_1.to_hash, metric_configuration_2.to_hash]})
+      end
+
+      it 'should return an empty array' do
+        expect(subject.metric_configurations).to eq([metric_configuration_1, metric_configuration_2])
+      end
+    end
+  end
 end

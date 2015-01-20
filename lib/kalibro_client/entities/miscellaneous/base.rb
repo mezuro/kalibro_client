@@ -40,7 +40,7 @@ module KalibroClient
         protected
 
         def fields
-          instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '').to_sym }
+          instance_variable_names.each.collect { |variable| variable.to_s.sub(/@/, '') }
         end
 
         def instance_variable_names

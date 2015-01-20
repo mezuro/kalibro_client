@@ -22,10 +22,10 @@ module KalibroClient
         attr_accessor :id, :configuration, :value, :aggregated_value
 
         def initialize(attributes={})
-          value = attributes[:value]
-          @value = (value == "NaN") ? attributes[:aggregated_value].to_f : value.to_f
+          value = attributes["value"]
+          @value = (value == "NaN") ? attributes["aggregated_value"].to_f : value.to_f
           attributes.each do |field, value|
-            if field!= :value and field!= :aggregated_value and self.class.is_valid?(field)
+            if field!= "value" and field!= "aggregated_value" and self.class.is_valid?(field)
               send("#{field}=", value)
             end
           end
@@ -49,7 +49,7 @@ module KalibroClient
         end
 
         def aggregated_value=(value)
-          @aggregated_value = value.to_i
+          @aggregated_value = value.to_f
         end
 
         def descendant_results
