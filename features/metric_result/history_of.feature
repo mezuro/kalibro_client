@@ -11,8 +11,8 @@ Feature: history of
     And I have a metric with name "Lines of Code"
     And I have a loc configuration within the given configuration
     And the given project has the following Repositories:
-      |   name    | type |              address                        |
-      |  SBKing   |  GIT | https://git.gitorious.org/sbking/sbking.git |
+      |   name    | scm_type |              address                        |
+      |  Kalibro  |    GIT   | https://git.gitorious.org/sbking/sbking.git |
     And I call the process method for the given repository
     And I wait up for a ready processing
     And I call the first_processing_of method for the given repository
