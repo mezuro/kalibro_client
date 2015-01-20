@@ -1,4 +1,4 @@
-Feature: Find By Names
+Feature: Find By Name
   In order to be able to have metric collectors
   As a developer
   I want to get a metric collector by name

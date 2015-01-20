@@ -1,4 +1,4 @@
-Feature: Destroy
+Feature: Create
   In order to manipulate metric configurations
   As a developer
   I want to create a metric configuration
