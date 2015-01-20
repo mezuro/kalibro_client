@@ -19,7 +19,7 @@ FactoryGirl.define do
     date "2013-10-16T18:26:43.151+00:00"
     metric_result { FactoryGirl.build(:metric_result) }
 
-    initialize_with { KalibroClient::Entities::Miscellaneous::DateMetricResult.new(date: date, metric_result: metric_result) }
+    initialize_with { KalibroClient::Entities::Miscellaneous::DateMetricResult.new("date" => date, "metric_result" => metric_result.to_hash) }
 
     trait :another_date do
       date "2013-05-06T06:26:43.151+00:00"

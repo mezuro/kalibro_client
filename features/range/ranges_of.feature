@@ -4,7 +4,7 @@ Feature: Range of
   I want to see all the ranges of the given metric configuration
 
   @kalibro_configuration_restart
-  Scenario: With a inexistent range
+  Scenario: With an inexistent range
     Given I have a configuration with name "Java"
     And I have a reading group with name "Group"
     And I have a metric configuration within the given configuration

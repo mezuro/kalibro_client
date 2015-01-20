@@ -1,7 +1,7 @@
 Feature: Exists
   In order to be able to have ranges
   As a developer
-  I want to find wich range exists
+  I want to find which range exists
 
 @kalibro_configuration_restart
 Scenario: find a valid range

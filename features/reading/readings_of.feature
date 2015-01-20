@@ -1,6 +1,6 @@
 Feature: Readings Of
   In order to be able to have readings
-  As an developer
+  As a developer
   I want to get the readings of the given reading group
 
   @kalibro_configuration_restart

@@ -1,6 +1,6 @@
 Feature: Creation
   In order to be able to have projects
-  As an developer
+  As a developer
   I want to create projects
 
   @kalibro_processor_restart

@@ -1,6 +1,6 @@
 Feature: Creation
   In order to be able to have configurations
-  As an developer
+  As a developer
   I want to create configurations
 
   @kalibro_configuration_restart

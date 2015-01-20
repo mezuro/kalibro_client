@@ -1,6 +1,6 @@
 Feature: Find
   In order to be able to have module result
-  As an developer
+  As a developer
   I want to find module results
 
   @kalibro_restart @kalibro_processor_restart

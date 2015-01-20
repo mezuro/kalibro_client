@@ -52,7 +52,10 @@ When(/^I destroy the metric configuration$/) do
   @metric_configuration.destroy
 end
 
-Then(/^the metric configuration should not exist$/) do
+Then(/^the metric configuration should no longer exist$/) do
   expect { KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration.id) }.to raise_error(KalibroClient::Errors::RecordNotFound)
 end
 
+Then(/^the metric configuration should exist$/) do
+  expect(KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration.id)).to eq(@metric_configuration)
+end

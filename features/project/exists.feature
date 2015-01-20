@@ -1,6 +1,6 @@
 Feature: Exists
   In order to be able to have projects
-  As an developer
+  As a developer
   I want to find wich projects exists
 
   @kalibro_processor_restart

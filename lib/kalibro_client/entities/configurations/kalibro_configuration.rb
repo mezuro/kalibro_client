@@ -25,8 +25,11 @@ module KalibroClient
         end
 
         def self.all
-          # FIXME: for some reason, the JSON is not getting automatically parsed
           create_objects_array_from_hash(request('', {}, :get))
+        end
+
+        def metric_configurations
+         KalibroClient::Entities::Configurations::MetricConfiguration.create_objects_array_from_hash(self.class.request(':id/metric_configurations', {id: id}, :get))
         end
       end
     end

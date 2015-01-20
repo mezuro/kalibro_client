@@ -1,7 +1,7 @@
 Feature: Repositories destroying
   In order to manipulate repositories
   As a developer
-  I want to destroy a repository
+  I want to destroy a given repository
 
   @kalibro_processor_restart @kalibro_configuration_restart
   Scenario: With existing repository
@@ -9,7 +9,6 @@ Feature: Repositories destroying
     And I have a configuration with name "Java"
     And the given project has the following Repositories:
       |   name    | scm_type |                  address                    |
-      | "Kalibro" |    GIT   | https://git.gitorious.org/sbking/sbking.git |
+      |  Kalibro  |    GIT   | https://git.gitorious.org/sbking/sbking.git |
     When I destroy the repository
-    Then the repository should not exist
-
+    Then the repository should no longer exist
