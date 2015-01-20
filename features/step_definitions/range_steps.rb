@@ -66,7 +66,7 @@ When(/^I destroy the range$/) do
   @range.destroy
 end
 
-Then(/^the range should not exist$/) do
+Then(/^the range should no longer exist$/) do
   expect(KalibroClient::Entities::Configurations::KalibroRange.exists?(@range.id)).to be_falsey
 end
 

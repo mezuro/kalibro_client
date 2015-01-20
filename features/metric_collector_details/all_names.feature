@@ -1,6 +1,6 @@
 Feature: All Names
   In order to be able to have metric collectors
-  As an developer
+  As a developer
   I want to get all the available metric collector names
 
   Scenario: all metric collectors names

@@ -69,4 +69,19 @@ describe KalibroClient::Entities::Configurations::Reading do
       expect(reading.kalibro_errors).to be_empty
     end
   end
+
+  # The only purpose of this test is to cover the overrided destroy_prefix method
+  describe 'destroy' do
+    subject {FactoryGirl.build(:reading_with_id)}
+
+    before :each do
+      KalibroClient::Entities::Configurations::Reading.
+        expects(:request).
+        with(":id", {id: subject.id}, :delete, "reading_groups/#{subject.reading_group_id}").returns({})
+    end
+
+    it 'should make a request to destroy' do
+      subject.destroy
+    end
+  end
 end

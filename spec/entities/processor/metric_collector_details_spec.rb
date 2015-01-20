@@ -109,7 +109,7 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
         KalibroClient::Entities::Processor::MetricCollectorDetails.
           expects(:request).
           with(:find,{name: subject.name}).
-          returns({"metric_collector_details" => subject.to_hash({except: [:supported_metrics]})})
+          returns({"metric_collector_details" => subject.to_hash({except: ["supported_metrics"]})})
       end
 
       it 'should return a metric_collector_details' do

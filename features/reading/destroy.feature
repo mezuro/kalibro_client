@@ -1,7 +1,7 @@
-Feature: Reading listing
-  In order to be able to check if a reading still exists
+Feature: Reading destruction
+  In order to be able to manipulate readings
   As a developer
-  I want to check that on the service
+  I want to destroy a given reading
 
   @kalibro_configuration_restart
   Scenario: With an existing reading
@@ -9,5 +9,5 @@ Feature: Reading listing
     And the given reading group has the following readings:
       |   label   | grade |     color    |
       | "Awesome" |  10   |     3333ff   |
-    When I ask to check if the given reading exists
-    Then I should get true
+    When I destroy the reading
+    Then the reading should no longer exist

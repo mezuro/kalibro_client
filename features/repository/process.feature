@@ -3,7 +3,7 @@ Feature: Process
   As a developer
   I want to start the repository processing
 
-  @kalibro_restart @kalibro_processor_restart
+  @kalibro_processor_restart @kalibro_configuration_restart
   Scenario: With one repository
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"

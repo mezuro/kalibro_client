@@ -23,7 +23,9 @@ describe KalibroClient::Entities::Processor::MetricResult do
   describe 'new' do
     context 'with value NaN' do
       it 'should set the value with aggregated_value' do
-        metric_result = KalibroClient::Entities::Processor::MetricResult.new( FactoryGirl.attributes_for(:metric_result, {value: "NaN", aggregated_value: 1.6}) )
+        attributes_hash = FactoryGirl.build(:metric_result, {"aggregated_value" => 1.6}).to_hash
+        attributes_hash["value"] = "NaN"
+        metric_result = KalibroClient::Entities::Processor::MetricResult.new(attributes_hash)
         expect(metric_result.value).to eq(1.6)
       end
     end
@@ -154,7 +156,7 @@ describe KalibroClient::Entities::Processor::MetricResult do
     end
 
     context 'when there is only one date metric result' do
-      let(:date_metric_result) { FactoryGirl.build(:date_metric_result, metric_result: subject.to_hash) }
+      let!(:date_metric_result) { FactoryGirl.build(:date_metric_result, metric_result: subject.to_hash) }
 
       before :each do
         KalibroClient::Entities::Processor::MetricResult.

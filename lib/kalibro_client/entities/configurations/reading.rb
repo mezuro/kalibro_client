@@ -46,6 +46,10 @@ module KalibroClient
         def save_prefix
           "reading_groups/#{reading_group_id}"
         end
+
+        def destroy_prefix
+          "reading_groups/#{reading_group_id}"
+        end
       end
     end
   end

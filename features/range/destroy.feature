@@ -1,6 +1,6 @@
 Feature: Destroy
   In order to be able to have ranges
-  As an developer
+  As a developer
   I want to destroy ranges
 
   @kalibro_configuration_restart
@@ -11,4 +11,4 @@ Feature: Destroy
     And I have a reading within the given reading group
     And I have a range within the given reading
     When I destroy the range
-    Then the range should not exist
+    Then the range should no longer exist

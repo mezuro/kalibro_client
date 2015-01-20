@@ -36,3 +36,12 @@ end
 Then(/^the response should contain the given reading$/) do
   expect(@all_readings.first).to eq(@reading)
 end
+
+When(/^I destroy the reading$/) do
+  @reading.destroy
+end
+
+Then(/^the reading should no longer exist$/) do
+  expect(KalibroClient::Entities::Configurations::Reading.exists?(@reading.id)).to be_falsey
+end
+
