@@ -68,30 +68,30 @@ describe KalibroClient::Entities::Processor::MetricResult do
     end
   end
 
-  describe 'descendant_results_of' do
-    context 'when there is one descendant result for the given metric_result' do
+  describe 'descendant_values' do
+    context 'when there is one descendant value for the given metric_result' do
       before :each do
         KalibroClient::Entities::Processor::MetricResult.
           expects(:request).
-          with('descendant_results_of', { id: subject.id }).
-          returns({'descendant_results' => [13.3]})
+          with(':id/descendant_values', { id: subject.id }, :get).
+          returns({'descendant_values' => [13.3]})
       end
 
-      it 'should return an unitary list with the descendant result' do
-        expect(subject.descendant_results).to eq([13.3])
+      it 'should return an unitary list with the descendant value' do
+        expect(subject.descendant_values).to eq([13.3])
       end
     end
 
-    context 'when there is no descendant result for the given metric_result' do
+    context 'when there is no descendant value for the given metric_result' do
       before :each do
         KalibroClient::Entities::Processor::MetricResult.
           expects(:request).
-          with('descendant_results_of', { id: subject.id }).
-          returns({'descendant_results' => []})
+          with(':id/descendant_values', { id: subject.id }, :get).
+          returns({'descendant_values' => []})
       end
 
       it 'should return an empty list' do
-        expect(subject.descendant_results).to eq([])
+        expect(subject.descendant_values).to eq([])
       end
     end
   end
@@ -99,9 +99,9 @@ describe KalibroClient::Entities::Processor::MetricResult do
   describe 'metric_results_of' do
     context 'when there is one metric result for the given module_result' do
       before :each do
-        KalibroClient::Entities::Processor::MetricResult.
+        KalibroClient::Entities::Processor::ModuleResult.
           expects(:request).
-          with('of', { module_result_id: 123 }).
+          with(':id/metric_results', { id: 123 }, :get).
           returns({'metric_results' => [subject.to_hash]})
       end
 
@@ -112,9 +112,9 @@ describe KalibroClient::Entities::Processor::MetricResult do
 
     context 'when there is no metric result for the given module_result' do
       before :each do
-        KalibroClient::Entities::Processor::MetricResult.
+        KalibroClient::Entities::Processor::ModuleResult.
           expects(:request).
-          with('of', { :module_result_id => 42 }).
+          with(':id/metric_results', { :id => 42 }, :get).
           returns({'metric_results' => []})
       end
 
@@ -124,16 +124,15 @@ describe KalibroClient::Entities::Processor::MetricResult do
     end
 
     context 'when there are many metric results for the given module_result' do
-      let(:metric_results) { KalibroClient::Entities::Processor::MetricResult.metric_results_of(28) }
       before :each do
-        KalibroClient::Entities::Processor::MetricResult.
+        KalibroClient::Entities::Processor::ModuleResult.
           expects(:request).
-          with('of', { :module_result_id => 28 }).
+          with(':id/metric_results', { :id => 28 }, :get).
           returns({'metric_results' => [subject.to_hash, subject.to_hash]})
       end
 
       it 'should return a list with the descendant results' do
-        expect(metric_results.first.value).to eq(subject.value)
+        expect(KalibroClient::Entities::Processor::MetricResult.metric_results_of(28).first.value).to eq(subject.value)
       end
     end
   end

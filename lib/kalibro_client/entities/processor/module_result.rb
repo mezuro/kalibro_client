@@ -22,7 +22,7 @@ module KalibroClient
         attr_accessor :id, :kalibro_module, :grade, :parent_id, :height, :processing_id
 
         def children
-          response = self.class.request('children_of', {id: id}, :get)
+          response = self.class.request(':id/children', {id: id}, :get)
           self.class.create_objects_array_from_hash(response)
         end
 
