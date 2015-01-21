@@ -138,19 +138,20 @@ describe KalibroClient::Entities::Processor::MetricResult do
   end
 
   describe 'history_of' do
-    let(:module_result) { FactoryGirl.build(:module_result) }
+    let(:kalibro_module) { FactoryGirl.build(:kalibro_module_with_id) }
     let(:metric) { FactoryGirl.build(:metric) }
+    let(:repository) { FactoryGirl.build(:repository_with_id) }
 
     context 'when there is not a date metric result' do
       before :each do
-        KalibroClient::Entities::Processor::MetricResult.
+        KalibroClient::Entities::Processor::Repository.
           expects(:request).
-          with('history_of_metric', {:metric_name => metric.name, :module_result_id => module_result.id}).
-          returns({date_metric_results: []})
+          with(':id/metric_result_history_of', {:metric_name => metric.name, :kalibro_module_id => kalibro_module.id, id: repository.id}).
+          returns({'metric_result_history_of' => []})
       end
 
       it 'should return an empty list' do
-        expect(KalibroClient::Entities::Processor::MetricResult.history_of(metric.name, module_result.id)).to eq([])
+        expect(KalibroClient::Entities::Processor::MetricResult.history_of(metric.name, kalibro_module.id, repository.id)).to eq([])
       end
     end
 
@@ -158,28 +159,29 @@ describe KalibroClient::Entities::Processor::MetricResult do
       let!(:date_metric_result) { FactoryGirl.build(:date_metric_result, metric_result: subject.to_hash) }
 
       before :each do
-        KalibroClient::Entities::Processor::MetricResult.
-          expects(:request).with('history_of_metric', {:metric_name => metric.name, :module_result_id => module_result.id}).returns({'date_metric_results' => [date_metric_result.to_hash]})
+        KalibroClient::Entities::Processor::Repository.
+          expects(:request).with(':id/metric_result_history_of', {:metric_name => metric.name, :kalibro_module_id => kalibro_module.id, id: repository.id})
+                           .returns({'metric_result_history_of' => [date_metric_result.to_hash]})
       end
 
       it 'should return the date metric result as an object into a list' do
-        expect(KalibroClient::Entities::Processor::MetricResult.history_of(metric.name, module_result.id).first.metric_result.id).to eq(subject.id)
+        expect(KalibroClient::Entities::Processor::MetricResult.history_of(metric.name, kalibro_module.id, repository.id).first.metric_result.id).to eq(subject.id)
       end
     end
 
-    context 'when there is many date metric results' do
+    context 'when there are many date metric results' do
       let(:date_metric_result) { FactoryGirl.build(:date_metric_result, {metric_result: subject.to_hash}) }
       let(:another_date_metric_result) { FactoryGirl.build(:another_date_metric_result, {metric_result: subject.to_hash}) }
 
       before :each do
-        KalibroClient::Entities::Processor::MetricResult.
+        KalibroClient::Entities::Processor::Repository.
           expects(:request).
-          with('history_of_metric', {:metric_name => metric.name, :module_result_id => module_result.id}).
-          returns({'date_metric_results' => [date_metric_result.to_hash, another_date_metric_result.to_hash]})
+          with(':id/metric_result_history_of', {:metric_name => metric.name, :kalibro_module_id => kalibro_module.id, id: repository.id}).
+          returns({'metric_result_history_of' => [date_metric_result.to_hash, another_date_metric_result.to_hash]})
       end
 
       it 'should return a list of date metric results as objects' do
-        response = KalibroClient::Entities::Processor::MetricResult.history_of(metric.name, module_result.id)
+        response = KalibroClient::Entities::Processor::MetricResult.history_of(metric.name, kalibro_module.id, repository.id)
         expect(response.first.metric_result.id).to eq(date_metric_result.metric_result.id)
         expect(response.last.metric_result.id).to eq(another_date_metric_result.metric_result.id)
       end

@@ -18,5 +18,11 @@ FactoryGirl.define do
   factory :kalibro_module, class: KalibroClient::Entities::Processor::KalibroModule do
     name  'Qt-Calculator'
     granlrty 'APPLICATION'
+
+    trait :with_id do
+      id 1
+    end
+
+    factory :kalibro_module_with_id, traits: [:with_id]
   end  
 end

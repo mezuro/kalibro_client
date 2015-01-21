@@ -61,10 +61,11 @@ module KalibroClient
           create_objects_array_from_hash ModuleResult.request(":id/metric_results", {id: module_result_id}, :get)
         end
 
-        def self.history_of(metric_name, module_result_id)
-          response = self.request('history_of_metric', {:metric_name => metric_name,
-                                                        :module_result_id => module_result_id})['date_metric_results']
-          create_array_from_hash(response).map { |date_metric_result|
+        def self.history_of(metric_name, kalibro_module_id, repository_id)
+          response = Repository.request(':id/metric_result_history_of', {metric_name: metric_name,
+                                                        kalibro_module_id: kalibro_module_id,
+                                                        id: repository_id})['metric_result_history_of']
+          response.map { |date_metric_result|
             KalibroClient::Entities::Miscellaneous::DateMetricResult.new date_metric_result }
         end
       end

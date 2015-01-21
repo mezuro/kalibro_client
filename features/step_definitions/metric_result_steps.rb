@@ -10,7 +10,7 @@ Given(/^I search a metric result with descendant values for the given metric res
 end
 
 When(/^I call the history of method with the metric name and the results root id of the given processing$/) do
-  @response = KalibroClient::Entities::Processor::MetricResult.history_of(@metric.name, @response.root_module_result_id)
+  @response = KalibroClient::Entities::Processor::MetricResult.history_of(@metric.name, @response.root_module_result_id, @repository.id)
 end
 
 Then (/^I should get a Float list$/) do
@@ -25,7 +25,7 @@ end
 
 Then(/^I should get a list of date metric results$/) do
   expect(@response).to be_a(Array)
-  expect(@response.first).to be_a(KalibroClient::Entities::Processor::DateMetricResult)
+  expect(@response.first).to be_a(KalibroClient::Entities::Miscellaneous::DateMetricResult)
 end
 
 Then(/^the first metric result should have a metric configuration$/) do
