@@ -15,8 +15,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :module, class: KalibroClient::Entities::Processor::Module do
+  factory :kalibro_module, class: KalibroClient::Entities::Processor::KalibroModule do
     name  'Qt-Calculator'
-    granularity 'APPLICATION'
+    granlrty 'APPLICATION'
   end  
 end

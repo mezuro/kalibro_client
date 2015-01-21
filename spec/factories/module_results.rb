@@ -16,18 +16,25 @@
 
 FactoryGirl.define do
   factory :module_result, class: KalibroClient::Entities::Processor::ModuleResult do
-    id  "42"
-    self.module { FactoryGirl.build(:module) }
-    grade "10.0"
-    parent_id "21"
-    height "6"
+    kalibro_module { FactoryGirl.build(:kalibro_module) }
+    grade 10.0
+    parent_id 21
+    height 6
+    processing_id 1
+
+    trait :with_id do
+      id 42
+    end
+
+    factory :module_result_with_id, traits: [:with_id]
   end
 
    factory :root_module_result, class: KalibroClient::Entities::Processor::ModuleResult do
-    id  "21"
-    self.module { FactoryGirl.build(:module) }
-    grade "6.0"
+    id  21
+    kalibro_module { FactoryGirl.build(:kalibro_module) }
+    grade 6.0
     parent_id nil
-    height "1"
+    height 1
+    processing_id 1
   end
 end

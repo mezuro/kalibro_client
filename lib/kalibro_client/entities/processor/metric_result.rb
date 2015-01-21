@@ -19,7 +19,7 @@ module KalibroClient
     module Processor
       class MetricResult < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :configuration, :value, :aggregated_value
+        attr_accessor :id, :configuration, :value, :aggregated_value, :module_result_id, :metric_configuration_id
 
         def initialize(attributes={})
           value = attributes["value"]
@@ -52,13 +52,13 @@ module KalibroClient
           @aggregated_value = value.to_f
         end
 
-        def descendant_results
-          descendant_results = self.class.request('descendant_results_of', {id: id})['descendant_results']
-          descendant_results.map {|descendant_result| descendant_result.to_f}
+        def descendant_values
+          descendant_values = self.class.request(':id/descendant_values', {id: id}, :get)['descendant_values']
+          descendant_values.map {|descendant_value| descendant_value.to_f}
         end
 
         def self.metric_results_of(module_result_id)
-          create_objects_array_from_hash self.request('of', {module_result_id: module_result_id})
+          create_objects_array_from_hash ModuleResult.request(":id/metric_results", {id: module_result_id}, :get)
         end
 
         def self.history_of(metric_name, module_result_id)

@@ -24,8 +24,12 @@ describe KalibroClient::Entities::Processor::ModuleResult do
       before :each do
         KalibroClient::Entities::Processor::ModuleResult.
           expects(:request).
-          with('get', { id: subject.id }).
-          returns(subject.to_hash)
+          with(':id/exists', { id: subject.id }, :get).
+          returns("exists" => true)
+        KalibroClient::Entities::Processor::ModuleResult.
+          expects(:request).
+          with(':id', { id: subject.id }, :get).
+          returns("module_result" => subject.to_hash)
       end
 
       it 'should return a hash with module result' do
@@ -36,13 +40,10 @@ describe KalibroClient::Entities::Processor::ModuleResult do
 
     context "when there isn't a module result for the given id" do
       before :each do
-        any_code = rand(Time.now.to_i)
-        any_error_message = ""
-
         KalibroClient::Entities::Processor::ModuleResult.
           expects(:request).
-          with('get', { id: subject.id }).
-          returns({ 'error' => 'Error'})
+          with(':id/exists', { id: subject.id }, :get).
+          returns("exists" => false)
       end
 
       it 'should raise an error' do
@@ -56,11 +57,11 @@ describe KalibroClient::Entities::Processor::ModuleResult do
     before :each do
       KalibroClient::Entities::Processor::ModuleResult.
         expects(:request).
-        with('children_of', {id: subject.id}, :get).
+        with(':id/children', {id: subject.id}, :get).
         returns({'module_results' => subject.to_hash})
     end
 
-    it 'should return a list of a objects' do
+    it 'should return a list of objects' do
       expect(subject.children).to eq [subject]
     end
   end
@@ -71,9 +72,13 @@ describe KalibroClient::Entities::Processor::ModuleResult do
     context 'when module result has a parent' do
       before :each do
         KalibroClient::Entities::Processor::ModuleResult.
+          expects(:request).
+          with(':id/exists', { id: subject.parent_id }, :get).
+          returns("exists" => true)
+        KalibroClient::Entities::Processor::ModuleResult.
           expects(:request).at_least_once.
-          with('get', { id: subject.parent_id }).
-          returns(root_module_result.to_hash)
+          with(':id', { id: subject.parent_id }, :get).
+          returns("module_result" => root_module_result.to_hash)
       end
 
       it 'should return its parent' do
@@ -90,30 +95,30 @@ describe KalibroClient::Entities::Processor::ModuleResult do
 
   describe 'id=' do
     it 'should set the id attribute as integer' do
-      subject.id = "23"
+      subject.id = 23
       expect(subject.id).to eq 23
     end
   end
 
   describe 'module=' do
-    let(:another_module) { FactoryGirl.build(:module, name: 'ANOTHER') }
+    let(:another_module) { FactoryGirl.build(:kalibro_module, name: 'ANOTHER') }
 
     it 'should set the module attribute as a Module object' do
-      subject.module = another_module.to_hash
-      expect(subject.module).to eq another_module
+      subject.kalibro_module = another_module.to_hash
+      expect(subject.kalibro_module).to eq another_module
     end
   end
 
   describe 'grade=' do
     it 'should set the grade attribute as float' do
-      subject.grade = "12.5"
+      subject.grade = 12.5
       expect(subject.grade).to eq 12.5
     end
   end
 
   describe 'parent_id=' do
     it 'should set the parent_id attribute as integer' do
-      subject.parent_id = "73"
+      subject.parent_id = 73
       expect(subject.parent_id).to eq 73
     end
   end

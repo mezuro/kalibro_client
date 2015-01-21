@@ -17,9 +17,9 @@
 module KalibroClient
   module Entities
     module Processor
-      class Module < KalibroClient::Entities::Processor::Base
+      class KalibroModule < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :name, :granularity
+        attr_accessor :name, :granlrty, :id, :long_name, :module_result_id
 
       end
     end
