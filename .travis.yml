@@ -2,6 +2,9 @@ language: ruby
 rvm:
   - 2.2.0
 
+addons:
+  postgresql: "9.3"
+
 before_script:
   - git clone https://gist.github.com/6179925.git -b v2.0.beta3 kalibro_install
   - pushd kalibro_install
