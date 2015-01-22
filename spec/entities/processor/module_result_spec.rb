@@ -100,12 +100,22 @@ describe KalibroClient::Entities::Processor::ModuleResult do
     end
   end
 
-  describe 'module=' do
-    let(:another_module) { FactoryGirl.build(:kalibro_module, name: 'ANOTHER') }
+  describe 'kalibro_module' do
+    let(:kalibro_module) { FactoryGirl.build(:kalibro_module) }
 
-    it 'should set the module attribute as a Module object' do
-      subject.kalibro_module = another_module.to_hash
-      expect(subject.kalibro_module).to eq another_module
+    before :each do
+      KalibroClient::Entities::Processor::ModuleResult.
+          expects(:request).once.
+          with(':id/kalibro_module', { id: subject.id }, :get).
+          returns("kalibro_module" => kalibro_module.to_hash)
+    end
+
+    it 'should return the kalibro_module' do
+      expect(subject.kalibro_module).to eq(kalibro_module)
+    end
+
+    it 'should not request the kalibro_module in cache' do
+      expect(subject.kalibro_module).to eq(kalibro_module)
     end
   end
 
