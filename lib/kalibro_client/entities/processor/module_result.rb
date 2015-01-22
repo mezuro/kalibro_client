@@ -19,16 +19,10 @@ module KalibroClient
     module Processor
       class ModuleResult < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :module, :grade, :parent_id, :height
-
-        def self.find(id)
-          response = request('get', { id: id })
-          raise KalibroClient::Errors::RecordNotFound unless response['error'].nil?
-          new response
-        end
+        attr_accessor :id, :kalibro_module, :grade, :parent_id, :height, :processing_id
 
         def children
-          response = self.class.request('children_of', {id: id}, :get)
+          response = self.class.request(':id/children', {id: id}, :get)
           self.class.create_objects_array_from_hash(response)
         end
 
@@ -45,8 +39,16 @@ module KalibroClient
           @id = value.to_i
         end
 
-        def module=(value)
-          @module = KalibroClient::Entities::Processor::Module.to_object value
+        def kalibro_module
+          @kalibro_module ||= KalibroClient::Entities::Processor::KalibroModule.to_object self.class.request(":id/kalibro_module", {id: id}, :get)["kalibro_module"]
+        end
+
+        def height=(value)
+          @height = value.to_i
+        end
+
+        def processing_id=(value)
+          @processing_id = value.to_i
         end
 
         def grade=(value)

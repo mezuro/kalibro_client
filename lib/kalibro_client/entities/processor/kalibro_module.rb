@@ -14,9 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FactoryGirl.define do
-  factory :module, class: KalibroClient::Entities::Processor::Module do
-    name  'Qt-Calculator'
-    granularity 'APPLICATION'
-  end  
+module KalibroClient
+  module Entities
+    module Processor
+      class KalibroModule < KalibroClient::Entities::Processor::Base
+
+        attr_accessor :name, :granlrty, :id, :long_name, :module_result_id
+
+      end
+    end
+  end
 end

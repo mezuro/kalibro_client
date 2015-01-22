@@ -19,7 +19,8 @@ module KalibroClient
     module Processor
       class Processing < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :date, :state, :error, :process_time, :root_module_result_id, :error_message, :repository_id
+        attr_accessor :id, :date, :state, :error, :root_module_result_id, :error_message, :repository_id
+        attr_reader :process_times
 
         def id=(value)
           @id = value.to_i
@@ -33,16 +34,11 @@ module KalibroClient
           @date = value.is_a?(String) ? DateTime.parse(value) : value
         end
 
-        def process_times=(value)
-          @process_time = value
-        end
-
-        def process_time=(value)
-          @process_time = KalibroClient::Entities::Processor::ProcessTime.to_objects_array value
-        end
-
         def process_times
-          @process_time
+          unless @process_times.nil?
+            return @process_times
+          end
+          @process_times = ProcessTime.create_objects_array_from_hash(self.class.request(":id/process_times", {id: id}, :get))
         end
 
         def root_module_result_id=(value)
@@ -89,7 +85,7 @@ module KalibroClient
         end
 
         def self.last_ready_processing_of(repository_id)
-          new(request('last_ready_of', {repository_id: repository_id})['processing'])
+          new(Repository.request(':id/last_ready_processing', {id: repository_id}, :get)['last_ready_processing'])
         end
 
         def self.first_processing_of(repository_id)

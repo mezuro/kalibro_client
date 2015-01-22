@@ -19,7 +19,7 @@ module KalibroClient
     module Processor
       class MetricResult < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :configuration, :value, :aggregated_value
+        attr_accessor :id, :value, :aggregated_value, :module_result_id, :metric_configuration_id
 
         def initialize(attributes={})
           value = attributes["value"]
@@ -36,12 +36,17 @@ module KalibroClient
           @id = value.to_i
         end
 
-        def configuration=(value)
-          @configuration = KalibroClient::Entities::Configurations::MetricConfiguration.to_object value
+        def metric_configuration=(value)
+          @metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.to_object value
+          @metric_configuration_id = @metric_configuration.id
         end
 
         def metric_configuration
-          @configuration
+          unless @metric_configuration.nil?
+            return @metric_configuration
+          end
+          @metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.find @metric_configuration_id
+          return @metric_configuration
         end
 
         def value=(value)
@@ -52,19 +57,20 @@ module KalibroClient
           @aggregated_value = value.to_f
         end
 
-        def descendant_results
-          descendant_results = self.class.request('descendant_results_of', {id: id})['descendant_results']
-          descendant_results.map {|descendant_result| descendant_result.to_f}
+        def descendant_values
+          descendant_values = self.class.request(':id/descendant_values', {id: id}, :get)['descendant_values']
+          descendant_values.map {|descendant_value| descendant_value.to_f}
         end
 
         def self.metric_results_of(module_result_id)
-          create_objects_array_from_hash self.request('of', {module_result_id: module_result_id})
+          create_objects_array_from_hash ModuleResult.request(":id/metric_results", {id: module_result_id}, :get)
         end
 
-        def self.history_of(metric_name, module_result_id)
-          response = self.request('history_of_metric', {:metric_name => metric_name,
-                                                        :module_result_id => module_result_id})['date_metric_results']
-          create_array_from_hash(response).map { |date_metric_result|
+        def self.history_of(metric_name, kalibro_module_id, repository_id)
+          response = Repository.request(':id/metric_result_history_of', {metric_name: metric_name,
+                                                        kalibro_module_id: kalibro_module_id,
+                                                        id: repository_id})['metric_result_history_of']
+          response.map { |date_metric_result|
             KalibroClient::Entities::Miscellaneous::DateMetricResult.new date_metric_result }
         end
       end

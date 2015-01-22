@@ -13,7 +13,7 @@ end
 
 When(/^I ask for the children of the processing root module result$/) do
   @children = KalibroClient::Entities::Processor::ModuleResult.
-    find(KalibroClient::Entities::Processor::Processing.processing_of(@repository.id).results_root_id).children
+    find(KalibroClient::Entities::Processor::Processing.processing_of(@repository.id).root_module_result_id).children
 end
 
 Then(/^I should get a list with the children module results$/) do
@@ -26,7 +26,7 @@ end
 
 Given(/^I get the module result of the processing$/) do
   @module_result = KalibroClient::Entities::Processor::ModuleResult.
-    find(KalibroClient::Entities::Processor::Processing.processing_of(@repository.id).results_root_id)
+    find(KalibroClient::Entities::Processor::Processing.processing_of(@repository.id).root_module_result_id)
 end
 
 When(/^I ask for the history of the given module result$/) do
@@ -42,5 +42,5 @@ Then(/^I should get a module_result$/) do
 end
 
 Then(/^The first children should have a module$/) do
-  expect(@children.first.module).to be_a(KalibroClient::Entities::Processor::Module)
+  expect(@children.first.kalibro_module).to be_a(KalibroClient::Entities::Processor::KalibroModule)
 end

@@ -3,7 +3,7 @@ Feature: Processing of
   As a developer
   I want to be able to retrieve the processing
 
-  @kalibro_processor_restart @kalibro_configuration_restart @wip
+  @kalibro_processor_restart @kalibro_configuration_restart
   Scenario: With one repository just after starting to process
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"
@@ -17,7 +17,7 @@ Feature: Processing of
     When I call the processing_of method for the given repository
     Then I should get a Processing with state "PREPARING"
 
-  @kalibro_processor_restart @kalibro_configuration_restart @wip
+  @kalibro_processor_restart @kalibro_configuration_restart
   Scenario: With one repository just after with ready processing
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"
