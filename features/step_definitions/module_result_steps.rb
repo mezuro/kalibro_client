@@ -26,7 +26,7 @@ end
 
 Given(/^I get the module result of the processing$/) do
   @module_result = KalibroClient::Entities::Processor::ModuleResult.
-    find(KalibroClient::Entities::Processor::Processing.processing_of(@repository.id).results_root_id)
+    find(KalibroClient::Entities::Processor::Processing.processing_of(@repository.id).root_module_result_id)
 end
 
 When(/^I ask for the history of the given module result$/) do

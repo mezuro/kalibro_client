@@ -3,7 +3,7 @@ Feature: /history of
   As a developer
   I want to get the history of module results
 
-  @kalibro_configuration_restart @kalibro_processor_restart @wip
+  @kalibro_configuration_restart @kalibro_processor_restart
   Scenario: get the history of a module result
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"

@@ -161,10 +161,10 @@ describe KalibroClient::Entities::Processor::Processing do
                 with("#{repository.id}/has_ready_processing", {}, :get).
                 returns({'has_ready_processing' => true})
 
-              KalibroClient::Entities::Processor::Processing.
+              KalibroClient::Entities::Processor::Repository.
                 expects(:request).once.
-                with('last_ready_of', {repository_id: repository.id}).
-                returns({'processing' => processing.to_hash})
+                with(':id/last_ready_processing', {id: repository.id}, :get).
+                returns({'last_ready_processing' => processing.to_hash})
             end
 
             it 'should return the last ready processing' do
@@ -259,10 +259,10 @@ describe KalibroClient::Entities::Processor::Processing do
 
         describe 'last_ready_processing_of' do
           before :each do
-            KalibroClient::Entities::Processor::Processing.
+            KalibroClient::Entities::Processor::Repository.
               expects(:request).once.
-              with('last_ready_of', {repository_id: repository.id}).
-              returns({'processing' => processing.to_hash})
+              with(':id/last_ready_processing', {id: repository.id}, :get).
+              returns({'last_ready_processing' => processing.to_hash})
           end
 
           it 'should return a processing object' do

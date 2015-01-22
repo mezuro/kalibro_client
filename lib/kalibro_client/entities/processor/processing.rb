@@ -89,7 +89,7 @@ module KalibroClient
         end
 
         def self.last_ready_processing_of(repository_id)
-          new(request('last_ready_of', {repository_id: repository_id})['processing'])
+          new(Repository.request(':id/last_ready_processing', {id: repository_id}, :get)['last_ready_processing'])
         end
 
         def self.first_processing_of(repository_id)
