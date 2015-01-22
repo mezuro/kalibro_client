@@ -3,7 +3,7 @@ Feature: Has ready processing
   As a developer
   I want to be able to check if a repository has ready processings
 
-  @kalibro_processor_restart @kalibro_configuration_restart
+  @kalibro_processor_restart @kalibro_configuration_restart @wip
   Scenario: With one repository just after starting to process
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"
