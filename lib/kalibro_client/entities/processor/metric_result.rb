@@ -19,7 +19,7 @@ module KalibroClient
     module Processor
       class MetricResult < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :configuration, :value, :aggregated_value, :module_result_id, :metric_configuration_id
+        attr_accessor :id, :value, :aggregated_value, :module_result_id, :metric_configuration_id
 
         def initialize(attributes={})
           value = attributes["value"]
@@ -36,12 +36,17 @@ module KalibroClient
           @id = value.to_i
         end
 
-        def configuration=(value)
-          @configuration = KalibroClient::Entities::Configurations::MetricConfiguration.to_object value
+        def metric_configuration=(value)
+          @metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.to_object value
+          @metric_configuration_id = @metric_configuration.id
         end
 
         def metric_configuration
-          @configuration
+          unless @metric_configuration.nil?
+            return @metric_configuration
+          end
+          @metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.find @metric_configuration_id
+          return @metric_configuration
         end
 
         def value=(value)

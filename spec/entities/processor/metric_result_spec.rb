@@ -18,7 +18,7 @@ require 'spec_helper'
 
 describe KalibroClient::Entities::Processor::MetricResult do
   let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
-  subject { FactoryGirl.build(:metric_result, configuration: metric_configuration) }
+  subject { FactoryGirl.build(:metric_result, metric_configuration_id: metric_configuration.id) }
 
   describe 'new' do
     context 'with value NaN' do
@@ -38,19 +38,38 @@ describe KalibroClient::Entities::Processor::MetricResult do
     end
   end
 
-  describe 'configuration=' do
-    it 'should set the configuration' do
-      subject.configuration = metric_configuration.to_hash
-      expect(subject.configuration.weight).to eq(metric_configuration.weight)
-      expect(subject.configuration.aggregation_form).to eq(metric_configuration.aggregation_form)
-      expect(subject.configuration.reading_group_id).to eq(metric_configuration.reading_group_id)
-      expect(subject.configuration.kalibro_configuration_id).to eq(metric_configuration.kalibro_configuration_id)
+  describe 'metric_configuration=' do
+    it 'should set the metric configuration' do
+      subject.metric_configuration = metric_configuration
+      expect(subject.metric_configuration.weight).to eq(metric_configuration.weight)
+      expect(subject.metric_configuration.aggregation_form).to eq(metric_configuration.aggregation_form)
+      expect(subject.metric_configuration.reading_group_id).to eq(metric_configuration.reading_group_id)
+      expect(subject.metric_configuration.kalibro_configuration_id).to eq(metric_configuration.kalibro_configuration_id)
+      expect(subject.metric_configuration_id).to eq(metric_configuration.id)
     end
   end
 
   describe 'metric_configuration' do
-    it 'should return the metric configuration' do
-      expect(subject.metric_configuration).to eq(metric_configuration)
+
+    context 'without a set metric configuration' do
+      it 'should fetch and return the metric configuration' do
+        KalibroClient::Entities::Configurations::MetricConfiguration.expects(:find).with(metric_configuration.id).returns(metric_configuration)
+        expect(subject.metric_configuration).to eq(metric_configuration)
+      end
+    end
+
+    context 'with a set metric configuration' do
+      before :each do
+        subject.metric_configuration = metric_configuration
+      end
+
+      it 'should only return the metric configuration' do
+        expect(subject.metric_configuration).to eq(metric_configuration)
+      end
+
+      it 'should set the metric configuration id' do
+        expect(subject.metric_configuration_id).to eq(metric_configuration.id)
+      end
     end
   end
 
@@ -161,7 +180,7 @@ describe KalibroClient::Entities::Processor::MetricResult do
       before :each do
         KalibroClient::Entities::Processor::Repository.
           expects(:request).with(':id/metric_result_history_of', {:metric_name => metric.name, :kalibro_module_id => kalibro_module.id, id: repository.id})
-                           .returns({'metric_result_history_of' => [date_metric_result.to_hash]})
+          .returns({'metric_result_history_of' => [date_metric_result.to_hash]})
       end
 
       it 'should return the date metric result as an object into a list' do

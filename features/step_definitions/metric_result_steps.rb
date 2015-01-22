@@ -29,5 +29,5 @@ Then(/^I should get a list of date metric results$/) do
 end
 
 Then(/^the first metric result should have a metric configuration$/) do
-  expect(@response.first.configuration).to be_a(KalibroClient::Entities::Configurations::MetricConfiguration)
+  expect(@response.first.metric_configuration).to be_a(KalibroClient::Entities::Configurations::MetricConfiguration)
 end
