@@ -19,7 +19,7 @@ module KalibroClient
     module Processor
       class ProcessTime < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :state, :time
+        attr_accessor :state, :time, :processing_id, :id
 
         def time=(time)
           @time = time.to_i

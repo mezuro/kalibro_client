@@ -45,26 +45,27 @@ describe KalibroClient::Entities::Processor::Processing do
     end
   end
 
-  describe 'using process_time attribute' do
-    let(:another_process_time) { FactoryGirl.build(:analyzing_process_time) }
+  describe 'process_times' do
+    let(:process_time) { FactoryGirl.build(:analyzing_process_time) }
 
-    context 'process_time=' do
-      it 'should set the process_time attribute as a list of objects' do
-        subject.process_time = another_process_time.to_hash
-        expect(subject.process_time).to eq [another_process_time]
+    context 'When the process_times is nil' do
+      before :each do
+        KalibroClient::Entities::Processor::Processing.expects(:request).with(":id/process_times", {id: subject.id}, :get).returns({"process_times" => [process_time.to_hash]})
+      end
+
+      it 'should set the process_times attribute as a list of objects' do
+        expect(subject.process_times).to eq [process_time]
       end
     end
 
-    context 'process_times=' do
-      it 'should set the process_time attribute' do
-        subject.process_times = [another_process_time]
-        expect(subject.process_time).to eq [another_process_time]
+    context 'When the process_times is not nil' do
+      before :each do
+        KalibroClient::Entities::Processor::Processing.expects(:request).once.with(":id/process_times", {id: subject.id}, :get).returns({"process_times" => [process_time.to_hash]})
       end
-    end
 
-    context 'process_times' do
-      it 'should get the process_time attribute' do
-        expect(subject.process_times).to eq subject.process_time
+      it 'should return the process_times' do
+        subject.process_times
+        expect(subject.process_times).to eq [process_time]
       end
     end
   end

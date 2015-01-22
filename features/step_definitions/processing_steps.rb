@@ -91,5 +91,5 @@ Then(/^I should get a Processing$/) do
 end
 
 Then(/^this processing should have process times$/) do
-  expect(@response.process_time.first).to be_a(KalibroClient::Entities::Processor::ProcessTime)
+  expect(@response.process_times.first).to be_a(KalibroClient::Entities::Processor::ProcessTime)
 end
