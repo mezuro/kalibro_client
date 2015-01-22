@@ -3,6 +3,10 @@ Feature: Children
   As a developer
   I want to find children module results
 
+  # Waiting for a fix on kalibro processor:
+  # The 'children' action is returning only a list of hashes and the
+  # create_objects_array method will accept only a
+  # {'module_results' => list_of_hashes} argument
   @kalibro_configuration_restart @kalibro_processor_restart @wip
   Scenario: find a valid module result
     Given I have a project with name "Kalibro"

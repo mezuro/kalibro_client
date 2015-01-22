@@ -13,7 +13,7 @@ end
 
 When(/^I ask for the children of the processing root module result$/) do
   @children = KalibroClient::Entities::Processor::ModuleResult.
-    find(KalibroClient::Entities::Processor::Processing.processing_of(@repository.id).results_root_id).children
+    find(KalibroClient::Entities::Processor::Processing.processing_of(@repository.id).root_module_result_id).children
 end
 
 Then(/^I should get a list with the children module results$/) do
