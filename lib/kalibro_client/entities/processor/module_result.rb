@@ -39,8 +39,8 @@ module KalibroClient
           @id = value.to_i
         end
 
-        def kalibro_module=(value)
-          @kalibro_module = KalibroClient::Entities::Processor::KalibroModule.to_object value
+        def kalibro_module
+          @kalibro_module ||= KalibroClient::Entities::Processor::KalibroModule.to_object self.class.request(":id/kalibro_module", {id: id}, :get)["kalibro_module"]
         end
 
         def height=(value)

@@ -42,5 +42,5 @@ Then(/^I should get a module_result$/) do
 end
 
 Then(/^The first children should have a module$/) do
-  expect(@children.first.module).to be_a(KalibroClient::Entities::Processor::Module)
+  expect(@children.first.kalibro_module).to be_a(KalibroClient::Entities::Processor::KalibroModule)
 end
