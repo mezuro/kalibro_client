@@ -3,7 +3,7 @@ Feature: Descendant values
   As a developer
   I want to get the descendant metric results of the given module result
 
-  @kalibro_configuration_restart @kalibro_processor_restart @wip
+  @kalibro_configuration_restart @kalibro_processor_restart
   Scenario: when there is a metric result
     Given I have a project with name "Kalibro"
     And I have a configuration with name "Java"

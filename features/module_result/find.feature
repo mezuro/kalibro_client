@@ -17,7 +17,6 @@ Feature: Find
     And I get the module result of the processing
     Then I should get a module_result
 
-  @wip
   Scenario: get a module result by inexistent name
     When I ask for an inexistent module result
     Then I should get an error
