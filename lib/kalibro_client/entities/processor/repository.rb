@@ -19,7 +19,7 @@ module KalibroClient
     module Processor
       class Repository < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :name, :description, :license, :period, :scm_type, :address, :configuration_id, :project_id, :send_email, :code_directory
+        attr_accessor :id, :name, :description, :license, :period, :scm_type, :address, :kalibro_configuration_id, :project_id, :send_email, :code_directory
 
         def self.repository_types
           request('types', {}, :get)['types'].to_a
@@ -37,8 +37,8 @@ module KalibroClient
           @period = value.to_i
         end
 
-        def configuration_id=(value)
-          @configuration_id = value.to_i
+        def kalibro_configuration_id=(value)
+          @kalibro_configuration_id = value.to_i
         end
 
         def project_id=(value)

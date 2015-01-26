@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -39,22 +39,22 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
     end
 
     context 'with many configurations' do
-      let(:configuration) { FactoryGirl.build(:configuration_with_id) }
-      let(:another_configuration) { FactoryGirl.build(:another_configuration) }
+      let(:kalibro_configuration) { FactoryGirl.build(:kalibro_configuration_with_id) }
+      let(:another_kalibro_configuration) { FactoryGirl.build(:another_kalibro_configuration) }
 
       before :each do
         KalibroClient::Entities::Configurations::KalibroConfiguration.
           expects(:request).
           with('', {}, :get).
-          returns({'kalibro_configurations' => [configuration.to_hash, another_configuration.to_hash]})
+          returns({'kalibro_configurations' => [kalibro_configuration.to_hash, another_kalibro_configuration.to_hash]})
       end
 
       it 'should return the two elements' do
-        configurations = KalibroClient::Entities::Configurations::KalibroConfiguration.all
+        kalibro_configurations = KalibroClient::Entities::Configurations::KalibroConfiguration.all
 
-        expect(configurations.size).to eq(2)
-        expect(configurations.first.name).to eq(configuration.name)
-        expect(configurations.last.name).to eq(another_configuration.name)
+        expect(kalibro_configurations.size).to eq(2)
+        expect(kalibro_configurations.first.name).to eq(kalibro_configuration.name)
+        expect(kalibro_configurations.last.name).to eq(another_kalibro_configuration.name)
       end
     end
   end

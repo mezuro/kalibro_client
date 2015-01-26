@@ -1,21 +1,21 @@
-Given(/^I have a metric configuration within the given configuration$/) do
+Given(/^I have a metric configuration within the given kalibro configuration$/) do
   @metric_configuration = FactoryGirl.create(:metric_configuration,
                                              {reading_group_id: @reading_group.id,
-                                              kalibro_configuration_id: @configuration.id})
+                                              kalibro_configuration_id: @kalibro_configuration.id})
 end
 
-Given(/^I have a metric configuration within the given configuration with the given metric$/) do
+Given(/^I have a metric configuration within the given kalibro configuration with the given metric$/) do
   @metric_configuration = FactoryGirl.create(:metric_configuration,
                                              {metric: @metric,
                                               reading_group_id: @reading_group.id,
-                                              kalibro_configuration_id: @configuration.id})
+                                              kalibro_configuration_id: @kalibro_configuration.id})
 end
 
-Given(/^I have a loc configuration within the given configuration$/) do
+Given(/^I have a loc configuration within the given kalibro configuration$/) do
   @metric_configuration = FactoryGirl.create(:metric_configuration,
                                              {metric: FactoryGirl.build(:loc),
                                               reading_group_id: @reading_group.id,
-                                              kalibro_configuration_id: @configuration.id})
+                                              kalibro_configuration_id: @kalibro_configuration.id})
 end
 
 When(/^I search a metric configuration with the same id of the given metric configuration$/) do
@@ -32,8 +32,8 @@ When(/^I search an inexistent metric configuration$/) do
   end
 end
 
-When(/^I request all metric configurations of the given configuration$/) do
-  @metric_configurations = KalibroClient::Entities::Configurations::MetricConfiguration.metric_configurations_of(@configuration.id)
+When(/^I request all metric configurations of the given kalibro configuration$/) do
+  @metric_configurations = KalibroClient::Entities::Configurations::MetricConfiguration.metric_configurations_of(@kalibro_configuration.id)
 end
 
 Then(/^it should return the same metric configuration as the given one$/) do

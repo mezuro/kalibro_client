@@ -130,23 +130,23 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
     subject {FactoryGirl.build(:metric_configuration_with_id)}
 
     it 'should not include the configuration_id' do
-      expect(subject.to_hash[:configuration_id]).to be_nil
+      expect(subject.to_hash[:kalibro_configuration_id]).to be_nil
     end
   end
 
   describe 'metric_configurations_of' do
     let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
-    let(:configuration) { FactoryGirl.build(:configuration_with_id) }
+    let(:kalibro_configuration) { FactoryGirl.build(:kalibro_configuration_with_id) }
 
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.
       expects(:request).
-      with('', {}, :get, "kalibro_configurations/#{configuration.id}").
+      with('', {}, :get, "kalibro_configurations/#{kalibro_configuration.id}").
       returns({'metric_configurations' => [metric_configuration.to_hash]})
     end
 
     it 'should return a array with a metric configuration' do
-      metric_configurations = KalibroClient::Entities::Configurations::MetricConfiguration.metric_configurations_of(configuration.id)
+      metric_configurations = KalibroClient::Entities::Configurations::MetricConfiguration.metric_configurations_of(kalibro_configuration.id)
 
       expect(metric_configurations).to be_an(Array)
       expect(metric_configurations.first.id).to eq(metric_configuration.id)

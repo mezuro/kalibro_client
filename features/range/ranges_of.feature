@@ -5,17 +5,17 @@ Feature: Range of
 
   @kalibro_configuration_restart
   Scenario: With an inexistent range
-    Given I have a configuration with name "Java"
+    Given I have a kalibro configuration with name "Java"
     And I have a reading group with name "Group"
-    And I have a metric configuration within the given configuration
+    And I have a metric configuration within the given kalibro configuration
     When I ask ranges of the given metric configuration
     Then I should get an empty list
 
   @kalibro_configuration_restart
   Scenario: With an existing range
-    Given I have a configuration with name "Java"
+    Given I have a kalibro configuration with name "Java"
     And I have a reading group with name "Group"
-    And I have a metric configuration within the given configuration
+    And I have a metric configuration within the given kalibro configuration
     And I have a reading within the given reading group
     And I have a range within the given reading
     When I ask ranges of the given metric configuration

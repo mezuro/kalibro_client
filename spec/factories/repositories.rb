@@ -22,7 +22,7 @@ FactoryGirl.define do
     period 1
     scm_type "SVN"
     address "svn://svn.code.sf.net/p/qt-calculator/code/trunk"
-    configuration_id 1
+    kalibro_configuration_id 1
     project_id 1
     send_email "test@test.com"
 

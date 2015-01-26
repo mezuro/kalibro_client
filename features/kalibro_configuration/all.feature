@@ -1,10 +1,10 @@
 Feature: All
-  In order to be able to have configurations
+  In order to be able to have kalibro configurations
   As a developer
-  I want to get all the available configurations
+  I want to get all the available kalibro configurations
 
   @kalibro_configuration_restart
-  Scenario: one configuration
-    Given I have a configuration with name "Java"
-    When I get all the configurations
-    Then I should get a list with the given configuration
+  Scenario: one kalibro configuration
+    Given I have a kalibro configuration with name "Java"
+    When I get all the kalibro configurations
+    Then I should get a list with the given kalibro configuration

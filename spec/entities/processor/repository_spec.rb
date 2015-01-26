@@ -67,10 +67,10 @@ describe KalibroClient::Entities::Processor::Repository do
     end
   end
 
-  describe "configuration_id=" do
-    it 'should set the configuration_id attribute values as integer' do
-      subject.configuration_id = "222"
-      expect(subject.configuration_id).to eq(222)
+  describe "kalibro_configuration_id=" do
+    it 'should set the kalibro_configuration_id attribute values as integer' do
+      subject.kalibro_configuration_id = "222"
+      expect(subject.kalibro_configuration_id).to eq(222)
     end
   end
 

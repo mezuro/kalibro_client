@@ -6,9 +6,9 @@ Feature: Has ready processing
   @kalibro_processor_restart @kalibro_configuration_restart
   Scenario: With one repository just after starting to process
     Given I have a project with name "Kalibro"
-    And I have a configuration with name "Java"
+    And I have a kalibro configuration with name "Java"
     And I have a reading group with name "Group"
-    And I have a loc configuration within the given configuration
+    And I have a loc configuration within the given kalibro configuration
     And the given project has the following Repositories:
       |   name    | scm_type |                  address                    |
       |  Kalibro  |    GIT   | https://git.gitorious.org/sbking/sbking.git |
