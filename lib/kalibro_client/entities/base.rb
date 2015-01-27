@@ -68,7 +68,7 @@ module KalibroClient
           self.created_at = response[instance_class_name]["created_at"] unless response[instance_class_name]["created_at"].nil?
           self.updated_at = response[instance_class_name]["updated_at"] unless response[instance_class_name]["updated_at"].nil?
 
-          self.kalibro_errors.empty? ? true : false
+          self.kalibro_errors.empty? && !response[instance_class_name]["id"].nil? ? true : false
         rescue Exception => exception
           add_error exception
           false
