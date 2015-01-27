@@ -52,9 +52,9 @@ describe KalibroClient::Entities::Processor::Project do
 
       before :each do
         KalibroClient::Entities::Processor::Project.
-            expects(:request).
-            with('', {}, :get).
-            returns({"projects" => [project.to_hash, another_project.to_hash]})
+          expects(:request).
+          with('', {}, :get).
+          returns({"projects" => [project.to_hash, another_project.to_hash]})
       end
 
       it 'should return a list with projects' do
@@ -62,6 +62,38 @@ describe KalibroClient::Entities::Processor::Project do
 
         expect(projects.first.name).to eq(project.name)
         expect(projects.last.name).to eq(another_project.name)
+      end
+    end
+  end
+
+  describe 'repositories' do
+    let(:project) { FactoryGirl.build(:project) }
+    let(:repository) { FactoryGirl.build(:repository) }
+
+    context 'with a repository' do
+
+      before :each do
+        KalibroClient::Entities::Processor::Project.
+          expects(:request).
+          with(':id/repositories', {id: project.id}, :get).
+          returns({"repositories" => [repository.to_hash]})
+      end
+
+      it 'should return a list with repositories' do
+        expect(project.repositories).to eq([repository])
+      end
+    end
+
+    context 'without a repository' do
+      before :each do
+        KalibroClient::Entities::Processor::Project.
+          expects(:request).
+          with(':id/repositories', {id: project.id}, :get).
+          returns({"repositories" => []})
+      end
+
+      it 'should return an empty list' do
+        expect(project.repositories).to eq([])
       end
     end
   end
