@@ -84,7 +84,7 @@ describe KalibroClient::Entities::Processor::Processing do
         before :each do
           KalibroClient::Entities::Processor::Repository.
             expects(:request).once.
-            with("#{repository.id}/has_processing").
+            with("#{repository.id}/has_processing", {}, :get).
             returns({'has_processing' => false})
         end
 
