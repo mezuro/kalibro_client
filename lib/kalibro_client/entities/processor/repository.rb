@@ -50,7 +50,7 @@ module KalibroClient
         end
 
         def cancel_processing_of_repository
-          self.class.request('cancel_process', {id: self.id})
+          self.class.request(':id/cancel_process', {id: self.id}, :get)
         end
 
         def self.all

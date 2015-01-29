@@ -30,7 +30,7 @@ Given(/^I get the module result of the processing$/) do
 end
 
 When(/^I ask for the history of the given module result$/) do
-  @history = KalibroClient::Entities::Processor::ModuleResult.history_of(@module_result.id)
+  @history = KalibroClient::Entities::Processor::ModuleResult.history_of(@module_result, @repository.id)
 end
 
 Then(/^I should get a list with date module results$/) do
