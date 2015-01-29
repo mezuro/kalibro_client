@@ -213,12 +213,10 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
 
     context 'with an inexistant MetricConfiguration' do
       before :each do
-        any_code = rand(Time.now.to_i)
-        any_error_message = ""
         KalibroClient::Entities::Configurations::MetricConfiguration.
         expects(:request).
         with(':id', {id: metric_configuration.id}, :get).
-        returns({'error' => 'RecordNotFound'})
+        returns({'errors' => 'RecordNotFound'})
       end
 
       it 'should raise the RecordNotFound error' do
