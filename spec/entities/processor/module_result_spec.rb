@@ -134,16 +134,18 @@ describe KalibroClient::Entities::Processor::ModuleResult do
   end
 
   describe 'history_of' do
+    let(:subject) { FactoryGirl.build(:module_result, kalibro_module: FactoryGirl.build(:kalibro_module_with_id)) }
+    let(:repository) { FactoryGirl.build(:repository) }
     let(:date_module_result) { FactoryGirl.build(:date_module_result) }
     before :each do
-      KalibroClient::Entities::Processor::ModuleResult.
+      KalibroClient::Entities::Processor::Repository.
         expects(:request).
-        with('history_of', {id: subject.id}).
+        with(':id/module_result_history_of', {id: repository.id, kalibro_module_id: subject.kalibro_module.id}).
         returns({'date_module_results' => [[date_module_result.date, date_module_result.module_result.to_hash]]})
     end
 
     it 'should return a list of date_module_results' do
-      date_module_results = KalibroClient::Entities::Processor::ModuleResult.history_of subject.id
+      date_module_results = KalibroClient::Entities::Processor::ModuleResult.history_of(subject, repository.id)
       expect(date_module_results.first.result).to eq date_module_result.result
     end
   end

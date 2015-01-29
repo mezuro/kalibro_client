@@ -67,8 +67,8 @@ module KalibroClient
           !self.folder?
         end
 
-        def self.history_of(module_result_id)
-          response = self.create_array_from_hash(self.request('history_of', {id: module_result_id})['date_module_results'])
+        def self.history_of(module_result, repository_id)
+          response = self.create_array_from_hash(Repository.request(':id/module_result_history_of', {id: repository_id, kalibro_module_id: module_result.kalibro_module.id})['date_module_results'])
           response.map do |date_module_result_pair|
             date_module_result = KalibroClient::Entities::Miscellaneous::DateModuleResult.new
             date_module_result.date = date_module_result_pair.first
