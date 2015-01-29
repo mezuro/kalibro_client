@@ -57,4 +57,31 @@ describe KalibroClient::Entities::Configurations::ReadingGroup do
       end
     end
   end
+
+  describe 'readings' do
+    let(:reading_group) { FactoryGirl.build(:reading_group_with_id) }
+
+    context 'with readings' do
+      let(:reading_1) { FactoryGirl.build(:reading, reading_group_id: reading_group.id) }
+      let(:reading_2) { FactoryGirl.build(:reading, reading_group_id: reading_group.id) }
+
+      before :each do
+        KalibroClient::Entities::Configurations::ReadingGroup.expects(:request).with(":id/readings", {id: reading_group.id}, :get).returns({"readings" => [reading_1.to_hash, reading_2.to_hash]})
+      end
+
+      it 'should return an array of readings' do
+        expect(reading_group.readings).to eq([reading_1, reading_2])
+      end
+    end
+
+    context 'without readings' do
+      before :each do
+        KalibroClient::Entities::Configurations::ReadingGroup.expects(:request).with(":id/readings", {id: reading_group.id}, :get).returns({"readings" => []})
+      end
+
+      it 'should return an empty array' do
+        expect(reading_group.readings).to eq([])
+      end
+    end
+  end
 end
