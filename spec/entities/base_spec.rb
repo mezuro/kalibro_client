@@ -114,13 +114,13 @@ describe KalibroClient::Entities::Base do
   end
 
   describe 'save' do
-    before :each do
-      KalibroClient::Entities::Base.
-        expects(:request).
-        with('', {base: {}}, :post, '').returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
-    end
-
     context "when it doesn't have the method id=" do
+      before :each do
+        KalibroClient::Entities::Base.
+          expects(:request).
+          with('', {base: {}}, :post, '').returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
+      end
+
       it 'should make a request to save model with id returning false and an error' do
         expect(subject.save).to be(false)
         expect(subject.kalibro_errors[0]).to be_a(NoMethodError)
@@ -129,12 +129,28 @@ describe KalibroClient::Entities::Base do
 
     context 'when it has the method id=' do
       before :each do
+        KalibroClient::Entities::Base.
+          expects(:request).
+          with('', {base: {}}, :post, '').returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
         KalibroClient::Entities::Base.any_instance.expects(:id=).with(42).returns(42)
       end
 
       it 'should make a request to save model with id and return true without errors' do
         expect(subject.save).to be(true)
         expect(subject.kalibro_errors).to be_empty
+      end
+    end
+
+    context "when it returns with a kalibro processor error" do
+      before :each do
+        KalibroClient::Entities::Base.
+          expects(:request).
+          with('', {base: {}}, :post, '').returns({"errors" => ["Name has already been taken"]})
+      end
+
+      it 'should make a request to save model returning false and a kalibro error' do
+        expect(subject.save).to be(false)
+        expect(subject.kalibro_errors[0]).to eq("Name has already been taken")
       end
     end
   end

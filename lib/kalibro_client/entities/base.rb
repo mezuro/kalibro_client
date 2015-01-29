@@ -63,12 +63,16 @@ module KalibroClient
       def save
         begin
           response = self.class.request(save_action, save_params, :post, save_prefix)
-          self.id = response[instance_class_name]["id"]
-          self.kalibro_errors = response["errors"] unless response["errors"].nil?
-          self.created_at = response[instance_class_name]["created_at"] unless response[instance_class_name]["created_at"].nil?
-          self.updated_at = response[instance_class_name]["updated_at"] unless response[instance_class_name]["updated_at"].nil?
 
-          self.kalibro_errors.empty? ? true : false
+          if response["errors"].nil?
+            self.id = response[instance_class_name]["id"]
+            self.created_at = response[instance_class_name]["created_at"] unless response[instance_class_name]["created_at"].nil?
+            self.updated_at = response[instance_class_name]["updated_at"] unless response[instance_class_name]["updated_at"].nil?
+            true
+          else
+            self.kalibro_errors = response["errors"]
+            false
+          end
         rescue Exception => exception
           add_error exception
           false
