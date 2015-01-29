@@ -104,12 +104,12 @@ describe KalibroClient::Entities::Base do
 
   describe 'to_objects_array' do
     it 'should convert [{}] to [Model]' do
-      expect(KalibroClient::Entities::Base.to_objects_array({})).to eq([FactoryGirl.build(:model)]) 
+      expect(KalibroClient::Entities::Base.to_objects_array({})).to eq([FactoryGirl.build(:model)])
     end
 
     it 'should remain an array if it already is one' do
       object = Object.new
-      expect(KalibroClient::Entities::Base.to_objects_array([object])).to eq([object]) 
+      expect(KalibroClient::Entities::Base.to_objects_array([object])).to eq([object])
     end
   end
 
@@ -175,7 +175,7 @@ describe KalibroClient::Entities::Base do
         subject.expects(:variable_names).returns(["answer"])
         subject.expects(:send).with("answer").returns(42)
         another_model.expects(:send).with("answer").returns(41)
-      end 
+      end
 
       it 'should return false' do
         expect(subject).not_to eq(another_model)
