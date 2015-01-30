@@ -21,17 +21,19 @@ require 'kalibro_client/helpers/request_methods'
 module KalibroClient
   module Entities
     class Base
-      attr_accessor :kalibro_errors
+      attr_accessor :kalibro_errors, :persisted
 
       def initialize(attributes={})
         attributes.each { |field, value| send("#{field}=", value) if self.class.is_valid?(field) }
         @kalibro_errors = []
+        @persisted = false
       end
 
       def to_hash(options={})
         hash = Hash.new
         excepts = options[:except].nil? ? [] : options[:except]
         excepts << "kalibro_errors"
+        excepts << "persisted"
         fields.each do |field|
           hash = field_to_hash(field).merge(hash) if !excepts.include?(field)
         end
@@ -61,21 +63,26 @@ module KalibroClient
       end
 
       def save
-        begin
-          response = self.class.request(save_action, save_params, :post, save_prefix)
+        if persisted?
+          self.update
+        else
+          begin
+            response = self.class.request(save_action, save_params, :post, save_prefix)
 
-          if response["errors"].nil?
-            self.id = response[instance_class_name]["id"]
-            self.created_at = response[instance_class_name]["created_at"] unless response[instance_class_name]["created_at"].nil?
-            self.updated_at = response[instance_class_name]["updated_at"] unless response[instance_class_name]["updated_at"].nil?
-            true
-          else
-            self.kalibro_errors = response["errors"]
+            if response["errors"].nil?
+              self.id = response[instance_class_name]["id"]
+              self.created_at = response[instance_class_name]["created_at"] unless response[instance_class_name]["created_at"].nil?
+              self.updated_at = response[instance_class_name]["updated_at"] unless response[instance_class_name]["updated_at"].nil?
+              @persisted = true
+              true
+            else
+              self.kalibro_errors = response["errors"]
+              false
+            end
+          rescue Exception => exception
+            add_error exception
             false
           end
-        rescue Exception => exception
-          add_error exception
-          false
         end
       end
 
@@ -87,6 +94,16 @@ module KalibroClient
         new_model = new attributes
         new_model.save
         new_model
+      end
+
+      def update
+        response = self.class.request(update_action, update_params, :put, "")
+        unless response["errors"].nil?
+          response["errors"].each { |error| add_error(error) }
+          false
+        else
+          true
+        end
       end
 
       def ==(another)
@@ -119,8 +136,18 @@ module KalibroClient
 
       def destroy
         begin
-          self.class.request(destroy_action, destroy_params, :delete, destroy_prefix)
-          self.kalibro_errors.empty? ? true : false
+          response = self.class.request(destroy_action, destroy_params, :delete, destroy_prefix)
+
+          unless response['errors'].nil?
+            response['errors'].each { |error| add_error(error) }
+          end
+
+          if self.kalibro_errors.empty?
+            @persisted = false
+            true
+          else
+            false
+          end
         rescue Exception => exception
           add_error exception
           false
@@ -136,6 +163,8 @@ module KalibroClient
         response = [response] if response.is_a?(Hash)
         response
       end
+
+      alias_method :persisted?, :persisted
 
       protected
 

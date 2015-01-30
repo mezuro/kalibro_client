@@ -30,6 +30,7 @@ module RequestMethods
   def destroy_action
     ":id"
   end
+  alias_method :update_action, :destroy_action
 
   def destroy_params
     {id: self.id}
@@ -37,6 +38,10 @@ module RequestMethods
 
   def destroy_prefix
     ""
+  end
+
+  def update_params
+    {instance_class_name.underscore.to_sym => self.to_hash, :id => self.id}
   end
 
   module ClassMethods
