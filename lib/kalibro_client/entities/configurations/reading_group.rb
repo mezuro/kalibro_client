@@ -28,6 +28,10 @@ module KalibroClient
         def self.all
           create_objects_array_from_hash(request('', {}, :get))
         end
+
+        def readings
+          KalibroClient::Entities::Configurations::Reading.create_objects_array_from_hash(self.class.request(':id/readings', {id: @id}, :get))
+        end
       end
     end
   end
