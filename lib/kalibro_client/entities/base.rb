@@ -23,10 +23,10 @@ module KalibroClient
     class Base
       attr_accessor :kalibro_errors, :persisted
 
-      def initialize(attributes={})
+      def initialize(attributes={}, persisted=false)
         attributes.each { |field, value| send("#{field}=", value) if self.class.is_valid?(field) }
         @kalibro_errors = []
-        @persisted = false
+        @persisted = persisted
       end
 
       def to_hash(options={})
@@ -54,7 +54,7 @@ module KalibroClient
       end
 
       def self.to_object value
-        value.kind_of?(Hash) ? new(value) : value
+        value.kind_of?(Hash) ? new(value, true) : value
       end
 
       def self.to_objects_array value
@@ -112,7 +112,7 @@ module KalibroClient
         end
 
         self.variable_names.each do |name|
-          next if name == "created_at" or name == "updated_at"
+          next if name == "created_at" or name == "updated_at" or name == "persisted"
           unless self.send("#{name}") == another.send("#{name}") then
             return false
           end
@@ -128,7 +128,7 @@ module KalibroClient
       def self.find(id)
         if(exists?(id))
           response = request(find_action, id_params(id), :get)
-          new response[entity_name]
+          new(response[entity_name], true)
         else
           raise KalibroClient::Errors::RecordNotFound
         end
@@ -155,7 +155,7 @@ module KalibroClient
       end
 
       def self.create_objects_array_from_hash (response)
-        create_array_from_hash(response[entity_name.pluralize]).map { |hash| new hash }
+        create_array_from_hash(response[entity_name.pluralize]).map { |hash| new(hash, true) }
       end
 
       def self.create_array_from_hash (response)
