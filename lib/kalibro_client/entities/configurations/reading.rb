@@ -50,6 +50,10 @@ module KalibroClient
         def destroy_prefix
           "reading_groups/#{reading_group_id}"
         end
+
+        def update_prefix
+          "reading_groups/#{reading_group_id}"
+        end
       end
     end
   end

@@ -98,7 +98,7 @@ module KalibroClient
 
       def update(attributes={})
         attributes.each { |field, value| send("#{field}=", value) if self.class.is_valid?(field) }
-        response = self.class.request(update_action, update_params, :put, "")
+        response = self.class.request(update_action, update_params, :put, update_prefix)
         unless response["errors"].nil?
           response["errors"].each { |error| add_error(error) }
           false
