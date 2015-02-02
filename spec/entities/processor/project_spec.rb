@@ -17,9 +17,8 @@
 require 'spec_helper'
 
 describe KalibroClient::Entities::Processor::Project do
+  subject { FactoryGirl.build(:project, {id: 42}) }
   describe 'initialize' do
-    subject { FactoryGirl.build(:project, {id: 42}) }
-
     it 'should have the id set to 42' do
       expect(subject.id).to eq(42)
     end
@@ -94,6 +93,22 @@ describe KalibroClient::Entities::Processor::Project do
 
       it 'should return an empty list' do
         expect(project.repositories).to eq([])
+      end
+    end
+  end
+
+  describe 'update' do
+    context 'with attributes' do
+      before :each do
+        KalibroClient::Entities::Processor::Project.
+          expects(:request).
+          with(':id', {project: {"name" => "Another Name", "description" => subject.description, "id" => subject.id.to_s}, id: subject.id}, :put, '').
+          returns({"project" => {"id" => subject.id, "name" => "Another Name", "kalibro_errors" => []}})
+      end
+
+      it 'is expected to have name Another Name' do
+        subject.update(name: "Another Name")
+        expect(subject.name).to eq("Another Name")
       end
     end
   end
