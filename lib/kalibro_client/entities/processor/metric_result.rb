@@ -21,7 +21,7 @@ module KalibroClient
 
         attr_accessor :id, :value, :aggregated_value, :module_result_id, :metric_configuration_id
 
-        def initialize(attributes={})
+        def initialize(attributes={}, persisted=false)
           value = attributes["value"]
           @value = (value == "NaN") ? attributes["aggregated_value"].to_f : value.to_f
           attributes.each do |field, value|
@@ -30,6 +30,7 @@ module KalibroClient
             end
           end
           @kalibro_errors = []
+          @persisted = persisted
         end
 
         def id=(value)

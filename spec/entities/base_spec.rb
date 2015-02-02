@@ -114,43 +114,95 @@ describe KalibroClient::Entities::Base do
   end
 
   describe 'save' do
-    context "when it doesn't have the method id=" do
-      before :each do
-        KalibroClient::Entities::Base.
-          expects(:request).
-          with('', {base: {}}, :post, '').returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
+    context "when it is not persisted" do
+      context "when it doesn't have the method id=" do
+        before :each do
+          KalibroClient::Entities::Base.
+            expects(:request).
+            with('', {base: {}}, :post, '').returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
+        end
+
+        it 'should make a request to save model with id returning false and an error' do
+          expect(subject.save).to be(false)
+          expect(subject.kalibro_errors[0]).to be_a(NoMethodError)
+        end
       end
 
-      it 'should make a request to save model with id returning false and an error' do
-        expect(subject.save).to be(false)
-        expect(subject.kalibro_errors[0]).to be_a(NoMethodError)
+      context 'when it has the method id=' do
+        before :each do
+          KalibroClient::Entities::Base.
+            expects(:request).
+            with('', {base: {}}, :post, '').returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
+          KalibroClient::Entities::Base.any_instance.expects(:id=).with(42).returns(42)
+        end
+
+        it 'should make a request to save model with id and return true without errors' do
+          expect(subject.save).to be(true)
+          expect(subject.kalibro_errors).to be_empty
+        end
+      end
+
+      context "when it returns with a kalibro processor error" do
+        before :each do
+          KalibroClient::Entities::Base.
+            expects(:request).
+            with('', {base: {}}, :post, '').returns({"errors" => ["Name has already been taken"]})
+        end
+
+        it 'should make a request to save model returning false and a kalibro error' do
+          expect(subject.save).to be(false)
+          expect(subject.kalibro_errors[0]).to eq("Name has already been taken")
+        end
       end
     end
 
-    context 'when it has the method id=' do
+    context 'when it is persisted' do
       before :each do
-        KalibroClient::Entities::Base.
-          expects(:request).
-          with('', {base: {}}, :post, '').returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
-        KalibroClient::Entities::Base.any_instance.expects(:id=).with(42).returns(42)
+        subject.persisted = true
       end
 
-      it 'should make a request to save model with id and return true without errors' do
-        expect(subject.save).to be(true)
-        expect(subject.kalibro_errors).to be_empty
+      it 'is expected to call the update method'  do
+        subject.expects(:update)
+
+        subject.save
+      end
+    end
+  end
+
+  describe 'update' do
+    let!(:id) { 42 }
+
+    context 'with valid parameters' do
+      before :each do
+        KalibroClient::Entities::Base.
+              expects(:request).
+              with(':id', {base: {}, id: id}, :put, '').returns({"base" => {'id' => id, 'kalibro_errors' => []}})
+        subject.expects(:id).returns(id)
+        subject.expects(:to_hash).returns({})
+      end
+
+      it 'is expect to return true' do
+        expect(subject.update).to be_truthy
       end
     end
 
-    context "when it returns with a kalibro processor error" do
+    context 'with invalid parameters' do
       before :each do
         KalibroClient::Entities::Base.
-          expects(:request).
-          with('', {base: {}}, :post, '').returns({"errors" => ["Name has already been taken"]})
+              expects(:request).
+              with(':id', {base: {}, id: id}, :put, '').returns({"errors" => ["Error"]})
+        subject.expects(:id).returns(id)
+        subject.expects(:to_hash).returns({})
       end
 
-      it 'should make a request to save model returning false and a kalibro error' do
-        expect(subject.save).to be(false)
-        expect(subject.kalibro_errors[0]).to eq("Name has already been taken")
+      it 'is expect to return false' do
+        expect(subject.update).to be_falsey
+      end
+
+      it 'is expect fill the errors' do
+        subject.update
+
+        expect(subject.kalibro_errors).to_not be_empty
       end
     end
   end
@@ -264,25 +316,39 @@ describe KalibroClient::Entities::Base do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.expects(:id).at_least_once.returns(42)
-        KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '')
+        KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '').returns({})
       end
 
-      it 'should remain with the errors array empty' do
+      it 'should remain with the errors array empty and not persisted' do
         subject.destroy
         expect(subject.kalibro_errors).to be_empty
+        expect(subject.persisted?).to be_falsey
       end
     end
 
     context 'when the destruction fails' do
-      before :each do
-        subject.expects(:id).at_least_once.returns(42)
-        KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '').raises(Exception.new)
+      context 'raising a exception' do
+        before :each do
+          subject.expects(:id).at_least_once.returns(42)
+          KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '').raises(Exception.new)
+        end
+
+        it "should have an exception inside it's errors" do
+          subject.destroy
+
+          expect(subject.kalibro_errors[0]).to be_an(Exception)
+        end
       end
 
-      it "should have an exception inside it's errors" do
-        subject.destroy
+      context 'returning kalibro_errors' do
+        before :each do
+          subject.expects(:id).at_least_once.returns(42)
+          KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '').returns({'errors' => ['Error']})
+        end
 
-        expect(subject.kalibro_errors[0]).to be_an(Exception)
+        it 'is expected to return false' do
+          expect(subject.destroy).to be_falsey
+        end
       end
     end
   end
