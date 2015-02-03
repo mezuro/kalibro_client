@@ -84,4 +84,19 @@ describe KalibroClient::Entities::Configurations::Reading do
       subject.destroy
     end
   end
+
+  # The only purpose of this test is to cover the overridden update_prefix method
+  describe 'update' do
+    subject {FactoryGirl.build(:reading_with_id)}
+
+    before :each do
+      KalibroClient::Entities::Configurations::Reading.
+        expects(:request).
+        with(":id", {reading: subject.to_hash, id: subject.id}, :put, "reading_groups/#{subject.reading_group_id}").returns({})
+    end
+
+    it 'should make a request to update' do
+      subject.update
+    end
+  end
 end

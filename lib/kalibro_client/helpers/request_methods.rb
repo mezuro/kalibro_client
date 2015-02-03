@@ -44,6 +44,10 @@ module RequestMethods
     {instance_class_name.underscore.to_sym => self.to_hash, :id => self.id}
   end
 
+  def update_prefix
+    ""
+  end
+
   module ClassMethods
     def exists_action
       ":id/exists"
