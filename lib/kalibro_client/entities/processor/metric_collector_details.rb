@@ -23,7 +23,7 @@ module KalibroClient
         def supported_metrics=(value)
           @supported_metrics = {}
           value.each do |code, metric|
-            @supported_metrics[code] = KalibroClient::Entities::Miscellaneous::Metric.new(metric[:type], metric[:name], metric[:code], metric[:scope])
+            @supported_metrics[code] = KalibroClient::Entities::Miscellaneous::Metric.new(metric["type"], metric["name"], metric["code"], metric["scope"])
           end
         end
 

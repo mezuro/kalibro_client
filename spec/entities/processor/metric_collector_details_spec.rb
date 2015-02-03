@@ -120,8 +120,7 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
 
   describe 'Supported Metrics' do
     let(:code_and_metric) { { "total_abstract_classes" => FactoryGirl.build(:metric) } }
-    #FIXME: Mocha is creating the expectations with strings, but FactoryGirl returns everything with sybols and integers
-    let(:code_and_metric_parameter) { { "total_abstract_classes" => Hash[FactoryGirl.attributes_for(:metric)] } }
+    let(:code_and_metric_parameter) { { "total_abstract_classes" => FactoryGirl.build(:metric).to_hash } }
 
     context 'supported_metrics acessors' do
       it 'should set the value of the array of supported metrics' do
