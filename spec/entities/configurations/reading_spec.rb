@@ -85,7 +85,7 @@ describe KalibroClient::Entities::Configurations::Reading do
     end
   end
 
-  # The only purpose of this test is to cover the overrided update_prefix method
+  # The only purpose of this test is to cover the overridden update_prefix method
   describe 'update' do
     subject {FactoryGirl.build(:reading_with_id)}
 
