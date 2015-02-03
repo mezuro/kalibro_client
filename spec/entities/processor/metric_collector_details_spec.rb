@@ -130,16 +130,29 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
     end
   end
 
-  describe 'metric' do
+  describe 'find_metric_by_name' do
     subject { FactoryGirl.build(:metric_collector_details) }
     let(:metric) { subject.supported_metrics["loc"] }
 
     it 'should return nil with an inexistent name' do
-      expect(subject.metric("fake name")).to be_nil
+      expect(subject.find_metric_by_name("fake name")).to be_nil
     end
 
     it 'should return a metric with an existent name' do
-      expect(subject.metric(metric.name).name).to eq(metric.name)
+      expect(subject.find_metric_by_name(metric.name)).to eq(metric)
+    end
+  end
+
+  describe 'find_metric_by_code' do
+    subject { FactoryGirl.build(:metric_collector_details) }
+    let(:metric) { subject.supported_metrics["loc"] }
+
+    it 'should return nil with an inexistent code' do
+      expect(subject.find_metric_by_code("fake code")).to be_nil
+    end
+
+    it 'should return a metric with an existent code' do
+      expect(subject.find_metric_by_code(metric.code)).to eq(metric)
     end
   end
 end

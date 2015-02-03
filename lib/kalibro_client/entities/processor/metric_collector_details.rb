@@ -27,8 +27,13 @@ module KalibroClient
           end
         end
 
-        def metric(name)
+        def find_metric_by_name(name)
           metric = self.supported_metrics.find {|code, metric| metric.name == name}
+          metric.nil? ? nil : metric.last
+        end
+
+        def find_metric_by_code(metric_code)
+          metric = self.supported_metrics.find {|code, metric| metric.code == metric_code}
           metric.nil? ? nil : metric.last
         end
 
