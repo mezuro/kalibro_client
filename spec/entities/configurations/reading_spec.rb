@@ -29,6 +29,11 @@ describe KalibroClient::Entities::Configurations::Reading do
       subject.grade = "44.7"
       expect(subject.grade).to eq(44.7)
     end
+
+    it 'should not convert an empty string to float' do
+      subject.grade = "        "
+      expect(subject.grade).to eq("        ")
+    end
   end
 
   context 'static methods' do
