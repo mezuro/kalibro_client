@@ -25,6 +25,10 @@ module KalibroClient
           @id = value.to_i
         end
 
+        def metric_configuration_id=(value)
+          @metric_configuration_id = value.to_i
+        end
+
         def reading_id=(value)
           @reading_id = value.to_i
         end

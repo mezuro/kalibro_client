@@ -6,7 +6,7 @@ Given(/^the given reading group has the following readings:$/) do |table|
 end
 
 Given(/^I have a reading within the given reading group$/) do
-  @reading = FactoryGirl.create(:reading, {reading_group_id: @reading_group.id})
+  @reading = FactoryGirl.create(:reading, reading_group_id: @reading_group.id, grade: 10.5)
 end
 
 When(/^I ask for all the readings$/) do
