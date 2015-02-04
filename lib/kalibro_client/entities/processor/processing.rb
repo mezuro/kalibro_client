@@ -65,43 +65,59 @@ module KalibroClient
         end
 
         def self.has_processing(repository_id)
-          Repository.request("#{repository_id}/has_processing", {}, :get)['has_processing']
+          puts "DEPRECATED: Processing.has_processing"
+          repository(repository_id).has_processing
         end
 
         def self.has_ready_processing(repository_id)
-          Repository.request("#{repository_id}/has_ready_processing", {}, :get)['has_ready_processing']
+          puts "DEPRECATED: Processing.has_ready_processing"
+          repository(repository_id).has_ready_processing
         end
 
         def self.has_processing_after(repository_id, date)
-          Repository.request("#{repository_id}/has_processing/after", {:date => date})['has_processing_in_time']
+          puts "DEPRECATED: Processing.has_processing_after"
+          repository(repository_id).has_processing_after(date)
         end
 
         def self.has_processing_before(repository_id, date)
-          Repository.request("#{repository_id}/has_processing/before", {:date => date})['has_processing_in_time']
+          puts "DEPRECATED: Processing.has_processing_before"
+          repository(repository_id).has_processing_before(date)
         end
 
         def self.last_processing_state_of(repository_id)
-          Repository.request("#{repository_id}/last_processing_state", {}, :get)['processing_state']
+          puts "DEPRECATED: Processing.last_processing_state_of"
+          repository(repository_id).last_processing_state
         end
 
         def self.last_ready_processing_of(repository_id)
-          new(Repository.request(':id/last_ready_processing', {id: repository_id}, :get)['last_ready_processing'])
+          puts "DEPRECATED: Processing.last_ready_processing_of"
+          repository(repository_id).last_ready_processing
         end
 
         def self.first_processing_of(repository_id)
-          new(Repository.request("#{repository_id}/first_processing")['processing'])
+          puts "DEPRECATED: Processing.first_processing_of"
+          repository(repository_id).first_processing
         end
 
         def self.last_processing_of(repository_id)
-          new(Repository.request("#{repository_id}/last_processing")['processing'])
+          puts "DEPRECATED: Processing.last_processing_of"
+          repository(repository_id).last_processing
         end
 
         def self.first_processing_after(repository_id, date)
-          new(Repository.request("#{repository_id}/first_processing/after", {:date => date})["processing"])
+          puts "DEPRECATED: Processing.first_processing_after"
+          repository(repository_id).first_processing_after(date)
         end
 
         def self.last_processing_before(repository_id, date)
-          new(Repository.request("#{repository_id}/last_processing/before", {:date => date})['processing'])
+          puts "DEPRECATED: Processing.last_processing_before"
+          repository(repository_id).last_processing_before(date)
+        end
+
+        private
+
+        def self.repository(id)
+          Repository.find(id)
         end
       end
     end

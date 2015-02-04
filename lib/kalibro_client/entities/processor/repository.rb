@@ -53,6 +53,65 @@ module KalibroClient
           self.class.request(':id/cancel_process', {id: self.id}, :get)
         end
 
+        def processing
+          if has_ready_processing
+            last_ready_processing
+          else
+            last_processing
+          end
+        end
+
+        def processing_with_date(date)
+          date = date.is_a?(String) ? DateTime.parse(date) : date
+          if has_processing_after(date)
+            first_processing_after(date)
+          elsif has_processing_before(date)
+            last_processing_before(date)
+          else
+            nil
+          end
+        end
+
+        def has_processing
+          self.class.request("#{self.id}/has_processing", {}, :get)['has_processing']
+        end
+
+        def has_ready_processing
+          self.class.request("#{self.id}/has_ready_processing", {}, :get)['has_ready_processing']
+        end
+
+        def has_processing_after(date)
+          self.class.request("#{self.id}/has_processing/after", {:date => date})['has_processing_in_time']
+        end
+
+        def has_processing_before(date)
+          self.class.request("#{self.id}/has_processing/before", {:date => date})['has_processing_in_time']
+        end
+
+        def last_processing_state
+          self.class.request("#{self.id}/last_processing_state", {}, :get)['processing_state']
+        end
+
+        def last_ready_processing
+          Processing.new(self.class.request(':id/last_ready_processing', {id: self.id}, :get)['last_ready_processing'])
+        end
+
+        def first_processing
+          Processing.new(self.class.request("#{self.id}/first_processing")['processing'])
+        end
+
+        def last_processing
+          Processing.new(self.class.request("#{self.id}/last_processing")['processing'])
+        end
+
+        def first_processing_after(date)
+          Processing.new(self.class.request("#{self.id}/first_processing/after", {:date => date})["processing"])
+        end
+
+        def last_processing_before(date)
+          Processing.new(self.class.request("#{self.id}/last_processing/before", {:date => date})['processing'])
+        end
+
         def self.all
           projects = Project.all
           repositories = []

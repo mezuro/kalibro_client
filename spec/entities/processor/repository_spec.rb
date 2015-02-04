@@ -18,6 +18,7 @@ require 'spec_helper'
 
 describe KalibroClient::Entities::Processor::Repository do
   subject { FactoryGirl.build(:repository) }
+  let(:date) { DateTime.now }
 
   describe 'repository_types' do
     before :each do
@@ -135,6 +136,255 @@ describe KalibroClient::Entities::Processor::Repository do
     it 'should make a request to save model with id and return true without errors' do
       expect(subject.save).to be(true)
       expect(subject.kalibro_errors).to be_empty
+    end
+  end
+
+  describe 'has_processing' do
+    before :each do
+      KalibroClient::Entities::Processor::Repository.
+        expects(:request).once.
+        with("#{subject.id}/has_processing", {}, :get).
+        returns({'has_processing' => false})
+    end
+
+    it 'should convert the hash to a Boolean class' do
+      response = subject.has_processing
+      expect(response).to be_a_kind_of(FalseClass)
+    end
+  end
+
+  describe 'has_ready_processing' do
+    before :each do
+      KalibroClient::Entities::Processor::Repository.
+        expects(:request).once.
+        with("#{subject.id}/has_ready_processing", {}, :get).
+        returns({'has_ready_processing' => false})
+    end
+
+    it 'should convert the hash to a Boolean class' do
+      response = subject.has_ready_processing
+      expect(response).to be_a_kind_of(FalseClass)
+    end
+  end
+
+  describe 'has_processing_after' do
+    before :each do
+      KalibroClient::Entities::Processor::Repository.
+        expects(:request).once.
+        with("#{subject.id}/has_processing/after", {date: date}).
+        returns({'has_processing_in_time' => false})
+    end
+
+    it 'should convert the hash to a Boolean class' do
+      response = subject.has_processing_after(date)
+      expect(response).to be_a_kind_of(FalseClass)
+    end
+  end
+
+  describe 'has_processing_before' do
+    before :each do
+      KalibroClient::Entities::Processor::Repository.
+        expects(:request).once.
+        with("#{subject.id}/has_processing/before", {date: date}).
+        returns({'has_processing_in_time' => false})
+    end
+
+    it 'should convert the hash to a Boolean class' do
+      response = subject.has_processing_before(date)
+      expect(response).to be_a_kind_of(FalseClass)
+    end
+  end
+
+  describe 'last_processing_state' do
+    let(:any_state)  { "READY" }
+    before :each do
+      KalibroClient::Entities::Processor::Repository.
+        expects(:request).once.
+        with("#{subject.id}/last_processing_state", {}, :get).
+        returns({'processing_state' => any_state})
+    end
+
+    it 'should return the state as string' do
+      response = subject.last_processing_state
+      expect(response).to eq(any_state)
+    end
+  end
+
+  context 'getting processing entity from Kalibro web service' do
+    let(:processing) { FactoryGirl.build(:processing) }
+
+    describe 'processing' do
+      context 'when the repository has a ready processing' do
+        before do
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with("#{subject.id}/has_ready_processing", {}, :get).
+            returns({'has_ready_processing' => true})
+
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with(':id/last_ready_processing', {id: subject.id}, :get).
+            returns({'last_ready_processing' => processing.to_hash})
+        end
+
+        it 'should return the last ready processing' do
+          response = subject.processing
+          expect(response.state).to eq(processing.state)
+        end
+      end
+
+      context 'when the repository has not a ready processing' do
+        before do
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with("#{subject.id}/has_ready_processing", {}, :get).
+            returns({'exists' => false})
+
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with("#{subject.id}/last_processing").
+            returns({'processing' => processing.to_hash})
+        end
+
+        it 'should return the last processing' do
+          response = subject.processing
+          expect(response.state).to eq(processing.state)
+        end
+      end
+    end
+
+    describe 'processing_with_date' do
+      context 'when the repository has a processing after the given date' do
+        before do
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with("#{subject.id}/has_processing/after", {date: date}).
+            returns({'has_processing_in_time' => true})
+
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with("#{subject.id}/first_processing/after", {date: date}).
+            returns({'processing' => processing.to_hash})
+        end
+
+        it 'should return the first processing after the given date' do
+          response = subject.processing_with_date(date)
+          expect(response.state).to eq(processing.state)
+        end
+      end
+
+      context 'when the repository has a processing before the given date' do
+        before do
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with("#{subject.id}/has_processing/after", {date: date}).
+            returns({'has_processing_in_time' => false})
+
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with("#{subject.id}/has_processing/before", {date: date}).
+            returns({'has_processing_in_time' => true})
+
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with("#{subject.id}/last_processing/before", {date: date}).
+            returns({'processing' => processing.to_hash})
+        end
+
+        it 'should return the last ready processing' do
+          response = subject.processing_with_date(date)
+          expect(response.state).to eq(processing.state)
+        end
+      end
+
+      context 'when the repository has not a processing after or before the given date' do
+        before do
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with("#{subject.id}/has_processing/after", {date: date}).
+            returns({'has_processing_in_time' => false})
+
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).once.
+            with("#{subject.id}/has_processing/before", {date: date}).
+            returns({'has_processing_in_time' => false})
+        end
+
+        it 'should return the last ready processing' do
+          response = subject.processing_with_date(date)
+          expect(response).to be_nil
+        end
+      end
+    end
+
+    describe 'last_ready_processing' do
+      before :each do
+        KalibroClient::Entities::Processor::Repository.
+          expects(:request).once.
+          with(':id/last_ready_processing', {id: subject.id}, :get).
+          returns({'last_ready_processing' => processing.to_hash})
+      end
+
+      it 'should return a processing object' do
+        response = subject.last_ready_processing
+        expect(response.state).to eq(processing.state)
+      end
+    end
+
+    describe 'first_processing' do
+      before :each do
+        KalibroClient::Entities::Processor::Repository.
+          expects(:request).once.
+          with("#{subject.id}/first_processing").
+          returns({'processing' => processing.to_hash})
+      end
+
+      it 'should return a processing object' do
+        response = subject.first_processing
+        expect(response.state).to eq(processing.state)
+      end
+    end
+
+    describe 'last_processing' do
+      before :each do
+        KalibroClient::Entities::Processor::Repository.
+          expects(:request).once.
+          with("#{subject.id}/last_processing").
+          returns({'processing' => processing.to_hash})
+      end
+
+      it 'should return a processing object' do
+        response = subject.last_processing
+        expect(response.state).to eq(processing.state)
+      end
+    end
+
+    describe 'first_processing_after' do
+      before :each do
+        KalibroClient::Entities::Processor::Repository.
+          expects(:request).once.
+          with("#{subject.id}/first_processing/after", {date: date}).
+          returns({'processing' => processing.to_hash})
+      end
+
+      it 'should return a processing object' do
+        response = subject.first_processing_after(date)
+        expect(response.state).to eq(processing.state)
+      end
+    end
+
+    describe 'last_processing_before' do
+      before :each do
+        KalibroClient::Entities::Processor::Repository.
+          expects(:request).once.
+          with("#{subject.id}/last_processing/before", {date: date}).
+          returns({'processing' => processing.to_hash})
+      end
+
+      it 'should return a processing object' do
+        response = subject.last_processing_before(date)
+        expect(response.state).to eq(processing.state)
+      end
     end
   end
 end
