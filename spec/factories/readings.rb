@@ -17,7 +17,7 @@
 FactoryGirl.define do
   factory :reading, class: KalibroClient::Entities::Configurations::Reading do
     label "Good"
-    grade 10.5
+    grade "10.5"
     color "33dd33"
     reading_group_id 31
 

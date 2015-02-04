@@ -25,10 +25,6 @@ module KalibroClient
           @id = value.to_i
         end
 
-        def grade=(value)
-          @grade = value.to_s.strip.empty? ? value : value.to_f
-        end
-
         def reading_group_id=(value)
           @reading_group_id = value.to_i
         end

@@ -24,18 +24,6 @@ describe KalibroClient::Entities::Configurations::Reading do
     end
   end
 
-  describe "grade=" do
-    it 'should set the grade attribute as a float' do
-      subject.grade = "44.7"
-      expect(subject.grade).to eq(44.7)
-    end
-
-    it 'should not convert an empty string to float' do
-      subject.grade = "        "
-      expect(subject.grade).to eq("        ")
-    end
-  end
-
   context 'static methods' do
     let(:reading) { FactoryGirl.build(:reading_with_id) }
     describe 'readings_of' do
