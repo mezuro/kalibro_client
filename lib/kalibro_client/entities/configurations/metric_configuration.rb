@@ -82,6 +82,10 @@ module KalibroClient
           end
         end
 
+        def kalibro_ranges
+          KalibroClient::Entities::Configurations::KalibroRange.create_objects_array_from_hash(self.class.request(':id/kalibro_ranges', {id: id}, :get))
+        end
+
         private
 
         def save_params

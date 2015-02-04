@@ -225,4 +225,21 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
       end
     end
   end
+
+  describe 'kalibro ranges' do
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
+    let(:kalibro_range_1) { FactoryGirl.build(:range, metric_configuration_id: metric_configuration.id) }
+    let(:kalibro_range_2) { FactoryGirl.build(:range, metric_configuration_id: metric_configuration.id) }
+
+    before :each do
+      KalibroClient::Entities::Configurations::MetricConfiguration.
+      expects(:request).
+      with(':id/kalibro_ranges', {id: metric_configuration.id}, :get).
+      returns({'kalibro_ranges' => [kalibro_range_1.to_hash, kalibro_range_2.to_hash]})
+    end
+
+    it 'should return the kalibro ranges of a metric configuration' do
+      expect(metric_configuration.kalibro_ranges).to eq([kalibro_range_1, kalibro_range_2])
+    end
+  end
 end
