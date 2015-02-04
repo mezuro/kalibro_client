@@ -35,12 +35,10 @@ module KalibroClient
 
         def metric=(value)
           if value.is_a?(Hash)
-            if value['type'] == "NativeMetricSnapshot" || value[:type] == "NativeMetricSnapshot"
+            if value['type'] == "NativeMetricSnapshot"
               @metric = KalibroClient::Entities::Miscellaneous::NativeMetric.to_object(value)
-            elsif value['type'] == "CompoundMetricSnapshot" || value[:type] == "CompoundMetricSnapshot"
-              @metric = KalibroClient::Entities::Miscellaneous::CompoundMetric.to_object(value)
             else
-              @metric = KalibroClient::Entities::Miscellaneous::Metric.to_object(value)
+              @metric = KalibroClient::Entities::Miscellaneous::CompoundMetric.to_object(value)
             end
           elsif value.is_a?(KalibroClient::Entities::Miscellaneous::Metric)
             @metric = value

@@ -34,22 +34,6 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   describe 'metric=' do
 
     context 'with a Hash' do
-      context 'Metric' do
-        let!(:metric) { FactoryGirl.build(:metric) }
-
-        before :each do
-          KalibroClient::Entities::Miscellaneous::Metric.
-          expects(:to_object).at_least_once.
-          with(metric.to_hash).
-          returns(metric)
-        end
-
-        it 'should convert the argument and set the metric' do
-          subject.metric = metric.to_hash
-          expect(subject.metric).to eq(metric)
-        end
-      end
-
       context 'NativeMetric' do
         let!(:metric) { FactoryGirl.build(:loc) }
 

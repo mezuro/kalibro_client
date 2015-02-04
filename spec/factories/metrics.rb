@@ -18,7 +18,7 @@ FactoryGirl.define do
   factory :metric, class: KalibroClient::Entities::Miscellaneous::Metric do
     name "Total Abstract Classes"
     code "total_abstract_classes"
-    type :native
+    type "native"
     scope "SOFTWARE"
     description ""
 
