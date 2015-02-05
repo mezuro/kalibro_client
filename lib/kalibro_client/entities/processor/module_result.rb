@@ -76,6 +76,10 @@ module KalibroClient
             date_module_result
           end
         end
+
+        def metric_results
+          MetricResult.create_objects_array_from_hash self.class.request(":id/metric_results", {id: self.id}, :get)
+        end
       end
     end
   end

@@ -20,6 +20,7 @@ module KalibroClient
       class MetricResult < KalibroClient::Entities::Processor::Base
 
         attr_accessor :id, :value, :aggregated_value, :module_result_id, :metric_configuration_id
+        attr_reader :metric_configuration
 
         def initialize(attributes={}, persisted=false)
           value = attributes["value"]
@@ -37,17 +38,13 @@ module KalibroClient
           @id = value.to_i
         end
 
+        def metric_configuration_id=(value)
+          self.metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.request(":id", {id: value.to_i}, :get)["metric_configuration"]
+        end
+
         def metric_configuration=(value)
           @metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.to_object value
           @metric_configuration_id = @metric_configuration.id
-        end
-
-        def metric_configuration
-          unless @metric_configuration.nil?
-            return @metric_configuration
-          end
-          @metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.find @metric_configuration_id
-          return @metric_configuration
         end
 
         def value=(value)
@@ -64,7 +61,8 @@ module KalibroClient
         end
 
         def self.metric_results_of(module_result_id)
-          create_objects_array_from_hash ModuleResult.request(":id/metric_results", {id: module_result_id}, :get)
+          puts "DEPRECATED: MetricResult.metric_results_of"
+          KalibroClient::Entities::Processor::ModuleResult.find(module_result_id).metric_results
         end
 
         def self.history_of(metric_name, kalibro_module_id, repository_id)

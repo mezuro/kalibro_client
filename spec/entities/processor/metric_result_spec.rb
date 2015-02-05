@@ -18,9 +18,19 @@ require 'spec_helper'
 
 describe KalibroClient::Entities::Processor::MetricResult do
   let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
-  subject { FactoryGirl.build(:metric_result, metric_configuration_id: metric_configuration.id) }
+  subject { FactoryGirl.build(:metric_result) }
+
+  before do
+    KalibroClient::Entities::Configurations::MetricConfiguration.
+      stubs(:request).
+      with(':id', {id: metric_configuration.id}, :get).
+      returns({'metric_configuration' => metric_configuration.to_hash})
+  end
 
   describe 'new' do
+    before :each do
+      subject.metric_configuration_id = metric_configuration.id
+    end
     context 'with value NaN' do
       it 'should set the value with aggregated_value' do
         attributes_hash = FactoryGirl.build(:metric_result, {"aggregated_value" => 1.6}).to_hash
@@ -49,30 +59,6 @@ describe KalibroClient::Entities::Processor::MetricResult do
     end
   end
 
-  describe 'metric_configuration' do
-
-    context 'without a set metric configuration' do
-      it 'should fetch and return the metric configuration' do
-        KalibroClient::Entities::Configurations::MetricConfiguration.expects(:find).with(metric_configuration.id).returns(metric_configuration)
-        expect(subject.metric_configuration).to eq(metric_configuration)
-      end
-    end
-
-    context 'with a set metric configuration' do
-      before :each do
-        subject.metric_configuration = metric_configuration
-      end
-
-      it 'should only return the metric configuration' do
-        expect(subject.metric_configuration).to eq(metric_configuration)
-      end
-
-      it 'should set the metric configuration id' do
-        expect(subject.metric_configuration_id).to eq(metric_configuration.id)
-      end
-    end
-  end
-
   describe 'value=' do
     it 'should set the value of the attribute value' do
       subject.value = 42
@@ -91,9 +77,9 @@ describe KalibroClient::Entities::Processor::MetricResult do
     context 'when there is one descendant value for the given metric_result' do
       before :each do
         KalibroClient::Entities::Processor::MetricResult.
-          expects(:request).
-          with(':id/descendant_values', { id: subject.id }, :get).
-          returns({'descendant_values' => [13.3]})
+        expects(:request).
+        with(':id/descendant_values', { id: subject.id }, :get).
+        returns({'descendant_values' => [13.3]})
       end
 
       it 'should return an unitary list with the descendant value' do
@@ -104,9 +90,9 @@ describe KalibroClient::Entities::Processor::MetricResult do
     context 'when there is no descendant value for the given metric_result' do
       before :each do
         KalibroClient::Entities::Processor::MetricResult.
-          expects(:request).
-          with(':id/descendant_values', { id: subject.id }, :get).
-          returns({'descendant_values' => []})
+        expects(:request).
+        with(':id/descendant_values', { id: subject.id }, :get).
+        returns({'descendant_values' => []})
       end
 
       it 'should return an empty list' do
@@ -116,42 +102,42 @@ describe KalibroClient::Entities::Processor::MetricResult do
   end
 
   describe 'metric_results_of' do
+    let(:module_result) { FactoryGirl.build(:module_result) }
+
+    before :each do
+      KalibroClient::Entities::Processor::ModuleResult.
+      expects(:find).
+      with(module_result.id).
+      returns(module_result)
+    end
+
     context 'when there is one metric result for the given module_result' do
       before :each do
-        KalibroClient::Entities::Processor::ModuleResult.
-          expects(:request).
-          with(':id/metric_results', { id: 123 }, :get).
-          returns({'metric_results' => [subject.to_hash]})
+        module_result.expects(:metric_results).returns([subject])
       end
 
       it 'should return an unitary list with the metric result' do
-        expect(KalibroClient::Entities::Processor::MetricResult.metric_results_of(123).first.value).to eq(subject.value)
+        expect(KalibroClient::Entities::Processor::MetricResult.metric_results_of(module_result.id).first.value).to eq(subject.value)
       end
     end
 
     context 'when there is no metric result for the given module_result' do
       before :each do
-        KalibroClient::Entities::Processor::ModuleResult.
-          expects(:request).
-          with(':id/metric_results', { :id => 42 }, :get).
-          returns({'metric_results' => []})
+        module_result.expects(:metric_results).returns([])
       end
 
       it 'should return an empty list' do
-        expect(KalibroClient::Entities::Processor::MetricResult.metric_results_of(42)).to eq([])
+        expect(KalibroClient::Entities::Processor::MetricResult.metric_results_of(module_result.id)).to eq([])
       end
     end
 
     context 'when there are many metric results for the given module_result' do
       before :each do
-        KalibroClient::Entities::Processor::ModuleResult.
-          expects(:request).
-          with(':id/metric_results', { :id => 28 }, :get).
-          returns({'metric_results' => [subject.to_hash, subject.to_hash]})
+        module_result.expects(:metric_results).returns([subject, subject])
       end
 
       it 'should return a list with the descendant results' do
-        expect(KalibroClient::Entities::Processor::MetricResult.metric_results_of(28).first.value).to eq(subject.value)
+        expect(KalibroClient::Entities::Processor::MetricResult.metric_results_of(module_result.id).first.value).to eq(subject.value)
       end
     end
   end
@@ -164,9 +150,9 @@ describe KalibroClient::Entities::Processor::MetricResult do
     context 'when there is not a date metric result' do
       before :each do
         KalibroClient::Entities::Processor::Repository.
-          expects(:request).
-          with(':id/metric_result_history_of', {:metric_name => metric.name, :kalibro_module_id => kalibro_module.id, id: repository.id}).
-          returns({'metric_result_history_of' => []})
+        expects(:request).
+        with(':id/metric_result_history_of', {:metric_name => metric.name, :kalibro_module_id => kalibro_module.id, id: repository.id}).
+        returns({'metric_result_history_of' => []})
       end
 
       it 'should return an empty list' do
@@ -179,8 +165,8 @@ describe KalibroClient::Entities::Processor::MetricResult do
 
       before :each do
         KalibroClient::Entities::Processor::Repository.
-          expects(:request).with(':id/metric_result_history_of', {:metric_name => metric.name, :kalibro_module_id => kalibro_module.id, id: repository.id})
-          .returns({'metric_result_history_of' => [date_metric_result.to_hash]})
+        expects(:request).with(':id/metric_result_history_of', {:metric_name => metric.name, :kalibro_module_id => kalibro_module.id, id: repository.id})
+        .returns({'metric_result_history_of' => [date_metric_result.to_hash]})
       end
 
       it 'should return the date metric result as an object into a list' do
@@ -194,9 +180,9 @@ describe KalibroClient::Entities::Processor::MetricResult do
 
       before :each do
         KalibroClient::Entities::Processor::Repository.
-          expects(:request).
-          with(':id/metric_result_history_of', {:metric_name => metric.name, :kalibro_module_id => kalibro_module.id, id: repository.id}).
-          returns({'metric_result_history_of' => [date_metric_result.to_hash, another_date_metric_result.to_hash]})
+        expects(:request).
+        with(':id/metric_result_history_of', {:metric_name => metric.name, :kalibro_module_id => kalibro_module.id, id: repository.id}).
+        returns({'metric_result_history_of' => [date_metric_result.to_hash, another_date_metric_result.to_hash]})
       end
 
       it 'should return a list of date metric results as objects' do
