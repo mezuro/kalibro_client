@@ -214,4 +214,14 @@ describe KalibroClient::Entities::Processor::ModuleResult do
       end
     end
   end
+
+  describe 'processing' do
+    let(:processing) { FactoryGirl.build(:processing) }
+
+    it 'is expected to find the processing' do
+      KalibroClient::Entities::Processor::Processing.expects(:find).with(subject.processing_id).returns(processing)
+
+      expect(subject.processing).to eq(processing)
+    end
+  end
 end
