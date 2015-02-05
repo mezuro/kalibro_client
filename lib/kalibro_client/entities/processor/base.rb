@@ -1,11 +1,12 @@
 require 'json'
+require 'kalibro_client/helpers/date_attributes'
 
 module KalibroClient
   module Entities
     module Processor
       class Base < KalibroClient::Entities::Base
+        include DateAttributes
 
-        attr_accessor :created_at, :updated_at
         def self.address
           :processor_address
         end

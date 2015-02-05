@@ -169,26 +169,6 @@ describe KalibroClient::Entities::Base do
     end
   end
 
-  describe 'created_at=' do
-    let(:time){ "2015-02-04T15:53:18.452Z" }
-
-    it 'is expected to parse it to Time' do
-      Time.expects(:parse).with(time)
-
-      subject.created_at = time
-    end
-  end
-
-  describe 'updated_at=' do
-    let(:time){ "2015-02-04T15:53:18.452Z" }
-
-    it 'is expected to parse it to Time' do
-      Time.expects(:parse).with(time)
-
-      subject.updated_at = time
-    end
-  end
-
   describe 'update' do
     let!(:id) { 42 }
 

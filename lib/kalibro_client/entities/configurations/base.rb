@@ -1,8 +1,11 @@
+require 'kalibro_client/helpers/date_attributes'
+
 module KalibroClient
   module Entities
     module Configurations
       class Base < KalibroClient::Entities::Base
-        attr_accessor :created_at, :updated_at
+        include DateAttributes
+
         def self.address
           :configurations_address
         end

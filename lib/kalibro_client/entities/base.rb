@@ -86,14 +86,6 @@ module KalibroClient
         end
       end
 
-      def created_at=(value)
-        @created_at = Time.parse(value)
-      end
-
-      def updated_at=(value)
-        @updated_at = Time.parse(value)
-      end
-
       def save!
         save
       end
