@@ -1,5 +1,5 @@
 Given(/^I have a range within the given reading$/) do
-  @range = FactoryGirl.create(:range, {reading_id: @reading.id, metric_configuration_id: @metric_configuration.id})
+  @range = FactoryGirl.create(:range, {reading_id: @reading.id, metric_configuration_id: @metric_configuration.id, beginning: 1.1, end: 5.1})
 end
 
 Given(/^I have an unsaved range$/) do

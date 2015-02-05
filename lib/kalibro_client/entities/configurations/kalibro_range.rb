@@ -33,14 +33,6 @@ module KalibroClient
           @reading_id = value.to_i
         end
 
-        def beginning=(value)
-          @beginning = value == "-INF" ? value : value.to_f
-        end
-
-        def end=(value)
-          @end = value == "INF" ? value : value.to_f
-        end
-
         def label
           reading.label
         end

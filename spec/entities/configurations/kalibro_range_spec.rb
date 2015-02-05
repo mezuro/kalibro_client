@@ -33,30 +33,6 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
     end
   end
 
-  describe 'beginning=' do
-    it 'should set the value of the attribute as a float' do
-      subject.beginning = "12.3"
-      expect(subject.beginning).to eq(12.3)
-    end
-
-    it 'should set beginning to infinity' do
-      subject.beginning = "-INF"
-      expect(subject.beginning).to eq("-INF")
-    end
-  end
-
-  describe 'end=' do
-    it 'should set the value of the attribute as a float' do
-      subject.end = "23.4"
-      expect(subject.end).to eq(23.4)
-    end
-
-    it 'should set end to infinity' do
-      subject.end = "INF"
-      expect(subject.end).to eq("INF")
-    end
-  end
-
   describe 'getting reading attribute' do
     let(:reading) { FactoryGirl.build(:reading_with_id) }
 
