@@ -20,6 +20,7 @@ module KalibroClient
       class KalibroModule < KalibroClient::Entities::Processor::Base
 
         attr_accessor :name, :granlrty, :id, :long_name, :module_result_id
+        alias_method :granularity, :granlrty
 
       end
     end
