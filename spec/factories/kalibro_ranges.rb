@@ -16,8 +16,8 @@
 
 FactoryGirl.define do
   factory :range, class: KalibroClient::Entities::Configurations::KalibroRange do
-    beginning 1.1
-    self.end 5.1
+    beginning "1.1"
+    self.end "5.1"
     reading_id 3
     comments "Comment"
     metric_configuration_id 1
