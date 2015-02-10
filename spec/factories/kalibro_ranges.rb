@@ -34,7 +34,13 @@ FactoryGirl.define do
       id 2
     end
 
+    trait :another_threshold do
+      beginning "0"
+      self.end "1.1"
+    end
+
     factory :range_with_id, traits: [:with_id]
-    factory :another_range, traits: [:another_comment, :another_id]
+    factory :another_range, traits: [:another_comment, :another_threshold]
+    factory :another_range_with_id, traits: [:another_comment, :another_threshold, :another_id]
   end
 end

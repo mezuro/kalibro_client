@@ -64,6 +64,10 @@ module KalibroClient
           "metric_configurations/#{metric_configuration_id}"
         end
 
+        def update_prefix
+          "metric_configurations/#{metric_configuration_id}"
+        end
+
         def destroy_prefix
           "metric_configurations/#{metric_configuration_id}"
         end

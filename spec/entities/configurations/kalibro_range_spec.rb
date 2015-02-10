@@ -147,4 +147,22 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
       subject.destroy
     end
   end
+
+  # The only purpose of this test is to cover the overrided update_params method
+  describe 'update' do
+    subject {FactoryGirl.build(:range_with_id)}
+
+    before :each do
+      subject.end = "555"
+      KalibroClient::Entities::Configurations::KalibroRange.
+        expects(:request).
+        with(':id', {:kalibro_range => subject.to_hash, :id => subject.id}, :put, "metric_configurations/#{subject.metric_configuration_id}").
+        returns("errors" => nil)
+    end
+
+    it 'should make a request to updatethe model and return true without errors' do
+      expect(subject.update).to be(true)
+      expect(subject.kalibro_errors).to be_empty
+    end
+  end
 end

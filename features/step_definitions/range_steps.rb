@@ -70,3 +70,27 @@ Then(/^the range should no longer exist$/) do
   expect(KalibroClient::Entities::Configurations::KalibroRange.exists?(@range.id)).to be_falsey
 end
 
+When(/^I change the "(.*?)" to "(.*?)"$/) do |attribute, value|
+  @range.send("#{attribute}=", value)
+end
+
+When(/^I ask to update the given range$/) do
+  @range.update
+end
+
+Then(/^I should not receive errors$/) do
+  expect(@range.kalibro_errors).to be_empty
+end
+
+Then(/^I should get the error "(.*?)"$/) do |message|
+  expect(@range.kalibro_errors).to include(message)
+end
+
+Given(/^I have another range within the given reading$/) do
+  @another_range = FactoryGirl.create(:another_range, reading_id: @reading.id, metric_configuration_id: @metric_configuration.id)
+end
+
+When(/^I change the "(.*?)" of the other range to "(.*?)"$/) do |attribute, value|
+  @another_range.send("#{attribute}=", value)
+end
+
