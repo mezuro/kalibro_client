@@ -94,7 +94,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
 
       it 'should return a list with the range' do
         expect(KalibroClient::Entities::Configurations::KalibroRange.ranges_of(metric_configuration.id).
-               first.beginning).to eq(subject.beginning)
+          first.beginning).to eq(subject.beginning)
       end
     end
 
