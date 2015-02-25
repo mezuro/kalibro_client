@@ -19,9 +19,20 @@ module KalibroClient
     module Processor
       class KalibroModule < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :name, :granlrty, :id, :long_name, :module_result_id
+        attr_accessor :granlrty, :id, :long_name, :module_result_id
         alias_method :granularity, :granlrty
 
+        def name=(value)
+          @long_name = (value.is_a?(Array) ? value.join('.') : value)
+        end
+
+        def name
+          @long_name.split('.')
+        end
+
+        def short_name
+          name.last
+        end
       end
     end
   end
