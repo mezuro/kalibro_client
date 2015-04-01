@@ -50,6 +50,9 @@ describe KalibroClient::Entities::Miscellaneous::Granularity do
         it 'should return false when checking for >=' do
           expect(subject >= other_granularity).to be_falsey
         end
+        it 'should return -1 when checking for <=>' do
+          expect(subject <=> other_granularity).to eq(-1)
+        end
       end
 
       context 'comparing to an equal one' do
@@ -66,6 +69,9 @@ describe KalibroClient::Entities::Miscellaneous::Granularity do
         it 'should return true when checking for >=' do
           expect(subject >= other_granularity).to be_truthy
         end
+        it 'should return 0 when checking for <=>' do
+          expect(subject <=> other_granularity).to eq(0)
+        end
       end
 
       context 'comparing to a smaller one' do
@@ -81,6 +87,9 @@ describe KalibroClient::Entities::Miscellaneous::Granularity do
         end
         it 'should return true when checking for >=' do
           expect(subject >= other_granularity).to be_truthy
+        end
+        it 'should return 1 when checking for <=>' do
+          expect(subject <=> other_granularity).to eq(1)
         end
       end
     end
