@@ -47,6 +47,16 @@ module KalibroClient
         def >(other_granularity)
           !(self <= other_granularity)
         end
+
+        def <=>(other_granularity)
+          if self < other_granularity
+            return -1
+          elsif self > other_granularity
+            return 1
+          else
+            return 0
+          end
+        end
       end
 
     end
