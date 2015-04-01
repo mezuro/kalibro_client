@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mezuro/kalibro_client.png?branch=master)](https://travis-ci.org/mezuro/kalibro_client)
 [![Code Climate](https://codeclimate.com/github/mezuro/kalibro_client.png)](https://codeclimate.com/github/mezuro/kalibro_client)
-[![Coverage Status](https://coveralls.io/repos/mezuro/kalibro_client/badge.png)](https://coveralls.io/r/mezuro/kalibro_client)
+[![Test Coverage](https://codeclimate.com/github/mezuro/kalibro_client/badges/coverage.svg)](https://codeclimate.com/github/mezuro/kalibro_client)
 
 KalibroClient is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservice Kalibro (http://gitorious.org/kalibro/kalibro).
 

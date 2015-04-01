@@ -18,13 +18,10 @@ require 'mocha/api'
 
 # Test coverage report
 require 'simplecov'
-require 'coveralls'
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 
 SimpleCov.start do
-  formatter SimpleCov::Formatter::MultiFormatter[
-                Coveralls::SimpleCov::Formatter,
-                SimpleCov::Formatter::HTMLFormatter
-              ]
   add_group "Entities", "lib/kalibro_client/entities"
   add_group "Errors", "lib/kalibro_client/errors"
   add_group "Helpers", "lib/kalibro_client/helpers"

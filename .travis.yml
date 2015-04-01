@@ -14,6 +14,7 @@ before_script:
   - popd
   - cp features/support/kalibro_cucumber_helpers.yml.sample features/support/kalibro_cucumber_helpers.yml
   - export BUNDLE_GEMFILE=$PWD/Gemfile
+  - export CODECLIMATE_REPO_TOKEN=46cbb96b053b03ad66b0355bd96d0787f56fc5a4fc171b8d6eb30c421c5e6777
 
 script:
   - bundle exec rspec spec
