@@ -10,8 +10,8 @@ Feature: Has processing after
     And I have a reading group with name "Group"
     And I have a loc configuration within the given kalibro configuration
     And the given project has the following Repositories:
-      |   name    | scm_type |                  address                    |
-      |  Kalibro  |    GIT   | https://git.gitorious.org/sbking/sbking.git |
+      |   name    | scm_type |                       address                    |
+      |  Kalibro  |    GIT   | https://github.com/rafamanzo/runge-kutta-vtk.git |
     And I call the process method for the given repository
     And I wait up to 1 seconds
     When I call the has_processing_after for the given repository with yerterday's date

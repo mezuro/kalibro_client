@@ -8,8 +8,8 @@ Feature: Repositories listing
     Given I have a project with name "Kalibro"
     And I have a kalibro configuration with name "Java"
     And the given project has the following Repositories:
-      |   name    | scm_type |              address                        |
-      |  Kalibro  |    GIT   | https://git.gitorious.org/sbking/sbking.git |
+      |   name    | scm_type |                   address                        |
+      |  Kalibro  |    GIT   | https://github.com/rafamanzo/runge-kutta-vtk.git |
     When I ask for repositories from the given project
     Then I should get a list with the given repository
     And the repositories should contain the project id
