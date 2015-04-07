@@ -42,7 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "mocha", "~> 1.1.0"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "factory_girl", "~> 4.5.0"
-  spec.add_development_dependency 'coveralls'
+  spec.add_development_dependency "codeclimate-test-reporter"
 
   spec.add_dependency "activesupport", ">= 2.2.1" #version in which underscore was introduced
   spec.add_dependency "faraday_middleware", "~> 0.9.0"
