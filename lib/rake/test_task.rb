@@ -49,6 +49,14 @@ module KalibroClient
             puts "Running the acceptance tests with \"#{acceptance_tests_command}\"\n\n"
             system acceptance_tests_command
           end
+
+          desc 'Runs the performance tests'
+          task :performance do |t, args|
+            performance_tests_command = "bundle exec ruby performance/tests/*"
+
+            puts "Running the acceptance tests with \"#{performance_tests_command}\"\n\n"
+            system performance_tests_command
+          end
         end
       end
     end
