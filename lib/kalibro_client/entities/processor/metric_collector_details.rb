@@ -33,8 +33,7 @@ module KalibroClient
         end
 
         def find_metric_by_code(metric_code)
-          metric = self.supported_metrics.find {|code, metric| metric.code == metric_code}
-          metric.nil? ? nil : metric.last
+          @supported_metrics[metric_code]
         end
 
         def self.find_by_name(metric_collector_name)
