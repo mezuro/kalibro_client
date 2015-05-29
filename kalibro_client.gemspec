@@ -23,8 +23,8 @@ require 'kalibro_client/version'
 Gem::Specification.new do |spec|
   spec.name          = "kalibro_client"
   spec.version       = KalibroClient::VERSION
-  spec.authors       = ["Diego de Araújo Martinez Camarinha", "Daniel Paulino Alves", "Rafael Reggiani Manzo", "Heitor Reis Ribeiro"]
-  spec.email         = ["diegamc90@gmail.com", "danpaulalves@gmail.com", "rr.manzo@gmail.com", "marcheing@gmail.com"]
+  spec.authors       = ["Daniel Quadros Miranda", "Diego de Araújo Martinez Camarinha", "Heitor Reis Ribeiro", "Rafael Reggiani Manzo"]
+  spec.email         = ["danielkza2@gmail.com", "diegamc90@gmail.com", "marcheing@gmail.com", "rr.manzo@gmail.com"]
   spec.description   = "KalibroClient is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservice Kalibro."
   spec.summary       = "KalibroClient is a communication interface with the KalibroProcessor and KalibroConfigurations services."
   spec.homepage      = "https://github.com/mezuro/kalibro_client"
