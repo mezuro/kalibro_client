@@ -123,6 +123,10 @@ module KalibroClient
           return repositories
         end
 
+        def self.branches(url, scm_type)
+          request("/branches", {url: url, scm_type: scm_type})
+        end
+
         private
 
         def save_params
