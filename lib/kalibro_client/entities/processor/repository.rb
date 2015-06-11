@@ -19,7 +19,7 @@ module KalibroClient
     module Processor
       class Repository < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :name, :description, :license, :period, :scm_type, :address, :kalibro_configuration_id, :project_id, :send_email, :code_directory
+        attr_accessor :id, :name, :description, :license, :period, :scm_type, :address, :kalibro_configuration_id, :project_id, :send_email, :code_directory, :branch
 
         def self.repository_types
           request('types', {}, :get)['types'].to_a
@@ -121,6 +121,10 @@ module KalibroClient
           end
 
           return repositories
+        end
+
+        def self.branches(url, scm_type)
+          request("/branches", {url: url, scm_type: scm_type})
         end
 
         private

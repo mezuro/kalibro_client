@@ -386,5 +386,39 @@ describe KalibroClient::Entities::Processor::Repository do
         expect(response.state).to eq(processing.state)
       end
     end
+
+    describe 'branches' do
+      let(:branches) { ['branch1', 'branch2'] }
+      let(:url) { 'dummy-url' }
+      let(:scm_type) { 'GIT' }
+
+      context 'valid parameters' do
+        before :each do
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).
+            with("/branches", {url: url, scm_type: scm_type}).
+            returns({'branches' => branches})
+        end
+
+        it 'is expected to return an array of branch names' do
+          response = subject.class.branches(url, scm_type)
+          expect(response).to eq('branches' => branches)
+        end
+      end
+
+      context 'invalid parameters' do
+        before :each do
+          KalibroClient::Entities::Processor::Repository.
+            expects(:request).
+            with("/branches", {url: url, scm_type: scm_type}).
+            returns({'errors' => ['Error']})
+        end
+
+        it 'is expected to return an array of branch names' do
+          response = subject.class.branches(url, scm_type)
+          expect(response).to eq('errors' => ['Error'])
+        end
+      end
+    end
   end
 end
