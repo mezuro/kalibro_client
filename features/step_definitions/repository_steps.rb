@@ -34,6 +34,10 @@ When(/^I ask to check if the given repository exists$/) do
   @response = KalibroClient::Entities::Processor::Repository.exists?(@repository.id)
 end
 
+When(/^I ask for branches on a "(.*?)" repository with url "(.*?)"$/) do |scm_type, url|
+  @branch_list = KalibroClient::Entities::Processor::Repository.branches(url, scm_type)
+end
+
 Then(/^I should get success$/) do
   expect(@response).to be_truthy
 end
@@ -69,3 +73,10 @@ Then(/^the repository should no longer exist$/) do
   expect(KalibroClient::Entities::Processor::Repository.exists?(@repository.id)).to be_falsey
 end
 
+Then(/^the branch list should include "(.*?)"$/) do |name|
+  expect(@branch_list["branches"]).to include(name)
+end
+
+Then(/^it should return an error as reponse$/) do
+  expect(@branch_list["errors"]).to_not be_nil
+end
