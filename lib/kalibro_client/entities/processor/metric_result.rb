@@ -60,10 +60,10 @@ module KalibroClient
           descendant_values.map {|descendant_value| descendant_value.to_f}
         end
 
-        def self.metric_results_of(module_result_id)
-          puts "DEPRECATED: MetricResult.metric_results_of"
-          KalibroClient::Entities::Processor::ModuleResult.find(module_result_id).metric_results
-        end
+        # def self.metric_results_of(module_result_id)
+        #   puts "DEPRECATED: MetricResult.metric_results_of"
+        #   KalibroClient::Entities::Processor::ModuleResult.find(module_result_id).metric_results
+        # end
 
         def self.history_of(metric_name, kalibro_module_id, repository_id)
           response = Repository.request(':id/metric_result_history_of', {metric_name: metric_name,
