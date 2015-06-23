@@ -101,47 +101,6 @@ describe KalibroClient::Entities::Processor::MetricResult do
     end
   end
 
-  # describe 'metric_results_of' do
-  #   let(:module_result) { FactoryGirl.build(:module_result) }
-
-  #   before :each do
-  #     KalibroClient::Entities::Processor::ModuleResult.
-  #     expects(:find).
-  #     with(module_result.id).
-  #     returns(module_result)
-  #   end
-
-  #   context 'when there is one metric result for the given module_result' do
-  #     before :each do
-  #       module_result.expects(:metric_results).returns([subject])
-  #     end
-
-  #     it 'should return an unitary list with the metric result' do
-  #       expect(KalibroClient::Entities::Processor::MetricResult.metric_results_of(module_result.id).first.value).to eq(subject.value)
-  #     end
-  #   end
-
-  #   context 'when there is no metric result for the given module_result' do
-  #     before :each do
-  #       module_result.expects(:metric_results).returns([])
-  #     end
-
-  #     it 'should return an empty list' do
-  #       expect(KalibroClient::Entities::Processor::MetricResult.metric_results_of(module_result.id)).to eq([])
-  #     end
-  #   end
-
-  #   context 'when there are many metric results for the given module_result' do
-  #     before :each do
-  #       module_result.expects(:metric_results).returns([subject, subject])
-  #     end
-
-  #     it 'should return a list with the descendant results' do
-  #       expect(KalibroClient::Entities::Processor::MetricResult.metric_results_of(module_result.id).first.value).to eq(subject.value)
-  #     end
-  #   end
-  # end
-
   describe 'history_of' do
     let(:kalibro_module) { FactoryGirl.build(:kalibro_module_with_id) }
     let(:metric) { FactoryGirl.build(:metric) }
