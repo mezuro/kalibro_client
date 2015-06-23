@@ -14,6 +14,6 @@ Feature: Descendant values
       |  Kalibro  |    GIT   | https://github.com/rafamanzo/runge-kutta-vtk.git |
     And I call the process method for the given repository
     And I wait up for a ready processing
-    And I call the first_processing_of method for the given repository
+    And I call the first_processing method for the given repository
     And I search a metric result with descendant values for the given metric result
     Then I should get a Float list

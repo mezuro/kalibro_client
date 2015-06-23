@@ -15,6 +15,6 @@ Feature: history of
       |  Kalibro  |    GIT   | https://github.com/rafamanzo/runge-kutta-vtk.git |
     And I call the process method for the given repository
     And I wait up for a ready processing
-    And I call the first_processing_of method for the given repository
+    And I call the first_processing method for the given repository
     When I call the history of method with the metric name and the results root id of the given processing
     Then I should get a list of date metric results

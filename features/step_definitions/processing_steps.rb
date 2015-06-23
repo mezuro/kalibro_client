@@ -1,11 +1,7 @@
-Given(/^I wait up to (\d+) seconds$/) do |seconds|
-  sleep(seconds.to_i)
-end
-
 Given(/^I wait up for a ready processing$/) do
-  unless KalibroClient::Entities::Processor::Processing.has_ready_processing(@repository.id)
+  unless @repository.has_ready_processing
     while(true)
-      if KalibroClient::Entities::Processor::Processing.has_ready_processing(@repository.id)
+      if @repository.has_ready_processing
         break
       else
         sleep(10)
@@ -15,55 +11,59 @@ Given(/^I wait up for a ready processing$/) do
 end
 
 When(/^I call the has_processing for the given repository$/) do
-  @response = KalibroClient::Entities::Processor::Processing.has_processing(@repository.id)
+  @response = @repository.has_processing
 end
 
 When(/^I call the has_ready_processing for the given repository$/) do
-  @response = KalibroClient::Entities::Processor::Processing.has_ready_processing(@repository.id)
+  @response = @repository.has_ready_processing
 end
 
 When(/^I call the has_processing_after for the given repository with yerterday's date$/) do
-  @response = KalibroClient::Entities::Processor::Processing.has_processing_after(@repository.id, DateTime.now - 1)
+  @response = @repository.has_processing_after(DateTime.now - 1)
 end
 
 When(/^I call the has_processing_before for the given repository with tomorrows's date$/) do
-  @response = KalibroClient::Entities::Processor::Processing.has_processing_before(@repository.id, DateTime.now + 1)
+  @response = @repository.has_processing_before(DateTime.now + 1)
 end
 
-When(/^I call the last_processing_state_of method for the given repository$/) do
-  @response = KalibroClient::Entities::Processor::Processing.last_processing_state_of(@repository.id)
+When(/^I call the last_processing_state method for the given repository$/) do
+  @response = @repository.last_processing_state
 end
 
-When(/^I call the last_ready_processing_of method for the given repository$/) do
-  @response = KalibroClient::Entities::Processor::Processing.last_ready_processing_of(@repository.id)
+When(/^I call the last_ready_processing method for the given repository$/) do
+  @response = @repository.last_ready_processing
 end
 
-When(/^I call the first_processing_of method for the given repository$/) do
-  @response = KalibroClient::Entities::Processor::Processing.first_processing_of(@repository.id)
+When(/^I call the first_processing method for the given repository$/) do
+  @response = @repository.first_processing
 end
 
-When(/^I call the last_processing_of method for the given repository$/) do
-  @response = KalibroClient::Entities::Processor::Processing.last_processing_of(@repository.id)
+When(/^I call the last_processing method for the given repository$/) do
+  @response = @repository.last_processing
 end
 
 When(/^I call the first_processing_after method for the given repository and yesterday's date$/) do
-  @response = KalibroClient::Entities::Processor::Processing.first_processing_after(@repository.id, DateTime.now - 1)
+  @response = @repository.first_processing_after(DateTime.now - 1)
 end
 
 When(/^I call the last_processing_before method for the given repository and tomorrow's date$/) do
-  @response = KalibroClient::Entities::Processor::Processing.last_processing_before(@repository.id, DateTime.now + 1)
+  @response = @repository.last_processing_before(DateTime.now + 1)
 end
 
-When(/^I call the processing_of method for the given repository$/) do
-  @response = KalibroClient::Entities::Processor::Processing.processing_of(@repository.id)
+When(/^I call the processing method for the given repository$/) do
+  @response = @repository.processing
 end
 
-When(/^I call the processing_with_date_of method for the given repository and tomorrow's date$/) do
-  @response = KalibroClient::Entities::Processor::Processing.processing_with_date_of(@repository.id, DateTime.now + 1)
+When(/^I call the processing_with_date method for the given repository and tomorrow's date$/) do
+  @response = @repository.processing_with_date(DateTime.now + 1)
 end
 
-When(/^I call the processing_with_date_of method for the given repository and yesterday's date$/) do
-  @response = KalibroClient::Entities::Processor::Processing.processing_with_date_of(@repository.id, DateTime.now - 1)
+When(/^I call the processing_with_date method for the given repository and yesterday's date$/) do
+  @response = @repository.processing_with_date(DateTime.now - 1)
+end
+
+Given(/^I wait up to (\d+) seconds$/) do |seconds|
+  sleep(seconds.to_i)
 end
 
 Then(/^I should get a Processing with state "(.*?)"$/) do |state|

@@ -1,4 +1,4 @@
-Feature: Last ready processing of
+Feature: Last ready processing
   In order to be able to retrieve processing results
   As a developer
   I want to be able to check the last ready processing
@@ -14,6 +14,6 @@ Feature: Last ready processing of
       |  Kalibro  |    GIT   | https://github.com/rafamanzo/runge-kutta-vtk.git |
     And I call the process method for the given repository
     And I wait up for a ready processing
-    When I call the last_ready_processing_of method for the given repository
+    When I call the last_ready_processing method for the given repository
     Then I should get a Processing
     And this processing should have process times

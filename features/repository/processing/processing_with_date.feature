@@ -1,4 +1,4 @@
-Feature: Processing with date of
+Feature: Processing with date
   In order to be able to retrieve processing results
   As a developer
   I want to be able to retrieve the processing for a given date
@@ -14,7 +14,7 @@ Feature: Processing with date of
       |  Kalibro  |    GIT   | https://github.com/rafamanzo/runge-kutta-vtk.git |
     And I call the process method for the given repository
     And I wait up to 1 seconds
-    When I call the processing_with_date_of method for the given repository and tomorrow's date
+    When I call the processing_with_date method for the given repository and tomorrow's date
     Then I should get a Processing
 
   @kalibro_processor_restart @kalibro_configuration_restart
@@ -28,5 +28,5 @@ Feature: Processing with date of
       |  Kalibro  |    GIT   | https://github.com/rafamanzo/runge-kutta-vtk.git |
     And I call the process method for the given repository
     And I wait up to 1 seconds
-    When I call the processing_with_date_of method for the given repository and yesterday's date
+    When I call the processing_with_date method for the given repository and yesterday's date
     Then I should get a Processing

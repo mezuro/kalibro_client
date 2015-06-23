@@ -1,11 +1,11 @@
 When(/^I call the metric results of method with the results root id of the given processing$/) do
-  @response = KalibroClient::Entities::Processor::MetricResult.metric_results_of(@response.root_module_result_id)
+  @response = KalibroClient::Entities::Processor::ModuleResult.find(@response.root_module_result_id).metric_results
 end
 
 Given(/^I search a metric result with descendant values for the given metric result$/) do
   first_module_result = KalibroClient::Entities::Processor::ModuleResult.find(@response.root_module_result_id)
 
-  metric_results = KalibroClient::Entities::Processor::MetricResult.metric_results_of(first_module_result.id)
+  metric_results = first_module_result.metric_results
   @response = metric_results.first.descendant_values
 end
 
