@@ -44,12 +44,6 @@ module KalibroClient
         def root_module_result_id=(value)
           @root_module_result_id = value.to_i
         end
-
-        private
-
-        def self.repository(id)
-          Repository.find(id)
-        end
       end
     end
   end
