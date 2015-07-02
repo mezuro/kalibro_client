@@ -3,7 +3,7 @@ Feature: Repositories listing
   As a developer
   I want to see all the repositories on the service
 
-  @kalibro_processor_restart @kalibro_configuration_restart
+  @kalibro_processor_restart @kalibro_configuration_restart @wip
   Scenario: With existing project repository
     Given I have a project with name "Kalibro"
     And I have a kalibro configuration with name "Java"
