@@ -113,14 +113,7 @@ module KalibroClient
         end
 
         def self.all
-          projects = Project.all
-          repositories = []
-
-          projects.each do |project|
-            repositories.concat(repositories_of(project.id))
-          end
-
-          return repositories
+          request("", {}, :get)['repositories']
         end
 
         def self.branches(url, scm_type)
