@@ -23,7 +23,7 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
         KalibroClient::Entities::Processor::MetricCollectorDetails.
           expects(:request).
           with(:names, {}, :get).
-          returns({'names' => nil}.to_json)
+          returns({'names' => []})
       end
 
       it 'should return empty array' do
@@ -58,7 +58,7 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
         KalibroClient::Entities::Processor::MetricCollectorDetails.
           expects(:request).
           with('', {}, :get).
-          returns({"metric_collector_details" => nil})
+          returns({"metric_collector_details" => []})
       end
 
       it 'should return empty array' do
