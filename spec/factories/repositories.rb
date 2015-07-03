@@ -24,7 +24,8 @@ FactoryGirl.define do
     address "svn://svn.code.sf.net/p/qt-calculator/code/trunk"
     kalibro_configuration_id 1
     project_id 1
-    send_email "test@test.com"
+    branch "master"
+    code_directory nil
 
     trait :with_id do
       id 1

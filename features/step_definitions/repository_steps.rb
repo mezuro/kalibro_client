@@ -1,3 +1,6 @@
+Given(/^I have an independent repository$/) do
+  @independent_repository = FactoryGirl.create(:repository, project_id: nil)
+end
 Given(/^the given project has the following Repositories:$/) do |table|
   hash = table.hashes.first
   hash[:project_id] = @project.id
@@ -57,8 +60,9 @@ Then(/^I should get the given repository$/) do
   expect(@response).to eq(@repository)
 end
 
-Then(/^the response should contain the given repository$/) do
-  expect(@response.first.project_id).to eq(@project.id)
+Then(/^the response should contain the given repositories$/) do
+  expect(@response).to include(@repository)
+  expect(@response).to include(@independent_repository)
 end
 
 Then(/^the repositories should contain the project id$/) do
