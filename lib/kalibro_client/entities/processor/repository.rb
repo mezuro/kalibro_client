@@ -19,7 +19,7 @@ module KalibroClient
     module Processor
       class Repository < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :name, :description, :license, :period, :scm_type, :address, :kalibro_configuration_id, :project_id, :send_email, :code_directory, :branch
+        attr_accessor :id, :name, :description, :license, :period, :scm_type, :address, :kalibro_configuration_id, :project_id, :code_directory, :branch
 
         def self.repository_types
           request('types', {}, :get)['types'].to_a
@@ -113,14 +113,7 @@ module KalibroClient
         end
 
         def self.all
-          projects = Project.all
-          repositories = []
-
-          projects.each do |project|
-            repositories.concat(repositories_of(project.id))
-          end
-
-          return repositories
+          create_objects_array_from_hash(request("", {}, :get))
         end
 
         def self.branches(url, scm_type)

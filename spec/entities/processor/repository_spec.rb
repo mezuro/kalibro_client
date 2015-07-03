@@ -100,16 +100,11 @@ describe KalibroClient::Entities::Processor::Repository do
   end
 
   describe 'all' do
-    let(:project) { FactoryGirl.build(:project) }
-
     before :each do
-      KalibroClient::Entities::Processor::Project.
-        expects(:all).
-        returns([project])
       KalibroClient::Entities::Processor::Repository.
-        expects(:repositories_of).
-        with(project.id).
-        returns([subject])
+        expects(:request).
+        with("", {}, :get).
+        returns({'repositories' => [subject.to_hash]})
     end
 
     it 'should list all the repositories' do

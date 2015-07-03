@@ -10,5 +10,6 @@ Feature: Repositories listing
     And the given project has the following Repositories:
       |   name    | scm_type |                       address                    |
       |  Kalibro  |    GIT   | https://github.com/rafamanzo/runge-kutta-vtk.git |
+    And I have an independent repository
     When I ask for all the repositories
-    Then the response should contain the given repository
+    Then the response should contain the given repositories

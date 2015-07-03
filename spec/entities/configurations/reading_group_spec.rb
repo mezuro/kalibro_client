@@ -32,7 +32,7 @@ describe KalibroClient::Entities::Configurations::ReadingGroup do
         KalibroClient::Entities::Configurations::ReadingGroup.
           expects(:request).
           with('', {}, :get).
-          returns({'reading_groups' => nil})
+          returns({'reading_groups' => []})
       end
 
       it 'should return nil' do
