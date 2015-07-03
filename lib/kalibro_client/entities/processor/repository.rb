@@ -113,7 +113,7 @@ module KalibroClient
         end
 
         def self.all
-          request("", {}, :get)['repositories']
+          create_objects_array_from_hash(request("", {}, :get))
         end
 
         def self.branches(url, scm_type)

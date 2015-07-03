@@ -104,7 +104,7 @@ describe KalibroClient::Entities::Processor::Repository do
       KalibroClient::Entities::Processor::Repository.
         expects(:request).
         with("", {}, :get).
-        returns({'repositories' => [subject]})
+        returns({'repositories' => [subject.to_hash]})
     end
 
     it 'should list all the repositories' do
