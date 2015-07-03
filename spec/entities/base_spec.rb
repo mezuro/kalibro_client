@@ -356,7 +356,7 @@ describe KalibroClient::Entities::Base do
   describe 'create_objects_array_from_hash' do
     context 'with nil' do
       it 'should return an empty array' do
-        expect(KalibroClient::Entities::Base.create_objects_array_from_hash("bases" => nil)).to eq([])
+        expect(KalibroClient::Entities::Base.create_objects_array_from_hash("bases" => [])).to eq([])
       end
     end
 

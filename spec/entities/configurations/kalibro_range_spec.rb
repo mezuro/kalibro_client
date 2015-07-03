@@ -76,7 +76,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
         KalibroClient::Entities::Configurations::KalibroRange.
           expects(:request).
           with('', {}, :get, "metric_configurations/#{metric_configuration.id}").
-          returns({'ranges' => nil})
+          returns({'ranges' => []})
       end
 
       it 'should return a list with the ranges' do

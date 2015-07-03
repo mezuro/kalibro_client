@@ -30,7 +30,7 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
         KalibroClient::Entities::Configurations::KalibroConfiguration.
           expects(:request).
           with('', {}, :get).
-          returns({'kalibro_configurations' => nil})
+          returns({'kalibro_configurations' => []})
       end
 
       it 'should return nil' do
