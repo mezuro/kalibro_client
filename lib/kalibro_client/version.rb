@@ -15,5 +15,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module KalibroClient
-  VERSION = "0.3.0"
+  VERSION = "0.4.0"
 end
