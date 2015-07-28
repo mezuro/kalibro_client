@@ -18,7 +18,7 @@ module KalibroClient
   module Entities
     module Processor
       class MetricCollectorDetails < KalibroClient::Entities::Processor::Base
-        attr_accessor :name, :description, :supported_metrics, :wanted_metrics, :processing
+        attr_accessor :name, :description, :supported_metrics
 
         def supported_metrics=(value)
           @supported_metrics = {}
