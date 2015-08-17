@@ -2,12 +2,19 @@ module KalibroClient
   module Entities
     module Miscellaneous
       class Granularity
-        GRANULARITIES = [:METHOD, :CLASS, :PACKAGE, :SOFTWARE]
+        GRANULARITIES = [:METHOD, :CLASS, :PACKAGE, :SOFTWARE, :FUNCTION]
 
-        METHOD = GRANULARITIES[0]
-        CLASS = GRANULARITIES[1]
-        PACKAGE = GRANULARITIES[2]
-        SOFTWARE = GRANULARITIES[3]
+        GRANULARITIES.each do |name|
+          self.const_set(name, name)
+        end
+
+        PARENTS = {
+            METHOD: CLASS,
+            CLASS: PACKAGE,
+            PACKAGE: SOFTWARE,
+            SOFTWARE: SOFTWARE,
+            FUNCTION: PACKAGE
+        }
 
         attr_reader :type
 
@@ -20,32 +27,46 @@ module KalibroClient
         end
 
         def parent
-          return self if self.type == SOFTWARE
-          return Granularity.new(GRANULARITIES[GRANULARITIES.find_index(self.type) + 1])
+          parent_type = PARENTS[self.type]
+          raise ArgumentError.new("Not supported granularity type #{type}") if parent_type.nil?
+
+          return self if self.type == parent_type
+          Granularity.new(parent_type)
         end
 
         def to_s
           self.type.to_s
         end
 
-        def <(other_granularity)
-          GRANULARITIES.find_index(self.type) < GRANULARITIES.find_index(other_granularity.type)
+        def <(other)
+          if [[:FUNCTION, :METHOD], [:METHOD, :FUNCTION]].include?([self.type, other.type])
+            raise ArgumentError.new('Cannot compare granularities that are not part of the same hierarchy')
+          end
+
+          next_type = self.type
+          loop do
+            next_type = PARENTS[next_type]
+            return true if other.type == next_type
+            break if next_type == Granularity::SOFTWARE
+          end
+
+          false
         end
 
-        def ==(other_granularity)
-          self.type == other_granularity.type
+        def ==(other)
+          self.type == other.type
         end
 
-        def <=(other_granularity)
-          (self < other_granularity) || (self == other_granularity)
+        def <=(other)
+          (self == other) || (self < other)
         end
 
-        def >=(other_granularity)
-          (self > other_granularity) || (self == other_granularity)
+        def >=(other)
+          (self == other) || (self > other)
         end
 
-        def >(other_granularity)
-          !(self <= other_granularity)
+        def >(other)
+          !(self <= other)
         end
 
         def <=>(other_granularity)
@@ -58,7 +79,6 @@ module KalibroClient
           end
         end
       end
-
     end
   end
 end
