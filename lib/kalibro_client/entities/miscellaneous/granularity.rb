@@ -2,12 +2,21 @@ module KalibroClient
   module Entities
     module Miscellaneous
       class Granularity
-        GRANULARITIES = [:METHOD, :CLASS, :PACKAGE, :SOFTWARE]
+        include Comparable
 
-        METHOD = GRANULARITIES[0]
-        CLASS = GRANULARITIES[1]
-        PACKAGE = GRANULARITIES[2]
-        SOFTWARE = GRANULARITIES[3]
+        GRANULARITIES = [:METHOD, :CLASS, :PACKAGE, :SOFTWARE, :FUNCTION]
+
+        GRANULARITIES.each do |name|
+          self.const_set(name, name)
+        end
+
+        PARENTS = {
+            METHOD: CLASS,
+            CLASS: PACKAGE,
+            PACKAGE: SOFTWARE,
+            SOFTWARE: SOFTWARE,
+            FUNCTION: PACKAGE
+        }
 
         attr_reader :type
 
@@ -20,45 +29,41 @@ module KalibroClient
         end
 
         def parent
-          return self if self.type == SOFTWARE
-          return Granularity.new(GRANULARITIES[GRANULARITIES.find_index(self.type) + 1])
+          parent_type = PARENTS[self.type]
+          raise ArgumentError.new("Not supported granularity type #{type}") if parent_type.nil?
+
+          return self if self.type == parent_type
+          Granularity.new(parent_type)
         end
 
         def to_s
           self.type.to_s
         end
 
-        def <(other_granularity)
-          GRANULARITIES.find_index(self.type) < GRANULARITIES.find_index(other_granularity.type)
-        end
+        # FYI: this is a spaceship operator
+        def <=>(other)
+          return nil if [[:FUNCTION, :METHOD], [:METHOD, :FUNCTION]].include?([self.type, other.type])
 
-        def ==(other_granularity)
-          self.type == other_granularity.type
-        end
-
-        def <=(other_granularity)
-          (self < other_granularity) || (self == other_granularity)
-        end
-
-        def >=(other_granularity)
-          (self > other_granularity) || (self == other_granularity)
-        end
-
-        def >(other_granularity)
-          !(self <= other_granularity)
-        end
-
-        def <=>(other_granularity)
-          if self < other_granularity
-            return -1
-          elsif self > other_granularity
-            return 1
-          else
+          if self.type == other.type
             return 0
+          elsif self.is_lower_than?(other.type)
+            return -1
+          else
+            return 1
           end
         end
-      end
 
+        def is_lower_than?(other_type)
+          current_type = self.type
+
+          while current_type != PARENTS[current_type]
+            return true if PARENTS[current_type] == other_type
+            current_type = PARENTS[current_type]
+          end
+
+          return false
+        end
+      end
     end
   end
 end

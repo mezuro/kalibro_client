@@ -32,6 +32,14 @@ describe KalibroClient::Entities::Miscellaneous::Granularity do
           expect(subject.parent.type).to eq(KalibroClient::Entities::Miscellaneous::Granularity::CLASS)
         end
       end
+
+      context 'with a FUNCTION granularity' do
+        subject { FactoryGirl.build(:granularity, type: KalibroClient::Entities::Miscellaneous::Granularity::FUNCTION) }
+
+        it 'should return PACKAGE' do
+          expect(subject.parent.type).to eq(KalibroClient::Entities::Miscellaneous::Granularity::PACKAGE)
+        end
+      end
     end
 
     describe 'Comparison Operators' do
@@ -90,6 +98,18 @@ describe KalibroClient::Entities::Miscellaneous::Granularity do
         end
         it 'should return 1 when checking for <=>' do
           expect(subject <=> other_granularity).to eq(1)
+        end
+      end
+
+      context 'comparing unrelated ones' do
+        let(:function_granularity) { FactoryGirl.build(:granularity, type: KalibroClient::Entities::Miscellaneous::Granularity::FUNCTION) }
+        let(:method_granularity) { FactoryGirl.build(:granularity, type: KalibroClient::Entities::Miscellaneous::Granularity::METHOD) }
+
+        it 'should raise an ArgumentError' do
+          expect { function_granularity < method_granularity }.to raise_error(ArgumentError)
+          expect { function_granularity <= method_granularity }.to raise_error(ArgumentError)
+          expect { function_granularity >= method_granularity }.to raise_error(ArgumentError)
+          expect { function_granularity > method_granularity }.to raise_error(ArgumentError)
         end
       end
     end
