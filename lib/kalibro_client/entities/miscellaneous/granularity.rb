@@ -2,6 +2,8 @@ module KalibroClient
   module Entities
     module Miscellaneous
       class Granularity
+        include Comparable
+
         GRANULARITIES = [:METHOD, :CLASS, :PACKAGE, :SOFTWARE, :FUNCTION]
 
         GRANULARITIES.each do |name|
@@ -38,45 +40,28 @@ module KalibroClient
           self.type.to_s
         end
 
-        def <(other)
-          if [[:FUNCTION, :METHOD], [:METHOD, :FUNCTION]].include?([self.type, other.type])
-            raise ArgumentError.new('Cannot compare granularities that are not part of the same hierarchy')
-          end
+        # FYI: this is a spaceship operator
+        def <=>(other)
+          return nil if [[:FUNCTION, :METHOD], [:METHOD, :FUNCTION]].include?([self.type, other.type])
 
-          next_type = self.type
-          loop do
-            next_type = PARENTS[next_type]
-            return true if other.type == next_type
-            break if next_type == Granularity::SOFTWARE
-          end
-
-          false
-        end
-
-        def ==(other)
-          self.type == other.type
-        end
-
-        def <=(other)
-          (self == other) || (self < other)
-        end
-
-        def >=(other)
-          (self == other) || (self > other)
-        end
-
-        def >(other)
-          !(self <= other)
-        end
-
-        def <=>(other_granularity)
-          if self < other_granularity
-            return -1
-          elsif self > other_granularity
-            return 1
-          else
+          if self.type == other.type
             return 0
+          elsif self.is_lower_than?(other.type)
+            return -1
+          else
+            return 1
           end
+        end
+
+        def is_lower_than?(other_type)
+          current_type = self.type
+
+          while current_type != PARENTS[current_type]
+            return true if PARENTS[current_type] == other_type
+            current_type = PARENTS[current_type]
+          end
+
+          return false
         end
       end
     end
