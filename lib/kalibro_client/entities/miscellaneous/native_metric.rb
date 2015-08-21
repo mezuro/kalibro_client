@@ -4,7 +4,6 @@ module KalibroClient
       class NativeMetric < Metric
         attr_accessor :languages, :metric_collector_name
 
-        # TODO: Deprecate this constructor
         def initialize(name, code, scope, languages, metric_collector_name)
           super('NativeMetricSnapshot', name, code, scope)
           @languages = languages
