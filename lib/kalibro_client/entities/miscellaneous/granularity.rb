@@ -42,7 +42,7 @@ module KalibroClient
 
         # FYI: this is a spaceship operator
         def <=>(other)
-          return nil if [[:FUNCTION, :METHOD], [:METHOD, :FUNCTION]].include?([self.type, other.type])
+          return nil if [[:FUNCTION, :METHOD], [:METHOD, :FUNCTION], [:FUNCTION, :CLASS], [:CLASS, :FUNCTION]].include?([self.type, other.type])
 
           if self.type == other.type
             return 0
