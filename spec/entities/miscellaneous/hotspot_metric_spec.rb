@@ -17,6 +17,10 @@ describe KalibroClient::Entities::Miscellaneous::HotspotMetric, :type => :model 
         it 'is expected to have SOFTWARE as the default scope' do
           expect(hotspot_metric.scope).to eq(KalibroClient::Entities::Miscellaneous::Granularity.new(:SOFTWARE))
         end
+
+        it 'is expected to have HotspotMetricSnapshot type' do
+          expect(hotspot_metric.type).to eq("HotspotMetricSnapshot")
+        end
       end
     end
   end
