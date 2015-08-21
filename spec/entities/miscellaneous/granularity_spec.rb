@@ -104,12 +104,17 @@ describe KalibroClient::Entities::Miscellaneous::Granularity do
       context 'comparing unrelated ones' do
         let(:function_granularity) { FactoryGirl.build(:granularity, type: KalibroClient::Entities::Miscellaneous::Granularity::FUNCTION) }
         let(:method_granularity) { FactoryGirl.build(:granularity, type: KalibroClient::Entities::Miscellaneous::Granularity::METHOD) }
+        let(:class_granularity) { FactoryGirl.build(:granularity, type: KalibroClient::Entities::Miscellaneous::Granularity::CLASS) }
 
         it 'should raise an ArgumentError' do
           expect { function_granularity < method_granularity }.to raise_error(ArgumentError)
           expect { function_granularity <= method_granularity }.to raise_error(ArgumentError)
           expect { function_granularity >= method_granularity }.to raise_error(ArgumentError)
           expect { function_granularity > method_granularity }.to raise_error(ArgumentError)
+          expect { function_granularity < class_granularity }.to raise_error(ArgumentError)
+          expect { function_granularity <= class_granularity }.to raise_error(ArgumentError)
+          expect { function_granularity >= class_granularity }.to raise_error(ArgumentError)
+          expect { function_granularity > class_granularity }.to raise_error(ArgumentError)
         end
       end
     end
