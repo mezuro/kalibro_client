@@ -69,7 +69,7 @@ module KalibroClient
         def self.find(id)
           metric_configuration = request(':id', {id: id}, :get)
           raise KalibroClient::Errors::RecordNotFound unless metric_configuration['errors'].nil?
-          return new(metric_configuration['metric_configuration'])
+          return new(metric_configuration['metric_configuration'], true)
         end
 
         def self.exists?(id)
