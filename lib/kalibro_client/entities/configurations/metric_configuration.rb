@@ -37,6 +37,8 @@ module KalibroClient
           if value.is_a?(Hash)
             if value['type'] == "NativeMetricSnapshot"
               @metric = KalibroClient::Entities::Miscellaneous::NativeMetric.to_object(value)
+            elsif value['type'] == "HotspotMetricSnapshot"
+              @metric = KalibroClient::Entities::Miscellaneous::HotspotMetric.to_object(value)
             else
               @metric = KalibroClient::Entities::Miscellaneous::CompoundMetric.to_object(value)
             end

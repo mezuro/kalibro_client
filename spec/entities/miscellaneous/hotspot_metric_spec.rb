@@ -23,5 +23,28 @@ describe KalibroClient::Entities::Miscellaneous::HotspotMetric, :type => :model 
         end
       end
     end
+
+    describe 'to_object' do
+      context 'with the expected attributes' do
+        let(:hotspot_metric_hash) { FactoryGirl.attributes_for(:hotspot_metric) }
+        it 'is expected to return a HotspotMetric' do
+          expect(KalibroClient::Entities::Miscellaneous::HotspotMetric.to_object(hotspot_metric_hash)).to be_a(KalibroClient::Entities::Miscellaneous::HotspotMetric)
+        end
+
+        context 'and with some extra attributes' do
+          let(:hotspot_metric_hash_extra) { hotspot_metric_hash.merge({"scope" => "SOFTWARE"}) }
+          it 'is expected to return a HotspotMetric' do
+            expect(KalibroClient::Entities::Miscellaneous::HotspotMetric.to_object(hotspot_metric_hash)).to be_a(KalibroClient::Entities::Miscellaneous::HotspotMetric)
+          end
+        end
+      end
+
+      context 'when the value is already an instance' do
+        let(:hotspot_metric) { FactoryGirl.build(:hotspot_metric) }
+        it 'is expected to return a HotspotMetric' do
+          expect(KalibroClient::Entities::Miscellaneous::HotspotMetric.to_object(hotspot_metric)).to be_a(KalibroClient::Entities::Miscellaneous::HotspotMetric)
+        end
+      end
+    end
   end
 end

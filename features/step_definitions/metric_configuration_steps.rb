@@ -36,6 +36,19 @@ When(/^I request all metric configurations of the given kalibro configuration$/)
   @metric_configurations = KalibroClient::Entities::Configurations::MetricConfiguration.metric_configurations_of(@kalibro_configuration.id)
 end
 
+When(/^I destroy the metric configuration$/) do
+  @metric_configuration.destroy
+end
+
+When(/^I have a flay configuration within the given kalibro configuration$/) do
+  @metric_configuration = FactoryGirl.create(:metric_configuration,
+                                             {metric: FactoryGirl.build(:hotspot_metric),
+                                              weight: nil,
+                                              aggregation_form: nil,
+                                              reading_group_id: nil,
+                                              kalibro_configuration_id: @kalibro_configuration.id})
+end
+
 Then(/^it should return the same metric configuration as the given one$/) do
   expect(@found_metric_configuration).to eq(@metric_configuration)
 end
@@ -48,14 +61,15 @@ Then(/^I should get an empty list of metric configurations$/) do
   expect(@metric_configurations).to eq([])
 end
 
-When(/^I destroy the metric configuration$/) do
-  @metric_configuration.destroy
-end
-
 Then(/^the metric configuration should no longer exist$/) do
   expect { KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration.id)}.to raise_error(KalibroClient::Errors::RecordNotFound)
 end
 
 Then(/^the metric configuration should exist$/) do
-  expect(KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration.id)).to eq(@metric_configuration)
+  @found_metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration.id)
+  expect(@found_metric_configuration).to eq(@metric_configuration)
+end
+
+Then(/^its metric should be Hotspot one$/) do
+  expect(@found_metric_configuration.metric).to be_a(KalibroClient::Entities::Miscellaneous::HotspotMetric)
 end
