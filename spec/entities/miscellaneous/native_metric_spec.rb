@@ -4,14 +4,14 @@ describe KalibroClient::Entities::Miscellaneous::NativeMetric, :type => :model d
   describe 'methods' do
     describe 'initialize' do
       context 'with valid attributes' do
-        name = "Sample name"
-        code = "sample_code"
-        scope = KalibroClient::Entities::Miscellaneous::Granularity.new(:SOFTWARE)
-        languages = [:C, :CPP, :JAVA]
-        metric_collector_name = "Analizo"
-        native_metric = KalibroClient::Entities::Miscellaneous::NativeMetric.new(name, code, scope, languages, metric_collector_name)
+        let(:name){ "Sample name" }
+        let(:code){ "sample_code" }
+        let(:scope){ KalibroClient::Entities::Miscellaneous::Granularity.new(:SOFTWARE) }
+        let(:languages){ [:C, :CPP, :JAVA] }
+        let(:metric_collector_name){ "Analizo" }
+        let(:native_metric){ KalibroClient::Entities::Miscellaneous::NativeMetric.new(name, code, scope, languages, metric_collector_name) }
 
-        it 'should return an instance of NativeMetric' do
+        it 'is expected to return an instance of NativeMetric' do
           expect(native_metric).to be_a(KalibroClient::Entities::Miscellaneous::NativeMetric)
         end
       end
