@@ -32,7 +32,6 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
   end
 
   describe 'metric=' do
-
     context 'with a Hash' do
       context 'NativeMetric' do
         let!(:metric) { FactoryGirl.build(:loc) }
@@ -190,8 +189,9 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
       end
 
       it 'should return the metric_configuration' do
-        expect(KalibroClient::Entities::Configurations::MetricConfiguration.find(metric_configuration.id).
-          id).to eq(metric_configuration.id)
+        found_metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.find(metric_configuration.id)
+        expect(found_metric_configuration.id).to eq(metric_configuration.id)
+        expect(found_metric_configuration.persisted).to be_truthy
       end
     end
 
