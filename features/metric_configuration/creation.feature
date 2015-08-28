@@ -9,3 +9,10 @@ Feature: Create
     And I have a reading group with name "Group"
     When I have a loc configuration within the given kalibro configuration
     Then the metric configuration should exist
+
+  @kalibro_configuration_restart
+  Scenario: creating a hotspot metric configuration
+    Given I have a kalibro configuration with name "Kalibro for Ruby"
+    When I have a flay configuration within the given kalibro configuration
+    Then the metric configuration should exist
+    And its metric should be Hotspot one

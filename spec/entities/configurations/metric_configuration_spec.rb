@@ -64,6 +64,22 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
           expect(subject.metric).to eq(metric)
         end
       end
+
+      context 'HotspotMetric' do
+        let!(:metric) { FactoryGirl.build(:hotspot_metric) }
+
+        before :each do
+          KalibroClient::Entities::Miscellaneous::HotspotMetric.
+          expects(:to_object).at_least_once.
+          with(metric.to_hash).
+          returns(metric)
+        end
+
+        it 'should convert the argument and set the metric' do
+          subject.metric = metric.to_hash
+          expect(subject.metric).to eq(metric)
+        end
+      end
     end
 
     context 'with a Metric' do
