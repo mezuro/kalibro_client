@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.3.0"
-  spec.add_development_dependency "cucumber", "~> 1.3.14"
+  spec.add_development_dependency "cucumber", "~> 2.0.2"
   spec.add_development_dependency "mocha", "~> 1.1.0"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "factory_girl", "~> 4.5.0"
@@ -46,5 +46,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "ruby-prof"
 
   spec.add_dependency "activesupport", ">= 2.2.1" #version in which underscore was introduced
-  spec.add_dependency "faraday_middleware", "~> 0.9.0"
+  spec.add_dependency "faraday_middleware", "~> 0.10.0"
 end
