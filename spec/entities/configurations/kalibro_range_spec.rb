@@ -160,9 +160,26 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
         returns("errors" => nil)
     end
 
-    it 'should make a request to updatethe model and return true without errors' do
+    it 'should make a request to update the model and return true without errors' do
       expect(subject.update).to be(true)
       expect(subject.kalibro_errors).to be_empty
+    end
+  end
+
+  describe 'range' do
+    context 'with finite beginning and end' do
+      subject { FactoryGirl.build(:range) }
+
+      it 'should create a Range object using the boundaries' do
+        expect(subject.range).to eq(Range.new(subject.beginning.to_f, subject.end.to_f, exlude_end: true))
+      end
+    end
+    context 'with infinite beginning and/or end' do
+      subject { FactoryGirl.build(:range, beginning: "-INF", end: "INF") }
+
+      it 'should create a Range object using the boundaries' do
+        expect(subject.range).to eq(Range.new(-Float::INFINITY, Float::INFINITY, exlude_end: true))
+      end
     end
   end
 end

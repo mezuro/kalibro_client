@@ -21,6 +21,14 @@ module KalibroClient
 
         attr_accessor :id, :beginning, :end, :reading_id, :comments, :metric_configuration_id
 
+        def range
+          @range ||= Range.new(
+            beginning == '-INF' ? -Float::INFINITY : beginning.to_f,
+            self.end == 'INF' ? Float::INFINITY : self.end.to_f,
+            exclude_end: true
+          )
+        end
+
         def id=(value)
           @id = value.to_i
         end
