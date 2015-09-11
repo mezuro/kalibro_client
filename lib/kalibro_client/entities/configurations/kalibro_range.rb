@@ -14,12 +14,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'kalibro_client/helpers/range_methods'
+
 module KalibroClient
   module Entities
     module Configurations
       class KalibroRange < KalibroClient::Entities::Configurations::Base
-
-        attr_accessor :id, :beginning, :end, :reading_id, :comments, :metric_configuration_id
+        attr_accessor :id, :reading_id, :comments, :metric_configuration_id
+        attr_reader :beginning, :end
+        include RangeMethods
 
         def id=(value)
           @id = value.to_i

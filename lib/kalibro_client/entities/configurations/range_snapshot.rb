@@ -14,19 +14,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+require 'kalibro_client/helpers/range_methods'
+
 module KalibroClient
   module Entities
     module Configurations
       class RangeSnapshot < KalibroClient::Entities::Configurations::Base
-        attr_accessor :beginning, :end, :label, :grade, :color, :comments
-
-        def beginning=(value)
-          @beginning = ((value == "-INF") ? -1.0/0 : value.to_f)
-        end
-
-        def end=(value)
-          @end = ((value == "INF") ? 1.0/0 : value.to_f)
-        end
+        attr_accessor :label, :grade, :color, :comments
+        attr_reader :beginning, :end
+        include RangeMethods
 
         def grade=(value)
           @grade = value.to_f
