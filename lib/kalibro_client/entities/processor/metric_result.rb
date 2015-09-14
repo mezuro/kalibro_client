@@ -19,7 +19,10 @@ module KalibroClient
     module Processor
       class MetricResult < KalibroClient::Entities::Processor::Base
 
-        attr_accessor :id, :value, :aggregated_value, :module_result_id, :metric_configuration_id
+        # TODO: related_hotspot_metric_results_id should be enclosed to Processor which does not return this id into the response
+        #       there should be a controller that returns all the HotspotMetricResults associated through RelatedHotspotMetricResult
+        attr_accessor :id, :value, :aggregated_value, :module_result_id, :metric_configuration_id,
+                      :line_number, :message, :related_hotspot_metric_results_id
         attr_reader :metric_configuration
 
         def initialize(attributes={}, persisted=false)
