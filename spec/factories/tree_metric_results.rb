@@ -15,9 +15,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :metric_result, class: KalibroClient::Entities::Processor::MetricResult do
+  factory :tree_metric_result, class: KalibroClient::Entities::Processor::TreeMetricResult do
     id  "42"
     metric_configuration_id { FactoryGirl.build(:metric_configuration_with_id).id }
     value "10.0"
+    aggregated_value "21"
   end
 end

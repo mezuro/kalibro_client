@@ -215,6 +215,43 @@ describe KalibroClient::Entities::Processor::ModuleResult do
     end
   end
 
+  describe 'tree_metric_results' do
+    subject { FactoryGirl.build(:root_module_result) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
+    let(:tree_metric_result_1) { FactoryGirl.build(:tree_metric_result, metric_configuration: metric_configuration) }
+    let(:tree_metric_result_2) { FactoryGirl.build(:tree_metric_result, metric_configuration: metric_configuration) }
+
+    context 'with metric results' do
+      before :each do
+        KalibroClient::Entities::Processor::ModuleResult.
+          expects(:request).
+          with(':id/metric_results', {id: subject.id}, :get).
+          returns({'metric_results' => [tree_metric_result_1.to_hash, tree_metric_result_2.to_hash]})
+        KalibroClient::Entities::Configurations::MetricConfiguration.
+          expects(:request).
+          with(':id', {id: metric_configuration.id}, :get).twice.
+          returns({'metric_configuration' => metric_configuration.to_hash})
+      end
+
+      it 'should return the metric results' do
+        expect(subject.tree_metric_results).to eq([tree_metric_result_1, tree_metric_result_2])
+      end
+    end
+
+    context 'without metric results' do
+      before :each do
+        KalibroClient::Entities::Processor::ModuleResult.
+          expects(:request).
+          with(':id/metric_results', {id: subject.id}, :get).
+          returns({'metric_results' => []})
+      end
+
+      it 'should return the metric results' do
+        expect(subject.tree_metric_results).to eq([])
+      end
+    end
+  end
+
   describe 'processing' do
     let(:processing) { FactoryGirl.build(:processing) }
 
