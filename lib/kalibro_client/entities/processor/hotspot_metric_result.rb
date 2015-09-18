@@ -30,6 +30,11 @@ module KalibroClient
           end
           @persisted = persisted
         end
+
+        def related_results
+          HotspotMetricResult.create_objects_array_from_hash(self.class.request(":id/related_results",
+                                                                                {id: self.id}, :get))
+        end
       end
     end
   end

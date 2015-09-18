@@ -91,8 +91,8 @@ module KalibroClient
         end
 
         def hotspot_metric_results
-          HotspotMetricResult.create_objects_array_from_hash({'hotspot_metric_results' => self.class.request(
-            ":id/hotspot_metric_results", {id: self.id}, :get)['hotspot_metric_results']})
+          HotspotMetricResult.create_objects_array_from_hash(self.class.request(":id/hotspot_metric_results",
+                                                                                {id: self.id}, :get))
         end
       end
     end

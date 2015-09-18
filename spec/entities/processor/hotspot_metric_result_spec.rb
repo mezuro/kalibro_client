@@ -27,5 +27,23 @@ describe KalibroClient::Entities::Processor::HotspotMetricResult do
       end
     end
   end
+
+  describe 'related_results' do
+    subject { FactoryGirl.build(:hotspot_metric_result) }
+    context 'with related metric results' do
+      let(:related_result) { FactoryGirl.build(:hotspot_metric_result) }
+
+      before do
+        KalibroClient::Entities::Processor::HotspotMetricResult.expects(:request).with(':id/related_results', {id: subject.id}, :get).returns({"hotspot_metric_results" => [subject.to_hash, related_result.to_hash]})
+      end
+
+      it 'should return the related metric results and itself' do
+        results = subject.related_results
+        expect(results).to include(subject)
+        expect(results).to include(related_result)
+        expect(results.size).to eq(2)
+      end
+    end
+  end
 end
 
