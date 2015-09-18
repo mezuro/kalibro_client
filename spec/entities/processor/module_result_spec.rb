@@ -180,38 +180,12 @@ describe KalibroClient::Entities::Processor::ModuleResult do
 
   describe 'metric_results' do
     subject { FactoryGirl.build(:root_module_result) }
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
-    let(:metric_result_1) { FactoryGirl.build(:metric_result, metric_configuration: metric_configuration) }
-    let(:metric_result_2) { FactoryGirl.build(:metric_result, metric_configuration: metric_configuration) }
 
-    context 'with metric results' do
-      before :each do
-        KalibroClient::Entities::Processor::ModuleResult.
-        expects(:request).
-        with(':id/metric_results', {id: subject.id}, :get).
-        returns({'metric_results' => [metric_result_1.to_hash, metric_result_2.to_hash]})
-        KalibroClient::Entities::Configurations::MetricConfiguration.
-        expects(:request).
-        with(':id', {id: metric_configuration.id}, :get).twice.
-        returns({'metric_configuration' => metric_configuration.to_hash})
-      end
+    it 'should be an alias to tree_metric_results' do
+      return_mock = mock
+      subject.expects(:tree_metric_results).returns(return_mock)
 
-      it 'should return the metric results' do
-        expect(subject.metric_results).to eq([metric_result_1, metric_result_2])
-      end
-    end
-
-    context 'without metric results' do
-      before :each do
-        KalibroClient::Entities::Processor::ModuleResult.
-        expects(:request).
-        with(':id/metric_results', {id: subject.id}, :get).
-        returns({'metric_results' => []})
-      end
-
-      it 'should return the metric results' do
-        expect(subject.metric_results).to eq([])
-      end
+      expect(subject.metric_results).to be(return_mock)
     end
   end
 
@@ -226,7 +200,7 @@ describe KalibroClient::Entities::Processor::ModuleResult do
         KalibroClient::Entities::Processor::ModuleResult.
           expects(:request).
           with(':id/metric_results', {id: subject.id}, :get).
-          returns({'metric_results' => [tree_metric_result_1.to_hash, tree_metric_result_2.to_hash]})
+          returns({'tree_metric_results' => [tree_metric_result_1.to_hash, tree_metric_result_2.to_hash]})
         KalibroClient::Entities::Configurations::MetricConfiguration.
           expects(:request).
           with(':id', {id: metric_configuration.id}, :get).twice.
@@ -243,7 +217,7 @@ describe KalibroClient::Entities::Processor::ModuleResult do
         KalibroClient::Entities::Processor::ModuleResult.
           expects(:request).
           with(':id/metric_results', {id: subject.id}, :get).
-          returns({'metric_results' => []})
+          returns({'tree_metric_results' => []})
       end
 
       it 'should return an empty array' do
