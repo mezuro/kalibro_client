@@ -221,7 +221,7 @@ describe KalibroClient::Entities::Processor::ModuleResult do
     let(:tree_metric_result_1) { FactoryGirl.build(:tree_metric_result, metric_configuration: metric_configuration) }
     let(:tree_metric_result_2) { FactoryGirl.build(:tree_metric_result, metric_configuration: metric_configuration) }
 
-    context 'with metric results' do
+    context 'with tree metric results' do
       before :each do
         KalibroClient::Entities::Processor::ModuleResult.
           expects(:request).
@@ -233,12 +233,12 @@ describe KalibroClient::Entities::Processor::ModuleResult do
           returns({'metric_configuration' => metric_configuration.to_hash})
       end
 
-      it 'should return the metric results' do
+      it 'should return the tree metric results' do
         expect(subject.tree_metric_results).to eq([tree_metric_result_1, tree_metric_result_2])
       end
     end
 
-    context 'without metric results' do
+    context 'without tree metric results' do
       before :each do
         KalibroClient::Entities::Processor::ModuleResult.
           expects(:request).
@@ -246,8 +246,41 @@ describe KalibroClient::Entities::Processor::ModuleResult do
           returns({'metric_results' => []})
       end
 
-      it 'should return the metric results' do
+      it 'should return an empty array' do
         expect(subject.tree_metric_results).to eq([])
+      end
+    end
+  end
+
+  describe 'hotspot_metric_results' do
+    subject { FactoryGirl.build(:root_module_result) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
+    let(:hotspot_metric_result_1) { FactoryGirl.build(:hotspot_metric_result, metric_configuration: metric_configuration) }
+    let(:hotspot_metric_result_2) { FactoryGirl.build(:hotspot_metric_result, metric_configuration: metric_configuration) }
+
+    context 'with hotspot metric results' do
+      before :each do
+        KalibroClient::Entities::Processor::ModuleResult.
+          expects(:request).
+          with(':id/hotspot_metric_results', {id: subject.id}, :get).
+          returns({'hotspot_metric_results' => [hotspot_metric_result_1.to_hash, hotspot_metric_result_2.to_hash]})
+      end
+
+      it 'should return the hotspot metric results' do
+        expect(subject.hotspot_metric_results).to eq([hotspot_metric_result_1, hotspot_metric_result_2])
+      end
+    end
+
+    context 'without hotspot metric results' do
+      before :each do
+        KalibroClient::Entities::Processor::ModuleResult.
+          expects(:request).
+          with(':id/hotspot_metric_results', {id: subject.id}, :get).
+          returns({'hotspot_metric_results' => []})
+      end
+
+      it 'should return an empty array' do
+        expect(subject.hotspot_metric_results).to eq([])
       end
     end
   end

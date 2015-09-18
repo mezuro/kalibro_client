@@ -89,6 +89,11 @@ module KalibroClient
         def tree_metric_results
           TreeMetricResult.create_objects_array_from_hash({'tree_metric_results' => self.class.request(":id/metric_results", {id: self.id}, :get)['metric_results']})
         end
+
+        def hotspot_metric_results
+          HotspotMetricResult.create_objects_array_from_hash({'hotspot_metric_results' => self.class.request(
+            ":id/hotspot_metric_results", {id: self.id}, :get)['hotspot_metric_results']})
+        end
       end
     end
   end
