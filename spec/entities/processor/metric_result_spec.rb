@@ -45,6 +45,48 @@ describe KalibroClient::Entities::Processor::MetricResult do
     end
   end
 
+  describe 'metric_configuration' do
+    context 'when metric_configuration_id is nil' do
+      before :each do
+        subject.metric_configuration_id = nil
+      end
+
+      it 'is expected to return nil' do
+        expect(subject.metric_configuration).to be_nil
+      end
+    end
+
+    context 'when metric_configuration_id is not nil' do
+      subject { FactoryGirl.build(:metric_result,
+                                  metric_configuration: nil,
+                                  metric_configuration_id: metric_configuration.id) }
+
+      context 'and it has already been memoized' do
+        before :each do
+          subject.metric_configuration = metric_configuration
+        end
+
+        it 'is expected to return the memoized instance' do
+          expect(subject.metric_configuration).to eq(metric_configuration)
+        end
+      end
+
+      context 'and it has not been memoized' do
+        before do
+          subject.metric_configuration_id = metric_configuration.id
+        end
+
+        it 'is expected to find the metric configuration from its id' do
+          KalibroClient::Entities::Configurations::MetricConfiguration.expects(:find).
+            with(subject.metric_configuration_id).
+            returns(metric_configuration)
+
+          expect(subject.metric_configuration).to eq(metric_configuration)
+        end
+      end
+    end
+  end
+
   describe 'value=' do
     it 'should set the value of the attribute value' do
       subject.value = 42
