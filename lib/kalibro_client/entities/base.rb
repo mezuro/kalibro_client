@@ -50,7 +50,11 @@ module KalibroClient
           request.options.open_timeout = 300
         end
 
-        response.body
+        if response.status.to_s.start_with?('4') || response.status.to_s.start_with?('5')
+          raise RequestError.new(response_body: response.body)
+        else
+          response.body
+        end
       end
 
       def self.to_object value

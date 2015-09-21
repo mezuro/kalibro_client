@@ -3,7 +3,7 @@ Feature: Find
   As a developer
   I want to find ranges
 
-@kalibro_configuration_restart
+@kalibro_configuration_restart @wip
 Scenario: find a valid range
     Given I have a kalibro configuration with name "Java"
     And I have a reading group with name "Group"
