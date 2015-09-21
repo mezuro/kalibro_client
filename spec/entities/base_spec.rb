@@ -210,9 +210,20 @@ describe KalibroClient::Entities::Base do
   describe 'save!' do
     subject { FactoryGirl.build(:project) }
 
-    it 'should call save' do
-      subject.expects(:save)
-      subject.save!
+    it 'should call save and not raise when saving works' do
+      subject.expects(:save).returns(true)
+      expect { subject.save! }.not_to raise_error
+    end
+
+    it 'should call save and raise RecordInvalid when saving fails' do
+      subject.expects(:kalibro_errors).returns(['test1', 'test2'])
+      subject.expects(:save).returns(false)
+
+      expect { subject.save! }.to raise_error { |error|
+        expect(error).to be_a(KalibroClient::Errors::RecordInvalid)
+        expect(error.record).to be(subject)
+        expect(error.message).to eq('Record invalid: test1, test2')
+      }
     end
   end
 
