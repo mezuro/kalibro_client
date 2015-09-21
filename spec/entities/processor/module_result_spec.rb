@@ -191,7 +191,7 @@ describe KalibroClient::Entities::Processor::ModuleResult do
 
   describe 'tree_metric_results' do
     subject { FactoryGirl.build(:root_module_result) }
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
+    let(:metric_configuration) { FactoryGirl.build(:metric_configuration, :with_id) }
     let(:tree_metric_result_1) { FactoryGirl.build(:tree_metric_result, metric_configuration: metric_configuration) }
     let(:tree_metric_result_2) { FactoryGirl.build(:tree_metric_result, metric_configuration: metric_configuration) }
 
@@ -201,10 +201,6 @@ describe KalibroClient::Entities::Processor::ModuleResult do
           expects(:request).
           with(':id/metric_results', {id: subject.id}, :get).
           returns({'tree_metric_results' => [tree_metric_result_1.to_hash, tree_metric_result_2.to_hash]})
-        KalibroClient::Entities::Configurations::MetricConfiguration.
-          expects(:request).
-          with(':id', {id: metric_configuration.id}, :get).twice.
-          returns({'metric_configuration' => metric_configuration.to_hash})
       end
 
       it 'should return the tree metric results' do

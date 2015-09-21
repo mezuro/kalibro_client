@@ -29,13 +29,22 @@ module KalibroClient
           @id = value.to_i
         end
 
+        def metric_configuration
+          return nil if @metric_configuration_id.nil?
+          if @metric_configuration.nil? || @metric_configuration.id != @metric_configuration_id
+            @metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration_id)
+          end
+
+          @metric_configuration
+        end
+
         def metric_configuration_id=(value)
-          self.metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.request(":id", {id: value.to_i}, :get)["metric_configuration"]
+          @metric_configuration_id = (value.nil? ? nil : value.to_i)
         end
 
         def metric_configuration=(value)
           @metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.to_object value
-          @metric_configuration_id = @metric_configuration.id
+          @metric_configuration_id = (@metric_configuration.nil? ? nil : @metric_configuration.id)
         end
 
         def value=(value)
