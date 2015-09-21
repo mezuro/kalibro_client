@@ -1,5 +1,5 @@
 When(/^I call the metric results of method with the results root id of the given processing$/) do
-  @response = KalibroClient::Entities::Processor::ModuleResult.find(@response.root_module_result_id).metric_results
+  @response = KalibroClient::Entities::Processor::ModuleResult.find(@response.root_module_result_id).tree_metric_results
 end
 
 Given(/^I search a metric result with descendant values for the given metric result$/) do
