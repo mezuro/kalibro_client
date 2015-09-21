@@ -10,6 +10,11 @@ Given(/^the given project has the following Repositories:$/) do |table|
   @repository = FactoryGirl.create(:repository, hash)
 end
 
+Given(/^I have the given repository:$/) do |table|
+  repository_attrs = table.hashes.first
+  @repository = FactoryGirl.create(:repository, repository_attrs)
+end
+
 When(/^I call the cancel_process method for the given repository$/) do
   @response = @repository.cancel_processing_of_repository
 end
