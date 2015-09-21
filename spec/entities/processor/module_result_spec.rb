@@ -178,17 +178,6 @@ describe KalibroClient::Entities::Processor::ModuleResult do
     end
   end
 
-  describe 'metric_results' do
-    subject { FactoryGirl.build(:root_module_result) }
-
-    it 'should be an alias to tree_metric_results' do
-      return_mock = mock
-      subject.expects(:tree_metric_results).returns(return_mock)
-
-      expect(subject.metric_results).to be(return_mock)
-    end
-  end
-
   describe 'tree_metric_results' do
     subject { FactoryGirl.build(:root_module_result) }
     let(:metric_configuration) { FactoryGirl.build(:metric_configuration, :with_id) }

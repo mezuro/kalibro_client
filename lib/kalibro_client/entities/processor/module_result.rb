@@ -81,12 +81,6 @@ module KalibroClient
           end
         end
 
-        def metric_results
-          warn "WARNING: ModuleResult#metric_results method has been deprecated. Please use tree_metric_results."
-
-          tree_metric_results
-        end
-
         def tree_metric_results
           TreeMetricResult.create_objects_array_from_hash(self.class.request(":id/metric_results", {id: self.id}, :get))
         end
