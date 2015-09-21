@@ -12,7 +12,7 @@ Feature: Find
     Then it should return the same metric configuration as the given one
 
 
-  @kalibro_configuration_restart
+  @kalibro_configuration_restart @wip
   Scenario: try to find an inexistent metric configuration
     When I search an inexistent metric configuration
     Then I should get an error
