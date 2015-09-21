@@ -48,15 +48,6 @@ module KalibroClient
           response.map { |date_metric_result|
             KalibroClient::Entities::Miscellaneous::DateMetricResult.new date_metric_result }
         end
-
-        protected
-
-        # This method has no coverage report since it will be eliminated on future releases fo KalibroProcessor
-        # :nocov:
-        def self.endpoint
-          self.superclass.endpoint
-        end
-        # :nocov:
       end
     end
   end
