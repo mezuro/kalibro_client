@@ -87,7 +87,8 @@ module KalibroClient
       end
 
       def save!
-        save
+        return true if save
+        raise KalibroClient::Errors::RecordInvalid.new(self)
       end
 
       def self.create(attributes={})
