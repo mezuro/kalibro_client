@@ -45,7 +45,7 @@ module KalibroClient
           url = "/#{endpoint}/#{action}".gsub(":id", params[:id].to_s)
           url = "/#{prefix}#{url}" unless prefix.empty?
           request.url url
-          request.body = params unless params.empty?
+          request.body = params unless method == :get || params.empty?
           request.options.timeout = 300
           request.options.open_timeout = 300
         end
