@@ -51,39 +51,84 @@ describe KalibroClient::Entities::Base do
   end
 
   describe 'request' do
-    let(:fixture) { File.read("spec/savon/fixtures/project/does_not_exists.xml") }
-    let(:client) { mock('client') }
-    let(:response) { mock('response') }
-    let(:request) { mock('request') }
-    let(:options) { mock('options') }
+    context 'with sucessful responses' do
+      let(:fixture) { File.read("spec/savon/fixtures/project/does_not_exists.xml") }
+      let(:client) { mock('client') }
+      let(:response) { mock('response') }
+      let(:request) { mock('request') }
+      let(:options) { mock('options') }
 
-    before :each do
-      options.expects(:timeout=)
-      options.expects(:open_timeout=)
-      request.expects(:url).with('/bases/exists')
-      request.expects(:body=).with({id: 1})
-      request.expects(:options).twice.returns(options)
-    end
+      before :each do
+        options.expects(:timeout=)
+        options.expects(:open_timeout=)
+        request.expects(:url).with('/bases/exists')
+        request.expects(:body=).with({id: 1})
+        request.expects(:options).twice.returns(options)
+      end
 
-    context 'for the KalibroClient::Entities module' do
-      it 'should successfully get the Kalibro version' do
-        pending
-        response.expects(:body).returns({exists: false})
-        client.expects(:post).yields(request).returns(response)
-        KalibroClient::Entities::Base.expects(:client).with(any_parameters).returns(client)
-        expect(KalibroClient::Entities::Base.request('exists', {id: 1})[:exists]).to eq(false)
+      context 'for the KalibroClient::Entities module' do
+        it 'should successfully get the Kalibro version' do
+          pending
+          response.expects(:body).returns({exists: false})
+          client.expects(:post).yields(request).returns(response)
+          KalibroClient::Entities::Base.expects(:client).with(any_parameters).returns(client)
+          expect(KalibroClient::Entities::Base.request('exists', {id: 1})[:exists]).to eq(false)
+        end
+      end
+
+      context 'with a children class from outside' do
+        class Child < KalibroClient::Entities::Base; end
+
+        it 'should successfully get the Kalibro version' do
+          pending
+          response.expects(:body).returns({exists: false})
+          client.expects(:post).yields(request).returns(response)
+          Child.expects(:client).with(any_parameters).returns(client)
+          expect(Child.request('exists', {id: 1})[:exists]).to eq(false)
+        end
       end
     end
 
-    context 'with a children class from outside' do
-      class Child < KalibroClient::Entities::Base; end
+    def faraday_connection_with_stubs
+      stubs = Faraday::Adapter::Test::Stubs.new do |stubs|
+        yield stubs
+      end
 
-      it 'should successfully get the Kalibro version' do
-        pending
-        response.expects(:body).returns({exists: false})
-        client.expects(:post).yields(request).returns(response)
-        Child.expects(:client).with(any_parameters).returns(client)
-        expect(Child.request('exists', {id: 1})[:exists]).to eq(false)
+      connection = Faraday.new do |builder|
+        builder.adapter :test, stubs
+      end
+
+      connection.define_singleton_method(:verify_stubbed_calls) do
+        stubs.verify_stubbed_calls
+      end
+
+      connection
+    end
+
+    # This uses a different method to stub faraday calls, that doesn't rely on stubbing particular methods of the requests.
+    # We should consider using it whenever possible instead of expectations.
+    
+    context 'with an unsuccessful request' do
+      let(:connection) {
+        faraday_connection_with_stubs do |stubs|
+          stubs.get('/bases/1/exists') { |env| [500, {}, ''] }
+        end
+      }
+
+      before :each do
+        subject.class.stubs(:client).returns(connection)
+      end
+
+      after :each do
+        connection.verify_stubbed_calls
+      end
+
+      it 'should raise a RequestError with the response' do
+        expect { subject.class.request(':id/exists', {id: 1}, :get) }.to raise_error do |error|
+          expect(error).to be_a(KalibroClient::Errors::RequestError)
+          expect(error.response.status).to eq(500)
+          expect(error.response.body).to eq('')
+        end
       end
     end
   end
