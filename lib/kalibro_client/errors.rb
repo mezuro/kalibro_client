@@ -17,3 +17,4 @@
 require 'kalibro_client/errors/standard'
 require 'kalibro_client/errors/record_not_found'
 require 'kalibro_client/errors/record_invalid'
+require 'kalibro_client/errors/request_error'

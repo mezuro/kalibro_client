@@ -14,15 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#Inspired on:
-#https://github.com/rails/rails/blob/master/activerecord/lib/active_record/errors.rb
 module KalibroClient
   module Errors
     class RequestError < Standard
-      attr_reader :response_body
+      attr_reader :response
 
       def initialize(attributes={})
-        @response_body = attributes[:response_body]
+        @response = attributes[:response]
       end
     end
   end

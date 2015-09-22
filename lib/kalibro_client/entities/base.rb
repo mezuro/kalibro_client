@@ -50,10 +50,10 @@ module KalibroClient
           request.options.open_timeout = 300
         end
 
-        if response.status.to_s.start_with?('4') || response.status.to_s.start_with?('5')
-          raise RequestError.new(response_body: response.body)
-        else
+        if response.success?
           response.body
+        else
+          raise KalibroClient::Errors::RequestError.new(response: response)
         end
       end
 
