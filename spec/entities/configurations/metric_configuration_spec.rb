@@ -216,7 +216,7 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
         KalibroClient::Entities::Configurations::MetricConfiguration.
         expects(:request).
         with(':id', {id: metric_configuration.id}, :get).
-        returns({'errors' => 'RecordNotFound'})
+        raises(KalibroClient::Errors::RequestError)
       end
 
       it 'should raise the RecordNotFound error' do
