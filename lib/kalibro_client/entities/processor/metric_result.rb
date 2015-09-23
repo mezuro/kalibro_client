@@ -21,54 +21,34 @@ module KalibroClient
 
         # TODO: related_hotspot_metric_results_id should be enclosed to Processor which does not return this id into the response
         #       there should be a controller that returns all the HotspotMetricResults associated through RelatedHotspotMetricResult
-        attr_accessor :id, :value, :aggregated_value, :module_result_id, :metric_configuration_id,
+        attr_accessor :id, :value, :module_result_id, :metric_configuration_id,
                       :line_number, :message, :related_hotspot_metric_results_id
         attr_reader :metric_configuration
-
-        def initialize(attributes={}, persisted=false)
-          value = attributes["value"]
-          @value = (value == "NaN") ? attributes["aggregated_value"].to_f : value.to_f
-          attributes.each do |field, value|
-            if field!= "value" and field!= "aggregated_value" and self.class.is_valid?(field)
-              send("#{field}=", value)
-            end
-          end
-          @kalibro_errors = []
-          @persisted = persisted
-        end
 
         def id=(value)
           @id = value.to_i
         end
 
+        def metric_configuration
+          return nil if @metric_configuration_id.nil?
+          if @metric_configuration.nil? || @metric_configuration.id != @metric_configuration_id
+            @metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration_id)
+          end
+
+          @metric_configuration
+        end
+
         def metric_configuration_id=(value)
-          self.metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.request(":id", {id: value.to_i}, :get)["metric_configuration"]
+          @metric_configuration_id = (value.nil? ? nil : value.to_i)
         end
 
         def metric_configuration=(value)
           @metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.to_object value
-          @metric_configuration_id = @metric_configuration.id
+          @metric_configuration_id = (@metric_configuration.nil? ? nil : @metric_configuration.id)
         end
 
         def value=(value)
           @value = value.to_f
-        end
-
-        def aggregated_value=(value)
-          @aggregated_value = value.to_f
-        end
-
-        def descendant_values
-          descendant_values = self.class.request(':id/descendant_values', {id: id}, :get)['descendant_values']
-          descendant_values.map {|descendant_value| descendant_value.to_f}
-        end
-
-        def self.history_of(metric_name, kalibro_module_id, repository_id)
-          response = Repository.request(':id/metric_result_history_of', {metric_name: metric_name,
-                                                        kalibro_module_id: kalibro_module_id,
-                                                        id: repository_id})['metric_result_history_of']
-          response.map { |date_metric_result|
-            KalibroClient::Entities::Miscellaneous::DateMetricResult.new date_metric_result }
         end
       end
     end

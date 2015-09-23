@@ -15,9 +15,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 FactoryGirl.define do
-  factory :metric_result, class: KalibroClient::Entities::Processor::MetricResult do
-    id  "42"
-    metric_configuration_id { FactoryGirl.build(:metric_configuration_with_id).id }
-    value "10.0"
+  factory :hotspot_metric_result, class: KalibroClient::Entities::Processor::HotspotMetricResult do
+    metric_configuration { FactoryGirl.build(:metric_configuration, :with_id) }
+    line_number 1
+    message "1) Similar code found in :module (mass = 154)"
   end
 end
+

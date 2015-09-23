@@ -4,12 +4,12 @@ module KalibroClient
       attr_reader :record
 
       def initialize(record = nil)
-        message = if record
+        if record
           @record = record
           errors = @record.kalibro_errors.join(', ')
-          "Record invalid: #{errors}"
+          message = "Record invalid: #{errors}"
         else
-          'Record invalid'
+          message = 'Record invalid'
         end
 
         super(message)

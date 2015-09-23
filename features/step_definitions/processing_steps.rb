@@ -1,11 +1,9 @@
+require 'timeout'
+
 Given(/^I wait up for a ready processing$/) do
-  unless @repository.has_ready_processing
-    while(true)
-      if @repository.has_ready_processing
-        break
-      else
-        sleep(10)
-      end
+  Timeout::timeout(300) do
+    while !@repository.has_ready_processing
+      sleep(2)
     end
   end
 end
