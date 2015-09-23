@@ -106,8 +106,8 @@ module KalibroClient
         begin
           response = self.class.request(update_action, update_params, :put, update_prefix)
           true
-        rescue KalibroClient::Errors::RequestError => error
-          error.response.body["errors"].each { |error| add_error(error) }
+        rescue KalibroClient::Errors::RequestError => exception
+          exception.response.body["errors"].each { |error| add_error(error) }
           false
         end
       end
