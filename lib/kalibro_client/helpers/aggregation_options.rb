@@ -18,7 +18,7 @@ module AggregationOptions
   #TODO: internationalization
   def all_with_label
     [
-      ["Average","AVERAGE"], ["Median", "MEDIAN"], ["Maximum", "MAXIMUM"], ["Minimum", "MINIMUM"],
+      ["Mean","mean"], ["Median", "MEDIAN"], ["Maximum", "max"], ["Minimum", "min"],
       ["Count", "COUNT"], ["Standard Deviation", "STANDARD_DEVIATION"]
     ]
   end
