@@ -199,10 +199,14 @@ describe KalibroClient::Entities::Base do
     end
 
     context 'with invalid parameters' do
+      let(:response) { mock("response") }
+
       before :each do
+        response.stubs(:status).returns(422)
+        response.stubs(:body).returns({"errors"=>["Beginning is not a number"]})
         KalibroClient::Entities::Base.
               expects(:request).
-              with(':id', {base: {}, id: id}, :put, '').returns({"errors" => ["Error"]})
+              with(':id', {base: {}, id: id}, :put, '').raises(KalibroClient::Errors::RequestError.new(response: response))
         subject.expects(:id).returns(id)
         subject.expects(:to_hash).returns({})
       end

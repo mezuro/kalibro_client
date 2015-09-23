@@ -16,7 +16,7 @@ Feature: Update
     And I ask to update the given range
     Then I should not receive errors
 
-  @kalibro_configuration_restart @wip
+  @kalibro_configuration_restart
   Scenario: When trying to update beginning with an invalid value
     Given I have a kalibro configuration with name "Java"
     And I have a reading group with name "Group"
@@ -27,7 +27,7 @@ Feature: Update
     And I ask to update the given range
     Then I should get the error "Beginning is not a number"
 
-  @kalibro_configuration_restart @wip
+  @kalibro_configuration_restart
   Scenario: When trying to set the beginning with a number greater than the end
     Given I have a kalibro configuration with name "Java"
     And I have a reading group with name "Group"
@@ -39,7 +39,7 @@ Feature: Update
     And I ask to update the given range
     Then I should get the error "End The End value should be greater than the Beginning value."
 
-  @kalibro_configuration_restart @wip
+  @kalibro_configuration_restart
   Scenario: When trying to set the beginning with a number greater than end
     Given I have a kalibro configuration with name "Java"
     And I have a reading group with name "Group"
@@ -49,6 +49,5 @@ Feature: Update
     And I have another range within the given reading
     When I change the "beginning" to "0"
     And I ask to update the given range
-    Then I should get the error "Beginning Should be unique within a Metric Configuration" 
+    Then I should get the error "Beginning Should be unique within a Metric Configuration"
     And I should get the error "Beginning There is already a KalibroRange within these boundaries! Please, choose another interval."
-
