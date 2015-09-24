@@ -19,40 +19,6 @@ require 'spec_helper'
 describe KalibroClient::Entities::Processor::ModuleResult do
   subject { FactoryGirl.build(:module_result, id: rand(Time.now.to_i)) }
 
-  describe 'find' do
-    context 'when there is a module result for the given id' do
-      before :each do
-        KalibroClient::Entities::Processor::ModuleResult.
-          expects(:request).
-          with(':id/exists', { id: subject.id }, :get).
-          returns("exists" => true)
-        KalibroClient::Entities::Processor::ModuleResult.
-          expects(:request).
-          with(':id', { id: subject.id }, :get).
-          returns("module_result" => subject.to_hash)
-      end
-
-      it 'should return a hash with module result' do
-        expect(KalibroClient::Entities::Processor::ModuleResult.
-          find(subject.id).id).to eq(subject.id)
-      end
-    end
-
-    context "when there isn't a module result for the given id" do
-      before :each do
-        KalibroClient::Entities::Processor::ModuleResult.
-          expects(:request).
-          with(':id/exists', { id: subject.id }, :get).
-          returns("exists" => false)
-      end
-
-      it 'should raise an error' do
-        expect {KalibroClient::Entities::Processor::ModuleResult.find(subject.id)}.
-          to raise_error KalibroClient::Errors::RecordNotFound
-      end
-    end
-  end
-
   describe 'children' do
     before :each do
       KalibroClient::Entities::Processor::ModuleResult.
@@ -71,14 +37,7 @@ describe KalibroClient::Entities::Processor::ModuleResult do
 
     context 'when module result has a parent' do
       before :each do
-        KalibroClient::Entities::Processor::ModuleResult.
-          expects(:request).
-          with(':id/exists', { id: subject.parent_id }, :get).
-          returns("exists" => true)
-        KalibroClient::Entities::Processor::ModuleResult.
-          expects(:request).at_least_once.
-          with(':id', { id: subject.parent_id }, :get).
-          returns("module_result" => root_module_result.to_hash)
+        subject.class.expects(:find).with(subject.parent_id).returns(root_module_result)
       end
 
       it 'should return its parent' do
