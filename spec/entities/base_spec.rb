@@ -232,7 +232,7 @@ describe KalibroClient::Entities::Base do
 
         subject.stubs(:id).returns(id)
         KalibroClient::Entities::Base.expects(:request).with(':id', has_entry(id: id), :put, '').
-          returns({"base" => {'id' => id, 'kalibro_errors' => []}})
+          returns({"base" => {'id' => id, 'errors' => []}})
       end
 
       it 'is expected to return true' do
