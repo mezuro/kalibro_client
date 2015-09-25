@@ -78,10 +78,12 @@ describe KalibroClient::Entities::Base do
       end
     end
 
+    # TODO: check for RecordNotFound
+
     # This uses a different method to stub faraday calls, that doesn't rely on stubbing particular methods of the requests.
     # We should consider using it whenever possible instead of expectations.
     context 'with an unsuccessful request' do
-      let!(:stubs) { Faraday::Adapter::Test::Stubs.new {|stub| stub.get('/bases/1/exists') { |env| [500, {}, ''] } } }
+      let!(:stubs) { Faraday::Adapter::Test::Stubs.new {|stub| stub.get('/bases/1/exists') { |env| [500, {}, {}] } } }
       let(:connection) { Faraday.new {|builder| builder.adapter :test, stubs} }
 
       before :each do
@@ -92,7 +94,7 @@ describe KalibroClient::Entities::Base do
         expect { subject.class.request(':id/exists', {id: 1}, :get) }.to raise_error do |error|
           expect(error).to be_a(KalibroClient::Errors::RequestError)
           expect(error.response.status).to eq(500)
-          expect(error.response.body).to eq('')
+          expect(error.response.body).to eq({})
         end
       end
     end
@@ -125,46 +127,73 @@ describe KalibroClient::Entities::Base do
     end
   end
 
+  shared_examples 'persistence method' do |method_name|
+    context 'when a record does not exist with given id' do
+      before :each do
+        subject.class.stubs(:request).with('', {base: {}}, instance_of(Symbol), '').
+          raises(KalibroClient::Errors::RecordNotFound)
+      end
+
+      xit 'should raise a RecordNotFound error' do
+        expect { subject.send(method_name) }.to raise_error(KalibroClient::Errors::RecordNotFound)
+      end
+    end
+
+    context 'when a server error is returned' do
+      before :each do
+        error = KalibroClient::Errors::RequestError.new(response: mock(status: 500))
+
+        subject.class.stubs(:request).with('', {base: {}}, instance_of(Symbol), '').
+          raises(error)
+      end
+
+      xit 'should raise a RequestError error' do
+        expect { subject.send(method_name) }.to raise_error(KalibroClient::Errors::RequestError)
+      end
+    end
+
+    context 'when a regular kind of error is returned' do
+      before :each do
+        error = KalibroClient::Errors::RequestError.new(response: mock(status: 402, body: { 'errors' => errors }))
+
+        subject.class.stubs(:request).with('', {base: {}}, instance_of(Symbol), '').raises(error)
+      end
+
+      context 'with a single error' do
+        let(:errors) { "error" }
+
+        xit 'should set the kalibro_errors field' do
+          expect(subject.send(method_name)).to eq(false)
+          expect(subject.kalibro_errors).to eq([errors])
+        end
+      end
+
+      context 'with an array of errors' do
+        let(:errors) { ["error_1", "error_2"] }
+
+        xit 'should set the kalibro_errors field' do
+          expect(subject.send(method_name)).to eq(false)
+          expect(subject.kalibro_errors).to eq(errors)
+        end
+      end
+    end
+  end
+
   describe 'save' do
+    before :each do
+      KalibroClient::Entities::Base.
+        stubs(:request).
+        with('', {base: {}}, :post, '').
+        returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
+      KalibroClient::Entities::Base.any_instance.stubs(:id=).with(42).returns(42)
+    end
+
+    it_behaves_like 'persistence method', :save
+
     context "when it is not persisted" do
-      context "when it doesn't have the method id=" do
-        before :each do
-          KalibroClient::Entities::Base.
-            expects(:request).
-            with('', {base: {}}, :post, '').returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
-        end
-
-        it 'should make a request to save model with id returning false and an error' do
-          expect(subject.save).to be(false)
-          expect(subject.kalibro_errors[0]).to be_a(NoMethodError)
-        end
-      end
-
-      context 'when it has the method id=' do
-        before :each do
-          KalibroClient::Entities::Base.
-            expects(:request).
-            with('', {base: {}}, :post, '').returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
-          KalibroClient::Entities::Base.any_instance.expects(:id=).with(42).returns(42)
-        end
-
-        it 'should make a request to save model with id and return true without errors' do
-          expect(subject.save).to be(true)
-          expect(subject.kalibro_errors).to be_empty
-        end
-      end
-
-      context "when it returns with a kalibro processor error" do
-        before :each do
-          KalibroClient::Entities::Base.
-            expects(:request).
-            with('', {base: {}}, :post, '').returns({"errors" => ["Name has already been taken"]})
-        end
-
-        it 'should make a request to save model returning false and a kalibro error' do
-          expect(subject.save).to be(false)
-          expect(subject.kalibro_errors[0]).to eq("Name has already been taken")
-        end
+      it 'should make a request to save model with id and return true without errors' do
+        expect(subject.save).to be(true)
+        expect(subject.kalibro_errors).to be_empty
       end
     end
 
@@ -174,9 +203,8 @@ describe KalibroClient::Entities::Base do
       end
 
       it 'is expected to call the update method'  do
-        subject.expects(:update)
-
-        subject.save
+        subject.expects(:update).returns(true)
+        expect(subject.save).to eq(true)
       end
     end
   end
@@ -223,26 +251,6 @@ describe KalibroClient::Entities::Base do
     end
   end
 
-  describe 'save!' do
-    subject { FactoryGirl.build(:project) }
-
-    it 'should call save and not raise when saving works' do
-      subject.expects(:save).returns(true)
-      expect { subject.save! }.not_to raise_error
-    end
-
-    it 'should call save and raise RecordInvalid when saving fails' do
-      subject.expects(:kalibro_errors).returns(['test1', 'test2'])
-      subject.expects(:save).returns(false)
-
-      expect { subject.save! }.to raise_error { |error|
-        expect(error).to be_a(KalibroClient::Errors::RecordInvalid)
-        expect(error.record).to be(subject)
-        expect(error.message).to eq('Record invalid: test1, test2')
-      }
-    end
-  end
-
   describe 'create' do
     before :each do
       subject.expects(:save)
@@ -254,61 +262,6 @@ describe KalibroClient::Entities::Base do
 
     it 'should instantiate and save the model' do
       expect(KalibroClient::Entities::Base.create {}).to eq(subject)
-    end
-  end
-
-  describe '==' do
-    context 'comparing objects from different classes' do
-      it 'should return false' do
-        expect(subject).not_to eq(Object.new)
-      end
-    end
-
-    context 'with two models with different attribute values' do
-      let(:another_model) { FactoryGirl.build(:model) }
-      before :each do
-        subject.expects(:variable_names).returns(["answer"])
-        subject.expects(:send).with("answer").returns(42)
-        another_model.expects(:send).with("answer").returns(41)
-      end
-
-      it 'should return false' do
-        expect(subject).not_to eq(another_model)
-      end
-    end
-
-    context 'with two empty models' do
-      it 'should return true' do
-        expect(subject).to eq(FactoryGirl.build(:model))
-      end
-    end
-  end
-
-  describe 'exists?' do
-    context 'with an inexistent id' do
-      before :each do
-        KalibroClient::Entities::Base.
-          expects(:request).
-          with(':id/exists', {id: 0}, :get).
-          returns({'exists' => false})
-      end
-
-      it 'should return false' do
-        expect(KalibroClient::Entities::Base.exists?(0)).to eq(false)
-      end
-    end
-
-    context 'with an existent id' do
-      before :each do
-        KalibroClient::Entities::Base.
-          expects(:request).
-          with(':id/exists', {id: 42}, :get).
-          returns({'exists' => true})
-      end
-
-      it 'should return false' do
-        expect(KalibroClient::Entities::Base.exists?(42)).to eq(true)
-      end
     end
   end
 
@@ -379,6 +332,81 @@ describe KalibroClient::Entities::Base do
       end
     end
   end
+  describe 'save!' do
+    subject { FactoryGirl.build(:project) }
+
+    it 'should call save and not raise when saving works' do
+      subject.expects(:save).returns(true)
+      expect { subject.save! }.not_to raise_error
+    end
+
+    it 'should call save and raise RecordInvalid when saving fails' do
+      subject.expects(:kalibro_errors).returns(['test1', 'test2'])
+      subject.expects(:save).returns(false)
+
+      expect { subject.save! }.to raise_error { |error|
+        expect(error).to be_a(KalibroClient::Errors::RecordInvalid)
+        expect(error.record).to be(subject)
+        expect(error.message).to eq('Record invalid: test1, test2')
+      }
+    end
+  end
+
+  describe '==' do
+    context 'comparing objects from different classes' do
+      it 'should return false' do
+        expect(subject).not_to eq(Object.new)
+      end
+    end
+
+    context 'with two models with different attribute values' do
+      let(:another_model) { FactoryGirl.build(:model) }
+      before :each do
+        subject.expects(:variable_names).returns(["answer"])
+        subject.expects(:send).with("answer").returns(42)
+        another_model.expects(:send).with("answer").returns(41)
+      end
+
+      it 'should return false' do
+        expect(subject).not_to eq(another_model)
+      end
+    end
+
+    context 'with two empty models' do
+      it 'should return true' do
+        expect(subject).to eq(FactoryGirl.build(:model))
+      end
+    end
+  end
+
+  describe 'exists?' do
+    context 'with an inexistent id' do
+      before :each do
+        KalibroClient::Entities::Base.
+          expects(:request).
+          with(':id/exists', {id: 0}, :get).
+          returns({'exists' => false})
+      end
+
+      it 'should return false' do
+        expect(KalibroClient::Entities::Base.exists?(0)).to eq(false)
+      end
+    end
+
+    context 'with an existent id' do
+      before :each do
+        KalibroClient::Entities::Base.
+          expects(:request).
+          with(':id/exists', {id: 42}, :get).
+          returns({'exists' => true})
+      end
+
+      it 'should return false' do
+        expect(KalibroClient::Entities::Base.exists?(42)).to eq(true)
+      end
+    end
+  end
+
 
   describe 'create_objects_array_from_hash' do
     context 'with nil' do
