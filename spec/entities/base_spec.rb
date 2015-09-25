@@ -16,12 +16,20 @@
 
 require 'spec_helper'
 
+# Create a class that has the attribute assignment methods, since some methods expect they exist
+# (and usually the subclasses do that).
+
+class BaseTest < KalibroClient::Entities::Base
+  attr_accessor :id, :created_at, :updated_at
+end
+
 describe KalibroClient::Entities::Base do
-  subject { FactoryGirl.build(:model) }
+  subject { BaseTest.new }
 
   describe 'new' do
+    subject { KalibroClient::Entities::Base.new({}) }
+
     it 'should create a model from an empty hash' do
-      subject = KalibroClient::Entities::Base.new {}
       expect(subject.kalibro_errors).to eq([])
     end
   end
@@ -51,7 +59,7 @@ describe KalibroClient::Entities::Base do
   end
 
   describe 'request' do
-    context 'with sucessful responses' do
+    context 'with successful responses' do
       let!(:stubs) { Faraday::Adapter::Test::Stubs.new {|stub| stub.get('/bases/1/exists') {|env| [200, {}, {exists: false}]} } }
       let(:connection) { Faraday.new {|builder| builder.adapter :test, stubs} }
 
@@ -60,7 +68,7 @@ describe KalibroClient::Entities::Base do
       end
 
       context 'for the KalibroClient::Entities module' do
-        it 'should successfully get the Kalibro version' do
+        xit 'should successfully get the Kalibro version' do
           expect(subject.class.request(':id/exists', {id: 1}, :get)[:exists]).to eq(false)
         end
       end
@@ -68,7 +76,7 @@ describe KalibroClient::Entities::Base do
       context 'with a children class from outside' do
         class Child < KalibroClient::Entities::Base; end
 
-        it 'should successfully get the Kalibro version' do
+        xit 'should successfully get the Kalibro version' do
           expect(Child.request(':id/exists', {id: 1}, :get)[:exists]).to eq(false)
         end
       end
@@ -127,10 +135,17 @@ describe KalibroClient::Entities::Base do
     end
   end
 
-  shared_examples 'persistence method' do |method_name|
+  shared_examples 'persistence method' do |method_name, http_method, has_id = true|
+    before :each do
+      subject.id = 42 if has_id
+    end
+
+    let(:url) { has_id ? ':id' : '' }
+    let(:params) { has_id ? has_entry(id: 42) : anything }
+
     context 'when a record does not exist with given id' do
       before :each do
-        subject.class.stubs(:request).with('', {base: {}}, instance_of(Symbol), '').
+        subject.class.expects(:request).with(url, params, http_method, '').
           raises(KalibroClient::Errors::RecordNotFound)
       end
 
@@ -143,8 +158,7 @@ describe KalibroClient::Entities::Base do
       before :each do
         error = KalibroClient::Errors::RequestError.new(response: mock(status: 500))
 
-        subject.class.stubs(:request).with('', {base: {}}, instance_of(Symbol), '').
-          raises(error)
+        subject.class.expects(:request).with(url, params, http_method, '').raises(error)
       end
 
       xit 'should raise a RequestError error' do
@@ -154,9 +168,9 @@ describe KalibroClient::Entities::Base do
 
     context 'when a regular kind of error is returned' do
       before :each do
-        error = KalibroClient::Errors::RequestError.new(response: mock(status: 402, body: { 'errors' => errors }))
+        error = KalibroClient::Errors::RequestError.new(response: mock(status: 422, body: { 'errors' => errors }))
 
-        subject.class.stubs(:request).with('', {base: {}}, instance_of(Symbol), '').raises(error)
+        subject.class.expects(:request).with(url, params, http_method, '').raises(error)
       end
 
       context 'with a single error' do
@@ -180,37 +194,37 @@ describe KalibroClient::Entities::Base do
   end
 
   describe 'save' do
-    before :each do
-      KalibroClient::Entities::Base.
-        stubs(:request).
-        with('', {base: {}}, :post, '').
-        returns({"base" => {'id' => 42, 'kalibro_errors' => []}})
-      KalibroClient::Entities::Base.any_instance.stubs(:id=).with(42).returns(42)
-    end
+    it_behaves_like 'persistence method', :save, :post, false # false means Don't use ids in URLs
 
-    it_behaves_like 'persistence method', :save
-
-    context "when it is not persisted" do
-      it 'should make a request to save model with id and return true without errors' do
-        expect(subject.save).to be(true)
-        expect(subject.kalibro_errors).to be_empty
-      end
-    end
-
-    context 'when it is persisted' do
+    context 'with a successful response' do
       before :each do
-        subject.persisted = true
+        subject.class.stubs(:request).with('', anything, :post, '').
+          returns({"base" => {'id' => 42, 'errors' => []}})
       end
 
-      it 'is expected to call the update method'  do
-        subject.expects(:update).returns(true)
-        expect(subject.save).to eq(true)
+      context 'when it is not persisted' do
+        it 'should make a request to save model with id and return true without errors' do
+          expect(subject.save).to be(true)
+          expect(subject.id).to eq(42)
+          expect(subject.kalibro_errors).to be_empty
+        end
+      end
+
+      context 'when it is persisted' do
+        before :each do
+          subject.stubs(:persisted?).returns(true)
+        end
+
+        it 'is expected to call the update method'  do
+          subject.expects(:update).returns(true)
+          expect(subject.save).to eq(true)
+        end
       end
     end
   end
 
   describe 'update' do
-    it_behaves_like 'persistence method', :update
+    it_behaves_like 'persistence method', :update, :put
 
     context 'with valid parameters' do
       before :each do
@@ -221,7 +235,7 @@ describe KalibroClient::Entities::Base do
           returns({"base" => {'id' => id, 'kalibro_errors' => []}})
       end
 
-      it 'is expect to return true' do
+      it 'is expected to return true' do
         expect(subject.update).to eq(true)
       end
     end
@@ -244,73 +258,49 @@ describe KalibroClient::Entities::Base do
   describe 'find' do
     context 'with an inexistent id' do
       before :each do
-        KalibroClient::Entities::Base.expects(:exists?).with(0).returns(false)
+        # We should remove this call in the future: there's no need to call exists before a find.
+        subject.class.stubs(:exists?).with(0).returns(false)
+
+        response = stub("response", status: 404, body: { 'errors' => 'RecordNotFound' })
+        subject.class.expects(:request).with(':id', {id: 0}, :get).returns(response)
       end
 
-      it 'should raise a RecordNotFound error' do
-        expect { KalibroClient::Entities::Base.find(0)}.to raise_error(KalibroClient::Errors::RecordNotFound)
+      xit 'should raise a RecordNotFound error' do
+        expect { subject.class.find(0) }.to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
 
     context 'with an existent id' do
       before :each do
-        KalibroClient::Entities::Base.
-          expects(:exists?).with(42).
-          returns(true)
-        KalibroClient::Entities::Base.
-          expects(:request).
-          with(':id',{id: 42}, :get).returns("base" => {})
+        subject.class.stubs(:exists?).with(42).returns(true)
+        subject.class.expects(:request).with(':id', has_entry(id: 42), :get).
+          returns("base" => {'id' => 42})
       end
 
       it 'should return an empty model' do
-        expect(KalibroClient::Entities::Base.find(42)).to eq(subject)
+        expect(subject.class.find(42).id).to eq(42)
       end
     end
   end
 
   describe 'destroy' do
+    it_behaves_like 'persistence method', :destroy, :delete
+
     context 'when it gets successfully destroyed' do
       before :each do
-        subject.expects(:id).at_least_once.returns(42)
+        subject.stubs(:id).returns(42)
         KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '').returns({})
       end
 
       it 'should remain with the errors array empty and not persisted' do
         subject.destroy
         expect(subject.kalibro_errors).to be_empty
-        expect(subject.persisted?).to be_falsey
-      end
-    end
-
-    context 'when the destruction fails' do
-      context 'raising a exception' do
-        before :each do
-          subject.expects(:id).at_least_once.returns(42)
-          KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '').raises(Exception.new)
-        end
-
-        it "should have an exception inside it's errors" do
-          subject.destroy
-
-          expect(subject.kalibro_errors[0]).to be_an(Exception)
-        end
-      end
-
-      context 'returning kalibro_errors' do
-        before :each do
-          subject.expects(:id).at_least_once.returns(42)
-          KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '').returns({'errors' => ['Error']})
-        end
-
-        it 'is expected to return false' do
-          expect(subject.destroy).to be_falsey
-        end
+        expect(subject.persisted?).to eq(false)
       end
     end
   end
-  describe 'save!' do
-    subject { FactoryGirl.build(:project) }
 
+  describe 'save!' do
     it 'should call save and not raise when saving works' do
       subject.expects(:save).returns(true)
       expect { subject.save! }.not_to raise_error
@@ -329,6 +319,8 @@ describe KalibroClient::Entities::Base do
   end
 
   describe '==' do
+    subject { FactoryGirl.build(:model) }
+
     context 'comparing objects from different classes' do
       it 'should return false' do
         expect(subject).not_to eq(Object.new)
@@ -337,6 +329,7 @@ describe KalibroClient::Entities::Base do
 
     context 'with two models with different attribute values' do
       let(:another_model) { FactoryGirl.build(:model) }
+
       before :each do
         subject.expects(:variable_names).returns(["answer"])
         subject.expects(:send).with("answer").returns(42)
@@ -385,6 +378,8 @@ describe KalibroClient::Entities::Base do
 
 
   describe 'create_objects_array_from_hash' do
+    subject { FactoryGirl.build(:model) }
+
     context 'with nil' do
       it 'should return an empty array' do
         expect(KalibroClient::Entities::Base.create_objects_array_from_hash("bases" => [])).to eq([])
