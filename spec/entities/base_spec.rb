@@ -149,7 +149,7 @@ describe KalibroClient::Entities::Base do
           raises(KalibroClient::Errors::RecordNotFound)
       end
 
-      xit 'should raise a RecordNotFound error' do
+      it 'should raise a RecordNotFound error' do
         expect { subject.send(method_name) }.to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
@@ -161,7 +161,7 @@ describe KalibroClient::Entities::Base do
         subject.class.expects(:request).with(url, params, http_method, '').raises(error)
       end
 
-      xit 'should raise a RequestError error' do
+      it 'should raise a RequestError error' do
         expect { subject.send(method_name) }.to raise_error(KalibroClient::Errors::RequestError)
       end
     end
@@ -176,7 +176,7 @@ describe KalibroClient::Entities::Base do
       context 'with a single error' do
         let(:errors) { "error" }
 
-        xit 'should set the kalibro_errors field' do
+        it 'should set the kalibro_errors field' do
           expect(subject.send(method_name)).to eq(false)
           expect(subject.kalibro_errors).to eq([errors])
         end
@@ -185,7 +185,7 @@ describe KalibroClient::Entities::Base do
       context 'with an array of errors' do
         let(:errors) { ["error_1", "error_2"] }
 
-        xit 'should set the kalibro_errors field' do
+        it 'should set the kalibro_errors field' do
           expect(subject.send(method_name)).to eq(false)
           expect(subject.kalibro_errors).to eq(errors)
         end
@@ -261,11 +261,11 @@ describe KalibroClient::Entities::Base do
         # We should remove this call in the future: there's no need to call exists before a find.
         subject.class.stubs(:exists?).with(0).returns(false)
 
-        response = stub("response", status: 404, body: { 'errors' => 'RecordNotFound' })
-        subject.class.expects(:request).with(':id', {id: 0}, :get).returns(response)
+        subject.class.stubs(:request).with(':id', has_entry(id: 0), :get).
+          raises(KalibroClient::Errors::RecordNotFound)
       end
 
-      xit 'should raise a RecordNotFound error' do
+      it 'should raise a RecordNotFound error' do
         expect { subject.class.find(0) }.to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
