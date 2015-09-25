@@ -210,43 +210,19 @@ describe KalibroClient::Entities::Base do
   end
 
   describe 'update' do
-    let!(:id) { 42 }
+    it_behaves_like 'persistence method', :update
 
     context 'with valid parameters' do
       before :each do
-        KalibroClient::Entities::Base.
-              expects(:request).
-              with(':id', {base: {}, id: id}, :put, '').returns({"base" => {'id' => id, 'kalibro_errors' => []}})
-        subject.expects(:id).returns(id)
-        subject.expects(:to_hash).returns({})
+        id = 42
+
+        subject.stubs(:id).returns(id)
+        KalibroClient::Entities::Base.expects(:request).with(':id', has_entry(id: id), :put, '').
+          returns({"base" => {'id' => id, 'kalibro_errors' => []}})
       end
 
       it 'is expect to return true' do
-        expect(subject.update).to be_truthy
-      end
-    end
-
-    context 'with invalid parameters' do
-      let(:response) { mock("response") }
-
-      before :each do
-        response.stubs(:status).returns(422)
-        response.stubs(:body).returns({"errors"=>["Beginning is not a number"]})
-        KalibroClient::Entities::Base.
-              expects(:request).
-              with(':id', {base: {}, id: id}, :put, '').raises(KalibroClient::Errors::RequestError.new(response: response))
-        subject.expects(:id).returns(id)
-        subject.expects(:to_hash).returns({})
-      end
-
-      it 'is expect to return false' do
-        expect(subject.update).to be_falsey
-      end
-
-      it 'is expect fill the errors' do
-        subject.update
-
-        expect(subject.kalibro_errors).to_not be_empty
+        expect(subject.update).to eq(true)
       end
     end
   end
