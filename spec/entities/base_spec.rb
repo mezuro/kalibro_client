@@ -60,29 +60,43 @@ describe KalibroClient::Entities::Base do
 
   describe 'request' do
     context 'with successful responses' do
-      let!(:stubs) { Faraday::Adapter::Test::Stubs.new {|stub| stub.get('/bases/1/exists') {|env| [200, {}, {exists: false}]} } }
-      let(:connection) { Faraday.new {|builder| builder.adapter :test, stubs} }
+      let(:exists_response) { {'exists' => false} }
+      let(:bases_response) { {'bases' => {'id' => 1}} }
+      let(:prefix_bases_response) { {'bases' => {'id' => 2}} }
+
+      let(:connection) { Faraday.new { |builder| builder.adapter :test do |stubs|
+          stubs.get('/bases/1/exists') { |env| [200, {}, exists_response] }
+          stubs.get('/bases/') { |env| [200, {}, bases_response] }
+          stubs.get('/prefix/bases/') { |env| [200, {}, prefix_bases_response] }
+        end
+      }}
 
       before :each do
         subject.class.stubs(:client).returns(connection)
+        subject.class.stubs(:endpoint).returns('bases')
       end
 
-      context 'for the KalibroClient::Entities module' do
-        xit 'should successfully get the Kalibro version' do
-          expect(subject.class.request(':id/exists', {id: 1}, :get)[:exists]).to eq(false)
+      context 'without an id parameter' do
+        context 'without a prefix' do
+          it 'should make the request without the prefix' do
+            response = subject.class.request('', {}, :get)
+            expect(response).to eq(bases_response)
+          end
+        end
+
+        context 'with a prefix' do
+          it 'should make the request with the prefix' do
+            response = subject.class.request('', {}, :get, 'prefix')
+            expect(response).to eq(prefix_bases_response)
+          end
         end
       end
 
-      context 'with a children class from outside' do
-        class Child < KalibroClient::Entities::Base; end
-
-        xit 'should successfully get the Kalibro version' do
-          expect(Child.request(':id/exists', {id: 1}, :get)[:exists]).to eq(false)
+      context 'with an id parameter' do
+        it 'should make the request with the id included' do
+          response = subject.class.request(':id/exists', {id: 1}, :get)
+          expect(response).to eq(exists_response)
         end
-      end
-
-      after :each do
-        stubs.verify_stubbed_calls
       end
     end
 
