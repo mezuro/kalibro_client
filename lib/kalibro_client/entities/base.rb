@@ -74,7 +74,7 @@ module KalibroClient
         if persisted?
           self.update
         else
-          with_request_error_check do
+          without_request_error? do
             response = self.class.request(save_action, save_params, :post, save_prefix)
 
             self.id = response[instance_class_name]["id"]
@@ -98,7 +98,7 @@ module KalibroClient
 
       def update(attributes={})
         attributes.each { |field, value| send("#{field}=", value) if self.class.is_valid?(field) }
-        with_request_error_check do
+        without_request_error? do
           self.class.request(update_action, update_params, :put, update_prefix)
         end
       end
@@ -128,7 +128,7 @@ module KalibroClient
       end
 
       def destroy
-        with_request_error_check do
+        without_request_error? do
           response = self.class.request(destroy_action, destroy_params, :delete, destroy_prefix)
           @persisted = false
         end
@@ -203,7 +203,7 @@ module KalibroClient
         return entity_class.name.split("::").last.underscore.downcase
       end
 
-      def with_request_error_check(&block)
+      def without_request_error?(&block)
         begin
           block.call
           true
