@@ -242,6 +242,15 @@ describe KalibroClient::Entities::Base do
           expect(subject.kalibro_errors).to eq(errors)
         end
       end
+
+      context 'with no error message at all' do
+        let(:errors) { nil }
+
+        it 'should set the kalibro_errors field' do
+          expect(subject.send(method_name)).to eq(false)
+          expect(subject.kalibro_errors.first).to be_a(KalibroClient::Errors::RequestError)
+        end
+      end
     end
   end
 
