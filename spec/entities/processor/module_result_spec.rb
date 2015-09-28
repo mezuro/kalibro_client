@@ -222,7 +222,7 @@ describe KalibroClient::Entities::Processor::ModuleResult do
         KalibroClient::Entities::Base.expects(:find).with(id).returns(module_result)
       end
 
-      it 'is expected to return the foudn module result' do
+      it 'is expected to return the found module result' do
         expect(described_class.find(id)).to eq(module_result)
       end
     end
