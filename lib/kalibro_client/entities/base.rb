@@ -53,7 +53,7 @@ module KalibroClient
         if response.success?
           response.body
         # FIXME This condition was added to preserve the deprecated error codes that are returned by kalibro processor
-        elsif response.status == 404 || (response.body.key?('errors') && response.body['errors'] === /NotFound/)
+        elsif response.status == 404 || (response.body.key?('errors') && /NotFound/ === response.body['errors'])
           raise KalibroClient::Errors::RecordNotFound.new(response: response)
         else
           raise KalibroClient::Errors::RequestError.new(response: response)

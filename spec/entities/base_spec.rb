@@ -100,7 +100,45 @@ describe KalibroClient::Entities::Base do
       end
     end
 
-    # TODO: check for RecordNotFound
+    context 'when the record was not found' do
+      context 'and or the status is 404' do
+        let!(:faraday_stubs) {
+          Faraday::Adapter::Test::Stubs.new do |stub|
+            # stub.get receives arguments: path, headers, block
+            # The block should be a Array [status, headers, body]
+            stub.get('/bases/1') { |env| [404, {}, {}] }
+          end
+        }
+        let!(:connection) { Faraday.new {|builder| builder.adapter :test, faraday_stubs} }
+
+        before :each do
+          described_class.stubs(:client).returns(connection)
+        end
+
+        it 'is expected to raise a RecordNotFound error' do
+          expect { described_class.request(':id', {id: 1}, :get) }.to raise_error(KalibroClient::Errors::RecordNotFound)
+        end
+      end
+
+      context 'and or the response has a NotFound error message' do
+        let!(:faraday_stubs) {
+          Faraday::Adapter::Test::Stubs.new do |stub|
+            # stub.get receives arguments: path, headers, block
+            # The block should be a Array [status, headers, body]
+            stub.get('/bases/1') { |env| [422, {}, {'errors' => 'RecordNotFound'}] }
+          end
+        }
+        let!(:connection) { Faraday.new {|builder| builder.adapter :test, faraday_stubs} }
+
+        before :each do
+          described_class.stubs(:client).returns(connection)
+        end
+
+        it 'is expected to raise a RecordNotFound error' do
+          expect { described_class.request(':id', {id: 1}, :get) }.to raise_error(KalibroClient::Errors::RecordNotFound)
+        end
+      end
+    end
 
     # This uses a different method to stub faraday calls, that doesn't rely on stubbing particular methods of the requests.
     # We should consider using it whenever possible instead of expectations.
