@@ -49,6 +49,5 @@ Feature: Update
     And I have another range within the given reading
     When I change the "beginning" to "0"
     And I ask to update the given range
-    Then I should get the error "Beginning Should be unique within a Metric Configuration" 
+    Then I should get the error "Beginning Should be unique within a Metric Configuration"
     And I should get the error "Beginning There is already a KalibroRange within these boundaries! Please, choose another interval."
-

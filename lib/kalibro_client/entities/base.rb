@@ -45,13 +45,21 @@ module KalibroClient
           url = "/#{endpoint}/#{action}".gsub(":id", params[:id].to_s)
           url = "/#{prefix}#{url}" unless prefix.empty?
           request.url url
-          request.body = params unless params.empty?
+          request.body = params unless method == :get || params.empty?
           request.options.timeout = 300
           request.options.open_timeout = 300
         end
 
-        response.body
+        if response.success?
+          response.body
+        # FIXME This condition was added to preserve the deprecated error codes that are returned by kalibro processor
+        elsif response.status == 404 || (response.body.key?('errors') && /NotFound/ === response.body['errors'])
+          raise KalibroClient::Errors::RecordNotFound.new(response: response)
+        else
+          raise KalibroClient::Errors::RequestError.new(response: response)
+        end
       end
+
 
       def self.to_object value
         value.kind_of?(Hash) ? new(value, true) : value
@@ -66,22 +74,13 @@ module KalibroClient
         if persisted?
           self.update
         else
-          begin
+          without_request_error? do
             response = self.class.request(save_action, save_params, :post, save_prefix)
 
-            if response["errors"].nil?
-              self.id = response[instance_class_name]["id"]
-              self.created_at = response[instance_class_name]["created_at"] unless response[instance_class_name]["created_at"].nil?
-              self.updated_at = response[instance_class_name]["updated_at"] unless response[instance_class_name]["updated_at"].nil?
-              @persisted = true
-              true
-            else
-              self.kalibro_errors = response["errors"]
-              false
-            end
-          rescue Exception => exception
-            add_error exception
-            false
+            self.id = response[instance_class_name]["id"]
+            self.created_at = response[instance_class_name]["created_at"] unless response[instance_class_name]["created_at"].nil?
+            self.updated_at = response[instance_class_name]["updated_at"] unless response[instance_class_name]["updated_at"].nil?
+            @persisted = true
           end
         end
       end
@@ -99,12 +98,8 @@ module KalibroClient
 
       def update(attributes={})
         attributes.each { |field, value| send("#{field}=", value) if self.class.is_valid?(field) }
-        response = self.class.request(update_action, update_params, :put, update_prefix)
-        unless response["errors"].nil?
-          response["errors"].each { |error| add_error(error) }
-          false
-        else
-          true
+        without_request_error? do
+          self.class.request(update_action, update_params, :put, update_prefix)
         end
       end
 
@@ -128,31 +123,14 @@ module KalibroClient
       end
 
       def self.find(id)
-        if(exists?(id))
-          response = request(find_action, id_params(id), :get)
-          new(response[entity_name], true)
-        else
-          raise KalibroClient::Errors::RecordNotFound
-        end
+        response = request(find_action, id_params(id), :get)
+        new(response[entity_name], true)
       end
 
       def destroy
-        begin
+        without_request_error? do
           response = self.class.request(destroy_action, destroy_params, :delete, destroy_prefix)
-
-          unless response['errors'].nil?
-            response['errors'].each { |error| add_error(error) }
-          end
-
-          if self.kalibro_errors.empty?
-            @persisted = false
-            true
-          else
-            false
-          end
-        rescue Exception => exception
-          add_error exception
-          false
+          @persisted = false
         end
       end
 
@@ -223,6 +201,28 @@ module KalibroClient
         end
 
         return entity_class.name.split("::").last.underscore.downcase
+      end
+
+      def without_request_error?(&block)
+        begin
+          block.call
+          true
+        rescue KalibroClient::Errors::RecordNotFound => error
+          raise error
+        rescue KalibroClient::Errors::RequestError => error
+          raise error if error.response.status.between?(500, 599)
+
+          response_errors = error.response.body['errors']
+          if response_errors.is_a?(Array)
+            response_errors.each { |error_msg| add_error(error_msg) }
+          elsif !response_errors.nil?
+            add_error response_errors
+          else
+            add_error error
+          end
+
+          false
+        end
       end
 
       include HashConverters
