@@ -60,16 +60,19 @@ describe KalibroClient::Entities::Base do
 
   describe 'request' do
     context 'with successful responses' do
-      let(:exists_response) { {'exists' => false} }
-      let(:bases_response) { {'bases' => {'id' => 1}} }
-      let(:prefix_bases_response) { {'bases' => {'id' => 2}} }
+      let(:exists_response) { { 'exists' => false } }
+      let(:bases_response) { { 'bases' => { 'id' => 1 } } }
+      let(:prefix_bases_response) { { 'bases' => { 'id' => 2 } } }
 
-      let(:connection) { Faraday.new { |builder| builder.adapter :test do |stubs|
-          stubs.get('/bases/1/exists') { |env| [200, {}, exists_response] }
-          stubs.get('/bases/') { |env| [200, {}, bases_response] }
-          stubs.get('/prefix/bases/') { |env| [200, {}, prefix_bases_response] }
+      let(:connection) do
+        Faraday.new do |builder|
+          builder.adapter :test do |stubs|
+            stubs.get('/bases/1/exists') { [200, {}, exists_response] }
+            stubs.get('/bases/') { [200, {}, bases_response] }
+            stubs.get('/prefix/bases/') { [200, {}, prefix_bases_response] }
+          end
         end
-      }}
+      end
 
       before :each do
         subject.class.stubs(:client).returns(connection)
@@ -94,7 +97,7 @@ describe KalibroClient::Entities::Base do
 
       context 'with an id parameter' do
         it 'is expected to make the request with the id included' do
-          response = subject.class.request(':id/exists', {id: 1}, :get)
+          response = subject.class.request(':id/exists', { id: 1 }, :get)
           expect(response).to eq(exists_response)
         end
       end
@@ -102,40 +105,40 @@ describe KalibroClient::Entities::Base do
 
     context 'when the record was not found' do
       context 'and or the status is 404' do
-        let!(:faraday_stubs) {
+        let!(:faraday_stubs) do
           Faraday::Adapter::Test::Stubs.new do |stub|
             # stub.get receives arguments: path, headers, block
             # The block should be a Array [status, headers, body]
-            stub.get('/bases/1') { |env| [404, {}, {}] }
+            stub.get('/bases/1') { [404, {}, {}] }
           end
-        }
-        let!(:connection) { Faraday.new {|builder| builder.adapter :test, faraday_stubs} }
+        end
+        let!(:connection) { Faraday.new { |builder| builder.adapter :test, faraday_stubs } }
 
         before :each do
           described_class.stubs(:client).returns(connection)
         end
 
         it 'is expected to raise a RecordNotFound error' do
-          expect { described_class.request(':id', {id: 1}, :get) }.to raise_error(KalibroClient::Errors::RecordNotFound)
+          expect { described_class.request(':id', { id: 1 }, :get) }.to raise_error(KalibroClient::Errors::RecordNotFound)
         end
       end
 
       context 'and or the response has a NotFound error message' do
-        let!(:faraday_stubs) {
+        let!(:faraday_stubs) do
           Faraday::Adapter::Test::Stubs.new do |stub|
             # stub.get receives arguments: path, headers, block
             # The block should be a Array [status, headers, body]
-            stub.get('/bases/1') { |env| [422, {}, {'errors' => 'RecordNotFound'}] }
+            stub.get('/bases/1') { [422, {}, { 'errors' => 'RecordNotFound' }] }
           end
-        }
-        let!(:connection) { Faraday.new {|builder| builder.adapter :test, faraday_stubs} }
+        end
+        let!(:connection) { Faraday.new { |builder| builder.adapter :test, faraday_stubs } }
 
         before :each do
           described_class.stubs(:client).returns(connection)
         end
 
         it 'is expected to raise a RecordNotFound error' do
-          expect { described_class.request(':id', {id: 1}, :get) }.to raise_error(KalibroClient::Errors::RecordNotFound)
+          expect { described_class.request(':id', { id: 1 }, :get) }.to raise_error(KalibroClient::Errors::RecordNotFound)
         end
       end
     end
@@ -143,15 +146,15 @@ describe KalibroClient::Entities::Base do
     # This uses a different method to stub faraday calls, that doesn't rely on stubbing particular methods of the requests.
     # We should consider using it whenever possible instead of expectations.
     context 'with an unsuccessful request' do
-      let!(:stubs) { Faraday::Adapter::Test::Stubs.new {|stub| stub.get('/bases/1/exists') { |env| [500, {}, {}] } } }
-      let(:connection) { Faraday.new {|builder| builder.adapter :test, stubs} }
+      let!(:stubs) { Faraday::Adapter::Test::Stubs.new { |stub| stub.get('/bases/1/exists') { [500, {}, {}] } } }
+      let(:connection) { Faraday.new { |builder| builder.adapter :test, stubs } }
 
       before :each do
         subject.class.stubs(:client).returns(connection)
       end
 
       it 'is expected to raise a RequestError with the response' do
-        expect { subject.class.request(':id/exists', {id: 1}, :get) }.to raise_error do |error|
+        expect { subject.class.request(':id/exists', { id: 1 }, :get) }.to raise_error do |error|
           expect(error).to be_a(KalibroClient::Errors::RequestError)
           expect(error.response.status).to eq(500)
           expect(error.response.body).to eq({})
@@ -260,7 +263,7 @@ describe KalibroClient::Entities::Base do
     context 'with a successful response' do
       before :each do
         subject.class.stubs(:request).with('', anything, :post, '').
-          returns({"base" => {'id' => 42, 'errors' => []}})
+          returns({ "base" => { 'id' => 42, 'errors' => [] } })
       end
 
       context 'when it is not persisted' do
@@ -276,7 +279,7 @@ describe KalibroClient::Entities::Base do
           subject.stubs(:persisted?).returns(true)
         end
 
-        it 'is expected to call the update method'  do
+        it 'is expected to call the update method' do
           subject.expects(:update).returns(true)
           expect(subject.save).to eq(true)
         end
@@ -293,7 +296,7 @@ describe KalibroClient::Entities::Base do
 
         subject.stubs(:id).returns(id)
         described_class.expects(:request).with(':id', has_entry(id: id), :put, '').
-          returns({"base" => {'id' => id, 'errors' => []}})
+          returns({ "base" => { 'id' => id, 'errors' => [] }})
       end
 
       it 'is expected to return true' do
@@ -335,7 +338,7 @@ describe KalibroClient::Entities::Base do
       before :each do
         subject.class.stubs(:exists?).with(42).returns(true)
         subject.class.expects(:request).with(':id', has_entry(id: 42), :get).
-          returns("base" => {'id' => 42})
+          returns("base" => { 'id' => 42 })
       end
 
       it 'is expected to return an empty model' do
@@ -350,7 +353,7 @@ describe KalibroClient::Entities::Base do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.stubs(:id).returns(42)
-        described_class.expects(:request).with(':id',{id: subject.id}, :delete, '').returns({})
+        described_class.expects(:request).with(':id', { id: subject.id }, :delete, '').returns({})
       end
 
       it 'is expected to remain with the errors array empty and not persisted' do
@@ -414,8 +417,8 @@ describe KalibroClient::Entities::Base do
       before :each do
         described_class.
           expects(:request).
-          with(':id/exists', {id: 0}, :get).
-          returns({'exists' => false})
+          with(':id/exists', { id: 0 }, :get).
+          returns({ 'exists' => false })
       end
 
       it 'is expected to return false' do
@@ -427,8 +430,8 @@ describe KalibroClient::Entities::Base do
       before :each do
         described_class.
           expects(:request).
-          with(':id/exists', {id: 42}, :get).
-          returns({'exists' => true})
+          with(':id/exists', { id: 42 }, :get).
+          returns({ 'exists' => true })
       end
 
       it 'is expected to return false' do
@@ -436,7 +439,6 @@ describe KalibroClient::Entities::Base do
       end
     end
   end
-
 
   describe 'create_objects_array_from_hash' do
     subject { FactoryGirl.build(:model) }
