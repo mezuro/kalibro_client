@@ -27,34 +27,34 @@ describe KalibroClient::Entities::Base do
   subject { BaseTest.new }
 
   describe 'new' do
-    subject { KalibroClient::Entities::Base.new({}) }
+    subject { described_class.new({}) }
 
-    it 'should create a model from an empty hash' do
+    it 'is expected to create a model from an empty hash' do
       expect(subject.kalibro_errors).to eq([])
     end
   end
 
   describe 'entity_name' do
-    it 'should be a String' do
+    it 'is expected to be a String' do
       expect(subject.class.entity_name).to be_a(String)
     end
 
-    it 'should return Base' do
+    it 'is expected to return Base' do
       expect(subject.class.entity_name).to eq('base')
     end
   end
 
   describe 'endpoint' do
-    it 'should return the entity_name' do
+    it 'is expected to return the entity_name' do
       endpoint = 'tests'
-      KalibroClient::Entities::Base.expects(:entity_name).returns(endpoint)
-      expect(KalibroClient::Entities::Base.endpoint).to eq(endpoint)
+      described_class.expects(:entity_name).returns(endpoint)
+      expect(described_class.endpoint).to eq(endpoint)
     end
   end
 
   describe 'client' do
     it 'returns a Faraday::Connection' do
-      expect { KalibroClient::Entities::Base.client }.to raise_error(NotImplementedError)
+      expect { described_class.client }.to raise_error(NotImplementedError)
     end
   end
 
@@ -78,14 +78,14 @@ describe KalibroClient::Entities::Base do
 
       context 'without an id parameter' do
         context 'without a prefix' do
-          it 'should make the request without the prefix' do
+          it 'is expected to make the request without the prefix' do
             response = subject.class.request('', {}, :get)
             expect(response).to eq(bases_response)
           end
         end
 
         context 'with a prefix' do
-          it 'should make the request with the prefix' do
+          it 'is expected to make the request with the prefix' do
             response = subject.class.request('', {}, :get, 'prefix')
             expect(response).to eq(prefix_bases_response)
           end
@@ -93,7 +93,7 @@ describe KalibroClient::Entities::Base do
       end
 
       context 'with an id parameter' do
-        it 'should make the request with the id included' do
+        it 'is expected to make the request with the id included' do
           response = subject.class.request(':id/exists', {id: 1}, :get)
           expect(response).to eq(exists_response)
         end
@@ -150,7 +150,7 @@ describe KalibroClient::Entities::Base do
         subject.class.stubs(:client).returns(connection)
       end
 
-      it 'should raise a RequestError with the response' do
+      it 'is expected to raise a RequestError with the response' do
         expect { subject.class.request(':id/exists', {id: 1}, :get) }.to raise_error do |error|
           expect(error).to be_a(KalibroClient::Errors::RequestError)
           expect(error.response.status).to eq(500)
@@ -161,29 +161,29 @@ describe KalibroClient::Entities::Base do
   end
 
   describe 'to_hash' do
-    it 'should return an empty hash' do
+    it 'is expected to return an empty hash' do
       expect(subject.to_hash).to be_empty
     end
   end
 
   describe 'to_object' do
-    it 'should return an Object with an empty hash' do
-      expect(KalibroClient::Entities::Base.to_object({})).to eq(FactoryGirl.build(:model))
+    it 'is expected to return an Object with an empty hash' do
+      expect(described_class.to_object({})).to eq(FactoryGirl.build(:model))
     end
 
-    it "should remain an object if it isn't a Hash" do
-      expect(KalibroClient::Entities::Base.to_object(Object.new)).to be_an(Object)
+    it "is expected to remain an object if it isn't a Hash" do
+      expect(described_class.to_object(Object.new)).to be_an(Object)
     end
   end
 
   describe 'to_objects_array' do
-    it 'should convert [{}] to [Model]' do
-      expect(KalibroClient::Entities::Base.to_objects_array({})).to eq([FactoryGirl.build(:model)])
+    it 'is expected to convert [{}] to [Model]' do
+      expect(described_class.to_objects_array({})).to eq([FactoryGirl.build(:model)])
     end
 
-    it 'should remain an array if it already is one' do
+    it 'is expected to remain an array if it already is one' do
       object = Object.new
-      expect(KalibroClient::Entities::Base.to_objects_array([object])).to eq([object])
+      expect(described_class.to_objects_array([object])).to eq([object])
     end
   end
 
@@ -201,7 +201,7 @@ describe KalibroClient::Entities::Base do
           raises(KalibroClient::Errors::RecordNotFound)
       end
 
-      it 'should raise a RecordNotFound error' do
+      it 'is expected to raise a RecordNotFound error' do
         expect { subject.send(method_name) }.to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
@@ -213,7 +213,7 @@ describe KalibroClient::Entities::Base do
         subject.class.expects(:request).with(url, params, http_method, '').raises(error)
       end
 
-      it 'should raise a RequestError error' do
+      it 'is expected to raise a RequestError error' do
         expect { subject.send(method_name) }.to raise_error(KalibroClient::Errors::RequestError)
       end
     end
@@ -228,7 +228,7 @@ describe KalibroClient::Entities::Base do
       context 'with a single error' do
         let(:errors) { "error" }
 
-        it 'should set the kalibro_errors field' do
+        it 'is expected to set the kalibro_errors field' do
           expect(subject.send(method_name)).to eq(false)
           expect(subject.kalibro_errors).to eq([errors])
         end
@@ -237,7 +237,7 @@ describe KalibroClient::Entities::Base do
       context 'with an array of errors' do
         let(:errors) { ["error_1", "error_2"] }
 
-        it 'should set the kalibro_errors field' do
+        it 'is expected to set the kalibro_errors field' do
           expect(subject.send(method_name)).to eq(false)
           expect(subject.kalibro_errors).to eq(errors)
         end
@@ -246,7 +246,7 @@ describe KalibroClient::Entities::Base do
       context 'with no error message at all' do
         let(:errors) { nil }
 
-        it 'should set the kalibro_errors field' do
+        it 'is expected to set the kalibro_errors field' do
           expect(subject.send(method_name)).to eq(false)
           expect(subject.kalibro_errors.first).to be_a(KalibroClient::Errors::RequestError)
         end
@@ -264,7 +264,7 @@ describe KalibroClient::Entities::Base do
       end
 
       context 'when it is not persisted' do
-        it 'should make a request to save model with id and return true without errors' do
+        it 'is expected to make a request to save model with id and return true without errors' do
           expect(subject.save).to be(true)
           expect(subject.id).to eq(42)
           expect(subject.kalibro_errors).to be_empty
@@ -292,7 +292,7 @@ describe KalibroClient::Entities::Base do
         id = 42
 
         subject.stubs(:id).returns(id)
-        KalibroClient::Entities::Base.expects(:request).with(':id', has_entry(id: id), :put, '').
+        described_class.expects(:request).with(':id', has_entry(id: id), :put, '').
           returns({"base" => {'id' => id, 'errors' => []}})
       end
 
@@ -305,14 +305,14 @@ describe KalibroClient::Entities::Base do
   describe 'create' do
     before :each do
       subject.expects(:save)
-      KalibroClient::Entities::Base.
+      described_class.
         expects(:new).
         with({}).
         returns(subject)
     end
 
-    it 'should instantiate and save the model' do
-      expect(KalibroClient::Entities::Base.create {}).to eq(subject)
+    it 'is expected to instantiate and save the model' do
+      expect(described_class.create {}).to eq(subject)
     end
   end
 
@@ -326,7 +326,7 @@ describe KalibroClient::Entities::Base do
           raises(KalibroClient::Errors::RecordNotFound)
       end
 
-      it 'should raise a RecordNotFound error' do
+      it 'is expected to raise a RecordNotFound error' do
         expect { subject.class.find(0) }.to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
@@ -338,7 +338,7 @@ describe KalibroClient::Entities::Base do
           returns("base" => {'id' => 42})
       end
 
-      it 'should return an empty model' do
+      it 'is expected to return an empty model' do
         expect(subject.class.find(42).id).to eq(42)
       end
     end
@@ -350,10 +350,10 @@ describe KalibroClient::Entities::Base do
     context 'when it gets successfully destroyed' do
       before :each do
         subject.stubs(:id).returns(42)
-        KalibroClient::Entities::Base.expects(:request).with(':id',{id: subject.id}, :delete, '').returns({})
+        described_class.expects(:request).with(':id',{id: subject.id}, :delete, '').returns({})
       end
 
-      it 'should remain with the errors array empty and not persisted' do
+      it 'is expected to remain with the errors array empty and not persisted' do
         subject.destroy
         expect(subject.kalibro_errors).to be_empty
         expect(subject.persisted?).to eq(false)
@@ -362,12 +362,12 @@ describe KalibroClient::Entities::Base do
   end
 
   describe 'save!' do
-    it 'should call save and not raise when saving works' do
+    it 'is expected to call save and not raise when saving works' do
       subject.expects(:save).returns(true)
       expect { subject.save! }.not_to raise_error
     end
 
-    it 'should call save and raise RecordInvalid when saving fails' do
+    it 'is expected to call save and raise RecordInvalid when saving fails' do
       subject.expects(:kalibro_errors).returns(['test1', 'test2'])
       subject.expects(:save).returns(false)
 
@@ -383,7 +383,7 @@ describe KalibroClient::Entities::Base do
     subject { FactoryGirl.build(:model) }
 
     context 'comparing objects from different classes' do
-      it 'should return false' do
+      it 'is expected to return false' do
         expect(subject).not_to eq(Object.new)
       end
     end
@@ -397,13 +397,13 @@ describe KalibroClient::Entities::Base do
         another_model.expects(:send).with("answer").returns(41)
       end
 
-      it 'should return false' do
+      it 'is expected to return false' do
         expect(subject).not_to eq(another_model)
       end
     end
 
     context 'with two empty models' do
-      it 'should return true' do
+      it 'is expected to return true' do
         expect(subject).to eq(FactoryGirl.build(:model))
       end
     end
@@ -412,27 +412,27 @@ describe KalibroClient::Entities::Base do
   describe 'exists?' do
     context 'with an inexistent id' do
       before :each do
-        KalibroClient::Entities::Base.
+        described_class.
           expects(:request).
           with(':id/exists', {id: 0}, :get).
           returns({'exists' => false})
       end
 
-      it 'should return false' do
-        expect(KalibroClient::Entities::Base.exists?(0)).to eq(false)
+      it 'is expected to return false' do
+        expect(described_class.exists?(0)).to eq(false)
       end
     end
 
     context 'with an existent id' do
       before :each do
-        KalibroClient::Entities::Base.
+        described_class.
           expects(:request).
           with(':id/exists', {id: 42}, :get).
           returns({'exists' => true})
       end
 
-      it 'should return false' do
-        expect(KalibroClient::Entities::Base.exists?(42)).to eq(true)
+      it 'is expected to return false' do
+        expect(described_class.exists?(42)).to eq(true)
       end
     end
   end
@@ -442,40 +442,40 @@ describe KalibroClient::Entities::Base do
     subject { FactoryGirl.build(:model) }
 
     context 'with nil' do
-      it 'should return an empty array' do
-        expect(KalibroClient::Entities::Base.create_objects_array_from_hash("bases" => [])).to eq([])
+      it 'is expected to return an empty array' do
+        expect(described_class.create_objects_array_from_hash("bases" => [])).to eq([])
       end
     end
 
     context 'with a Hash' do
-      it 'should return the correspondent object to the given hash inside of an Array' do
-        expect(KalibroClient::Entities::Base.create_objects_array_from_hash("bases" => {})).to eq([subject])
+      it 'is expected to return the correspondent object to the given hash inside of an Array' do
+        expect(described_class.create_objects_array_from_hash("bases" => {})).to eq([subject])
       end
     end
   end
 
   describe 'is_valid?' do
     context 'with a global var' do
-      it 'should return false' do
-        expect(KalibroClient::Entities::Base.is_valid?('@test')).to be_falsey
+      it 'is expected to return false' do
+        expect(described_class.is_valid?('@test')).to be_falsey
       end
     end
 
     context 'with the attributes var' do
-      it 'should return false' do
-        expect(KalibroClient::Entities::Base.is_valid?(:attributes!)).to be_falsey
+      it 'is expected to return false' do
+        expect(described_class.is_valid?(:attributes!)).to be_falsey
       end
     end
 
     context 'with a xsi var' do
-      it 'should return false' do
-        expect(KalibroClient::Entities::Base.is_valid?('test_xsi')).to be_falsey
+      it 'is expected to return false' do
+        expect(described_class.is_valid?('test_xsi')).to be_falsey
       end
     end
 
     context 'with a valid var' do
-      it 'should return true' do
-        expect(KalibroClient::Entities::Base.is_valid?('test')).to be_truthy
+      it 'is expected to return true' do
+        expect(described_class.is_valid?('test')).to be_truthy
       end
     end
   end
