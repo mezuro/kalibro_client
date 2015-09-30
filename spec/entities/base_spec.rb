@@ -150,8 +150,6 @@ describe KalibroClient::Entities::Base do
       end
     end
 
-    # This uses a different method to stub faraday calls, that doesn't rely on stubbing particular methods of the requests.
-    # We should consider using it whenever possible instead of expectations.
     context 'with an unsuccessful request' do
       let!(:stubs) { Faraday::Adapter::Test::Stubs.new { |stub| stub.get('/bases/1/exists') { [500, {}, {}] } } }
       let(:connection) { Faraday.new { |builder| builder.adapter :test, stubs } }
