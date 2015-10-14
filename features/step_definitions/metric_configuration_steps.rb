@@ -21,7 +21,6 @@ end
 Given(/^I have a hotspot metric configuration within the given kalibro configuration$/) do
   @hotspot_metric_configuration = FactoryGirl.create(:metric_configuration,
                                                      {metric: FactoryGirl.build(:hotspot_metric),
-                                                      reading_group_id: @reading_group.id,
                                                       kalibro_configuration_id: @kalibro_configuration.id})
 end
 
