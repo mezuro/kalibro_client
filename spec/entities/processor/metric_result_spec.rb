@@ -93,4 +93,60 @@ describe KalibroClient::Entities::Processor::MetricResult do
       expect(subject.value).to eq(42)
     end
   end
+
+  describe 'module_result_id=' do
+    let(:id) { 5 }
+
+    it 'is expected to set the module_result_id' do
+      subject.module_result_id = id
+      expect(subject.module_result_id).to eq(id)
+    end
+  end
+
+  describe 'module_result' do
+    let(:module_result) { FactoryGirl.build(:module_result, :with_id) }
+    subject { FactoryGirl.build(:metric_result, module_result_id: module_result.id) }
+
+    context 'when module_result is nil' do
+      before do
+        KalibroClient::Entities::Processor::MetricResult
+          .expects(:request).with(':id/module_result', { id: module_result.id }, :get)
+          .returns('module_result' => module_result.to_hash)
+      end
+
+      it 'is expected to request the module result and set it' do
+        expect(subject.module_result).to eq(module_result)
+      end
+    end
+
+    context 'when the module_result_id is different than the module_result\'s id' do
+      let(:different_id) { module_result.id + 1 }
+      let(:different_module_result) { FactoryGirl.build(:module_result, id: different_id) }
+
+      before do
+        KalibroClient::Entities::Processor::MetricResult
+          .expects(:request).with(':id/module_result', { id: different_id }, :get)
+          .returns('module_result' => different_module_result.to_hash)
+      end
+
+      it 'is expected to set the module_result to the one matched by the id' do
+        subject.module_result_id = different_module_result.id
+        expect(subject.module_result).to eq(different_module_result)
+      end
+    end
+
+    context 'when the module_result_id is the same as the module_result\'s id' do
+      before do
+        KalibroClient::Entities::Processor::MetricResult
+          .expects(:request).with(':id/module_result', { id: module_result.id }, :get)
+          .once.returns('module_result' => module_result.to_hash)
+      end
+
+      it 'is expected to not change the module_result' do
+        subject.module_result_id = module_result.id + 1
+        subject.module_result_id = module_result.id
+        expect(subject.module_result).to eq(module_result)
+      end
+    end
+  end
 end

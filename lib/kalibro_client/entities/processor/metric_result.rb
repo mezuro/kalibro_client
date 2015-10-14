@@ -18,10 +18,9 @@ module KalibroClient
   module Entities
     module Processor
       class MetricResult < KalibroClient::Entities::Processor::Base
-
         # TODO: related_hotspot_metric_results_id should be enclosed to Processor which does not return this id into the response
         #       there should be a controller that returns all the HotspotMetricResults associated through RelatedHotspotMetricResult
-        attr_accessor :id, :value, :module_result_id, :metric_configuration_id,
+        attr_accessor :id, :value, :metric_configuration_id, :module_result_id
                       :line_number, :message, :related_hotspot_metric_results_id
         attr_reader :metric_configuration
 
@@ -49,6 +48,13 @@ module KalibroClient
 
         def value=(value)
           @value = value.to_f
+        end
+
+        def module_result
+          return @module_result unless @module_result.nil? || @module_result_id != @module_result.id
+          module_result_hash = KalibroClient::Entities::Processor::MetricResult
+                               .request(':id/module_result', { id: @module_result_id }, :get)['module_result']
+          @module_result = KalibroClient::Entities::Processor::ModuleResult.new module_result_hash
         end
       end
     end
