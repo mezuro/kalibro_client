@@ -29,7 +29,7 @@ module KalibroClient
         end
 
         def metric_configurations
-         KalibroClient::Entities::Configurations::MetricConfiguration.create_objects_array_from_hash(self.class.request(':id/metric_configurations', {id: id}, :get))
+          KalibroClient::Entities::Configurations::MetricConfiguration.create_objects_array_from_hash(self.class.request(':id/metric_configurations', {id: id}, :get))
         end
       end
     end
