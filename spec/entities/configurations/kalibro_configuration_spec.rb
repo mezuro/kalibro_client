@@ -89,7 +89,7 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
     end
   end
 
-  describe 'hotspot_metric_configuartions' do
+  describe 'hotspot_metric_configurations' do
     context 'with no hotspot metric configurations' do
       before :each do
         KalibroClient::Entities::Configurations::KalibroConfiguration.
@@ -120,7 +120,7 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
     end
   end
 
-  describe 'tree_metric_configuartions' do
+  describe 'tree_metric_configurations' do
     context 'with no tree metric configurations' do
       before :each do
         KalibroClient::Entities::Configurations::KalibroConfiguration.
