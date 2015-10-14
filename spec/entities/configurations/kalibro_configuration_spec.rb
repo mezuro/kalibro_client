@@ -88,4 +88,66 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
       end
     end
   end
+
+  describe 'hotspot_metric_configuartions' do
+    context 'with no hotspot metric configurations' do
+      before :each do
+        KalibroClient::Entities::Configurations::KalibroConfiguration.
+          expects(:request).
+          with(':id/hotspot_metric_configurations', {id: subject.id}, :get).
+          returns({'hotspot_metric_configurations' => []})
+      end
+
+      it 'is expected to return an empty array' do
+        expect(subject.hotspot_metric_configurations).to be_empty
+      end
+    end
+
+    context 'with hotspot metric configurations' do
+      let(:metric_configuration_1) { FactoryGirl.build(:metric_configuration, kalibro_configuration_id: subject.id) }
+      let(:metric_configuration_2) { FactoryGirl.build(:metric_configuration, kalibro_configuration_id: subject.id) }
+
+      before :each do
+        KalibroClient::Entities::Configurations::KalibroConfiguration.
+          expects(:request).
+          with(':id/hotspot_metric_configurations', {id: subject.id}, :get).
+          returns({'hotspot_metric_configurations' => [metric_configuration_1.to_hash, metric_configuration_2.to_hash]})
+      end
+
+      it 'is expected to return an array with the hotspot metric configurations' do
+        expect(subject.hotspot_metric_configurations).to eq([metric_configuration_1, metric_configuration_2])
+      end
+    end
+  end
+
+  describe 'tree_metric_configuartions' do
+    context 'with no tree metric configurations' do
+      before :each do
+        KalibroClient::Entities::Configurations::KalibroConfiguration.
+          expects(:request).
+          with(':id/tree_metric_configurations', {id: subject.id}, :get).
+          returns({'tree_metric_configurations' => []})
+      end
+
+      it 'is expected to return an empty array' do
+        expect(subject.tree_metric_configurations).to be_empty
+      end
+    end
+
+    context 'with tree metric configurations' do
+      let(:metric_configuration_1) { FactoryGirl.build(:metric_configuration, kalibro_configuration_id: subject.id) }
+      let(:metric_configuration_2) { FactoryGirl.build(:metric_configuration, kalibro_configuration_id: subject.id) }
+
+      before :each do
+        KalibroClient::Entities::Configurations::KalibroConfiguration.
+          expects(:request).
+          with(':id/tree_metric_configurations', {id: subject.id}, :get).
+          returns({'tree_metric_configurations' => [metric_configuration_1.to_hash, metric_configuration_2.to_hash]})
+      end
+
+      it 'is expected to return an array with the tree metric configurations' do
+        expect(subject.tree_metric_configurations).to eq([metric_configuration_1, metric_configuration_2])
+      end
+    end
+  end
 end
