@@ -4,7 +4,7 @@ Feature: TreeMetricConfiguration retrieval
   I want to get all TreeMetricConfigurations of a given KalibroConfiguration
 
   @kalibro_configuration_restart
-  Scenario: get a list of all metric configurations of some kalibro configuration
+  Scenario: get a list of all tree metric configurations of some kalibro configuration
     Given I have a kalibro configuration with name "Kalibro for Java"
     And I have a reading group with name "Group"
     And I have a tree metric configuration within the given kalibro configuration
