@@ -68,7 +68,7 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
           returns({'metric_configurations' => []})
       end
 
-      it 'should return an empty array' do
+      it 'is expected to return an empty array' do
         expect(subject.metric_configurations).to be_empty
       end
     end
@@ -83,7 +83,7 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
           returns({'metric_configurations' => [metric_configuration_1.to_hash, metric_configuration_2.to_hash]})
       end
 
-      it 'should return an empty array' do
+      it 'is expected to return an array with the given metric configurations' do
         expect(subject.metric_configurations).to eq([metric_configuration_1, metric_configuration_2])
       end
     end
