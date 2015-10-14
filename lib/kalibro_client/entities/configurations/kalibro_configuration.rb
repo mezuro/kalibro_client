@@ -29,7 +29,19 @@ module KalibroClient
         end
 
         def metric_configurations
-         KalibroClient::Entities::Configurations::MetricConfiguration.create_objects_array_from_hash(self.class.request(':id/metric_configurations', {id: id}, :get))
+          KalibroClient::Entities::Configurations::MetricConfiguration.create_objects_array_from_hash(self.class.request(':id/metric_configurations', {id: id}, :get))
+        end
+
+        def hotspot_metric_configurations
+          hotspot_metric_configurations_hash = self.class.request(':id/hotspot_metric_configurations', {id: id}, :get)
+          KalibroClient::Entities::Configurations::MetricConfiguration.create_objects_array_from_hash(
+            {'metric_configurations' => hotspot_metric_configurations_hash['hotspot_metric_configurations']})
+        end
+
+        def tree_metric_configurations
+          tree_metric_configurations_hash = self.class.request(':id/tree_metric_configurations', {id: id}, :get)
+          KalibroClient::Entities::Configurations::MetricConfiguration.create_objects_array_from_hash(
+            {'metric_configurations' => tree_metric_configurations_hash['tree_metric_configurations']})
         end
       end
     end
