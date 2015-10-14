@@ -33,7 +33,7 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
           returns({'kalibro_configurations' => []})
       end
 
-      it 'should return nil' do
+      it 'is expected to return nil' do
         expect(KalibroClient::Entities::Configurations::KalibroConfiguration.all).to be_empty
       end
     end
@@ -49,7 +49,7 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
           returns({'kalibro_configurations' => [kalibro_configuration.to_hash, another_kalibro_configuration.to_hash]})
       end
 
-      it 'should return the two elements' do
+      it 'is expected to return the two elements' do
         kalibro_configurations = KalibroClient::Entities::Configurations::KalibroConfiguration.all
 
         expect(kalibro_configurations.size).to eq(2)
