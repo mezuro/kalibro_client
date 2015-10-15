@@ -13,6 +13,15 @@ When(/^I call the history of method with the metric name and the results root id
   @response = KalibroClient::Entities::Processor::TreeMetricResult.history_of(@metric.name, @response.root_module_result_id, @repository.id)
 end
 
+When(/^I get the first metric result of the given processing$/) do
+  @metric_result = KalibroClient::Entities::Processor::ModuleResult.find(@response.root_module_result_id)
+                   .tree_metric_results.first
+end
+
+When(/^I ask for the module result of the given metric result$/) do
+  @module_result = @metric_result.module_result
+end
+
 Then (/^I should get a Float list$/) do
   expect(@response).to be_a(Array)
   expect(@response.first).to be_a(Float)
@@ -30,4 +39,8 @@ end
 
 Then(/^the first metric result should have a metric configuration$/) do
   expect(@response.first.metric_configuration).to be_a(KalibroClient::Entities::Configurations::MetricConfiguration)
+end
+
+Then(/^I should get a module result$/) do
+  expect(@module_result).to be_a(KalibroClient::Entities::Processor::ModuleResult)
 end
