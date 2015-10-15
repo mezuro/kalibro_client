@@ -94,15 +94,6 @@ describe KalibroClient::Entities::Processor::MetricResult do
     end
   end
 
-  describe 'module_result_id=' do
-    let(:id) { 5 }
-
-    it 'is expected to set the module_result_id' do
-      subject.module_result_id = id
-      expect(subject.module_result_id).to eq(id)
-    end
-  end
-
   describe 'module_result' do
     let(:module_result) { FactoryGirl.build(:module_result, :with_id) }
     subject { FactoryGirl.build(:metric_result, module_result_id: module_result.id) }
