@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,13 +16,13 @@
 
 FactoryGirl.define do
   factory :kalibro_module, class: KalibroClient::Entities::Processor::KalibroModule do
-    name  'Qt-Calculator'
-    granlrty 'APPLICATION'
+    name 'Qt-Calculator'
+    granularity 'APPLICATION'
 
     trait :with_id do
       id 1
     end
 
     factory :kalibro_module_with_id, traits: [:with_id]
-  end  
+  end
 end
