@@ -131,8 +131,6 @@ describe KalibroClient::Entities::Processor::MetricResult do
       end
 
       it 'is expected to not change the module_result' do
-        subject.module_result_id = module_result.id + 1
-        subject.module_result_id = module_result.id
         expect(subject.module_result).to eq(module_result)
       end
     end
