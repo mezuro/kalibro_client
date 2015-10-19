@@ -3,7 +3,7 @@ Feature: Module Results
   As a developer
   I want to get the module result of the given metric result
 
-  @kalibro_configuration_restart @kalibro_processor_restart @wip
+  @kalibro_configuration_restart @kalibro_processor_restart
   Scenario: when there is a metric result
     Given I have a project with name "Kalibro"
     And I have a kalibro configuration with name "Java"

@@ -104,7 +104,7 @@ describe KalibroClient::Entities::Processor::MetricResult do
           .returns('module_result' => module_result.to_hash)
       end
 
-      xit 'is expected to request the module result and set it' do
+      it 'is expected to request the module result and set it' do
         expect(subject.module_result).to eq(module_result)
       end
     end
@@ -118,7 +118,7 @@ describe KalibroClient::Entities::Processor::MetricResult do
           .returns('module_result' => different_module_result.to_hash)
       end
 
-      xit 'is expected to set the module_result to the one matched by the id' do
+      it 'is expected to set the module_result to the one matched by the id' do
         subject.module_result_id = different_module_result.id
         expect(subject.module_result).to eq(different_module_result)
       end
@@ -130,7 +130,7 @@ describe KalibroClient::Entities::Processor::MetricResult do
           .once.returns('module_result' => module_result.to_hash)
       end
 
-      xit 'is expected to not change the module_result' do
+      it 'is expected to not change the module_result' do
         expect(subject.module_result).to eq(module_result)
       end
     end

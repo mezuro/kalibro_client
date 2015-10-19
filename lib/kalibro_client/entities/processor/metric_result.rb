@@ -53,7 +53,7 @@ module KalibroClient
         def module_result
           return @module_result unless @module_result.nil? || @module_result_id != @module_result.id
           module_result_hash = KalibroClient::Entities::Processor::MetricResult
-                               .request(':id/module_result', { id: @module_result_id }, :get)['module_result']
+                               .request(':id/module_result', { id: self.id }, :get)['module_result']
           @module_result = KalibroClient::Entities::Processor::ModuleResult.new module_result_hash
         end
       end
