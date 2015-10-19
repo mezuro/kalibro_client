@@ -17,4 +17,4 @@ Feature: Module Results
     And I call the first_processing method for the given repository
     When I get the first metric result of the given processing
     And I ask for the module result of the given metric result
-    Then I should get a module result
+    Then I should get the metric result's module result

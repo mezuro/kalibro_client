@@ -100,7 +100,7 @@ describe KalibroClient::Entities::Processor::MetricResult do
 
     context 'when module_result is nil' do
       before do
-        described_class.expects(:request).with(':id/module_result', { id: module_result.id }, :get)
+        described_class.expects(:request).with(':id/module_result', { id: subject.id }, :get)
           .returns('module_result' => module_result.to_hash)
       end
 
@@ -114,7 +114,7 @@ describe KalibroClient::Entities::Processor::MetricResult do
       let(:different_module_result) { FactoryGirl.build(:module_result, id: different_id) }
 
       before do
-        described_class.expects(:request).with(':id/module_result', { id: different_id }, :get)
+        described_class.expects(:request).with(':id/module_result', { id: subject.id }, :get)
           .returns('module_result' => different_module_result.to_hash)
       end
 
@@ -126,7 +126,7 @@ describe KalibroClient::Entities::Processor::MetricResult do
 
     context 'when the module_result_id is the same as the module_result\'s id' do
       before do
-        described_class.expects(:request).with(':id/module_result', { id: module_result.id }, :get)
+        described_class.expects(:request).with(':id/module_result', { id: subject.id }, :get)
           .once.returns('module_result' => module_result.to_hash)
       end
 
