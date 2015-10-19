@@ -41,6 +41,6 @@ Then(/^the first metric result should have a metric configuration$/) do
   expect(@response.first.metric_configuration).to be_a(KalibroClient::Entities::Configurations::MetricConfiguration)
 end
 
-Then(/^I should get a module result$/) do
-  expect(@module_result).to be_a(KalibroClient::Entities::Processor::ModuleResult)
+Then(/^I should get the metric result's module result$/) do
+  expect(@module_result.id).to eq(@metric_result.module_result_id)
 end

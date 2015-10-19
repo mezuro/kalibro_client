@@ -3,7 +3,7 @@ Feature: Module Results
   As a developer
   I want to get the module result of the given metric result
 
-  @kalibro_configuration_restart @kalibro_processor_restart
+  @kalibro_configuration_restart @kalibro_processor_restart @wip
   Scenario: when there is a metric result
     Given I have a project with name "Kalibro"
     And I have a kalibro configuration with name "Java"
@@ -17,4 +17,4 @@ Feature: Module Results
     And I call the first_processing method for the given repository
     When I get the first metric result of the given processing
     And I ask for the module result of the given metric result
-    Then I should get a module result
+    Then I should get the metric result's module result
