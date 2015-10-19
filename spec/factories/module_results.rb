@@ -22,7 +22,7 @@ FactoryGirl.define do
     processing_id 1
 
     trait :with_id do
-      id 42
+      id 32
     end
 
     trait :with_kalibro_module do
