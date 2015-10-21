@@ -8,7 +8,7 @@ Feature: Processing
     Given I have a project with name "Kalibro"
     And I have a kalibro configuration with name "Conf"
     And I have a reading group with name "Group"
-    And I have a loc configuration within the given kalibro configuration
+    And I have a "saikuro" configuration within the given kalibro configuration
     And the given project has the following Repositories:
       |   name    | scm_type |                       address                    |
       |  Kalibro  |    GIT   | https://github.com/mezuro/kalibro_processor.git  |
@@ -22,7 +22,7 @@ Feature: Processing
     Given I have a project with name "Kalibro"
     And I have a kalibro configuration with name "Conf"
     And I have a reading group with name "Group"
-    And I have a loc configuration within the given kalibro configuration
+    And I have a "saikuro" configuration within the given kalibro configuration
     And the given project has the following Repositories:
       |   name    | scm_type |                       address                    |
       |  Kalibro  |    GIT   | https://github.com/mezuro/kalibro_processor.git  |

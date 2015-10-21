@@ -8,6 +8,6 @@ Feature: Calculating the percentage of metrics used
     Given I have a kalibro configuration with name "Java"
     And I have a reading group with name "Group"
     And I have a metric with name "Lines of Code"
-    And I have a loc configuration within the given kalibro configuration
+    And I have a "saikuro" configuration within the given kalibro configuration
     When I request the metric_percentage
     Then I should get a hash containing a real number
