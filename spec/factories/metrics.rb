@@ -55,4 +55,15 @@ FactoryGirl.define do
 
     initialize_with { KalibroClient::Entities::Miscellaneous::HotspotMetric.new(name, code, languages, metric_collector_name) }
   end
+
+  factory :saikuro, class: KalibroClient::Entities::Miscellaneous::NativeMetric do
+    name 'Cyclomatic Complexity'
+    code 'saikuro'
+    scope 'METHOD'
+    description ''
+    metric_collector_name 'MetricFu'
+    languages nil
+
+    initialize_with { KalibroClient::Entities::Miscellaneous::NativeMetric.new(name, code, scope, languages, metric_collector_name) }
+  end
 end
