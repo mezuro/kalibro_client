@@ -1,7 +1,7 @@
 Given(/^I have a metric configuration within the given kalibro configuration$/) do
   @metric_configuration = FactoryGirl.create(:metric_configuration,
-                                             {reading_group_id: @reading_group.id,
-                                              kalibro_configuration_id: @kalibro_configuration.id})
+                                             reading_group_id: @reading_group.id,
+                                             kalibro_configuration_id: @kalibro_configuration.id)
 end
 
 Given(/^I have a metric configuration within the given kalibro configuration with the given metric$/) do
@@ -11,11 +11,11 @@ Given(/^I have a metric configuration within the given kalibro configuration wit
                                               kalibro_configuration_id: @kalibro_configuration.id})
 end
 
-Given(/^I have a loc configuration within the given kalibro configuration$/) do
+Given(/^I have a "(.+)" configuration within the given kalibro configuration$/) do |metric_code|
   @metric_configuration = FactoryGirl.create(:metric_configuration,
-                                             {metric: FactoryGirl.build(:loc),
-                                              reading_group_id: @reading_group.id,
-                                              kalibro_configuration_id: @kalibro_configuration.id})
+                                             metric: FactoryGirl.build(metric_code.to_sym),
+                                             reading_group_id: @reading_group.id,
+                                             kalibro_configuration_id: @kalibro_configuration.id)
 end
 
 Given(/^I have a hotspot metric configuration within the given kalibro configuration$/) do
@@ -25,7 +25,7 @@ Given(/^I have a hotspot metric configuration within the given kalibro configura
 end
 
 Given(/^I have a tree metric configuration within the given kalibro configuration$/) do
-  step "I have a loc configuration within the given kalibro configuration"
+  step 'I have a "saikuro" configuration within the given kalibro configuration'
   @tree_metric_configuration = @metric_configuration
 end
 
