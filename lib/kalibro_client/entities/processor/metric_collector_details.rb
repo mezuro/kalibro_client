@@ -23,7 +23,11 @@ module KalibroClient
         def supported_metrics=(value)
           @supported_metrics = {}
           value.each do |code, metric|
-            @supported_metrics[code] = KalibroClient::Entities::Miscellaneous::NativeMetric.new(metric["name"], metric["code"], metric["scope"], metric["languages"], metric["metric_collector_name"])
+            if metric['type'] == 'HotspotMetricSnapshot'
+              @supported_metrics[code] = KalibroClient::Entities::Miscellaneous::HotspotMetric.new(metric["name"], metric["code"], metric["languages"], metric["metric_collector_name"])
+            else
+              @supported_metrics[code] = KalibroClient::Entities::Miscellaneous::NativeMetric.new(metric["name"], metric["code"], metric["scope"], metric["languages"], metric["metric_collector_name"])
+            end
           end
         end
 
