@@ -118,14 +118,17 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
     end
   end
 
-  describe 'Supported Metrics' do
-    let(:code_and_metric) { { "total_abstract_classes" => FactoryGirl.build(:loc) } }
-    let(:code_and_metric_parameter) { { "total_abstract_classes" => FactoryGirl.build(:loc).to_hash } }
+  describe 'supported_metrics' do
+    let(:code_and_metric) { { "total_abstract_classes" => FactoryGirl.build(:loc),
+                              "flay" => FactoryGirl.build(:hotspot_metric) } }
+    let(:code_and_metric_parameter) { { "total_abstract_classes" => FactoryGirl.build(:loc).to_hash,
+                                        "flay" => FactoryGirl.build(:hotspot_metric).to_hash } }
 
     context 'supported_metrics accessors' do
       it 'should set the value of the array of supported metrics' do
         subject.supported_metrics = code_and_metric_parameter
         expect(subject.supported_metrics["total_abstract_classes"].to_hash).to eql(code_and_metric["total_abstract_classes"].to_hash)
+        expect(subject.supported_metrics["flay"].to_hash).to eql(code_and_metric["flay"].to_hash)
       end
     end
   end
