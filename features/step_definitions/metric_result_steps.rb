@@ -44,3 +44,8 @@ end
 Then(/^I should get the metric result's module result$/) do
   expect(@module_result.id).to eq(@metric_result.module_result_id)
 end
+
+Then(/^the module result should have a granularity$/) do
+  expect(@module_result.kalibro_module.granularity).to be_a(KalibroClient::Entities::Miscellaneous::Granularity)
+end
+
