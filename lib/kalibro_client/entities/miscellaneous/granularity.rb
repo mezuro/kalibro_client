@@ -21,6 +21,7 @@ module KalibroClient
         attr_reader :type
 
         def initialize(type)
+          type = type.to_sym
           if GRANULARITIES.include?(type)
             @type = type
           else

@@ -79,6 +79,15 @@ describe HashConverters do
         expect(convert_to_hash(-1.0/0.0)).to eq('-INF')
       end
     end
+
+    context 'with a granularity' do
+      let(:granularity) { FactoryGirl.build(:granularity) }
+
+      xit 'is expected to convert the granularity to a hash' do
+        expect(convert_to_hash(granularity)).to be_a Hash
+        expect(convert_to_hash(granularity)).to include 'type'
+      end
+    end
   end
 
   describe 'field_to_hash' do

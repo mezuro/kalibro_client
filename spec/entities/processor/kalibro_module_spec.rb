@@ -50,7 +50,7 @@ describe KalibroClient::Entities::Processor::KalibroModule do
   end
 
   describe 'granularity' do
-    xit 'is expected to be a granularity object' do
+    it 'is expected to be a granularity object' do
       expect(subject.granularity).to be_a KalibroClient::Entities::Miscellaneous::Granularity
     end
   end

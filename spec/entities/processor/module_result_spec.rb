@@ -69,11 +69,11 @@ describe KalibroClient::Entities::Processor::ModuleResult do
           returns("kalibro_module" => kalibro_module.to_hash)
     end
 
-    it 'should return the kalibro_module' do
+    xit 'should return the kalibro_module' do
       expect(subject.kalibro_module).to eq(kalibro_module)
     end
 
-    it 'should not request the kalibro_module in cache' do
+    xit 'should not request the kalibro_module in cache' do
       expect(subject.kalibro_module).to eq(kalibro_module)
     end
   end
