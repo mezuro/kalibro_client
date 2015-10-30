@@ -76,6 +76,13 @@ Then(/^I should get "(.*?)"$/) do |state|
   expect(@response).to eq(state)
 end
 
+Then(/^I should get a valid state$/) do
+  # REFACTOR ME: maybe the list of valid states should be retrieved from the Processor
+  states = ["PREPARING", "DOWNLOADING", "COLLECTING",
+            "CHECKING", "BUILDING", "AGGREGATING", "CALCULATING", "INTERPRETING"]
+  expect(states).to include(@response)
+end
+
 Then(/^I should get false$/) do
   expect(@response).to be_falsey
 end
