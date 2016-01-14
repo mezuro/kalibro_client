@@ -83,7 +83,7 @@ describe HashConverters do
     context 'with a granularity' do
       let(:granularity) { FactoryGirl.build(:granularity) }
 
-      xit 'is expected to convert the granularity to a hash' do
+      it 'is expected to convert the granularity to a hash' do
         expect(convert_to_hash(granularity)).to be_a Hash
         expect(convert_to_hash(granularity)).to include 'type'
       end

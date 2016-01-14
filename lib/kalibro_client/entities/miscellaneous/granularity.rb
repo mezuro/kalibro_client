@@ -1,7 +1,7 @@
 module KalibroClient
   module Entities
     module Miscellaneous
-      class Granularity
+      class Granularity < KalibroClient::Entities::Miscellaneous::Base
         include Comparable
 
         GRANULARITIES = [:METHOD, :CLASS, :PACKAGE, :SOFTWARE, :FUNCTION]
