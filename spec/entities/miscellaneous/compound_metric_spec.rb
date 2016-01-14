@@ -21,7 +21,7 @@ describe KalibroClient::Entities::Miscellaneous::CompoundMetric, :type => :model
 
       context 'with a hash' do
         it 'is expected to create a object from the hash' do
-          subject_hash = Hash[subject.to_hash.map { |k,v| if v.is_a?(Array) then [k.to_s, v] else [k.to_s, v.to_s] end}]
+          subject_hash = subject.to_hash
           expect(KalibroClient::Entities::Miscellaneous::CompoundMetric.to_object(subject_hash)).to eq(subject)
         end
       end

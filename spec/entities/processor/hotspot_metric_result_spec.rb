@@ -20,7 +20,7 @@ describe KalibroClient::Entities::Processor::HotspotMetricResult do
   describe 'new' do
     context 'with the expected attributes' do
       let(:attributes) { FactoryGirl.build(:hotspot_metric_result).to_hash }
-      subject { KalibroClient::Entities::Processor::HotspotMetricResult.new attributes } 
+      subject { KalibroClient::Entities::Processor::HotspotMetricResult.new attributes }
 
       it 'should cast the line_number attribute to an integer' do
         expect(subject.line_number).to be_a Integer
@@ -46,4 +46,3 @@ describe KalibroClient::Entities::Processor::HotspotMetricResult do
     end
   end
 end
-

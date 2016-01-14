@@ -10,8 +10,17 @@ module KalibroClient
           @type = type
           @name = name
           @code = code
-          @scope = scope
+          self.scope = scope
           @description = ""
+        end
+
+        def scope=(value)
+          if value.is_a?(Hash) && !value["type"].nil?
+            value = value["type"]
+          else
+            value = value.to_s
+          end
+          @scope = KalibroClient::Entities::Miscellaneous::Granularity.new(value)
         end
       end
     end

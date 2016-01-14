@@ -19,7 +19,7 @@ FactoryGirl.define do
     name "Total Abstract Classes"
     code "total_abstract_classes"
     type "native"
-    scope "SOFTWARE"
+    scope FactoryGirl.build(:granularity)
     description ""
 
     initialize_with { KalibroClient::Entities::Miscellaneous::Metric.new(type, name, code, scope) }
@@ -28,7 +28,7 @@ FactoryGirl.define do
   factory :loc, class: KalibroClient::Entities::Miscellaneous::NativeMetric do
     name "Lines of Code"
     code "loc"
-    scope "CLASS"
+    scope FactoryGirl.build(:granularity, type: "CLASS")
     description ""
     languages nil
     metric_collector_name "Analizo"
@@ -39,7 +39,7 @@ FactoryGirl.define do
   factory :compound_metric, class: KalibroClient::Entities::Miscellaneous::CompoundMetric do
     name "Lines of Code"
     code "loc"
-    scope "CLASS"
+    scope FactoryGirl.build(:granularity, type: "CLASS")
     description ""
     script "return 0;"
 
@@ -59,7 +59,7 @@ FactoryGirl.define do
   factory :saikuro, class: KalibroClient::Entities::Miscellaneous::NativeMetric do
     name 'Cyclomatic Complexity'
     code 'saikuro'
-    scope 'METHOD'
+    scope FactoryGirl.build(:granularity, type: 'METHOD')
     description ''
     metric_collector_name 'MetricFu'
     languages nil
