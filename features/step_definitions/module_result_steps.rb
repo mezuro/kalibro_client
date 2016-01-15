@@ -44,3 +44,11 @@ end
 Then(/^The first children should have a module$/) do
   expect(@children.first.kalibro_module).to be_a(KalibroClient::Entities::Processor::KalibroModule)
 end
+
+When(/^I ask for the kalibro_module of the processing root module result$/) do
+  @kalibro_module = KalibroClient::Entities::Processor::ModuleResult.find(@repository.processing.root_module_result_id).kalibro_module
+end
+
+Then(/^I should get a KalibroModule$/) do
+  expect(@kalibro_module).to be_a(KalibroClient::Entities::Processor::KalibroModule)
+end
