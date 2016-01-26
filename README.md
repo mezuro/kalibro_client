@@ -4,7 +4,14 @@
 [![Code Climate](https://codeclimate.com/github/mezuro/kalibro_client.png)](https://codeclimate.com/github/mezuro/kalibro_client)
 [![Test Coverage](https://codeclimate.com/github/mezuro/kalibro_client/badges/coverage.svg)](https://codeclimate.com/github/mezuro/kalibro_client)
 
-KalibroClient is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservice Kalibro (http://gitorious.org/kalibro/kalibro).
+KalibroClient is a Ruby gem intended to be an interface for Ruby applications who want to use the open source code analysis webservices from Kalibro (https://github.com/mezuro/kalibro_processor and https://github.com/mezuro/kalibro_configurations).
+
+## Contributing
+
+Please, have a look the wiki pages about development workflow and code standards:
+
+* https://github.com/mezuro/mezuro/wiki/Development-workflow
+* https://github.com/mezuro/mezuro/wiki/Standards
 
 ## Installation
 
@@ -24,7 +31,7 @@ Or install it yourself as:
 
 KalibroClient is intended to be an easy interface that encapsulates the usage of all the Kalibro service's endpoints. So have a look at the available entities at `lib/kalibro_client/entities`.
 
-All the entities are subclasses from `Model`, so have a good look at it. Specially notice that all the entities have methods:
+All the entities are subclasses from `KalibroClient::Entities::Base`, so have a good look at it. Specially notice that all the entities have methods:
 
 * `save`
 * `exists?`
@@ -35,7 +42,7 @@ These four methods should be useful.
 
 We hope to make available soon a full documentation on RDoc that will make easier to understand all this.
 
-A good example on how to get everything from KalibroClient should be Mezuro. So, have a look there for some examples.
+A good example on how to get everything from KalibroClient should be Prezento (https://github.com/mezuro/prezento). So, have a look there for some examples.
 
 ### Cucumber helpers
 
@@ -47,31 +54,15 @@ Just add to your `env.rb` the following:
 
 The test configurations available are:
 
-* database
-* user
-* password
-* psql_file_path
-* query_file_path
-* kalibro_home
-* tomcat_user
-* tomcat_group
-* tomcat_restart_command
+* `kalibro_processor_address`
+* `kalibro_configurations_address`
 
 An example on how to change them is:
 
-    KalibroClient::KalibroCucumberHelpers.configure do |config|
-      config.database = "kalibro_test"
-    end
+```ruby
+KalibroClient::KalibroCucumberHelpers.configure do |config|
+  config.kalibro_prossor_address = "http://localhost:8082"
+end
+```
 
 We hope to make available soon an YAML parser for test configurations.
-
-## Contributing
-
-0. Install RVM (rvm.io)
-1. Fork it
-2. Run `bundle install`
-3. Create your feature branch (`git checkout -b my-new-feature`)
-4. Make your modifications and changes
-5. Commit your changes (`git commit -am 'Add some feature'`)
-6. Push to the branch (`git push origin my-new-feature`)
-7. Create new Pull Request
