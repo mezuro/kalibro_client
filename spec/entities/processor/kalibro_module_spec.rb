@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -46,6 +46,12 @@ describe KalibroClient::Entities::Processor::KalibroModule do
   describe 'short_name' do
     it 'should return the last element of the name array' do
       expect(subject.short_name).to eq(subject.long_name.split(".").last)
+    end
+  end
+
+  describe 'granularity' do
+    it 'is expected to be a granularity object' do
+      expect(subject.granularity).to be_a KalibroClient::Entities::Miscellaneous::Granularity
     end
   end
 end

@@ -20,6 +20,11 @@ module KalibroClient
       class KalibroModule < KalibroClient::Entities::Processor::Base
         attr_accessor :granularity, :id, :long_name, :module_result_id
 
+        def initialize(attributes = {}, persisted = false)
+          super
+          @granularity = KalibroClient::Entities::Miscellaneous::Granularity.new attributes['granularity']['type']
+        end
+
         def name=(value)
           @long_name = (value.is_a?(Array) ? value.join('.') : value)
         end

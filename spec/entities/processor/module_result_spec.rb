@@ -63,18 +63,29 @@ describe KalibroClient::Entities::Processor::ModuleResult do
     let(:kalibro_module) { FactoryGirl.build(:kalibro_module) }
 
     before :each do
+    end
+
+    it 'is expected to request the kalibro_module' do
       KalibroClient::Entities::Processor::ModuleResult.
-          expects(:request).once.
+          expects(:request).
           with(':id/kalibro_module', { id: subject.id }, :get).
           returns("kalibro_module" => kalibro_module.to_hash)
-    end
-
-    it 'should return the kalibro_module' do
       expect(subject.kalibro_module).to eq(kalibro_module)
     end
 
-    it 'should not request the kalibro_module in cache' do
-      expect(subject.kalibro_module).to eq(kalibro_module)
+    context 'when a previous request has already been made' do
+      before :each do
+        KalibroClient::Entities::Processor::ModuleResult.
+            expects(:request).
+            with(':id/kalibro_module', { id: subject.id }, :get).
+            returns("kalibro_module" => kalibro_module.to_hash)
+
+        subject.kalibro_module
+      end
+
+      it 'should not request the kalibro_module and return the cached one' do
+        expect(subject.kalibro_module).to eq(kalibro_module)
+      end
     end
   end
 

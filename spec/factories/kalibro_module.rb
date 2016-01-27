@@ -17,12 +17,14 @@
 FactoryGirl.define do
   factory :kalibro_module, class: KalibroClient::Entities::Processor::KalibroModule do
     name 'Qt-Calculator'
-    granularity 'APPLICATION'
+    granularity { {type: FactoryGirl.build(:granularity).type }.stringify_keys }
 
     trait :with_id do
       id 1
     end
 
     factory :kalibro_module_with_id, traits: [:with_id]
+
+    initialize_with { KalibroClient::Entities::Processor::KalibroModule.new({ name: name, granularity: granularity }.stringify_keys) }
   end
 end

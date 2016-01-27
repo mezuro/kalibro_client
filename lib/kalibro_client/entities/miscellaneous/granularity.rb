@@ -1,7 +1,7 @@
 module KalibroClient
   module Entities
     module Miscellaneous
-      class Granularity
+      class Granularity < KalibroClient::Entities::Miscellaneous::Base
         include Comparable
 
         GRANULARITIES = [:METHOD, :CLASS, :PACKAGE, :SOFTWARE, :FUNCTION]
@@ -21,6 +21,7 @@ module KalibroClient
         attr_reader :type
 
         def initialize(type)
+          type = type.to_sym
           if GRANULARITIES.include?(type)
             @type = type
           else
