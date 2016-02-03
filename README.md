@@ -61,7 +61,7 @@ An example on how to change them is:
 
 ```ruby
 KalibroClient::KalibroCucumberHelpers.configure do |config|
-  config.kalibro_prossor_address = "http://localhost:8082"
+  config.kalibro_processor_address = "http://localhost:8082"
 end
 ```
 
