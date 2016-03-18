@@ -93,13 +93,43 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
     context 'with an inexistent name' do
       before :each do
         KalibroClient::Entities::Processor::MetricCollectorDetails.
+          expects(:find_by_name!).
+          with(subject.name).
+          raises(KalibroClient::Errors::RecordNotFound)
+      end
+
+      it 'is expected to return nil' do
+        expect(KalibroClient::Entities::Processor::MetricCollectorDetails.find_by_name(subject.name)).to be_nil
+      end
+    end
+
+    context 'with an existent name' do
+      before :each do
+        KalibroClient::Entities::Processor::MetricCollectorDetails.
+          expects(:find_by_name!).
+          with(subject.name).
+          returns(subject)
+      end
+
+      it 'should return a metric_collector_details' do
+        expect(KalibroClient::Entities::Processor::MetricCollectorDetails.find_by_name(subject.name).name).to eq(subject.name)
+      end
+    end
+  end
+
+  describe 'find_by_name!' do
+    subject { FactoryGirl.build(:metric_collector_details) }
+
+    context 'with an inexistent name' do
+      before :each do
+        KalibroClient::Entities::Processor::MetricCollectorDetails.
           expects(:request).
           with(:find, {name: subject.name}).
-          returns(nil)
+          raises(KalibroClient::Errors::RecordNotFound)
       end
 
       it 'should raise a RecordNotFound error' do
-        expect { KalibroClient::Entities::Processor::MetricCollectorDetails.find_by_name(subject.name)}.
+        expect { KalibroClient::Entities::Processor::MetricCollectorDetails.find_by_name!(subject.name)}.
           to raise_error(KalibroClient::Errors::RecordNotFound)
       end
     end
@@ -108,7 +138,7 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
       before :each do
         KalibroClient::Entities::Processor::MetricCollectorDetails.
           expects(:request).
-          with(:find,{name: subject.name}).
+          with(:find, {name: subject.name}).
           returns({"metric_collector_details" => subject.to_hash({except: ["supported_metrics"]})})
       end
 
@@ -146,6 +176,19 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
     end
   end
 
+  describe 'find_metric_by_name!' do
+    subject { FactoryGirl.build(:metric_collector_details) }
+    let(:metric) { subject.supported_metrics["loc"] }
+
+    it 'should return nil with an inexistent name' do
+      expect { subject.find_metric_by_name!("fake name") }.to raise_error(KalibroClient::Errors::RecordNotFound)
+    end
+
+    it 'should return a metric with an existent name' do
+      expect(subject.find_metric_by_name!(metric.name)).to eq(metric)
+    end
+  end
+
   describe 'find_metric_by_code' do
     subject { FactoryGirl.build(:metric_collector_details) }
     let(:metric) { subject.supported_metrics["loc"] }
@@ -156,6 +199,19 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
 
     it 'should return a metric with an existent code' do
       expect(subject.find_metric_by_code(metric.code)).to eq(metric)
+    end
+  end
+
+  describe 'find_metric_by_code!' do
+    subject { FactoryGirl.build(:metric_collector_details) }
+    let(:metric) { subject.supported_metrics["loc"] }
+
+    it 'should return nil with an inexistent code' do
+      expect{subject.find_metric_by_code!("fake code")}.to raise_error(KalibroClient::Errors::RecordNotFound)
+    end
+
+    it 'should return a metric with an existent code' do
+      expect(subject.find_metric_by_code!(metric.code)).to eq(metric)
     end
   end
 end

@@ -36,16 +36,32 @@ module KalibroClient
           metric.nil? ? nil : metric.last
         end
 
+        def find_metric_by_name!(name)
+          metric = self.find_metric_by_name(name)
+          raise KalibroClient::Errors::RecordNotFound if metric.nil?
+          metric
+        end
+
         def find_metric_by_code(metric_code)
           @supported_metrics[metric_code]
         end
 
+        def find_metric_by_code!(metric_code)
+          metric = self.find_metric_by_code(metric_code)
+          raise KalibroClient::Errors::RecordNotFound if metric.nil?
+          metric
+        end
+
         def self.find_by_name(metric_collector_name)
           begin
-            new request(:find, {name: metric_collector_name})["metric_collector_details"]
-          rescue
-            raise KalibroClient::Errors::RecordNotFound
+            self.find_by_name!(metric_collector_name)
+          rescue KalibroClient::Errors::RecordNotFound
+            nil
           end
+        end
+
+        def self.find_by_name!(metric_collector_name)
+          new request(:find, {name: metric_collector_name})["metric_collector_details"]
         end
 
         def self.all_names
