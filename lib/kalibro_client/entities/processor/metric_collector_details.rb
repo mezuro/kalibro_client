@@ -42,10 +42,14 @@ module KalibroClient
 
         def self.find_by_name(metric_collector_name)
           begin
-            new request(:find, {name: metric_collector_name})["metric_collector_details"]
-          rescue
-            raise KalibroClient::Errors::RecordNotFound
+            self.find_by_name!(metric_collector_name)
+          rescue KalibroClient::Errors::RecordNotFound
+            nil
           end
+        end
+
+        def self.find_by_name!(metric_collector_name)
+          new request(:find, {name: metric_collector_name})["metric_collector_details"]
         end
 
         def self.all_names
