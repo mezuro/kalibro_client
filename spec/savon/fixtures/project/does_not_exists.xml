@@ -1,1 +1,0 @@
-<?xml version="1.0" ?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><ns2:projectExistsResponse xmlns:ns2="http://service.kalibro.org/"><exists>false</exists></ns2:projectExistsResponse></S:Body></S:Envelope>

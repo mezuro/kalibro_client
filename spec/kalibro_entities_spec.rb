@@ -46,7 +46,7 @@ describe KalibroClient do
         after(:each) {KalibroClient.configure(config)}
 
         it 'should set the config' do
-          KalibroClient.configure_with('spec/savon/fixtures/config.yml')
+          KalibroClient.configure_with('spec/fixtures/config.yml')
 
           expect(KalibroClient.config).to eq({
             processor_address: 'http://test1.test1',
@@ -61,14 +61,14 @@ describe KalibroClient do
         end
 
         it 'should keep the defaults' do
-          KalibroClient.configure_with('spec/savon/fixtures/inexistent_file.yml')
+          KalibroClient.configure_with('spec/fixtures/inexistent_file.yml')
           expect(KalibroClient.config).to eq(config)
         end
 
         it 'should log an warning' do
           @logger.expects(:warn).with("YAML configuration file couldn't be found. Using defaults.")
 
-          KalibroClient.configure_with('spec/savon/fixtures/inexistent_file.yml')
+          KalibroClient.configure_with('spec/fixtures/inexistent_file.yml')
         end
       end
 
@@ -79,14 +79,14 @@ describe KalibroClient do
         end
 
         it 'should keep the defaults' do
-          KalibroClient.configure_with('spec/savon/fixtures/invalid_config.yml')
+          KalibroClient.configure_with('spec/fixtures/invalid_config.yml')
           expect(KalibroClient.config).to eq(config)
         end
 
         it 'should log an warning' do
           @logger.expects(:warn).with("YAML configuration file contains invalid syntax. Using defaults.")
 
-          KalibroClient.configure_with('spec/savon/fixtures/invalid_config.yml')
+          KalibroClient.configure_with('spec/fixtures/invalid_config.yml')
         end
       end
     end
