@@ -176,6 +176,19 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
     end
   end
 
+  describe 'find_metric_by_name!' do
+    subject { FactoryGirl.build(:metric_collector_details) }
+    let(:metric) { subject.supported_metrics["loc"] }
+
+    it 'should return nil with an inexistent name' do
+      expect { subject.find_metric_by_name!("fake name") }.to raise_error(KalibroClient::Errors::RecordNotFound)
+    end
+
+    it 'should return a metric with an existent name' do
+      expect(subject.find_metric_by_name!(metric.name)).to eq(metric)
+    end
+  end
+
   describe 'find_metric_by_code' do
     subject { FactoryGirl.build(:metric_collector_details) }
     let(:metric) { subject.supported_metrics["loc"] }

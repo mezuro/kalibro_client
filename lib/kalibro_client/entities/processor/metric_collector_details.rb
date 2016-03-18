@@ -36,6 +36,12 @@ module KalibroClient
           metric.nil? ? nil : metric.last
         end
 
+        def find_metric_by_name!(name)
+          metric = self.find_metric_by_name(name)
+          raise KalibroClient::Errors::RecordNotFound if metric.nil?
+          metric
+        end
+
         def find_metric_by_code(metric_code)
           @supported_metrics[metric_code]
         end
