@@ -201,4 +201,17 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
       expect(subject.find_metric_by_code(metric.code)).to eq(metric)
     end
   end
+
+  describe 'find_metric_by_code!' do
+    subject { FactoryGirl.build(:metric_collector_details) }
+    let(:metric) { subject.supported_metrics["loc"] }
+
+    it 'should return nil with an inexistent code' do
+      expect{subject.find_metric_by_code!("fake code")}.to raise_error(KalibroClient::Errors::RecordNotFound)
+    end
+
+    it 'should return a metric with an existent code' do
+      expect(subject.find_metric_by_code!(metric.code)).to eq(metric)
+    end
+  end
 end
