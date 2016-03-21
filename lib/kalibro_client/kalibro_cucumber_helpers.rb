@@ -19,12 +19,12 @@ require 'kalibro_client/kalibro_cucumber_helpers/cleaner'
 module KalibroClient
   module KalibroCucumberHelpers
     def self.clean_processor
-      @processor_cleaner ||= KalibroClient::KalibroCucumberHelpers::Cleaner.new(:kalibro_processor_address)
+      @processor_cleaner ||= KalibroClient::KalibroCucumberHelpers::Cleaner.new(:processor_address)
       @processor_cleaner.clean_database
     end
 
     def self.clean_configurations
-      @configurations_cleaner ||= KalibroClient::KalibroCucumberHelpers::Cleaner.new(:kalibro_configurations_address)
+      @configurations_cleaner ||= KalibroClient::KalibroCucumberHelpers::Cleaner.new(:configurations_address)
       @configurations_cleaner.clean_database
     end
   end

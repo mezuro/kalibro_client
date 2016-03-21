@@ -1,14 +1,18 @@
-require 'likeno/request_methods'
+require 'likeno'
 
 module KalibroClient
   module KalibroCucumberHelpers
     class Cleaner
       include Likeno::RequestMethods
 
-      attr_reader :address
+      attr_reader :address_key
 
-      def initialize(address)
-        @address = address
+      def initialize(address_key)
+        @address_key = address_key
+      end
+
+      def address
+        Likeno.config[address_key]
       end
 
       def endpoint

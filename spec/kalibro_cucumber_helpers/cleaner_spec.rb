@@ -15,9 +15,10 @@ describe KalibroClient::KalibroCucumberHelpers::Cleaner do
     end
   end
 
-  describe 'base_address' do
+  describe 'address' do
     it 'is expected to find the address in Likeno' do
-      expect(subject.address).to eq(address_key)
+      Likeno.expects(:config).returns likeno_config
+      expect(subject.address).to eq(likeno_config[address_key])
     end
   end
 

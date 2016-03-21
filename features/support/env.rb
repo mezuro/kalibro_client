@@ -15,9 +15,6 @@ end
 # Kalibro hooks
 require 'kalibro_client/kalibro_cucumber_helpers/hooks'
 
-# Configuring the right hooks
-KalibroClient::KalibroCucumberHelpers.configure_from_yml("#{__dir__}/kalibro_cucumber_helpers.yml")
-
 # The gem itself
 require 'kalibro_client'
 
