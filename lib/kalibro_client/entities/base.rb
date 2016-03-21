@@ -1,4 +1,4 @@
-# This file is part of KalibroClient
+  # This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -166,7 +166,7 @@ module KalibroClient
 
       # TODO: probably the connection could be a class static variable.
       def self.client
-        Faraday.new(:url => KalibroClient.config[address]) do |conn|
+        Faraday.new(:url => Likeno.config[address]) do |conn|
           conn.request :json
           conn.response :json, :content_type => /\bjson$/
           conn.adapter  Faraday.default_adapter  # make requests with Net::HTTP

@@ -14,49 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'yaml'
-require 'logger'
+require 'likeno'
 require "kalibro_client/version"
 require "kalibro_client/errors"
 require "kalibro_client/entities"
 
 module KalibroClient
-  @config = {
-              processor_address: "http://localhost:8082",
-              configurations_address: "http://localhost:8083"
-            }
+  # Apply default configuration to Likeno
+  Likeno.configure(processor_address: "http://localhost:8082",
+                   configurations_address: "http://localhost:8083")
 
-  @valid_config_keys = @config.keys
-
-  @logger = Logger.new(STDOUT)
-
-  # Configure through hash
-  def KalibroClient.configure(opts = {})
-    opts.each {|k,v| @config[k.to_sym] = v if @valid_config_keys.include? k.to_sym}
-  end
-
-  # Configure through yaml file
-  def KalibroClient.configure_with(path_to_yaml_file)
-    begin
-      config = YAML::load(IO.read(path_to_yaml_file))
-    rescue Errno::ENOENT
-      logger.warn("YAML configuration file couldn't be found. Using defaults."); return
-    rescue Psych::SyntaxError
-      logger.warn("YAML configuration file contains invalid syntax. Using defaults."); return
-    end
-
-    configure(config)
-  end
-
-  def KalibroClient.config
-    @config
-  end
-
-  def KalibroClient.logger
-    @logger
-  end
-
-  def KalibroClient.logger=(logger)
-    @logger = logger
-  end
 end
