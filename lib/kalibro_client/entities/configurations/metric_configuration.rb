@@ -56,7 +56,7 @@ module KalibroClient
         end
 
         def update_attributes(attributes={})
-          attributes.each { |field, value| send("#{field}=", value) if self.class.is_valid?(field) }
+          attributes.each { |field, value| send("#{field}=", value) if self.class.valid?(field) }
           save
         end
 

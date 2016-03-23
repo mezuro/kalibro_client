@@ -102,7 +102,7 @@ describe KalibroClient::Entities::Processor::Project do
       before :each do
         KalibroClient::Entities::Processor::Project.
           expects(:request).
-          with(':id', {project: {"name" => "Another Name", "description" => subject.description, "id" => subject.id.to_s}, id: subject.id}, :put, '').
+          with(':id', {project: {"name" => "Another Name", "description" => subject.description, "id" => subject.id.to_s}, id: subject.id}, :put, '', {}).
           returns({"project" => {"id" => subject.id, "name" => "Another Name", "kalibro_errors" => []}})
       end
 

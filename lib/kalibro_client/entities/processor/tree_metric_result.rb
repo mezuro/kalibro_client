@@ -24,7 +24,7 @@ module KalibroClient
           value = attributes["value"]
           @value = (value == "NaN") ? attributes["aggregated_value"].to_f : value.to_f
           attributes.each do |field, value|
-            if field!= "value" and field!= "aggregated_value" and self.class.is_valid?(field)
+            if field!= "value" and field!= "aggregated_value" and self.class.valid?(field)
               send("#{field}=", value)
             end
           end

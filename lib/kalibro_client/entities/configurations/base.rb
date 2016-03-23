@@ -1,13 +1,13 @@
-require 'kalibro_client/helpers/date_attributes'
+require 'likeno/helpers/date_attributes'
 
 module KalibroClient
   module Entities
     module Configurations
       class Base < KalibroClient::Entities::Base
-        include DateAttributes
+        include Likeno::DateAttributes
 
         def self.address
-          :configurations_address
+          Likeno.config[:configurations_address]
         end
       end
     end

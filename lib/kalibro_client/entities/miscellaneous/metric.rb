@@ -1,5 +1,3 @@
-require 'kalibro_client/helpers/hash_converters'
-
 module KalibroClient
   module Entities
     module Miscellaneous

@@ -119,7 +119,7 @@ describe KalibroClient::Entities::Processor::Repository do
     before :each do
       KalibroClient::Entities::Processor::Repository.
         expects(:request).
-        with('', {:repository => subject.to_hash, :project_id => 1}, :post, '').
+        with('', {:repository => subject.to_hash, :project_id => 1}, :post, '', {}).
         returns("repository" => {'id' => 1, 'kalibro_errors' => []})
 
       KalibroClient::Entities::Processor::Repository.any_instance.

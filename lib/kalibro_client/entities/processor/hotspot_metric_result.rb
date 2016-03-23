@@ -24,7 +24,7 @@ module KalibroClient
         def initialize(attributes={}, persisted=false)
           @line_number = attributes["line_number"].to_i
           attributes.each do |field, value|
-            if field != "line_number" and self.class.is_valid?(field)
+            if field != "line_number" and self.class.valid?(field)
               send("#{field}=", value)
             end
           end
