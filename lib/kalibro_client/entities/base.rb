@@ -30,11 +30,6 @@ module KalibroClient
       def self.module_name
         'KalibroClient'
       end
-
-      def convert_to_hash(value)
-        return value.to_hash if value.is_a?(KalibroClient::Entities::Miscellaneous::Base)
-        super(value)
-      end
     end
   end
 end
