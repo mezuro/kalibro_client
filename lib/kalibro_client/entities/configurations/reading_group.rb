@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -23,10 +23,6 @@ module KalibroClient
 
         def id=(value)
           @id = value.to_i
-        end
-
-        def self.all
-          create_objects_array_from_hash(request('', {}, :get))
         end
 
         def readings
