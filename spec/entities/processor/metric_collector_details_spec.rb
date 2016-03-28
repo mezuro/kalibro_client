@@ -60,7 +60,7 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
         KalibroClient::Entities::Processor::MetricCollectorDetails.
           expects(:find_by_name!).
           with(subject.name).
-          raises(KalibroClient::Errors::RecordNotFound)
+          raises(Likeno::Errors::RecordNotFound)
       end
 
       it 'is expected to return nil' do
@@ -90,12 +90,12 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
         KalibroClient::Entities::Processor::MetricCollectorDetails.
           expects(:request).
           with(:find, {name: subject.name}).
-          raises(KalibroClient::Errors::RecordNotFound)
+          raises(Likeno::Errors::RecordNotFound)
       end
 
       it 'should raise a RecordNotFound error' do
         expect { KalibroClient::Entities::Processor::MetricCollectorDetails.find_by_name!(subject.name)}.
-          to raise_error(KalibroClient::Errors::RecordNotFound)
+          to raise_error(Likeno::Errors::RecordNotFound)
       end
     end
 

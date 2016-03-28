@@ -10,7 +10,7 @@ When(/^I search metric collector Avalio by name\!$/) do
   @is_error = false
   begin
     KalibroClient::Entities::Processor::MetricCollectorDetails.find_by_name!("Avalio")
-  rescue KalibroClient::Errors::RecordNotFound
+  rescue Likeno::Errors::RecordNotFound
     @is_error = true
   end
 end

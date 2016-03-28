@@ -55,7 +55,7 @@ module KalibroClient
         def self.find_by_name(metric_collector_name)
           begin
             self.find_by_name!(metric_collector_name)
-          rescue KalibroClient::Errors::RecordNotFound
+          rescue Likeno::Errors::RecordNotFound
             nil
           end
         end
