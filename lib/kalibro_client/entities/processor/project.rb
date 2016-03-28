@@ -25,10 +25,6 @@ module KalibroClient
           @id = value.to_i
         end
 
-        def self.all
-          create_objects_array_from_hash(request('', {}, :get))
-        end
-
         def repositories
           Repository.create_objects_array_from_hash(self.class.request(':id/repositories', {id: id}, :get))
         end

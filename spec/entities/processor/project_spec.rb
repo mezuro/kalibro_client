@@ -31,40 +31,6 @@ describe KalibroClient::Entities::Processor::Project do
     end
   end
 
-  describe 'all' do
-    context 'with no projects' do
-      before :each do
-        KalibroClient::Entities::Processor::Project.
-          expects(:request).
-          with('', {}, :get).
-          returns({"projects" => []})
-      end
-
-      it 'should return nil' do
-        expect(KalibroClient::Entities::Processor::Project.all).to be_empty
-      end
-    end
-
-    context 'with many projects' do
-      let(:project) { FactoryGirl.build(:project) }
-      let(:another_project) { FactoryGirl.build(:another_project) }
-
-      before :each do
-        KalibroClient::Entities::Processor::Project.
-          expects(:request).
-          with('', {}, :get).
-          returns({"projects" => [project.to_hash, another_project.to_hash]})
-      end
-
-      it 'should return a list with projects' do
-        projects = KalibroClient::Entities::Processor::Project.all
-
-        expect(projects.first.name).to eq(project.name)
-        expect(projects.last.name).to eq(another_project.name)
-      end
-    end
-  end
-
   describe 'repositories' do
     let(:project) { FactoryGirl.build(:project) }
     let(:repository) { FactoryGirl.build(:repository) }
