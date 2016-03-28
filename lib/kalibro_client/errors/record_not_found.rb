@@ -17,6 +17,10 @@
 module KalibroClient
   module Errors
     class RecordNotFound < RequestError
+      def initialize(attributes = {})
+        STDERR.puts 'DEPRECATED: KalibroClient::Errors::RecordNotFound will be replaced by Likeno::Errors::RecordNotFound.'
+        super(attributes)
+      end
     end
   end
 end

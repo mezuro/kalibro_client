@@ -16,6 +16,11 @@
 
 module KalibroClient
   module Errors
-    class RequestError < Likeno::Errors::Standard; end
+    class RequestError < Likeno::Errors::Standard
+      def initialize(attributes = {})
+        STDERR.puts "DEPRECATED: KalibroClient::Errors::RequestError will be replaced by Likeno::Errors::RequestError."
+        super(attributes)
+      end
+    end
   end
 end
