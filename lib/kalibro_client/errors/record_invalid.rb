@@ -1,6 +1,6 @@
 module KalibroClient
   module Errors
-    class RecordInvalid < Standard
+    class RecordInvalid < Likeno::Errors::Standard
       attr_reader :record
 
       def initialize(record = nil)
