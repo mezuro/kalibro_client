@@ -52,41 +52,6 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
     end
   end
 
-  describe 'all' do
-    context 'with no metric collector details' do
-      before :each do
-        KalibroClient::Entities::Processor::MetricCollectorDetails.
-          expects(:request).
-          with('', {}, :get).
-          returns({"metric_collector_details" => []})
-      end
-
-      it 'should return empty array' do
-        expect(KalibroClient::Entities::Processor::MetricCollectorDetails.all).to be_empty
-      end
-    end
-
-    context 'with many metric collector details' do
-      let!(:metric_collector_details_hash) { FactoryGirl.attributes_for(:metric_collector_details) }
-      let!(:another_metric_collector_details_hash) { FactoryGirl.attributes_for(:another_metric_collector_details) }
-
-      before :each do
-        KalibroClient::Entities::Processor::MetricCollectorDetails.
-          expects(:request).
-          with('', {}, :get).
-          returns({"metric_collector_details" => [metric_collector_details_hash, another_metric_collector_details_hash]})
-      end
-
-      it 'should return the two elements' do
-        metric_collector_details = KalibroClient::Entities::Processor::MetricCollectorDetails.all
-
-        expect(metric_collector_details.size).to eq(2)
-        expect(metric_collector_details.first.name).to eq(metric_collector_details_hash[:name])
-        expect(metric_collector_details.last.name).to eq(another_metric_collector_details_hash[:name])
-      end
-    end
-  end
-
   describe 'find_by_name' do
     subject { FactoryGirl.build(:metric_collector_details) }
 

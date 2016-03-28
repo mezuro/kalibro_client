@@ -67,10 +67,6 @@ module KalibroClient
         def self.all_names
           request(:names, {}, :get)['metric_collector_names'].to_a
         end
-
-        def self.all
-          create_objects_array_from_hash(request('', {}, :get))
-        end
       end
     end
   end
