@@ -99,19 +99,6 @@ describe KalibroClient::Entities::Processor::Repository do
     end
   end
 
-  describe 'all' do
-    before :each do
-      KalibroClient::Entities::Processor::Repository.
-        expects(:request).
-        with("", {}, :get).
-        returns({'repositories' => [subject.to_hash]})
-    end
-
-    it 'should list all the repositories' do
-      expect(KalibroClient::Entities::Processor::Repository.all).to include(subject)
-    end
-  end
-
   # The only purpose of this test is to cover the overrided save_params method
   describe 'save' do
     subject {FactoryGirl.build(:repository)}

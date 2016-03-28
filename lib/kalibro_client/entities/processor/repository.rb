@@ -112,10 +112,6 @@ module KalibroClient
           Processing.new(self.class.request("#{self.id}/last_processing/before", {:date => date})['processing'])
         end
 
-        def self.all
-          create_objects_array_from_hash(request("", {}, :get))
-        end
-
         def self.branches(url, scm_type)
           request("/branches", {url: url, scm_type: scm_type})
         end
