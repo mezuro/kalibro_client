@@ -243,7 +243,7 @@ describe KalibroClient::Entities::Processor::ModuleResult do
         response = mock('response')
         response.expects(:status).at_least_once.returns(422)
 
-        KalibroClient::Entities::Base.expects(:find).with(id).raises(KalibroClient::Errors::RequestError.new(response: response))
+        KalibroClient::Entities::Base.expects(:find).with(id).raises(Likeno::Errors::RequestError.new(response: response))
       end
 
       it 'is expected to raise a RecordNotFound error' do
@@ -256,11 +256,11 @@ describe KalibroClient::Entities::Processor::ModuleResult do
         response = mock('response')
         response.expects(:status).at_least_once.returns(500)
 
-        KalibroClient::Entities::Base.expects(:find).with(id).raises(KalibroClient::Errors::RequestError.new(response: response))
+        KalibroClient::Entities::Base.expects(:find).with(id).raises(Likeno::Errors::RequestError.new(response: response))
       end
 
       it 'is expected to raise a RequestError' do
-        expect { described_class.find(id) }.to raise_error(KalibroClient::Errors::RequestError)
+        expect { described_class.find(id) }.to raise_error(Likeno::Errors::RequestError)
       end
     end
   end

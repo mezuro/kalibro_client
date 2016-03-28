@@ -94,7 +94,7 @@ module KalibroClient
         def self.find(id)
           begin
             super
-          rescue KalibroClient::Errors::RequestError => e
+          rescue Likeno::Errors::RequestError => e
             if(e.response.status == 422)
               raise KalibroClient::Errors::RecordNotFound.new(response: e.response)
             else

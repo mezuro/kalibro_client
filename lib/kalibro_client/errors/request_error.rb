@@ -16,12 +16,6 @@
 
 module KalibroClient
   module Errors
-    class RequestError < Likeno::Errors::Standard
-      attr_reader :response
-
-      def initialize(attributes={})
-        @response = attributes[:response]
-      end
-    end
+    class RequestError < Likeno::Errors::Standard; end
   end
 end
