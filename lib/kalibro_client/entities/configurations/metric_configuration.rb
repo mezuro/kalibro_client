@@ -81,7 +81,7 @@ module KalibroClient
         def self.exists?(id)
           begin
             return true unless find(id).nil?
-          rescue KalibroClient::Errors::RecordNotFound
+          rescue Likeno::Errors::RecordNotFound
             return false
           end
         end

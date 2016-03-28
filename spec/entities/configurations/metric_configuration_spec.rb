@@ -184,7 +184,7 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
 
     context 'when the metric configuration does not exist' do
       before :each do
-        KalibroClient::Entities::Configurations::MetricConfiguration.expects(:find).with(subject.id).raises(KalibroClient::Errors::RecordNotFound)
+        KalibroClient::Entities::Configurations::MetricConfiguration.expects(:find).with(subject.id).raises(Likeno::Errors::RecordNotFound)
       end
 
       it 'should return false' do
