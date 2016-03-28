@@ -23,11 +23,6 @@ describe KalibroClient::KalibroCucumberHelpers::Cleaner do
   end
 
   describe 'clean_database' do
-    let(:client) { mock("client") }
-    let(:request) { mock("request") }
-    let(:response) { mock("response", success?: true, body: '') }
-    let(:options) { stub_everything }
-
     it 'is expected to make a request to the correct address' do
       subject.expects(:request).with('clean_database',  {}, :post)
 
