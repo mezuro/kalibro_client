@@ -1,4 +1,4 @@
-  # This file is part of KalibroClient
+# This file is part of KalibroClient
 # Copyright (C) 2013  it's respectives authors (please see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
