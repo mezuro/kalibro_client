@@ -89,19 +89,6 @@ module KalibroClient
           HotspotMetricResult.create_objects_array_from_hash(self.class.request(":id/hotspot_metric_results",
                                                                                 {id: self.id}, :get))
         end
-
-        # FIXME: KalibroProcessor should return a 404 if the object does not exist instead of 422
-        def self.find(id)
-          begin
-            super
-          rescue Likeno::Errors::RequestError => e
-            if(e.response.status == 422)
-              raise KalibroClient::Errors::RecordNotFound.new(response: e.response)
-            else
-              raise e
-            end
-          end
-        end
       end
     end
   end

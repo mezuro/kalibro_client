@@ -68,24 +68,6 @@ module KalibroClient
           create_objects_array_from_hash(request('', {}, :get, "kalibro_configurations/#{configuration_id}"))
         end
 
-        def self.find(id)
-          begin
-            metric_configuration = request(':id', {id: id}, :get)
-            return new(metric_configuration['metric_configuration'], true)
-          #FIXME Temporary until KalibroProcessor returns proper http statuses
-        rescue Likeno::Errors::RequestError
-            raise KalibroClient::Errors::RecordNotFound
-          end
-        end
-
-        def self.exists?(id)
-          begin
-            return true unless find(id).nil?
-          rescue Likeno::Errors::RecordNotFound
-            return false
-          end
-        end
-
         def kalibro_ranges
           KalibroClient::Entities::Configurations::KalibroRange.create_objects_array_from_hash(self.class.request(':id/kalibro_ranges', {id: id}, :get))
         end

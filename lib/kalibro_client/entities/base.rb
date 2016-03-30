@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'likeno'
+require 'kalibro_client/errors'
 
 module KalibroClient
   module Entities

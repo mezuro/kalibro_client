@@ -223,45 +223,4 @@ describe KalibroClient::Entities::Processor::ModuleResult do
       expect(subject.processing).to eq(processing)
     end
   end
-
-  describe 'find' do
-    let(:id) { 1 }
-
-    context 'when the ModuleResult exists' do
-      let!(:module_result) { FactoryGirl.build(:module_result) }
-      before :each do
-        KalibroClient::Entities::Base.expects(:find).with(id).returns(module_result)
-      end
-
-      it 'is expected to return the found module result' do
-        expect(described_class.find(id)).to eq(module_result)
-      end
-    end
-
-    context 'when the ModuleResult does not exist' do
-      before :each do
-        response = mock('response')
-        response.expects(:status).at_least_once.returns(422)
-
-        KalibroClient::Entities::Base.expects(:find).with(id).raises(Likeno::Errors::RequestError.new(response: response))
-      end
-
-      it 'is expected to raise a RecordNotFound error' do
-        expect { described_class.find(id) }.to raise_error(KalibroClient::Errors::RecordNotFound)
-      end
-    end
-
-    context 'when there is an unexpected server error' do
-      before :each do
-        response = mock('response')
-        response.expects(:status).at_least_once.returns(500)
-
-        KalibroClient::Entities::Base.expects(:find).with(id).raises(Likeno::Errors::RequestError.new(response: response))
-      end
-
-      it 'is expected to raise a RequestError' do
-        expect { described_class.find(id) }.to raise_error(Likeno::Errors::RequestError)
-      end
-    end
-  end
 end

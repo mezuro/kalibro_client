@@ -146,7 +146,7 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
     let(:metric) { subject.supported_metrics["loc"] }
 
     it 'should return nil with an inexistent name' do
-      expect { subject.find_metric_by_name!("fake name") }.to raise_error(KalibroClient::Errors::RecordNotFound)
+      expect { subject.find_metric_by_name!("fake name") }.to raise_error(Likeno::Errors::RecordNotFound)
     end
 
     it 'should return a metric with an existent name' do
@@ -172,7 +172,7 @@ describe KalibroClient::Entities::Processor::MetricCollectorDetails do
     let(:metric) { subject.supported_metrics["loc"] }
 
     it 'should return nil with an inexistent code' do
-      expect{subject.find_metric_by_code!("fake code")}.to raise_error(KalibroClient::Errors::RecordNotFound)
+      expect{subject.find_metric_by_code!("fake code")}.to raise_error(Likeno::Errors::RecordNotFound)
     end
 
     it 'should return a metric with an existent code' do

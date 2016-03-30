@@ -38,7 +38,7 @@ module KalibroClient
 
         def find_metric_by_name!(name)
           metric = self.find_metric_by_name(name)
-          raise KalibroClient::Errors::RecordNotFound if metric.nil?
+          raise Likeno::Errors::RecordNotFound if metric.nil?
           metric
         end
 
@@ -48,7 +48,7 @@ module KalibroClient
 
         def find_metric_by_code!(metric_code)
           metric = self.find_metric_by_code(metric_code)
-          raise KalibroClient::Errors::RecordNotFound if metric.nil?
+          raise Likeno::Errors::RecordNotFound if metric.nil?
           metric
         end
 

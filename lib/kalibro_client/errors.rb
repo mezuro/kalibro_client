@@ -14,6 +14,4 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kalibro_client/errors/request_error'
-require 'kalibro_client/errors/record_not_found'
-require 'kalibro_client/errors/record_invalid'
+require 'likeno/errors'
