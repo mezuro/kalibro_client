@@ -26,38 +26,6 @@ describe KalibroClient::Entities::Configurations::ReadingGroup do
     end
   end
 
-  describe 'all' do
-    context 'with no reading_groups' do
-      before :each do
-        KalibroClient::Entities::Configurations::ReadingGroup.
-          expects(:request).
-          with('', {}, :get).
-          returns({'reading_groups' => []})
-      end
-
-      it 'should return nil' do
-        expect(KalibroClient::Entities::Configurations::ReadingGroup.all).to be_empty
-      end
-    end
-
-    context 'with many reading_groups' do
-      let(:reading_group) { FactoryGirl.build(:reading_group_with_id) }
-      before :each do
-        KalibroClient::Entities::Configurations::ReadingGroup.
-          expects(:request).
-          with('', {}, :get).
-          returns({'reading_groups' => [reading_group.to_hash, reading_group.to_hash]})
-      end
-
-      it 'should return nil' do
-        reading_groups = KalibroClient::Entities::Configurations::ReadingGroup.all
-
-        expect(reading_groups.first.name).to eq(reading_group.name)
-        expect(reading_groups.last.name).to eq(reading_group.name)
-      end
-    end
-  end
-
   describe 'readings' do
     let(:reading_group) { FactoryGirl.build(:reading_group_with_id) }
 

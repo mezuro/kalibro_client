@@ -159,70 +159,13 @@ describe KalibroClient::Entities::Configurations::MetricConfiguration do
     before :each do
       KalibroClient::Entities::Configurations::MetricConfiguration.
       expects(:request).
-      with('', {:metric_configuration => subject.to_hash, :kalibro_configuration_id => subject.kalibro_configuration_id}, :post, '').
+      with('', {:metric_configuration => subject.to_hash, :kalibro_configuration_id => subject.kalibro_configuration_id}, :post, '', {}).
       returns("metric_configuration" => {'id' => 1, 'kalibro_errors' => []})
     end
 
     it 'should make a request to save model with id and return true without errors' do
       expect(subject.save).to be_truthy
       expect(subject.kalibro_errors).to be_empty
-    end
-  end
-
-  describe 'exists?' do
-    subject {FactoryGirl.build(:metric_configuration_with_id)}
-
-    context 'when the metric configuration exists' do
-      before :each do
-        KalibroClient::Entities::Configurations::MetricConfiguration.expects(:find).with(subject.id).returns(subject)
-      end
-
-      it 'should return true' do
-        expect(KalibroClient::Entities::Configurations::MetricConfiguration.exists?(subject.id)).to be_truthy
-      end
-    end
-
-    context 'when the metric configuration does not exist' do
-      before :each do
-        KalibroClient::Entities::Configurations::MetricConfiguration.expects(:find).with(subject.id).raises(KalibroClient::Errors::RecordNotFound)
-      end
-
-      it 'should return false' do
-        expect(KalibroClient::Entities::Configurations::MetricConfiguration.exists?(subject.id)).to be_falsey
-      end
-    end
-  end
-
-  describe 'find' do
-    let(:metric_configuration) { FactoryGirl.build(:metric_configuration_with_id) }
-
-    context 'with an existant MetricConfiguration' do
-      before :each do
-        KalibroClient::Entities::Configurations::MetricConfiguration.
-        expects(:request).
-        with(':id', {id: metric_configuration.id}, :get).
-        returns({'metric_configuration' => metric_configuration.to_hash})
-      end
-
-      it 'should return the metric_configuration' do
-        found_metric_configuration = KalibroClient::Entities::Configurations::MetricConfiguration.find(metric_configuration.id)
-        expect(found_metric_configuration.id).to eq(metric_configuration.id)
-        expect(found_metric_configuration.persisted).to be_truthy
-      end
-    end
-
-    context 'with an inexistant MetricConfiguration' do
-      before :each do
-        KalibroClient::Entities::Configurations::MetricConfiguration.
-        expects(:request).
-        with(':id', {id: metric_configuration.id}, :get).
-        raises(KalibroClient::Errors::RequestError)
-      end
-
-      it 'should raise the RecordNotFound error' do
-        expect {KalibroClient::Entities::Configurations::MetricConfiguration.find(metric_configuration.id)}.
-        to raise_error(KalibroClient::Errors::RecordNotFound)
-      end
     end
   end
 

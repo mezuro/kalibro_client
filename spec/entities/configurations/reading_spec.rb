@@ -52,7 +52,7 @@ describe KalibroClient::Entities::Configurations::Reading do
     before :each do
       KalibroClient::Entities::Configurations::Reading.
         expects(:request).
-        with('', {reading: reading.to_hash, reading_group_id: reading.reading_group_id}, :post, "reading_groups/#{reading.reading_group_id}").
+        with('', {reading: reading.to_hash, reading_group_id: reading.reading_group_id}, :post, "reading_groups/#{reading.reading_group_id}", {}).
         returns("reading" => {'id' => reading_id, 'kalibro_errors' => []})
     end
 
@@ -70,7 +70,7 @@ describe KalibroClient::Entities::Configurations::Reading do
     before :each do
       KalibroClient::Entities::Configurations::Reading.
         expects(:request).
-        with(":id", {id: subject.id}, :delete, "reading_groups/#{subject.reading_group_id}").returns({})
+        with(":id", {id: subject.id}, :delete, "reading_groups/#{subject.reading_group_id}", {}).returns({})
     end
 
     it 'should make a request to destroy' do
@@ -85,7 +85,7 @@ describe KalibroClient::Entities::Configurations::Reading do
     before :each do
       KalibroClient::Entities::Configurations::Reading.
         expects(:request).
-        with(":id", {reading: subject.to_hash, id: subject.id}, :put, "reading_groups/#{subject.reading_group_id}").returns({})
+        with(":id", {reading: subject.to_hash, id: subject.id}, :put, "reading_groups/#{subject.reading_group_id}", {}).returns({})
     end
 
     it 'should make a request to update' do

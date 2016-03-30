@@ -6,7 +6,7 @@ When(/^I ask for an inexistent module result$/) do
   @is_error = false
   begin
     KalibroClient::Entities::Processor::ModuleResult.find(-1)
-  rescue KalibroClient::Errors::RecordNotFound
+  rescue Likeno::Errors::RecordNotFound
     @is_error = true
   end
 end

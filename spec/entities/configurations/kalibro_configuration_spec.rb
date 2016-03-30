@@ -24,41 +24,6 @@ describe KalibroClient::Entities::Configurations::KalibroConfiguration do
     end
   end
 
-  describe 'all' do
-    context 'with no configurations' do
-      before :each do
-        KalibroClient::Entities::Configurations::KalibroConfiguration.
-          expects(:request).
-          with('', {}, :get).
-          returns({'kalibro_configurations' => []})
-      end
-
-      it 'is expected to return nil' do
-        expect(KalibroClient::Entities::Configurations::KalibroConfiguration.all).to be_empty
-      end
-    end
-
-    context 'with many configurations' do
-      let(:kalibro_configuration) { FactoryGirl.build(:kalibro_configuration_with_id) }
-      let(:another_kalibro_configuration) { FactoryGirl.build(:another_kalibro_configuration) }
-
-      before :each do
-        KalibroClient::Entities::Configurations::KalibroConfiguration.
-          expects(:request).
-          with('', {}, :get).
-          returns({'kalibro_configurations' => [kalibro_configuration.to_hash, another_kalibro_configuration.to_hash]})
-      end
-
-      it 'is expected to return the two elements' do
-        kalibro_configurations = KalibroClient::Entities::Configurations::KalibroConfiguration.all
-
-        expect(kalibro_configurations.size).to eq(2)
-        expect(kalibro_configurations.first.name).to eq(kalibro_configuration.name)
-        expect(kalibro_configurations.last.name).to eq(another_kalibro_configuration.name)
-      end
-    end
-  end
-
   describe 'metric_configurations' do
     context 'with no metric configurations' do
       before :each do

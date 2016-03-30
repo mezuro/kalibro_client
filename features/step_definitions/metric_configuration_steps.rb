@@ -38,7 +38,7 @@ When(/^I search an inexistent metric configuration$/) do
   inexistent_id = rand(Time.now.to_i)
   begin
     KalibroClient::Entities::Configurations::MetricConfiguration.find(inexistent_id)
-  rescue KalibroClient::Errors::RecordNotFound
+  rescue Likeno::Errors::RecordNotFound
     @is_error = true
   end
 end
@@ -81,7 +81,7 @@ Then(/^I should get an empty list of metric configurations$/) do
 end
 
 Then(/^the metric configuration should no longer exist$/) do
-  expect { KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration.id)}.to raise_error(KalibroClient::Errors::RecordNotFound)
+  expect { KalibroClient::Entities::Configurations::MetricConfiguration.find(@metric_configuration.id)}.to raise_error(Likeno::Errors::RecordNotFound)
 end
 
 Then(/^the metric configuration should exist$/) do

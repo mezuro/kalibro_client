@@ -38,7 +38,7 @@ module KalibroClient
 
         def find_metric_by_name!(name)
           metric = self.find_metric_by_name(name)
-          raise KalibroClient::Errors::RecordNotFound if metric.nil?
+          raise Likeno::Errors::RecordNotFound if metric.nil?
           metric
         end
 
@@ -48,14 +48,14 @@ module KalibroClient
 
         def find_metric_by_code!(metric_code)
           metric = self.find_metric_by_code(metric_code)
-          raise KalibroClient::Errors::RecordNotFound if metric.nil?
+          raise Likeno::Errors::RecordNotFound if metric.nil?
           metric
         end
 
         def self.find_by_name(metric_collector_name)
           begin
             self.find_by_name!(metric_collector_name)
-          rescue KalibroClient::Errors::RecordNotFound
+          rescue Likeno::Errors::RecordNotFound
             nil
           end
         end
@@ -66,10 +66,6 @@ module KalibroClient
 
         def self.all_names
           request(:names, {}, :get)['metric_collector_names'].to_a
-        end
-
-        def self.all
-          create_objects_array_from_hash(request('', {}, :get))
         end
       end
     end

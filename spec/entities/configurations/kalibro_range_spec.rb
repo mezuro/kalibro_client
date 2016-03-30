@@ -123,7 +123,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
     before :each do
       KalibroClient::Entities::Configurations::KalibroRange.
         expects(:request).
-        with('', {:kalibro_range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}, :post, "metric_configurations/#{subject.metric_configuration_id}").
+        with('', {:kalibro_range => subject.to_hash, :metric_configuration_id => subject.metric_configuration_id}, :post, "metric_configurations/#{subject.metric_configuration_id}", {}).
         returns("kalibro_range" => { 'id' => 2, 'kalibro_errors' => []})
     end
 
@@ -140,7 +140,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
     before :each do
       KalibroClient::Entities::Configurations::KalibroRange.
         expects(:request).
-        with(":id", {id: subject.id}, :delete, "metric_configurations/#{subject.metric_configuration_id}").returns({})
+        with(":id", {id: subject.id}, :delete, "metric_configurations/#{subject.metric_configuration_id}", {}).returns({})
     end
 
     it 'should make a request to destroy' do
@@ -156,7 +156,7 @@ describe KalibroClient::Entities::Configurations::KalibroRange do
       subject.end = "555"
       KalibroClient::Entities::Configurations::KalibroRange.
         expects(:request).
-        with(':id', {:kalibro_range => subject.to_hash, :id => subject.id}, :put, "metric_configurations/#{subject.metric_configuration_id}").
+        with(':id', {:kalibro_range => subject.to_hash, :id => subject.id}, :put, "metric_configurations/#{subject.metric_configuration_id}", {}).
         returns("errors" => nil)
     end
 

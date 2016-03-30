@@ -24,10 +24,6 @@ module KalibroClient
           @id = value.to_i
         end
 
-        def self.all
-          create_objects_array_from_hash(request('', {}, :get))
-        end
-
         def metric_configurations
           KalibroClient::Entities::Configurations::MetricConfiguration.create_objects_array_from_hash(self.class.request(':id/metric_configurations', {id: id}, :get))
         end

@@ -1,12 +1,14 @@
+require 'likeno/helpers/hash_converters'
+
 module KalibroClient
   module Entities
     module Miscellaneous
       class Base
         def initialize(attributes={})
-          attributes.each { |field, value| send("#{field}=", value) if self.class.is_valid?(field) }
+          attributes.each { |field, value| send("#{field}=", value) if self.class.valid?(field) }
         end
 
-        include HashConverters
+        include Likeno::HashConverters
         def to_hash(options={})
           hash = Hash.new
           excepts = options[:except].nil? ? [] : options[:except]
