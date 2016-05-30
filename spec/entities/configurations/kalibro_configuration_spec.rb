@@ -17,6 +17,14 @@
 require 'spec_helper'
 
 describe KalibroClient::Entities::Configurations::KalibroConfiguration do
+  describe 'accessors' do
+    it 'should have accessors for the needed attributes' do
+      [:name, :description, :language].each do |attr|
+        expect(subject).to have_attr_accessor(attr)
+      end
+    end
+  end
+
   describe 'id=' do
     it 'should set the value of the attribute id as an Integer' do
       subject.id = "42"
