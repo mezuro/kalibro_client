@@ -18,8 +18,8 @@ require 'spec_helper'
 
 describe KalibroClient::Entities::Configurations::KalibroConfiguration do
   describe 'accessors' do
-    it 'should have accessors for the needed attributes' do
-      [:name, :description, :language].each do |attr|
+    [:name, :description, :language].each do |attr|
+      it 'should have accessors for the #{attr} attribute' do
         expect(subject).to have_attr_accessor(attr)
       end
     end
