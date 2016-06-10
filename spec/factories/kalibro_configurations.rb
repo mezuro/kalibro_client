@@ -18,6 +18,7 @@ FactoryGirl.define do
   factory :kalibro_configuration, class: KalibroClient::Entities::Configurations::KalibroConfiguration do
     name "Java"
     description "Code metrics for Java."
+    language "Java"
 
     trait :with_id do
       id 1
@@ -30,5 +31,6 @@ FactoryGirl.define do
     id 12
     name "Perl"
     description "Code metrics for Perl."
+    language "Java"
   end
 end

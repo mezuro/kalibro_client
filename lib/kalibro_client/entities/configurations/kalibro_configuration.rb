@@ -18,7 +18,7 @@ module KalibroClient
   module Entities
     module Configurations
       class KalibroConfiguration < KalibroClient::Entities::Configurations::Base
-        attr_accessor :id, :name, :description
+        attr_accessor :id, :name, :description, :language
 
         def id=(value)
           @id = value.to_i
