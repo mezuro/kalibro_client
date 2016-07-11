@@ -45,7 +45,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "codeclimate-test-reporter"
   spec.add_development_dependency "ruby-prof"
 
-  spec.add_dependency "activesupport", ">= 2.2.1" #version in which underscore was introduced
+  if RUBY_VERSION < '2.2.2'
+    spec.add_dependency "activesupport", ">= 2.2.1", "< 5" #versions in which underscore was introduced and earlier rubies were no longer supported
+  else
+    spec.add_dependency "activesupport", ">= 2.2.1" #version in which underscore was introduced
+  end
   spec.add_dependency "faraday_middleware", "~> 0.9"
   spec.add_dependency "likeno", "~> 1.1"
 end
