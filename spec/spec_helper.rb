@@ -31,6 +31,11 @@ SimpleCov.start do
   add_filter "/features/"
 
   coverage_dir 'coverage/rspec'
+
+  # Minimum coverage is only desired on CI tools when building the environment. CI is a
+  # default environment variable used by Travis. For reference, see here:
+  # https://docs.travis-ci.com/user/environment-variables/#Default-Environment-Variables
+  minimum_coverage 100 if ENV["CI"] == 'true'
 end
 
 require 'kalibro_client'
