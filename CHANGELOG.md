@@ -3,6 +3,10 @@
 The Kalibro Client gem abstracts communication with all the services in the Mezuro
 platform, with an uniform Ruby API.
 
+## Unreleased
+
+- Drop ActiveSupport >= 5.0 support
+
 ## v4.0.0 - 30/03/2016
 - Extract HTTP request handling code to the Likeno gem (https://github.com/mezuro/likeno)
 - Refactor MetricCollector and MetricCollectoDetails finding methods
