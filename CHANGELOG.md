@@ -4,6 +4,7 @@ The Kalibro Client gem abstracts communication with all the services in the Mezu
 platform, with an uniform Ruby API.
 
 ## Unreleased
+- Change the key of the response hash on the module_result
 - Drop Ruby 2.0.0 and 2.1.5 support
 
 ## v4.0.0 - 30/03/2016

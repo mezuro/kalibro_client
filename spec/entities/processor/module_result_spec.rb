@@ -111,7 +111,7 @@ describe KalibroClient::Entities::Processor::ModuleResult do
       KalibroClient::Entities::Processor::Repository.
         expects(:request).
         with(':id/module_result_history_of', {id: repository.id, kalibro_module_id: subject.kalibro_module.id}).
-        returns({'date_module_results' => [[date_module_result.date, date_module_result.module_result.to_hash]]})
+        returns({'module_result_history_of' => [[date_module_result.date, date_module_result.module_result.to_hash]]})
     end
 
     it 'should return a list of date_module_results' do
